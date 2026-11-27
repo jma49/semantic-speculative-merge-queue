@@ -3,25 +3,25 @@
 
 We position SSMQ across four research areas and contrast its scheduling guarantees against prior merge-queue and CI optimization designs in Table~\ref{tab:related_taxonomy}.
 
-\begin{table}[t]
+\begin{table*}[t]
 \centering
 \footnotesize
-\setlength{\tabcolsep}{2.5pt}
+\setlength{\tabcolsep}{7pt}
 \caption{Qualitative Comparison of Merge Queue \& CI Verification Paradigms.}
 \label{tab:related_taxonomy}
 \begin{tabular}{lcccc}
 \toprule
-\textbf{System / Paradigm} & \textbf{Dep.-Aware} & \textbf{Spec./Batch} & \textbf{Flaky Gate} & \textbf{Causal Blame} \\
+\textbf{System / Paradigm} & \textbf{Dependency-Aware} & \textbf{Speculation / Batching} & \textbf{Flaky Gating} & \textbf{Fault Attribution} \\
 \midrule
-Static Batch (Bors~\cite{fallahzadeh2023accelerating}) & No (FIFO) & Static $K$ & None & $O(\log K)$ Bisect \\
-Linear Trains (GitLab) & No (FIFO) & Linear Prefix & None & Head Abort \\
-SubmitQueue~\cite{ananthanarayanan2019keeping} & Risk only & Outcome Tree & Implicit & Tree Split \\
-Flake Bisect~\cite{henderson2023flake} & No (FIFO) & Post-submit & Bayesian & Noisy Bisect \\
-PTS / RTS~\cite{machalica2019predictive,jin2023hybridcisave} & Test level & Single PR & Orthogonal & N/A \\
-\textbf{SSMQ (Ours)} & \textbf{Cone-Disjoint} & \textbf{Multi-Lane} & \textbf{2-Regime Beta} & \textbf{1-Step AST} \\
+Static Batching (Bors / GitHub~\cite{fallahzadeh2023accelerating}) & No (FIFO) & Static batch $K$ & None & $O(\log K)$ binary bisection \\
+Linear Trains (GitLab Merge Trains) & No (FIFO) & Linear prefix train & None & Head abort \& restart \\
+SubmitQueue (Uber~\cite{ananthanarayanan2019keeping}) & Risk model only & Pass/fail outcome tree & Implicit & Outcome-tree branch split \\
+Flake-Aware Bisection~\cite{henderson2023flake} & No (FIFO) & Post-submit culprit search & Bayesian & Noisy binary bisection \\
+Predictive Test Selection~\cite{machalica2019predictive,jin2023hybridcisave} & Test granularity & Single-PR build pruning & Orthogonal & N/A (composable) \\
+\textbf{SSMQ (Ours)} & \textbf{Cone-Disjoint ($\hat{G}$)} & \textbf{Risk-Stratified Multi-Lane} & \textbf{2-Regime Beta-Binomial} & \textbf{1-Step AST/Stack + Fallback} \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{table*}
 
 \textbf{CI Merge Queues, Batching, and Test Selection.}
 Empirical studies of open-source and industrial repositories show that CI adoption improves defect containment and release cadence at the cost of queueing delay and compute contention~\cite{hilton2016usage,zhao2017impact,bernardo2023impact,wessel2023github}. At hyperscale, Google's TAP~\cite{elbaum2014techniques,memon2017taming} introduced batched regression testing, Uber's SubmitQueue~\cite{ananthanarayanan2019keeping} formulated speculative pass/fail outcome trees to sustain monorepo merge throughput, and Meta~\cite{juloori2025scale} decoupled pre-merge and post-merge verification into lean pipelines. Subsequent work investigated failure-history-guided dynamic batch sizing~\cite{bavand2021mining}, parallel batch testing with bisection~\cite{fallahzadeh2023accelerating}, risk-weighted commit bisection~\cite{najafi2019bisecting}, and queue reordering via PR prioritization~\cite{jungwirth2025improving}. A parallel line of work shrinks per-job execution time through test-selection policies based on state transitions~\cite{leong2019assessing}, predictive ML models~\cite{machalica2019predictive}, reinforcement learning~\cite{spieker2017reinforcement}, joint build-and-test filtering~\cite{jin2023hybridcisave}, and pipeline-aware scheduling~\cite{schwendner2025practical}. Whereas test selection prunes test suites \emph{within} a single build and prior batchers group PRs in arrival order, SSMQ intervenes at the \emph{batch formation} layer via warm-up cone disjointness---a mechanism orthogonal to, and directly composable with, per-batch regression test selection.

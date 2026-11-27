@@ -3,53 +3,52 @@
 \centering
 \begin{tikzpicture}[
   font=\scriptsize,
-  prbox/.style={rectangle, rounded corners=2pt, draw=black!65, minimum height=0.62cm, minimum width=2.25cm, align=center, inner sep=2pt},
+  prbox/.style={rectangle, rounded corners=2pt, draw=black!65, minimum height=0.64cm, minimum width=2.25cm, align=center, inner sep=2pt},
   coll/.style={prbox, fill=ssmqRed!18, draw=ssmqRed!80!black, thick},
   clean/.style={prbox, fill=ssmqBlue!14, draw=ssmqBlue!80!black},
-  lane/.style={rectangle, rounded corners=3pt, draw=#1!70!black, fill=#1!6, inner sep=4pt},
-  arr/.style={-{Stealth[length=2mm]}, thick, draw=black!70}
+  lane/.style={rectangle, rounded corners=3pt, draw=#1!70!black, fill=#1!6, inner sep=4pt}
 ]
 
-% Left Panel: FIFO Batching Collision -> Invalidation Storm
-\node[font=\footnotesize\bfseries, anchor=west] at (0, 2.35) {(a) Conventional FIFO Merge Queue (Blind Arrival Order)};
+% Panel (a): FIFO Batching Collision -> Invalidation Storm
+\node[font=\footnotesize\bfseries, anchor=west] at (-0.1, 2.85) {(a) Conventional FIFO Merge Queue (Blind Arrival Order)};
 
 \node[coll] (f1) at (1.2, 1.55) {\textbf{PR \#144379}\\ \texttt{test/e2e\_node}};
 \node[coll] (f2) at (3.75, 1.55) {\textbf{PR \#144378}\\ \texttt{test/e2e\_node}};
 \node[clean] (f3) at (6.3, 1.55) {\textbf{PR \#144133}\\ \texttt{staging/src}};
 \node[clean] (f4) at (8.85, 1.55) {\textbf{PR \#144205}\\ \texttt{pkg/scheduler}};
 
-% Collision arc
-\draw[ssmqRed!85!black, thick, <->] (f1.north) to[bend left=22] node[above, font=\scriptsize\bfseries, text=ssmqRed!85!black] {Module Collision (\texttt{test/e2e\_node})} (f2.north);
+% Collision arc with clear headroom below panel title
+\draw[ssmqRed!85!black, thick, <->] (f1.north) to[bend left=20] node[above, yshift=1pt, font=\scriptsize\bfseries, text=ssmqRed!85!black] {Module Collision (\texttt{test/e2e\_node})} (f2.north);
 
-% FIFO batch box
+% FIFO batch box (compact caption stays strictly inside box width)
 \begin{scope}[on background layer]
-  \node[lane=ssmqRed, fit=(f1)(f4), label={[font=\scriptsize\bfseries, text=ssmqRed!80!black]below:FIFO Batch $B_{\text{FIFO}}$ ($K=4$): 1 Semantic Conflict $\Rightarrow$ Whole-Batch CI Failure $\Rightarrow$ $O(\log K)$ Bisection / Speculative Abort}] (fbox) {};
+  \node[lane=ssmqRed, fit=(f1)(f4), label={[font=\scriptsize\bfseries, text=ssmqRed!80!black, yshift=-2pt]below:FIFO Batch $B_{\text{FIFO}}$ ($K=4$): 1 Conflict $\Rightarrow$ Batch Fail \& $O(\log K)$ Bisection}] (fbox) {};
 \end{scope}
 
-% Right/Bottom Panel: SSMQ Graph-Disjoint Risk-Stratified Lanes
-\node[font=\footnotesize\bfseries, anchor=west] at (0, -0.35) {(b) SSMQ Dependency-Aware Multi-Lane Packing (Warm-Up Graph $\hat{G}$)};
-
-\node[clean] (s1) at (1.2, -1.15) {\textbf{PR \#144379}\\ \texttt{test/e2e\_node}};
-\node[clean] (s3) at (3.75, -1.15) {\textbf{PR \#144133}\\ \texttt{staging/src}};
-\node[clean] (s4) at (6.3, -1.15) {\textbf{PR \#144205}\\ \texttt{pkg/scheduler}};
-\node[clean] (s5) at (8.85, -1.15) {\textbf{PR \#144345}\\ \texttt{test/integration}};
-
-\node[prbox, fill=ssmqOrange!20, draw=ssmqOrange!85!black, thick] (p2) at (13.2, -1.15) {\textbf{PR \#144378}\\ \texttt{test/e2e\_node}\\ (Deferred $\to$ Protected)};
-
-\begin{scope}[on background layer]
-  \node[lane=ssmqBlue, fit=(s1)(s5), label={[font=\scriptsize\bfseries, text=ssmqBlue!85!black]below:Fast Lane $B_{\text{fast}}$ (Pairwise Disjoint Cones $C(p_i)\cap C(p_j)=\emptyset$) $\Rightarrow$ Single-Round Green Merge}] (fastbox) {};
-  \node[lane=ssmqOrange, fit=(p2), label={[font=\scriptsize\bfseries, text=ssmqOrange!85!black]below:Protected Lane ($\le 2$ PRs, Bounded Wait)}] (protbox) {};
-\end{scope}
-
-% Outcome badges on right of panel (a)
-\node[rectangle, rounded corners=2pt, fill=ssmqRed!12, draw=ssmqRed!70!black, align=left, text width=3.55cm, inner sep=4pt] at (13.2, 1.55) {
+% Outcome callout box cleanly separated on right
+\node[rectangle, rounded corners=2pt, fill=ssmqRed!12, draw=ssmqRed!70!black, align=left, text width=3.85cm, inner sep=4.5pt] at (13.35, 1.55) {
   \textbf{FIFO Failure Cascade:}\\
-  $\bullet$ Innocent \#144133 \& \#144205 blocked\\
+  $\bullet$ Innocent \#144133 \& \#144205 stalled\\
   $\bullet$ 3--4 extra CI runs to bisect\\
   $\bullet$ Downstream speculative trains aborted
 };
 
+% Panel (b): SSMQ Graph-Disjoint Risk-Stratified Lanes
+\node[font=\footnotesize\bfseries, anchor=west] at (-0.1, -0.30) {(b) SSMQ Dependency-Aware Multi-Lane Packing (Warm-Up Graph $\hat{G}$)};
+
+\node[clean] (s1) at (1.2, -1.25) {\textbf{PR \#144379}\\ \texttt{test/e2e\_node}};
+\node[clean] (s3) at (3.75, -1.25) {\textbf{PR \#144133}\\ \texttt{staging/src}};
+\node[clean] (s4) at (6.3, -1.25) {\textbf{PR \#144205}\\ \texttt{pkg/scheduler}};
+\node[clean] (s5) at (8.85, -1.25) {\textbf{PR \#144345}\\ \texttt{test/integration}};
+
+\node[prbox, fill=ssmqOrange!20, draw=ssmqOrange!85!black, thick] (p2) at (13.35, -1.25) {\textbf{PR \#144378}\\ \texttt{test/e2e\_node}\\ (Deferred $\to$ Protected)};
+
+\begin{scope}[on background layer]
+  \node[lane=ssmqBlue, fit=(s1)(s5), label={[font=\scriptsize\bfseries, text=ssmqBlue!85!black, yshift=-2pt]below:Fast Lane $B_{\text{fast}}$ (Pairwise Disjoint Cones $C(p_i)\cap C(p_j)=\emptyset$) $\Rightarrow$ Single-Round Merge}] (fastbox) {};
+  \node[lane=ssmqOrange, fit=(p2), label={[font=\scriptsize\bfseries, text=ssmqOrange!85!black, yshift=-2pt]below:Protected Lane ($K \le 2$, Bounded Wait)}] (protbox) {};
+\end{scope}
+
 \end{tikzpicture}
-\caption{Motivating real-trace example mined from our \texttt{kubernetes/kubernetes} evaluation window (PRs \#144379, \#144378, \#144133, \#144205, and \#144345). (a) Conventional FIFO batching bundles colliding PRs \#144379 and \#144378 (both editing \texttt{test/e2e\_node}) alongside orthogonal changes, causing a batch failure that penalizes innocent PRs. (b) SSMQ packs four mutually disjoint PRs into a fast-lane batch and promotes colliding PR \#144378 to the starvation-bounded protected lane for parallel verification.}
+\caption{Motivating real-trace example mined from our \texttt{kubernetes/kubernetes} evaluation window (PRs~\#144379, \#144378, \#144133, \#144205, and \#144345). (a)~Conventional FIFO batching bundles colliding PRs~\#144379 and~\#144378 (both editing \texttt{test/e2e\_node}) alongside orthogonal changes, causing a batch failure that penalizes innocent PRs. (b)~SSMQ packs four mutually disjoint PRs into a fast-lane batch and promotes colliding PR~\#144378 to the starvation-bounded protected lane for parallel verification.}
 \label{fig:motivating}
 \end{figure*}

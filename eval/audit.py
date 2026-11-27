@@ -472,7 +472,7 @@ def emit_pgfplots_figures(
         "SSMQ-NoFlaky": ("south west", "2pt"),
         "SSMQ": ("south west", "2pt"),
         "StaticBatchBisect": ("south", "3pt"),
-        "FlakeAwareBatch": ("south east", "2pt"),
+        "FlakeAwareBatch": ("south", "4pt"),
     }
     for skey, slbl, scol, smark, xlat, yfr in p10_pts:
         anc, _ = label_offsets[skey]

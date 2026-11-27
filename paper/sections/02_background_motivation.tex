@@ -31,9 +31,9 @@ By consulting its warm-up dependency graph $\hat{G}$ (Figure~\ref{fig:motivating
 
 \subsection{Design Requirements}
 Synthesizing Eq.~\eqref{eq:survival} with these trace observations yields four system requirements for a semantic merge queue:
-\begin{description}
-    \item[\textbf{R1 (Leak-Free Dependency Estimation)}:] Impact cones must be inferred solely from prior merged history, without peeking at future commits or assuming complete recall over latent cross-module couplings.
-    \item[\textbf{R2 (Cumulative Mainline Safety)}:] Every PR or batch must pass CI verification against the exact cumulative mainline state prior to commit, triggering automatic re-verification whenever a concurrent merge introduces a persistent conflict.
-    \item[\textbf{R3 (Starvation-Free Hotspot Isolation)}:] Deferring colliding or high-risk PRs from fast-lane batches must impose a strict upper bound on dispatch delay so hotspot contributors are never starved.
-    \item[\textbf{R4 (Sub-Second, Flake-Aware Fault Recovery)}:] Post-failure handling must shield clean singletons from flaky rejections while isolating true culprits in fewer rounds than blind bisection---without stalling queue scheduling behind multi-second LLM inference calls.
-\end{description}
+\begin{itemize}
+    \item \textbf{R1 (Leak-Free Dependency Estimation):} Impact cones must be inferred solely from prior merged history, without peeking at future commits or assuming complete recall over latent cross-module couplings.
+    \item \textbf{R2 (Cumulative Mainline Safety):} Every PR or batch must pass CI verification against the exact cumulative mainline state prior to commit, triggering automatic re-verification whenever a concurrent merge introduces a persistent conflict.
+    \item \textbf{R3 (Starvation-Free Hotspot Isolation):} Deferring colliding or high-risk PRs from fast-lane batches must impose a strict upper bound on dispatch delay so hotspot contributors are never starved.
+    \item \textbf{R4 (Sub-Second, Flake-Aware Fault Recovery):} Post-failure handling must shield clean singletons from flaky rejections while isolating true culprits in fewer rounds than blind bisection---without stalling queue scheduling behind multi-second LLM inference calls.
+\end{itemize}
