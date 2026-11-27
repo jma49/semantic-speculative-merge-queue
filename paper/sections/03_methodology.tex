@@ -1,30 +1,30 @@
 \section{SSMQ Architecture, Algorithms, and Formal Properties}
 \label{sec:methodology}
 
-Figure~\ref{fig:architecture} presents the end-to-end architecture of \textbf{SSMQ}. Approved PRs enter the queue, are scored using a leak-free warm-up dependency graph $\hat{G}$, and are dispatched across $W$ parallel CI workers via risk-stratified disjoint lanes. Passing runs undergo a cumulative mainline safety check before merging; failing runs traverse a two-regime Beta-Binomial flaky gate followed by deterministic AST/traceback 1-step causal blame with guaranteed binary-bisection fallback.
+Figure~\ref{fig:architecture} illustrates the end-to-end architecture of \textbf{SSMQ}. Newly approved PRs enter the ready queue, receive risk scores and 1-hop impact cones derived from a leak-free warm-up dependency graph $\hat{G}$, and are scheduled across $W$ parallel CI workers via risk-stratified disjoint lanes. Passing batches must clear a cumulative mainline conflict check before committing; failing batches pass through a two-regime Beta-Binomial flaky gate and, when diagnosed as deterministic multi-PR failures, invoke static AST/traceback 1-step causal blame with guaranteed fallback to prioritized binary bisection.
 
 \input{figures/fig_architecture.tex}
 
 \subsection{Leak-Free Warm-Up Dependency Graph and Risk Scoring}
-To prevent temporal data leakage, SSMQ constructs its observed dependency graph $\hat{G} = (V, \hat{E})$ strictly from the chronological warm-up prefix (earliest $25\%$ of merged PRs). Let $F(p)$ denote the set of file paths modified by PR $p$, and let $\mu(f)$ denote the two-level directory module prefix of file $f$ (e.g., \texttt{pkg/scheduler} or \texttt{tsc/internal}). From the warm-up prefix, SSMQ computes:
+To prevent temporal lookahead leakage, SSMQ builds its observed dependency graph $\hat{G} = (V, \hat{E})$ exclusively from the chronological warm-up prefix (the earliest $25\%$ of merged PRs in each repository). Let $F(p)$ denote the set of file paths modified by PR $p$, and let $\mu(f)$ denote the two-level directory module prefix of file $f$ (e.g., \texttt{pkg/scheduler} or \texttt{tsc/internal}). From the warm-up history, SSMQ extracts two complementary locality signals:
 \begin{itemize}
-    \item \textbf{Historical Co-Change Neighborhood} $\mathcal{N}_{\text{cochange}}(f)$: All files co-modified with $f$ in prior warm-up PRs (filtering bulk mechanical commits touching $>25$ files to avoid spurious cliques).
-    \item \textbf{Structural Module Neighborhood} $\mathcal{N}_{\text{mod}}(\mu(f))$: All files sharing the same two-level directory module $\mu(f)$.
+    \item \textbf{Historical Co-Change Neighborhood} $\mathcal{N}_{\text{cochange}}(f)$: All files co-modified alongside $f$ within prior warm-up PRs, excluding bulk mechanical commits touching more than $25$ files so formatting sweeps do not create dense spurious cliques.
+    \item \textbf{Structural Module Neighborhood} $\mathcal{N}_{\text{mod}}(\mu(f))$: All known files residing under the same two-level directory module $\mu(f)$.
 \end{itemize}
-The observed 1-hop \emph{impact cone} of PR $p$ is then:
+The observed 1-hop \emph{impact cone} of PR $p$ is the union of its direct edits and both neighborhoods:
 \begin{equation}
 C(p) = F(p) \cup \bigcup_{f \in F(p)} \Big(\mathcal{N}_{\text{cochange}}(f) \cup \mathcal{N}_{\text{mod}}(\mu(f))\Big).
 \label{eq:cone}
 \end{equation}
-Each PR also receives a normalized defect-risk score $r(p) \in [0, 1]$ calibrated exclusively from warm-up maxima:
+SSMQ also assigns each incoming PR a normalized defect-risk score $r(p) \in [0, 1]$ calibrated solely against warm-up maxima:
 \begin{equation}
 r(p) = 0.45\,\tilde{\ell}(p) + 0.30\,\tilde{f}(p) + 0.25\,\tilde{c}(p),
 \label{eq:risk}
 \end{equation}
-where $\tilde{\ell}(p)$ is log-scaled LOC churn ($\log(1+\text{add}+\text{del})$), $\tilde{f}(p)$ is normalized modified-file count, and $\tilde{c}(p)$ is maximum warm-up degree centrality across $F(p)$. Importantly, SSMQ never assumes $\hat{G}$ is complete: unseen off-graph couplings outside $C(p)$ are caught safely by CI execution and causal blame recovery.
+where $\tilde{\ell}(p)$ is log-scaled line churn ($\log(1+\text{add}+\text{del})$), $\tilde{f}(p)$ is normalized modified-file count, and $\tilde{c}(p)$ is the maximum warm-up co-change degree centrality over $F(p)$. By design, SSMQ treats $\hat{G}$ as an imperfect heuristic rather than a complete oracle: latent off-graph couplings outside $C(p)$ cannot violate correctness because every batch still undergoes full CI verification and deterministic fault isolation.
 
 \subsection{Graph-Disjoint Risk-Stratified Multi-Lane Packing}
-Algorithm~\ref{alg:packing} details SSMQ's batch formation policy whenever one of the $W$ CI workers becomes idle and the ready queue $Q$ is non-empty. To guarantee progress and prevent starvation, SSMQ \emph{always} anchors the new batch on the queue head $p_h = Q[0]$. If $p_h$ has elevated defect risk ($r(p_h) \ge \theta_{\text{risk}} = 0.55$) or was previously deferred due to an impact-cone collision ($p_h \in \mathcal{P}$), SSMQ opens a \textbf{Protected Lane} batch capped at size $K_{\text{prot}} = 2$. Otherwise, it opens a \textbf{Fast Lane} batch capped at $K_{\max} = 8$, greedily scanning queued PRs of the same lane class and admitting $p_j$ only if its impact cone is strictly disjoint from the union cone of the batch ($C(p_j) \cap U = \emptyset$). Every PR skipped because of cone overlap is immediately inserted into the protected promotion set $\mathcal{P}$, ensuring it cannot be repeatedly bypassed when it reaches the queue head.
+Algorithm~\ref{alg:packing} specifies SSMQ's batch construction policy whenever any of the $W$ CI workers becomes idle while the ready queue $Q$ is non-empty. To guarantee forward progress and prevent indefinite overtaking, SSMQ unconditionally anchors each new batch at the queue head $p_h = Q[0]$. Whenever $p_h$ carries elevated intrinsic risk ($r(p_h) \ge \theta_{\text{risk}} = 0.55$) or was previously bypassed due to an impact-cone collision ($p_h \in \mathcal{P}$), SSMQ opens a \textbf{Protected Lane} batch bounded at size $K_{\text{prot}} = 2$. Otherwise, it opens a \textbf{Fast Lane} batch bounded at $K_{\max} = 8$, scanning subsequent PRs of the matching lane class in arrival order and admitting $p_j$ only when its impact cone is disjoint from the accumulated batch cone ($C(p_j) \cap U = \emptyset$). Any candidate skipped due to cone overlap is immediately recorded in the promotion set $\mathcal{P}$, ensuring bounded wait once it advances to the head of $Q$.
 
 \begin{algorithm}[t]
 \caption{Graph-Disjoint Risk-Stratified Batch Packing}
@@ -54,25 +54,25 @@ Algorithm~\ref{alg:packing} details SSMQ's batch formation policy whenever one o
 \end{algorithm}
 
 \subsection{Two-Regime Beta-Binomial Flaky Gating and Cumulative Safety}
-Unconditional batch retries waste runners on deterministic bugs, whereas zero retries cause innocent PRs to be falsely rejected whenever a transient flake strikes a singleton verification. SSMQ models test-suite flakiness online via a conjugate $\mathrm{Beta}(\alpha, \beta)$ posterior initialized to a weakly informative prior $(\alpha_0 = 1, \beta_0 = 19)$ (prior mean $5\%$). Every passing verification increments $\beta$ by 1; any prior failures on that same job are confirmed transient and increment $\alpha$.
+Retrying every failed batch indiscriminately wastes runner hours on deterministic regressions, whereas omitting retries causes clean PRs to suffer false rejection whenever a transient flake hits an isolated singleton run. SSMQ estimates suite flakiness online through a conjugate $\mathrm{Beta}(\alpha, \beta)$ posterior initialized to a weakly informative prior $(\alpha_0 = 1, \beta_0 = 19)$ (prior mean $5\%$). Each passing CI run increments $\beta$ by $1$, while any preceding failed attempts on that same job are confirmed transient and increment $\alpha$.
 
-When a job $B$ fails on consecutive attempt $m \in \{1, 2\}$, the Beta-Binomial predictive probability of observing $m$ consecutive transient flakes is:
+When job $B$ fails on consecutive attempt $m \in \{1, 2\}$, the Beta-Binomial predictive probability of encountering $m$ consecutive transient flakes is:
 \begin{equation}
 P_{\text{flake}}(m \mid \alpha, \beta) = \prod_{k=0}^{m-1} \frac{\alpha + k}{\alpha + \beta + k}.
 \label{eq:betabinom}
 \end{equation}
-Combining $P_{\text{flake}}$ with the batch's prior deterministic failure risk $\hat{q}(B) = 1 - \prod_{i \in B}(1 - \hat{q}_i) \prod_{(i,j)\in \hat{E}(B)}(1 - \hat{p}_c)$, Bayes' rule yields the posterior probability that the failure is transient:
+Combining $P_{\text{flake}}$ with the batch's prior deterministic failure probability $\hat{q}(B) = 1 - \prod_{i \in B}(1 - \hat{q}_i) \prod_{(i,j)\in \hat{E}(B)}(1 - \hat{p}_c)$ via Bayes' rule yields the posterior probability that the observed failure is transient:
 \begin{equation}
 P(\text{transient} \mid \text{fail}_m) = \frac{(1 - \hat{q}(B))\, P_{\text{flake}}(m \mid \alpha, \beta)}{\hat{q}(B) + (1 - \hat{q}(B))\, P_{\text{flake}}(m \mid \alpha, \beta)}.
 \label{eq:posterior}
 \end{equation}
-Crucially, SSMQ enforces a \textbf{two-regime decision threshold} (Algorithm~\ref{alg:flaky}):
+Because the cost of misclassifying a flake differs sharply between singletons and multi-PR batches, SSMQ enforces an asymmetric \textbf{two-regime decision threshold} (Algorithm~\ref{alg:flaky}):
 \begin{itemize}
-    \item \textbf{Singleton Guard ($|B|=1$, $\tau_1 = 0.25$)}: Because failing a singleton causes irreversible PR rejection, SSMQ retries aggressively whenever $P(\text{transient} \mid \text{fail}_m) \ge 0.25$ (up to $m \le 2$).
-    \item \textbf{Batch Guard ($|B|>1$, $\tau_B = 0.50$)}: Because a multi-PR failure can be decomposed without rejecting innocent PRs, SSMQ avoids wasteful full-batch reruns unless posterior flakiness exceeds $50\%$.
+    \item \textbf{Singleton Guard ($|B|=1$, $\tau_1 = 0.25$)}: Rejecting a singleton permanently expels the PR from the queue; SSMQ therefore retries singletons whenever $P(\text{transient} \mid \text{fail}_m) \ge 0.25$ (up to $m \le 2$).
+    \item \textbf{Batch Guard ($|B|>1$, $\tau_B = 0.50$)}: Splitting a multi-PR batch preserves every clean member without immediate rejection; SSMQ therefore suppresses full-batch reruns unless posterior flakiness reaches at least $50\%$.
 \end{itemize}
 
-Algorithm~\ref{alg:flaky} also enforces \emph{cumulative mainline verification}: if a concurrent job merged into mainline $M$ while job $J$ was executing and introduced a persistent conflict against $J.B$ relative to $J$'s base snapshot $M_0$, SSMQ invalidates the stale pass and re-dispatches $J$ on the updated mainline before committing.
+Algorithm~\ref{alg:flaky} simultaneously enforces \emph{cumulative mainline verification}: if concurrent commits landed on mainline $M$ while job $J$ was executing and introduced a persistent semantic conflict with $J.B$ relative to $J$'s base snapshot $M_0$, SSMQ invalidates the stale pass and re-queues $J$ atop $M$ prior to commit.
 
 \begin{algorithm}[t]
 \caption{Cumulative Verification \& Two-Regime Flaky Gate}
@@ -102,12 +102,12 @@ Algorithm~\ref{alg:flaky} also enforces \emph{cumulative mainline verification}:
 \end{algorithm}
 
 \subsection{Fail-Safe 1-Step AST/Traceback Causal Blame}
-When a multi-PR batch $B$ fails deterministically, blind binary bisection requires $\lceil \log_2 |B| \rceil$ sequential CI rounds. Instead, SSMQ invokes \texttt{ASTStackCausalRanker} (Algorithm~\ref{alg:blame}), a pure static-analysis ranker requiring zero LLM inference. It parses failing stack frames and test identifiers from the CI traceback, builds a 1-hop AST call graph over repository functions, and scores each PR $p \in B$ by whether its \emph{AST-modified functions} (filtering out comment-, docstring-, and whitespace-only diffs that produce identical normalized ASTs) intersect the failing execution cone.
+Once a multi-PR batch $B$ is classified as deterministically failing, blind binary bisection requires $\lceil \log_2 |B| \rceil$ sequential CI rounds. SSMQ bypasses blind halving via \texttt{ASTStackCausalRanker} (Algorithm~\ref{alg:blame}), a deterministic static-analysis ranker with zero LLM dependencies. The ranker extracts stack-frame file paths, function symbols, and failing test identifiers from the CI traceback, expands a 1-hop static AST call graph from each failing test, and scores every candidate PR $p \in B$ by intersecting its \emph{AST-modified function definitions}---filtering out comment, docstring, and formatting diffs whose normalized ASTs remain unchanged---against the failing execution cone.
 
-SSMQ then dispatches two concurrent jobs: the innocent remainder $B \setminus \{s_1\}$ (with \texttt{allow\_blame=False} and $s_2$ stored as priority hint) and the Top-1 suspect $\{s_1\}$ in isolation. Two outcomes follow naturally:
+SSMQ then schedules two parallel verification jobs: the clean candidate remainder $B \setminus \{s_1\}$ (with \texttt{allow\_blame=False} and runner-up suspect $s_2$ retained as a bisection priority hint) alongside isolated suspect $\{s_1\}$:
 \begin{itemize}
-    \item \textbf{Single-Culprit Hit}: $B \setminus \{s_1\}$ passes in \textbf{1 recovery round} and merges immediately. If $\{s_1\}$ fails alone, it is rejected (after singleton flaky gating); if $\{s_1\}$ \emph{passes} alone (indicating a rebase-resolvable pairwise semantic conflict rather than an intrinsic bug), $\{s_1\}$ also merges safely!
-    \item \textbf{Misattribution or Multi-Culprit Fallback}: If $B \setminus \{s_1\}$ still fails, SSMQ falls back deterministically to binary bisection on $B \setminus \{s_1\}$, scheduling the half containing $s_2$ first. Thus causal blame is strictly \emph{fail-safe}: even an imperfect ranker cannot break mainline safety or trap the queue.
+    \item \textbf{Single-Culprit Hit}: $B \setminus \{s_1\}$ passes in \textbf{1 recovery round} and commits immediately. Concurrently, if $\{s_1\}$ fails in isolation, it is rejected (subject to singleton flaky gating); if $\{s_1\}$ \emph{passes} alone atop the updated mainline---indicating a rebase-resolvable intra-batch conflict rather than an intrinsic defect---$\{s_1\}$ merges cleanly without developer intervention.
+    \item \textbf{Misattribution or Multi-Culprit Fallback}: If $B \setminus \{s_1\}$ still fails, SSMQ transitions deterministically to binary bisection over $B \setminus \{s_1\}$, testing the half containing $s_2$ first. Causal attribution is therefore strictly \emph{fail-safe}: ranking errors can never admit a broken PR or stall progress in an unbounded loop.
 \end{itemize}
 
 \begin{algorithm}[t]
@@ -132,32 +132,35 @@ SSMQ then dispatches two concurrent jobs: the innocent remainder $B \setminus \{
 \end{algorithm}
 
 \subsection{Formal Properties and Complexity Analysis}
-We establish three analytical properties characterizing SSMQ's safety, liveness, and recovery complexity.
+Three analytical properties govern SSMQ's safety, liveness, and recovery depth.
 
 \begin{proposition}[Cumulative Mainline Safety]
 \label{prop:safety}
-Under deterministic defect/conflict oracle $G^*$ and Algorithm~\ref{alg:flaky}, no defective PR and no PR carrying a persistent conflict against prior merged commits can land on mainline $M$ (zero cumulative escapes).
+Under deterministic defect and conflict oracle $G^*$ and Algorithm~\ref{alg:flaky}, neither an individually defective PR nor a PR exhibiting a persistent conflict against previously merged commits can commit to mainline $M$ (zero cumulative escapes).
 \end{proposition}
 \begin{proof}[Proof Sketch]
-Every commit operation $M \leftarrow M \cup J.B$ requires (i) $R.\text{pass}=\text{True}$ on snapshot $M_0 \subseteq M$, implying $J.B$ contains zero individually defective PRs and zero intra-batch or $M_0$-persistent culprits, and (ii) $\neg\text{HasPersistentConflict}(J.B, M \setminus M_0)$, verifying that no concurrent merge committed during $[t_{\text{start}}, t_{\text{end}}]$ introduced a persistent conflict with $J.B$. By induction over commit steps, mainline $M$ remains defect- and conflict-free after every merge.
+Every commit transition $M \leftarrow M \cup J.B$ requires (i) $R.\text{pass}=\text{True}$ against base snapshot $M_0 \subseteq M$, guaranteeing that $J.B$ contains zero intrinsically defective PRs and zero intra-batch or $M_0$-persistent conflicts, and (ii) $\neg\text{HasPersistentConflict}(J.B, M \setminus M_0)$, ensuring that no concurrent commit merged during $J$'s execution window introduced a persistent conflict against $J.B$. By induction on mainline commit steps, $M$ remains free of defects and persistent conflicts.
 \end{proof}
 
 \begin{proposition}[Starvation Freedom via Protected Promotion]
 \label{prop:liveness}
-Suppose $N$ PRs precede PR $p$ in $Q$ at arrival. Under Algorithm~\ref{alg:packing}, $p$ is dispatched within at most $N$ batch dispatches and cannot be indefinitely overtaken by later-arriving disjoint PRs.
+If $N$ PRs precede PR $p$ in ready queue $Q$ upon $p$'s arrival, Algorithm~\ref{alg:packing} dispatches $p$ within at most $N + 1$ batch formations (after at most $N$ preceding dispatches), preventing indefinite overtaking by later-arriving disjoint PRs.
 \end{proposition}
 \begin{proof}[Proof Sketch]
-Every batch dispatch strictly removes the queue head $Q[0]$ (line 1 of Algorithm~\ref{alg:packing}) alongside zero or more later PRs, preserving relative FIFO order among all remaining PRs in $Q'$. Because $|Q|$ ahead of $p$ decreases by at least 1 on every dispatch, $p$ reaches index $0$ in at most $N$ dispatches. Once at index $0$, $p$ is unconditionally included in the next dispatched batch (in the protected lane if previously deferred or high-risk), guaranteeing bounded wait.
+Each invocation of Algorithm~\ref{alg:packing} unconditionally extracts $Q[0]$ (line~1) together with zero or more subsequent PRs while preserving relative arrival order among all remaining entries in $Q'$. Consequently, the number of queued PRs ahead of $p$ decreases by at least $1$ per dispatch, bringing $p$ to $Q[0]$ in at most $N$ dispatches. Once $p = Q[0]$, the next dispatch unconditionally includes $p$ (routing it to the protected lane if $p \in \mathcal{P}$ or $r(p) \ge \theta_{\text{risk}}$), establishing a strict dispatch bound.
 \end{proof}
 
 \begin{proposition}[Expected Recovery Rounds and Multi-Culprit Boundary]
 \label{prop:complexity}
-Let a failing batch $B$ of size $K \ge 4$ contain $c$ culprits and let $\alpha_1$ be the Top-1 attribution accuracy of Algorithm~\ref{alg:blame}. When $c=1$, expected recovery depth to isolate the clean remainder is:
+Consider a failing batch $B$ of size $K \ge 4$ containing $c \ge 1$ culprits, and let $\alpha_1$ denote the Top-1 attribution accuracy of Algorithm~\ref{alg:blame}. When $c=1$, the expected recovery depth to clear the clean remainder is bounded by:
 \begin{equation}
 \mathbb{E}[R_{\text{SSMQ}} \mid c=1] \le \alpha_1 \cdot 1 + (1 - \alpha_1)\big(1 + \lceil \log_2(K-1) \rceil\big),
 \label{eq:blame_rounds}
 \end{equation}
-strictly improving over binary bisection's $\lceil \log_2 K \rceil$ rounds whenever $\alpha_1 > 1 / \lceil \log_2 K \rceil$ (e.g., $\alpha_1 > 0.33$ for $K=8$). However, when $c \ge 2$ simultaneous culprits occur inside $B$, single-suspect eviction leaves at least $c-1 \ge 1$ culprits in $B \setminus \{s_1\}$, so recovery deterministically falls back to bisection with depth $1 + \lceil \log_2(K-1) \rceil$.
+which strictly beats binary bisection's $\lceil \log_2 K \rceil$ rounds whenever $\alpha_1 > 1 / \lceil \log_2 K \rceil$ (e.g., $\alpha_1 > 0.33$ at $K=8$). Conversely, whenever $c \ge 2$ simultaneous culprits reside in $B$, evicting a single suspect $s_1$ leaves at least $c-1 \ge 1$ culprits inside $B \setminus \{s_1\}$, forcing deterministic fallback to bisection at depth $1 + \lceil \log_2(K-1) \rceil$.
 \end{proposition}
+\begin{proof}[Proof Sketch]
+For $c=1$, Top-1 eviction removes the sole culprit with probability $\alpha_1$, allowing $B \setminus \{s_1\}$ to pass in $1$ CI round; with probability $1 - \alpha_1$, $B \setminus \{s_1\}$ retains the culprit and requires at most $\lceil \log_2(K-1) \rceil$ binary bisection rounds after the failed 1-step split, yielding Eq.~\eqref{eq:blame_rounds}. Setting $\alpha_1 + (1-\alpha_1)(1 + \lceil \log_2(K-1) \rceil) < \lceil \log_2 K \rceil$ and noting $\lceil \log_2(K-1) \rceil \le \lceil \log_2 K \rceil$ gives the sufficient threshold $\alpha_1 > 1/\lceil \log_2 K \rceil$. When $c \ge 2$, $|B \setminus \{s_1\}|$ necessarily contains $\ge c-1 \ge 1$ culprits even when $s_1$ is a true culprit, so $B \setminus \{s_1\}$ fails with certainty and invokes bisection.
+\end{proof}
 
-Proposition~\ref{prop:complexity} yields a sharp, testable empirical prediction that we validate directly in Section~\ref{sec:results} (RQ5): 1-step causal blame provides its strongest end-to-end gain in moderate failure regimes where failing batches typically contain a single culprit, while saturating at extreme defect densities and large batch caps where multi-culprit batches dominate.
+Proposition~\ref{prop:complexity} yields a falsifiable regime prediction that we test directly in Section~\ref{sec:results} (RQ5): 1-step causal blame achieves its largest latency gains in moderate-defect workloads dominated by single-culprit failures, whereas its marginal benefit over bisection vanishes under high defect densities and wide batches where multi-culprit failures predominate.

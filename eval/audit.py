@@ -310,7 +310,6 @@ def emit_pgfplots_figures(
         "\\begin{groupplot}[",
         "  group style={group size=2 by 1, horizontal sep=1.4cm},",
         "  width=0.47\\textwidth, height=4.8cm,",
-        "  ybar=2pt, bar width=7.5pt,",
         "  symbolic x coords={Kubernetes,TypeScript,Next.js},",
         "  xtick=data, ymin=0,",
         "  ymajorgrids=true, grid style={dashed,gray!35},",
@@ -321,7 +320,7 @@ def emit_pgfplots_figures(
         "  error bars/y dir=both, error bars/y explicit,",
         "  error bars/error bar style={line width=0.6pt, black!75},",
         "]",
-        "\\nextgroupplot[title={(a) P95 Merge Latency (min) $\\downarrow$}, ylabel={P95 Latency (min)}, ymax=470,",
+        "\\nextgroupplot[ybar=2pt, /pgf/bar width=7.5pt, title={(a) P95 Merge Latency (min) $\\downarrow$}, ylabel={P95 Latency (min)}, ymax=470,",
         "  legend to name=legPerRepo, legend columns=4, legend style={font=\\footnotesize, draw=none, /tikz/every even column/.style={column sep=8pt}}]",
     ]
     for skey, slbl, scol in strats_f3:
@@ -330,7 +329,7 @@ def emit_pgfplots_figures(
         )
         f3_lines.append(f"\\addlegendentry{{{slbl}}}")
     f3_lines += [
-        "\\nextgroupplot[title={(b) CI Compute Cost (runner-min/PR) $\\downarrow$}, ylabel={Runner-min / Merged PR}, ymax=60]",
+        "\\nextgroupplot[ybar=2pt, /pgf/bar width=7.5pt, title={(b) CI Compute Cost (runner-min/PR) $\\downarrow$}, ylabel={Runner-min / Merged PR}, ymax=60]",
     ]
     for skey, _, scol in strats_f3:
         f3_lines.append(
@@ -524,7 +523,7 @@ def emit_pgfplots_figures(
         "  title style={font=\\footnotesize\\bfseries},",
         "]",
         "\\nextgroupplot[title={(a) Real Python Blame Benchmark (64 Batches)},",
-        "  ybar=2pt, bar width=10pt, ymin=0, ymax=112,",
+        "  ybar=2pt, /pgf/bar width=10pt, ymin=0, ymax=112,",
         "  symbolic x coords={Random,Churn,FileOverlap,ASTStack},",
         "  xtick=data, ylabel={Accuracy (\\%) $\\uparrow$}, enlarge x limits=0.22,",
         "  legend style={at={(0.03,0.97)}, anchor=north west, font=\\scriptsize, draw=gray!40}]",
@@ -539,7 +538,7 @@ def emit_pgfplots_figures(
         f"(FileOverlap,{blame_bench['file_overlap_top2_acc']*100:.1f}) "
         f"(ASTStack,{blame_bench['ast_stack_top2_acc']*100:.1f}) }}; \\addlegendentry{{Top-2 Acc.}}",
         "\\nextgroupplot[title={(b) Failure-Density Regime: Blame vs.\\ Bisection},",
-        "  ybar=2pt, bar width=8pt, ymin=0, ymax=210,",
+        "  ybar=2pt, /pgf/bar width=8pt, ymin=0, ymax=210,",
         "  symbolic x coords={8\\%/K8,15\\%/K8,22\\%/K12,40\\%Rec},",
         "  xtick=data, ylabel={P95 Latency (min) $\\downarrow$}, enlarge x limits=0.20,",
         "  legend style={at={(0.03,0.97)}, anchor=north west, font=\\scriptsize, draw=gray!40}]",

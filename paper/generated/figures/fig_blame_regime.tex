@@ -11,14 +11,14 @@
   title style={font=\footnotesize\bfseries},
 ]
 \nextgroupplot[title={(a) Real Python Blame Benchmark (64 Batches)},
-  ybar=2pt, bar width=10pt, ymin=0, ymax=112,
+  ybar=2pt, /pgf/bar width=10pt, ymin=0, ymax=112,
   symbolic x coords={Random,Churn,FileOverlap,ASTStack},
   xtick=data, ylabel={Accuracy (\%) $\uparrow$}, enlarge x limits=0.22,
   legend style={at={(0.03,0.97)}, anchor=north west, font=\scriptsize, draw=gray!40}]
 \addplot[fill=ssmqBlue!80, draw=ssmqBlue!90!black] coordinates { (Random,26.6) (Churn,0.0) (FileOverlap,68.8) (ASTStack,93.8) }; \addlegendentry{Top-1 Acc.}
 \addplot[fill=ssmqTeal!70, draw=ssmqTeal!90!black] coordinates { (Random,48.4) (Churn,9.4) (FileOverlap,100.0) (ASTStack,100.0) }; \addlegendentry{Top-2 Acc.}
 \nextgroupplot[title={(b) Failure-Density Regime: Blame vs.\ Bisection},
-  ybar=2pt, bar width=8pt, ymin=0, ymax=210,
+  ybar=2pt, /pgf/bar width=8pt, ymin=0, ymax=210,
   symbolic x coords={8\%/K8,15\%/K8,22\%/K12,40\%Rec},
   xtick=data, ylabel={P95 Latency (min) $\downarrow$}, enlarge x limits=0.20,
   legend style={at={(0.03,0.97)}, anchor=north west, font=\scriptsize, draw=gray!40}]

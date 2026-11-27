@@ -5,7 +5,6 @@
 \begin{groupplot}[
   group style={group size=2 by 1, horizontal sep=1.4cm},
   width=0.47\textwidth, height=4.8cm,
-  ybar=2pt, bar width=7.5pt,
   symbolic x coords={Kubernetes,TypeScript,Next.js},
   xtick=data, ymin=0,
   ymajorgrids=true, grid style={dashed,gray!35},
@@ -16,7 +15,7 @@
   error bars/y dir=both, error bars/y explicit,
   error bars/error bar style={line width=0.6pt, black!75},
 ]
-\nextgroupplot[title={(a) P95 Merge Latency (min) $\downarrow$}, ylabel={P95 Latency (min)}, ymax=470,
+\nextgroupplot[ybar=2pt, /pgf/bar width=7.5pt, title={(a) P95 Merge Latency (min) $\downarrow$}, ylabel={P95 Latency (min)}, ymax=470,
   legend to name=legPerRepo, legend columns=4, legend style={font=\footnotesize, draw=none, /tikz/every even column/.style={column sep=8pt}}]
 \addplot[fill=ssmqGray!80, draw=ssmqGray!90!black] coordinates { (Kubernetes,92.70) +- (4.74,4.18) (TypeScript,167.20) +- (6.36,6.83) (Next.js,105.76) +- (6.93,6.97) };
 \addlegendentry{StaticBatch}
@@ -26,7 +25,7 @@
 \addlegendentry{FlakeBatch}
 \addplot[fill=ssmqBlue!80, draw=ssmqBlue!90!black] coordinates { (Kubernetes,63.92) +- (4.82,4.64) (TypeScript,103.63) +- (8.10,8.54) (Next.js,70.86) +- (6.42,7.17) };
 \addlegendentry{SSMQ (Ours)}
-\nextgroupplot[title={(b) CI Compute Cost (runner-min/PR) $\downarrow$}, ylabel={Runner-min / Merged PR}, ymax=60]
+\nextgroupplot[ybar=2pt, /pgf/bar width=7.5pt, title={(b) CI Compute Cost (runner-min/PR) $\downarrow$}, ylabel={Runner-min / Merged PR}, ymax=60]
 \addplot[fill=ssmqGray!80, draw=ssmqGray!90!black] coordinates { (Kubernetes,16.88) +- (0.51,0.47) (TypeScript,25.36) +- (0.83,0.86) (Next.js,17.09) +- (0.54,0.55) };
 \addplot[fill=ssmqOrange!80, draw=ssmqOrange!90!black] coordinates { (Kubernetes,40.50) +- (1.67,1.74) (TypeScript,51.00) +- (1.60,1.56) (Next.js,38.77) +- (1.59,1.79) };
 \addplot[fill=ssmqPurple!80, draw=ssmqPurple!90!black] coordinates { (Kubernetes,24.33) +- (0.86,0.88) (TypeScript,39.88) +- (1.48,1.40) (Next.js,25.56) +- (1.16,1.20) };
