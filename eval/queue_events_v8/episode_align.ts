@@ -69,7 +69,7 @@ export function buildEpisodes(nodes: TimelineNode[], weekStart: string, weekEnd:
           added_at: null,
           removed_at: ev.created_at,
           reason: ev.reason ?? null,
-          outcome_class: "right_censored_removed_without_added",
+          outcome_class: "left_censored_removed_without_added",
           in_observation_week: intervalOverlaps(null, ev.created_at, weekStart, weekEnd),
         });
         continue;
@@ -92,7 +92,7 @@ export function buildEpisodes(nodes: TimelineNode[], weekStart: string, weekEnd:
       added_at: openAdded.created_at,
       removed_at: null,
       reason: null,
-      outcome_class: "left_censored_episode_open",
+      outcome_class: "right_censored_episode_open",
       in_observation_week: intervalOverlaps(openAdded.created_at, null, weekStart, weekEnd),
     });
   }

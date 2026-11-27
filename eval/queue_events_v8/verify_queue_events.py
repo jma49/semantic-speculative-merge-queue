@@ -49,7 +49,7 @@ def _parse_ts(value: str) -> datetime:
 
 
 def verify_summary_against_raw(raw: dict, summary: dict) -> None:
-    require(summary.get("schema_version") == "1.1", "descriptive_summary schema_version must be 1.1")
+    require(summary.get("schema_version") == "1.2", "descriptive_summary schema_version must be 1.2")
     require(len(summary.get("observation_calendar_days_inclusive") or []) == EXPECTED["calendar_days"], "calendar days")
     require(
         digest(ROOT / "data/queue_events_v8/raw_records.json") == summary.get("raw_records_sha256"),

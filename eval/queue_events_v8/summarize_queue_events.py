@@ -24,7 +24,7 @@ from eval.queue_events_v8.raw_event_counts import (  # noqa: E402
 
 OBS_PATH = Path(__file__).resolve().parent / "field_observability.json"
 API_GAPS = Path(__file__).resolve().parent / "api_gaps.json"
-SUMMARY_SCHEMA_VERSION = "1.1"
+SUMMARY_SCHEMA_VERSION = "1.2"
 
 
 def _sha256_file(path: Path) -> str:

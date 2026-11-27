@@ -14,7 +14,7 @@ def main() -> None:
     summary = json.loads((ROOT / "data/queue_events_v8/descriptive_summary.json").read_text(encoding="utf-8"))
 
     lines = [
-        "v8 queue events — observation summary (schema 8.1)",
+        "v8 queue events — observation summary (schema 8.2)",
         "=" * 52,
         f"week: {summary['observation_week']['start']} .. {summary['observation_week']['end']}",
         f"calendar days (inclusive): {metrics.get('observation_calendar_days_inclusive')}",
@@ -23,7 +23,7 @@ def main() -> None:
         f"  PRs fetched (enumerated universe): {metrics['typescript_prs_fetched']}",
         f"  distinct PRs with enqueue in week: {metrics['typescript_distinct_prs_enqueue_in_week']}",
         f"  queue admissions (ADDED) in week: {metrics['typescript_queue_admissions_in_week']}",
-        f"  episodes overlapping observation week: {metrics['typescript_episodes_overlapping_week']}",
+        f"  PRs with an episode overlapping observation week: {metrics['typescript_prs_with_episode_overlapping_week']}",
         f"  removal reasons: {summary['repositories']['typescript'].get('removal_reason_histogram')}",
         f"  discordant merge_group heads:    {metrics['typescript_discordant_merge_group_heads']}",
         "",
@@ -31,7 +31,7 @@ def main() -> None:
         f"  PRs fetched: {metrics['cargo_prs_fetched']}",
         f"  distinct PRs with enqueue in week: {metrics['cargo_distinct_prs_enqueue_in_week']}",
         f"  queue admissions (ADDED) in week: {metrics['cargo_queue_admissions_in_week']}",
-        f"  episodes overlapping observation week: {metrics['cargo_episodes_overlapping_week']}",
+        f"  PRs with an episode overlapping observation week: {metrics['cargo_prs_with_episode_overlapping_week']}",
         f"  removal reasons: {summary['repositories']['cargo'].get('removal_reason_histogram')}",
         "",
         "combined",

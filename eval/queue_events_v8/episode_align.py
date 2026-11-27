@@ -76,7 +76,7 @@ def build_episodes(
 
     episodes: List[Dict[str, Any]] = []
     open_added: Optional[Dict[str, Any]] = None
-    right_censored = 0
+    left_censored = 0
     for ev in lifecycle:
         if ev["type"] == "AddedToMergeQueueEvent":
             if open_added is not None:
@@ -97,13 +97,13 @@ def build_episodes(
             open_added = ev
         elif ev["type"] == "RemovedFromMergeQueueEvent":
             if open_added is None:
-                right_censored += 1
+                left_censored += 1
                 episodes.append(
                     {
                         "added_at": None,
                         "removed_at": ev["created_at"],
                         "reason": ev.get("reason"),
-                        "outcome_class": "right_censored_removed_without_added",
+                        "outcome_class": "left_censored_removed_without_added",
                         "in_observation_week": interval_overlaps_observation_week(
                             None, ev["created_at"], week_start, week_end
                         ),
@@ -140,7 +140,7 @@ def build_episodes(
                 "added_at": open_added["created_at"],
                 "removed_at": None,
                 "reason": None,
-                "outcome_class": "left_censored_episode_open",
+                "outcome_class": "right_censored_episode_open",
                 "in_observation_week": interval_overlaps_observation_week(
                     open_added["created_at"], None, week_start, week_end
                 ),
@@ -168,7 +168,7 @@ def build_episodes(
         "episodes_in_observation_week": week_episodes,
         "episode_count": len(episodes),
         "episode_count_in_week": len(week_episodes),
-        "right_censored_removals": right_censored,
+        "left_censored_removals": left_censored,
         "close_events_in_week": len(closes),
         "reopen_events_in_week": len(reopens),
         "head_ref_oid_at_fetch": head_ref_oid_at_fetch,

@@ -14,8 +14,8 @@
     "merge_group_conclusion": "workflow run conclusion in observation week"
   },
   "censoring_labels": {
-    "left": "episode_open_at_timeline_end (left_censored_episode_open)",
-    "right": "removed_without_added_in_timeline (right_censored_removed_without_added)",
+    "left": "removed_without_added_in_timeline (left_censored_removed_without_added)",
+    "right": "episode_open_at_timeline_end (right_censored_episode_open)",
     "truncated_interval": "truncated_prior_enqueue_superseded"
   },
   "not_used_for_ground_truth": [

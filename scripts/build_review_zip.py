@@ -15,13 +15,13 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "eval"))
 from verify_v7 import RUNS, digest, member, read_json, require, verify_exports
 
-README = """# Semantic Speculative Merge Queues — review supplement (v7)
+README = """# Semantic Speculative Merge Queues — review supplement (v8)
 
 Unzip the archive and run the following commands from its root. The verification uses
 Python 3.9+ and its standard library and runs offline.
 
 ```sh
-python3 -B eval/verify_v7.py --verify-only
+python3 -B eval/verify_submission.py --verify-only
 python3 -B -W error -m unittest discover -s tests
 ```
 
@@ -99,7 +99,16 @@ def populate(stage):
                   "eval/sim_displays_v7.py", "eval/export_v7.py"})
     for pattern in ("data/traces/*.json", "src/ssmq/*.py", "tests/test_*.py"):
         names.update(p.relative_to(ROOT).as_posix() for p in ROOT.glob(pattern))
-    for run_id in RUNS:
+    names.update({"eval/verify_submission.py", "eval/__init__.py"})
+    for directory in ("eval/historical_ci", "eval/queue_events_v8", "eval/baselines_v8",
+                      "data/historical_ci", "data/queue_events_v8"):
+        names.update(p.relative_to(ROOT).as_posix() for p in (ROOT / directory).rglob("*")
+                     if p.is_file() and "__pycache__" not in p.parts)
+    additions = ("v8_historical_ci", "v8_queue_events", "v8_baselines")
+    for run_id in additions:
+        names.update(p.relative_to(ROOT).as_posix() for p in (ROOT / "runs" / run_id).iterdir()
+                     if p.is_file() and p.name != "manifest.json")
+    for run_id in (*RUNS, *additions):
         prefix = f"runs/{run_id}"
         manifest = read_json(member(ROOT, f"{prefix}/manifest.json"))
         names.update(manifest["input_sha256"])
@@ -142,7 +151,7 @@ def main():
         with ZipFile(archive) as bundle:
             require(bundle.testzip() is None, "corrupted review ZIP")
             bundle.extractall(extracted)
-        subprocess.run([sys.executable, "-B", "eval/verify_v7.py", "--verify-only"], cwd=extracted, check=True)
+        subprocess.run([sys.executable, "-B", "eval/verify_submission.py", "--verify-only"], cwd=extracted, check=True)
         os.replace(archive, output)
     print(f"{digest(output)}  {output}")
 

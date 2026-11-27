@@ -44,9 +44,9 @@ class QueueEventsV8Tests(unittest.TestCase):
             head_ref_oid_at_fetch="abc123",
         )
         classes = {e["outcome_class"] for e in out["episodes"]}
-        self.assertIn("right_censored_removed_without_added", classes)
+        self.assertIn("left_censored_removed_without_added", classes)
         self.assertIn("truncated_prior_enqueue_superseded", classes)
-        self.assertIn("left_censored_episode_open", classes)
+        self.assertIn("right_censored_episode_open", classes)
         self.assertEqual(out["comparable_hash_retry_status"], "unknown")
         self.assertIsNone(out["comparable_hash_retry_episodes"])
 
@@ -97,7 +97,7 @@ class QueueEventsV8Tests(unittest.TestCase):
         if not raw_path.is_file():
             self.skipTest("frozen raw_records not present")
         summary = json.loads((ROOT / "data/queue_events_v8/descriptive_summary.json").read_text(encoding="utf-8"))
-        self.assertEqual(summary["schema_version"], "1.1")
+        self.assertEqual(summary["schema_version"], "1.2")
         comb = summary["combined_repositories"]
         self.assertEqual(comb["distinct_prs_with_enqueue_in_week"], 83)
         self.assertEqual(comb["queue_admissions_in_week"], 100)

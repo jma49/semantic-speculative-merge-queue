@@ -86,17 +86,17 @@ def main() -> None:
     ledger = json.loads((data_dir / "historical_ci_selection_ledger.json").read_text(encoding="utf-8"))
 
     metrics = {
-        "schema_version": "8.1",
+        "schema_version": "8.2",
         "run_id": RUN_ID,
         "observation_calendar_days_inclusive": len(summary.get("observation_calendar_days_inclusive") or []),
         "typescript_prs_fetched": ts_repo.get("pull_requests_fetched"),
         "typescript_distinct_prs_enqueue_in_week": ts_raw.get("distinct_prs_with_enqueue_in_week"),
         "typescript_queue_admissions_in_week": ts_raw.get("added_to_merge_queue_in_week"),
-        "typescript_episodes_overlapping_week": ts_repo.get("pulls_with_episode_overlapping_observation_week"),
+        "typescript_prs_with_episode_overlapping_week": ts_repo.get("pulls_with_episode_overlapping_observation_week"),
         "cargo_prs_fetched": cargo_repo.get("pull_requests_fetched"),
         "cargo_distinct_prs_enqueue_in_week": cargo_raw.get("distinct_prs_with_enqueue_in_week"),
         "cargo_queue_admissions_in_week": cargo_raw.get("added_to_merge_queue_in_week"),
-        "cargo_episodes_overlapping_week": cargo_repo.get("pulls_with_episode_overlapping_observation_week"),
+        "cargo_prs_with_episode_overlapping_week": cargo_repo.get("pulls_with_episode_overlapping_observation_week"),
         "combined_distinct_prs_enqueue_in_week": (summary.get("combined_repositories") or {}).get(
             "distinct_prs_with_enqueue_in_week"
         ),
@@ -120,7 +120,7 @@ def main() -> None:
 
     git_commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
     manifest = {
-        "schema_version": "8.1",
+        "schema_version": "8.2",
         "run_id": RUN_ID,
         "experiment": RUN_ID,
         "git_commit": git_commit,

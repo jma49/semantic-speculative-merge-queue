@@ -1,0 +1,260 @@
+"""Primary-source specifications, disclosed deviations, and case-level coverage sheet (v8)."""
+
+from __future__ import annotations
+
+from typing import Any, Dict, List
+
+PROTOCOL_INVARIANTS: Dict[str, Any] = {
+    "commit_authority": (
+        "Strict exact-tree equality across every evaluated policy: a passing run may merge "
+        "iff tested_tree == merged_mainline | members (zero commit-time oracle, zero escaped defects)."
+    ),
+    "capacity": {
+        "workers": 8,
+        "max_batch_size": 8,
+        "max_spec_depth": 4,
+        "ci_duration_min": 12.0,
+        "ci_duration_std": 2.0,
+    },
+    "arrival_and_traces": (
+        "Frozen v7 chronological merge traces (kubernetes/kubernetes, microsoft/TypeScript, "
+        "vercel/next.js; 200 PRs each, 50 warm-up / 150 eval, zero omitted PRs, zero truncated files), "
+        "rescaled to 6 PRs/hr baseline then velocity-multiplied (5x=30 PRs/hr nominal; 15x=90 PRs/hr saturated)."
+    ),
+    "priors_and_leakage": (
+        "Decoupled fixed generic scheduler priors (q0=0.10, p_c=0.10, p_persist=0.02, Beta(1,19) flake prior) "
+        "and warm-up-only scales/graphs; zero access to ground-truth rates or evaluation labels."
+    ),
+    "uncertainty_protocol": (
+        "20 paired seeds (1001..1020) x 3 repos = 60 paired blocks per condition; "
+        "10,000 paired seed-block bootstrap resamples (Random(11629)) retaining equal repo weight "
+        "plus exact two-sided sign test."
+    ),
+    "no_product_speed_claims": (
+        "Every product-inspired baseline models documented public scheduling/failure semantics under "
+        "shared fixed-capacity exact-tree simulation; results are NOT benchmarks of commercial hosted "
+        "services (GitHub, Aviator, Trunk, Uber SubmitQueue, BMW internal CI)."
+    ),
+}
+
+INCLUDED_BASELINES: List[Dict[str, Any]] = [
+    {
+        "strategy": "SSMQ",
+        "display_name": "SSMQ (v7 full, unstacked)",
+        "category": "v7_control",
+        "primary_source": "SSMQ v7 (frozen src/ssmq/simulator.py, commit a0b108d)",
+        "mechanism": "Unstacked cone-disjoint packing (unfiltered warm-up co-change + 2-level dir cliques), risk lanes, Beta-Binomial adaptive retry, 1-step blame.",
+        "exact_tree_authority": True,
+        "failure_semantics": "Adaptive Beta-Binomial retry (<=2), then 1-step blame split, then bisection; stale-base passes re-queued.",
+        "disclosed_deviations": "None (delegates directly to frozen v7 src/ssmq/simulator.py; verified identical to runs/v7_sim_main).",
+    },
+    {
+        "strategy": "SSMQ-NoCone",
+        "display_name": "SSMQ-NoCone (v7 control)",
+        "category": "v7_control",
+        "primary_source": "SSMQ v7 (frozen src/ssmq/simulator.py)",
+        "mechanism": "Unstacked risk lanes (low-risk K<=8, high-risk K<=2), adaptive retry, 1-step blame; no cone exclusion.",
+        "exact_tree_authority": True,
+        "failure_semantics": "Same as SSMQ without cone exclusion.",
+        "disclosed_deviations": "None (delegates directly to frozen v7 src/ssmq/simulator.py).",
+    },
+    {
+        "strategy": "FIFOBatchRetry",
+        "display_name": "FIFO batch + retry (v7 control)",
+        "category": "v7_control",
+        "primary_source": "SSMQ v7 (frozen src/ssmq/simulator.py)",
+        "mechanism": "Unstacked FIFO batching (K<=8) with adaptive Beta-Binomial retry and bisection.",
+        "exact_tree_authority": True,
+        "failure_semantics": "Adaptive retry, then recursive bisection; stale-base passes re-queued.",
+        "disclosed_deviations": "None (delegates directly to frozen v7 src/ssmq/simulator.py).",
+    },
+    {
+        "strategy": "StaticBatchBisect",
+        "display_name": "FIFO batch + bisect (v7 control)",
+        "category": "v7_control",
+        "primary_source": "SSMQ v7 (frozen src/ssmq/simulator.py); multi-worker batch bisection control",
+        "mechanism": "Unstacked multi-worker (W=8) FIFO batching (K<=8) with recursive bisection and no retry.",
+        "exact_tree_authority": True,
+        "failure_semantics": "Recursive halving down to size 1; no retry; concurrent passes on stale mainlines re-queued.",
+        "disclosed_deviations": "None (delegates directly to frozen v7 src/ssmq/simulator.py); serves as multi-worker control for Beheshtian-BatchStop4 and Bors-BatchBisect.",
+    },
+    {
+        "strategy": "SpeculativeLinear",
+        "display_name": "Linear speculative train (v7 control)",
+        "category": "v7_control",
+        "primary_source": "Zuul Dependent Pipeline / GitLab Merge Trains abstraction (frozen src/ssmq/simulator.py)",
+        "mechanism": "Single-timeline linear speculative prefix train (depth D<=4), one PR per stage.",
+        "exact_tree_authority": True,
+        "failure_semantics": "Upstream failure cancels downstream stages and requeues; non-head prefix failures re-test isolated PR once before rejection.",
+        "disclosed_deviations": "Single-repository queue without Zuul cross-repository Depends-On graphs.",
+    },
+    {
+        "strategy": "FIFOOutcomeTree",
+        "display_name": "FIFO outcome tree (v7 control)",
+        "category": "v7_control",
+        "primary_source": "Uber SubmitQueue single-timeline abstraction (Ananthanarayanan et al., EuroSys 2019, DOI 10.1145/3302424.3303970)",
+        "mechanism": "Single-timeline speculative outcome tree branching on pass/fail up to depth D<=4 with decoupled priors and expected-throughput batch sizing.",
+        "exact_tree_authority": True,
+        "failure_semantics": "Pass advances to on_pass child (zero stale rechecks); fail discards on_pass and advances to bisected on_fail child.",
+        "disclosed_deviations": "Single-timeline exact-tree abstraction only; omits Uber's closed distributed target conflict analyzer and multi-lane execution.",
+    },
+    {
+        "strategy": "Beheshtian-BatchStop4",
+        "display_name": "Beheshtian BatchStop4 (TSE 2022)",
+        "category": "literature_baseline",
+        "primary_source": "Beheshtian, Bavand, & Rigby, 'Software Batch Testing to Save Build Test Resources and to Reduce Feedback Time', IEEE TSE 48(8):2784-2801, 2022 (DOI 10.1109/TSE.2021.3070269)",
+        "mechanism": "FIFO batching (K<=8) with the public BatchStop4 failure-isolation cutoff: bisect while |B|>4, stop bisecting when |B|<=4 and test remaining PRs individually.",
+        "exact_tree_authority": True,
+        "failure_semantics": "Failing batch of size 5..8 splits into two halves; failing batch of size 2..4 expands directly into singletons (no further halving); no retry; exact-tree stale rechecks under W=8.",
+        "disclosed_deviations": "Adapted from offline post-commit Travis CI build-stream batching (static commit stream without moving merge base) to pre-merge W=8 exact-tree queue with K_max=8.",
+    },
+    {
+        "strategy": "Bors-BatchBisect",
+        "display_name": "Historical Bors batch-bisect",
+        "category": "system_semantics_baseline",
+        "primary_source": "Historical bors-ng documentation and README (github.com/bors-ng/bors-ng; bors.tech archived docs, hosted service deprecated May 2023)",
+        "mechanism": "Single staging-branch FIFO batching (K<=8, 1 active staging batch at a time) with recursive depth-first bisection on failure.",
+        "exact_tree_authority": True,
+        "failure_semantics": "Only one staging commit runs against mainline at a time (zero stale rechecks); failing batch bisects left then right sequentially on staging; failing singleton is kicked out; no retry.",
+        "disclosed_deviations": "Models historical bors-ng single-staging-branch serialization inside the W=8 environment (inherently utilizes <=1 runner slot at a time); explicitly distinct from active rust-lang/bors manual/auto rollups.",
+    },
+    {
+        "strategy": "GitHubMQ-StagedGroup",
+        "display_name": "GitHub MQ staged-group (ALLGREEN)",
+        "category": "system_semantics_baseline",
+        "primary_source": "GitHub Docs, 'Managing a merge queue' (ALLGREEN grouping_strategy, gh-readonly-queue cumulative merge_group branches, max_entries_to_build)",
+        "mechanism": "Single-timeline cumulative staged merge groups (main+P1, main+P1+P2, ...) up to max_entries_to_build = min(W, D) = 4.",
+        "exact_tree_authority": True,
+        "failure_semantics": "No bisection and no automatic retry: when head staged entry fails, that PR is evicted immediately and all downstream staged merge groups are destroyed/canceled and rebuilt atop mainline.",
+        "disclosed_deviations": "Models ALLGREEN per-entry cumulative builds with cancel-in-progress=true and fixed max_entries_to_build=4 (matching max_spec_depth); abstracts away GitHub hosted runner elasticity, non-canceled orphaned runs, and HEADGREEN multi-PR masking.",
+    },
+    {
+        "strategy": "PRediBatch-RiskGroup",
+        "display_name": "PRediBatch-inspired risk grouping",
+        "category": "literature_inspired_baseline",
+        "primary_source": "Jungwirth, Gruber, & Fraser, 'Predictive Pull Request Batching to Accelerate Merge Pipelines in Continuous Integration at Scale', IEEE ICST 2026 Industry Track, pp. 659-670 (DOI 10.1109/icst69053.2026.00087)",
+        "mechanism": "Single-timeline exact-tree speculative merge pipeline (depth D<=4) grouping low-risk PRs (risk_score < 0.55) in ascending predicted risk order under a survival budget (>=0.55, K<=8) while isolating high-risk PRs as singletons.",
+        "exact_tree_authority": True,
+        "failure_semantics": "Head pass merges batch with zero stale rechecks; head fail cancels downstream speculative stages, rejects singletons or bisects failing multi-PR batches at the head of the timeline; no retry.",
+        "disclosed_deviations": "Explicitly scoped as PRediBatch-inspired: BMW's internal pipeline dataset, proprietary feature set, and trained ML classifier are closed/unavailable, and v7 traces lack historical CI pass/fail labels. Substitutes v7's leak-free warm-up metadata risk score and fixed generic prior (q0=0.10).",
+    },
+    {
+        "strategy": "Aviator-DirAffected",
+        "display_name": "Aviator-inspired dir targets (exact-tree)",
+        "category": "system_semantics_baseline",
+        "primary_source": "Aviator MergeQueue 'Affected Targets' documentation (docs.aviator.co, non-Bazel directory-rule mode with Parallel Mode)",
+        "mechanism": "Maps each PR directly to its 2-level directory targets (no warm-up co-change expansion) and routes target-disjoint PRs to parallel linear speculative lanes (depth D<=4 per lane) with bridge-PR barriers.",
+        "exact_tree_authority": True,
+        "failure_semantics": "Held to equal strict exact-tree commit authority: cross-lane merges advance mainline and invalidate stale passing runs in other lanes (triggering stale rechecks and canceling that lane's speculative suffix); head failure evicts PR and cancels lane suffix.",
+        "disclosed_deviations": "Uses 2-level directory prefixes (no Bazel build graph) and intentionally enforces strict global exact-tree commit authority rather than Aviator's production trust-target-isolation mode (which would relax exact-tree equality and risk cross-directory defect escapes).",
+    },
+    {
+        "strategy": "SSMQ-FilteredCone",
+        "display_name": "SSMQ filtered-cone diagnostic",
+        "category": "diagnostic",
+        "primary_source": "Batch 2 mechanism diagnostic addressing SSMQ v7 Sec. VII ('Cone explosion')",
+        "mechanism": "Identical to SSMQ (unstacked cone-disjoint packing, risk lanes, adaptive retry, blame) except warm-up co-change graph drops mega-PRs (>20 files) and omits 2-level directory cliques.",
+        "exact_tree_authority": True,
+        "failure_semantics": "Identical to SSMQ; isolates mega-PR/directory-clique cone explosion from unstacked stale-base invalidation.",
+        "disclosed_deviations": "Diagnostic ablation strictly constructed from warm-up PRs (zero evaluation leakage); paired against identical v7 GroundTruth.",
+    },
+]
+
+OMITTED_BASELINES: List[Dict[str, Any]] = [
+    {
+        "baseline": "Original PRediBatch trained ML classifier (BMW internal model)",
+        "primary_source": "Jungwirth, Gruber, & Fraser, IEEE ICST 2026 (DOI 10.1109/icst69053.2026.00087)",
+        "status": "omitted_exact_replaced_by_scoped_variant",
+        "replacement_in_v8": "PRediBatch-RiskGroup",
+        "reason_for_omission": (
+            "BMW's industrial merge-pipeline dataset, internal feature schema, and trained ML model are "
+            "proprietary and unavailable publicly. Moreover, the frozen v7 public traces contain merged PR "
+            "metadata without historical CI pass/fail outcome labels required to train a supervised classifier."
+        ),
+        "what_would_be_needed": "Multi-hundred-PR historical CI pass/fail labels per repository with leak-free chronological warm-up training.",
+    },
+    {
+        "baseline": "Production Aviator / Trunk Affected Targets (trust-target-isolation / Bazel mode)",
+        "primary_source": "Aviator MergeQueue Affected Targets docs (docs.aviator.co); Trunk Merge Queue impacted targets docs",
+        "status": "omitted_non_exact_tree_variant",
+        "replacement_in_v8": "Aviator-DirAffected (strict exact-tree)",
+        "reason_for_omission": (
+            "Production trust-target-isolation merges disjoint-target lanes without cross-lane exact-tree "
+            "re-verification. Granting that relaxation breaks equal exact tested-state commit authority and "
+            "would permit cross-directory persistent conflicts to escape onto mainline unless a sound build "
+            "dependency graph (e.g., Bazel/Buck target graph) is available, which frozen non-Bazel public traces lack."
+        ),
+        "what_would_be_needed": "Sound build-system dependency graph and explicit escape-rate vs latency trade-off protocol outside exact-tree equality.",
+    },
+    {
+        "baseline": "Production Uber SubmitQueue (multi-lane conflict-graph outcome trees / PerPRDAGRetry)",
+        "primary_source": "Ananthanarayanan et al., EuroSys 2019 (DOI 10.1145/3302424.3303970)",
+        "status": "omitted_multi_lane_non_exact_tree",
+        "replacement_in_v8": "FIFOOutcomeTree (single-timeline exact-tree)",
+        "reason_for_omission": (
+            "As established in v7 Sec. IV and VI, independent multi-lane outcome trees and partial-ancestor "
+            "DAGs omit concurrent non-overlapping commits from their tested base, so they cannot commit "
+            "independently under strict exact-tree authority without either an unrealizable commit-time oracle "
+            "or cross-lane invalidation; Uber's closed target-level conflict analyzer is also unavailable."
+        ),
+        "what_would_be_needed": "Sound target-level isolation oracle or explicit non-exact-tree relaxation.",
+    },
+    {
+        "baseline": "Active rust-lang/bors (Homu successor with human/auto rollups)",
+        "primary_source": "rust-lang/bors repository and Rust forge rollup policy",
+        "status": "omitted",
+        "replacement_in_v8": "Bors-BatchBisect (historical bors-ng automatic bisection)",
+        "reason_for_omission": (
+            "Active rust-lang/bors relies on reviewer-curated rollup priority labels (rollup=never/iffy/always) "
+            "and dedicated auto/try branch workflows whose human triage decisions are absent from frozen v7 traces."
+        ),
+        "what_would_be_needed": "Parsed rust-lang/rust bors comment logs, rollup membership records, and try/auto branch CI traces.",
+    },
+    {
+        "baseline": "GitHub Merge Queue HEADGREEN mode & non-canceled orphaned runs / autoscaling runners",
+        "primary_source": "GitHub Docs, 'Managing a merge queue' (HEADGREEN grouping_strategy & concurrency caveats)",
+        "status": "omitted",
+        "replacement_in_v8": "GitHubMQ-StagedGroup (ALLGREEN with cancel-in-progress=true)",
+        "reason_for_omission": (
+            "HEADGREEN allows an earlier failing PR to merge if a later PR masks its failure, which is not "
+            "represented by v7's monotonic culprit union model. Elastic hosted runner autoscaling would violate "
+            "equal worker capacity (W=8). Non-canceled orphaned runs are a workflow misconfiguration rather than "
+            "an algorithmic scheduling policy."
+        ),
+        "what_would_be_needed": "Non-monotonic patch-masking fault model and explicit runner-elasticity cost model.",
+    },
+    {
+        "baseline": "Beheshtian RiskBatch (supervised commit-risk ML) & Kamath LWD dynamic batching (EMSE 2025)",
+        "primary_source": "Beheshtian et al., IEEE TSE 2022 (DOI 10.1109/TSE.2021.3070269); Kamath, Adams, & Hassan, EMSE 30 Art. 51, 2025 (DOI 10.1007/s10664-024-10555-4)",
+        "status": "omitted_supervised_history_dependent",
+        "replacement_in_v8": "Beheshtian-BatchStop4 (label-free) & PRediBatch-RiskGroup (decoupled warm-up metadata risk)",
+        "reason_for_omission": (
+            "Supervised RiskBatch requires historical CI pass/fail labels per commit for training, which frozen v7 "
+            "warm-up windows (50 merged PRs without CI verdicts) do not contain. Kamath LWD tunes batch sizes "
+            "across long post-commit Travis CI streams (thousands of builds) rather than 150-PR pre-merge exact-tree bursts."
+        ),
+        "what_would_be_needed": "Long-horizon historical CI pass/fail streams (evaluated separately from frozen v7 traces).",
+    },
+    {
+        "baseline": "Post-merge BIC & LLM fault locators (Fonte ICSE 2023, SemBIC FSE 2025, Marini CoG 2024, Wang 2025)",
+        "primary_source": "An et al. ICSE 2023; Chen et al. FSE 2025; Marini et al. CoG 2024; Wang & Hong arXiv:2511.18854",
+        "status": "omitted_orthogonal_scope",
+        "replacement_in_v8": "None (orthogonal to queue packing/stacking)",
+        "reason_for_omission": (
+            "These methods require post-merge linear commit histories with SBFL test coverage spectra, multi-version "
+            "execution traces, or LLM inference over CI crash logs—none of which exist in frozen v7 merge-metadata traces."
+        ),
+        "what_would_be_needed": "Executable multi-PR CI failure corpora with stack traces and coverage spectra.",
+    },
+    {
+        "baseline": "Test-level probabilistic flakiness models (Apple ICSE-SEIP 2020, Meta PFS 2020, FlakeFlagger ICSE 2021, DeFlaker ICSE 2018)",
+        "primary_source": "Kowalczyk et al. ICSE-SEIP 2020; Machalica et al. Meta 2020; Alshammari et al. ICSE 2021; Bell et al. ICSE 2018",
+        "status": "omitted_granularity_mismatch",
+        "replacement_in_v8": "Queue-level Beta-Binomial flake gate (SSMQ / FIFOBatchRetry controls)",
+        "reason_for_omission": (
+            "These models score individual test cases from per-test historical flip rates, test-code features, or "
+            "differential code coverage, whereas frozen v7 traces represent CI outcomes at whole-job granularity."
+        ),
+        "what_would_be_needed": "Per-test longitudinal execution histories and test-suite instrumentation.",
+    },
+]

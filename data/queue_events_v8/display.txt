@@ -1,4 +1,4 @@
-v8 queue events — observation summary (schema 8.1)
+v8 queue events — observation summary (schema 8.2)
 ====================================================
 week: 2026-11-10T00:00:00Z .. 2026-11-17T23:59:59Z
 calendar days (inclusive): 8
@@ -7,7 +7,7 @@ microsoft/TypeScript
   PRs fetched (enumerated universe): 246
   distinct PRs with enqueue in week: 43
   queue admissions (ADDED) in week: 44
-  episodes overlapping observation week: 43
+  PRs with an episode overlapping observation week: 43
   removal reasons: {'failed_checks': 1, 'merged': 43}
   discordant merge_group heads:    45
 
@@ -15,7 +15,7 @@ rust-lang/cargo
   PRs fetched: 161
   distinct PRs with enqueue in week: 40
   queue admissions (ADDED) in week: 56
-  episodes overlapping observation week: 40
+  PRs with an episode overlapping observation week: 40
   removal reasons: {'checks_timed_out': 1, 'failed_checks': 13, 'merge_conflict': 2, 'merged': 40}
 
 combined
