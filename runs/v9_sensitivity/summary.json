@@ -1,0 +1,3755 @@
+{
+  "schema_version": "9.0",
+  "run_id": "v9_sensitivity",
+  "artifact_sha256": "95779a09678096a5cf01aae6aa40d89cfa114aac0784c8cf8b43238196c1ca89",
+  "record_count": 1200,
+  "bootstrap_seed": 11629,
+  "bootstrap_draws": 10000,
+  "default_parity": {
+    "checked_v8_rows": 240,
+    "expected_v8_rows": 240,
+    "checked_v7_rows": 120,
+    "expected_v7_rows": 120
+  },
+  "protocol_notes": {
+    "policies": [
+      "SSMQ-NoCone",
+      "SSMQ-FilteredCone"
+    ],
+    "policy_family": "Fixed v8 same-family unstacked multi-worker policies (W=8, K<=8, risk lanes, Beta-Binomial adaptive retry, 1-step blame, strict exact-tree commit authority, zero commit-time oracle, zero escaped defects).",
+    "decoupled_priors": "Fixed generic scheduler priors (q0=0.10, p_c=0.10, p_persist=0.02, Beta(1,19) flake prior) held completely invariant across all CI-duration and persistent-conflict sensitivity levels.",
+    "ci_duration_motivation_and_distinction": "Sweeps mean CI job duration ci_duration_min in {12.0 (default), 16.0, 20.0} min with fixed ci_duration_std=2.0 min. The 16.0 and 20.0 min levels bracket observed TypeScript merge_group GitHub Actions workflow-run execution times (n=45 selected runs: P50=16.0 min, mean=16.1 min, P95=18.8 min). These workflow execution times are explicitly distinct from observed GraphQL merge-queue episode sojourn times (enqueue to removal, which include queueing wait and serialization: TypeScript P50=17.1 min, P95=21.3 min, n=44; Cargo P50=34.2 min, mean=33.5 min, P95=39.2 min, n=56). Simulation sensitivity therefore does NOT calibrate to Cargo sojourn as a CI job duration.",
+    "persistent_conflict_mechanism_and_caveat": "Sweeps persistent_conflict_share in {0.03 (v7/v8 default), 0.10, 0.25 (SimConfig dataclass default)} while holding ci_duration_min=12.0, semantic_conflict_prob=0.18, graph_recall=0.80, risk_correlation=1.0, unary defects, total sampled conflict pairs, and decoupled scheduler priors fixed per (repo, seed). Because GroundTruth samples persistent pairs via deterministic hash thresholds over the fixed conflict set, persistent pairs form a strict monotone superset across 0.03 -> 0.10 -> 0.25. Higher persistence causes more PRs to fail persistently against merged_mainline and be rejected, shrinking the merged survivor set over which P95 latency is computed; survivor P95 must therefore be interpreted jointly with accepted PRs and persistent-conflict rejections.",
+    "uncertainty_protocol": "20 paired seeds (1001..1020) x 3 repositories = 60 paired blocks per condition; 10,000 paired seed-block bootstrap resamples (Random(11629)) with equal repository weight plus exact two-sided sign test."
+  },
+  "conditions": {
+    "nominal_default": {
+      "meta": {
+        "load": "nominal",
+        "velocity_multiplier": 5.0,
+        "sweep": "default",
+        "ci_duration_min": 12.0,
+        "ci_duration_std": 2.0,
+        "persistent_conflict_share": 0.03,
+        "v8_parity_condition": "nominal"
+      },
+      "by_strategy": {
+        "SSMQ-NoCone": {
+          "p95_latency_min": 623.278516440288,
+          "p50_latency_min": 320.11887326735746,
+          "throughput_prs_per_hr": 6.86930770954828,
+          "merged_prs": 105.95,
+          "rejected_prs": 44.05,
+          "rejected_defective": 12.05,
+          "rejected_persistent_conflict": 26.466666666666665,
+          "rejected_false_flaky": 5.533333333333333,
+          "false_rejection_rate": 0.04009238004217877,
+          "mean_root_batch_size": 2.0155743050258628,
+          "ci_minutes_per_merged_pr": 66.88820309934317,
+          "invalidation_rate": 0.6349786819352409,
+          "stale_rechecks": 366.28333333333336,
+          "runner_utilization": 0.9506046272873436,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "realized_graph_recall": 0.7999994350574844,
+          "realized_graph_precision": 0.1437512971855121,
+          "escaped_defects": 0.0
+        },
+        "SSMQ-FilteredCone": {
+          "p95_latency_min": 607.6955752751237,
+          "p50_latency_min": 314.32303882154645,
+          "throughput_prs_per_hr": 6.911689642416673,
+          "merged_prs": 105.0,
+          "rejected_prs": 45.0,
+          "rejected_defective": 12.05,
+          "rejected_persistent_conflict": 26.3,
+          "rejected_false_flaky": 6.65,
+          "false_rejection_rate": 0.04824785252066592,
+          "mean_root_batch_size": 1.8898361998151876,
+          "ci_minutes_per_merged_pr": 66.55320180148976,
+          "invalidation_rate": 0.6456396518727348,
+          "stale_rechecks": 368.2,
+          "runner_utilization": 0.9518453946946777,
+          "observed_graph_edge_density": 0.10794929157345265,
+          "realized_graph_recall": 0.1112509057608944,
+          "realized_graph_precision": 0.14265190503800293,
+          "escaped_defects": 0.0
+        }
+      },
+      "by_repo_strategy": {
+        "kubernetes": {
+          "SSMQ-NoCone": {
+            "p95_latency_min": 647.9204485733378,
+            "p50_latency_min": 352.0769819216457,
+            "throughput_prs_per_hr": 7.127213412872303,
+            "merged_prs": 107.5,
+            "rejected_prs": 42.5,
+            "rejected_defective": 11.45,
+            "rejected_persistent_conflict": 25.5,
+            "rejected_false_flaky": 5.55,
+            "false_rejection_rate": 0.03980809535434536,
+            "mean_root_batch_size": 2.057856968469202,
+            "ci_minutes_per_merged_pr": 64.16116438556557,
+            "invalidation_rate": 0.6323765247993001,
+            "stale_rechecks": 356.6,
+            "runner_utilization": 0.9488356654369949,
+            "observed_graph_edge_density": 0.6853691275167785,
+            "realized_graph_recall": 0.8000292875137891,
+            "realized_graph_precision": 0.14296905601253426,
+            "escaped_defects": 0.0
+          },
+          "SSMQ-FilteredCone": {
+            "p95_latency_min": 631.236561559114,
+            "p50_latency_min": 348.2461827034021,
+            "throughput_prs_per_hr": 7.139006389985195,
+            "merged_prs": 106.0,
+            "rejected_prs": 44.0,
+            "rejected_defective": 11.45,
+            "rejected_persistent_conflict": 25.05,
+            "rejected_false_flaky": 7.5,
+            "false_rejection_rate": 0.05405720292090216,
+            "mean_root_batch_size": 1.935816305695349,
+            "ci_minutes_per_merged_pr": 64.3076811157246,
+            "invalidation_rate": 0.6470802407476806,
+            "stale_rechecks": 361.3,
+            "runner_utilization": 0.950468888798363,
+            "observed_graph_edge_density": 0.09914988814317674,
+            "realized_graph_recall": 0.11358543134501235,
+            "realized_graph_precision": 0.14029783393501805,
+            "escaped_defects": 0.0
+          }
+        },
+        "nextjs": {
+          "SSMQ-NoCone": {
+            "p95_latency_min": 578.5067772906326,
+            "p50_latency_min": 287.48077224591924,
+            "throughput_prs_per_hr": 7.130469836402776,
+            "merged_prs": 108.7,
+            "rejected_prs": 41.3,
+            "rejected_defective": 12.7,
+            "rejected_persistent_conflict": 22.45,
+            "rejected_false_flaky": 6.15,
+            "false_rejection_rate": 0.04491088347050776,
+            "mean_root_batch_size": 2.0219675833136463,
+            "ci_minutes_per_merged_pr": 63.787032335617155,
+            "invalidation_rate": 0.6543542388557066,
+            "stale_rechecks": 371.05,
+            "runner_utilization": 0.9439287548730938,
+            "observed_graph_edge_density": 0.5907829977628636,
+            "realized_graph_recall": 0.7999850050614995,
+            "realized_graph_precision": 0.14369887912753712,
+            "escaped_defects": 0.0
+          },
+          "SSMQ-FilteredCone": {
+            "p95_latency_min": 565.852644379322,
+            "p50_latency_min": 274.96057427354265,
+            "throughput_prs_per_hr": 7.185265016467502,
+            "merged_prs": 108.15,
+            "rejected_prs": 41.85,
+            "rejected_defective": 12.7,
+            "rejected_persistent_conflict": 22.6,
+            "rejected_false_flaky": 6.55,
+            "false_rejection_rate": 0.04787987653848927,
+            "mean_root_batch_size": 1.9327436485543377,
+            "ci_minutes_per_merged_pr": 63.44709952420489,
+            "invalidation_rate": 0.662548828697429,
+            "stale_rechecks": 372.6,
+            "runner_utilization": 0.946061023628392,
+            "observed_graph_edge_density": 0.051006711409395965,
+            "realized_graph_recall": 0.06786648179909381,
+            "realized_graph_precision": 0.14131578947368423,
+            "escaped_defects": 0.0
+          }
+        },
+        "typescript": {
+          "SSMQ-NoCone": {
+            "p95_latency_min": 643.4083234568934,
+            "p50_latency_min": 320.7988656345075,
+            "throughput_prs_per_hr": 6.350239879369762,
+            "merged_prs": 101.65,
+            "rejected_prs": 48.35,
+            "rejected_defective": 12.0,
+            "rejected_persistent_conflict": 31.45,
+            "rejected_false_flaky": 4.9,
+            "false_rejection_rate": 0.0355581613016832,
+            "mean_root_batch_size": 1.966898363294741,
+            "ci_minutes_per_merged_pr": 72.7164125768468,
+            "invalidation_rate": 0.6182052821507157,
+            "stale_rechecks": 371.2,
+            "runner_utilization": 0.9590494615519422,
+            "observed_graph_edge_density": 0.9239373601789709,
+            "realized_graph_recall": 0.7999840125971645,
+            "realized_graph_precision": 0.1445859564164649,
+            "escaped_defects": 0.0
+          },
+          "SSMQ-FilteredCone": {
+            "p95_latency_min": 625.997519886935,
+            "p50_latency_min": 319.7623594876947,
+            "throughput_prs_per_hr": 6.41079752079732,
+            "merged_prs": 100.85,
+            "rejected_prs": 49.15,
+            "rejected_defective": 12.0,
+            "rejected_persistent_conflict": 31.25,
+            "rejected_false_flaky": 5.9,
+            "false_rejection_rate": 0.04280647810260635,
+            "mean_root_batch_size": 1.8009486451958758,
+            "ci_minutes_per_merged_pr": 71.9048247645398,
+            "invalidation_rate": 0.6272898861730946,
+            "stale_rechecks": 370.7,
+            "runner_utilization": 0.9590062716572779,
+            "observed_graph_edge_density": 0.17369127516778524,
+            "realized_graph_recall": 0.15230080413857708,
+            "realized_graph_precision": 0.14634209170530654,
+            "escaped_defects": 0.0
+          }
+        }
+      },
+      "fc_minus_nc": {
+        "p95_latency_min": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "p95_latency_min",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": -15.582941165164266,
+          "ci95": [
+            -30.54698011295207,
+            -0.48967178727408056
+          ],
+          "sign_test_p": 0.11531829833984375,
+          "by_repo": {
+            "kubernetes": -16.683887014223867,
+            "nextjs": -12.654132911310592,
+            "typescript": -17.41080356995834
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 6,
+          "n_negative_blocks": 14
+        },
+        "false_rejection_rate": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "false_rejection_rate",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": 0.008155472478487153,
+          "ci95": [
+            0.0028903662563663536,
+            0.014195328458027942
+          ],
+          "sign_test_p": 0.11531829833984375,
+          "by_repo": {
+            "kubernetes": 0.014249107566556795,
+            "nextjs": 0.0029689930679815076,
+            "typescript": 0.007248316800923154
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 14,
+          "n_negative_blocks": 6
+        },
+        "stale_rechecks": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "stale_rechecks",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": 1.9166666666666665,
+          "ci95": [
+            -4.75,
+            8.966666666666665
+          ],
+          "sign_test_p": 0.8238029479980469,
+          "by_repo": {
+            "kubernetes": 4.7,
+            "nextjs": 1.55,
+            "typescript": -0.5
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 9,
+          "n_negative_blocks": 11
+        },
+        "merged_prs": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "merged_prs",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": -0.95,
+          "ci95": [
+            -1.6666666666666667,
+            -0.25
+          ],
+          "sign_test_p": 0.0192108154296875,
+          "by_repo": {
+            "kubernetes": -1.5,
+            "nextjs": -0.55,
+            "typescript": -0.8
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 4,
+          "n_negative_blocks": 15
+        },
+        "rejected_persistent_conflict": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "rejected_persistent_conflict",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": -0.16666666666666669,
+          "ci95": [
+            -0.6666666666666667,
+            0.2833333333333333
+          ],
+          "sign_test_p": 0.803619384765625,
+          "by_repo": {
+            "kubernetes": -0.45,
+            "nextjs": 0.15,
+            "typescript": -0.2
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 9,
+          "n_negative_blocks": 7
+        },
+        "ci_minutes_per_merged_pr": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "ci_minutes_per_merged_pr",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": -0.3350012978534144,
+          "ci95": [
+            -1.3681662943431259,
+            0.7037514945871696
+          ],
+          "sign_test_p": 0.8238029479980469,
+          "by_repo": {
+            "kubernetes": 0.14651673015903768,
+            "nextjs": -0.3399328114122714,
+            "typescript": -0.8115878123070097
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 11,
+          "n_negative_blocks": 9
+        },
+        "mean_root_batch_size": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "mean_root_batch_size",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": -0.12573810521067538,
+          "ci95": [
+            -0.1499485695515342,
+            -0.10224605634733963
+          ],
+          "sign_test_p": 4.00543212890625e-05,
+          "by_repo": {
+            "kubernetes": -0.12204066277385248,
+            "nextjs": -0.08922393475930887,
+            "typescript": -0.1659497180988648
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 1,
+          "n_negative_blocks": 19
+        }
+      }
+    },
+    "nominal_ci16": {
+      "meta": {
+        "load": "nominal",
+        "velocity_multiplier": 5.0,
+        "sweep": "ci_duration",
+        "ci_duration_min": 16.0,
+        "ci_duration_std": 2.0,
+        "persistent_conflict_share": 0.03
+      },
+      "by_strategy": {
+        "SSMQ-NoCone": {
+          "p95_latency_min": 905.9217137986016,
+          "p50_latency_min": 464.492220973567,
+          "throughput_prs_per_hr": 5.118332934085286,
+          "merged_prs": 105.01666666666667,
+          "rejected_prs": 44.983333333333334,
+          "rejected_defective": 12.05,
+          "rejected_persistent_conflict": 26.316666666666666,
+          "rejected_false_flaky": 6.616666666666666,
+          "false_rejection_rate": 0.04790673108628661,
+          "mean_root_batch_size": 2.003817994035507,
+          "ci_minutes_per_merged_pr": 90.0670186827118,
+          "invalidation_rate": 0.6346787083976265,
+          "stale_rechecks": 366.5,
+          "runner_utilization": 0.9540916624272493,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "realized_graph_recall": 0.7999994350574844,
+          "realized_graph_precision": 0.1437512971855121,
+          "escaped_defects": 0.0
+        },
+        "SSMQ-FilteredCone": {
+          "p95_latency_min": 898.0396042358855,
+          "p50_latency_min": 467.63360598829325,
+          "throughput_prs_per_hr": 5.1299377615481365,
+          "merged_prs": 105.1,
+          "rejected_prs": 44.9,
+          "rejected_defective": 12.05,
+          "rejected_persistent_conflict": 26.233333333333334,
+          "rejected_false_flaky": 6.616666666666666,
+          "false_rejection_rate": 0.04793247392528322,
+          "mean_root_batch_size": 1.8920691173649138,
+          "ci_minutes_per_merged_pr": 89.49921680441405,
+          "invalidation_rate": 0.648385296163292,
+          "stale_rechecks": 373.26666666666665,
+          "runner_utilization": 0.9518671426962528,
+          "observed_graph_edge_density": 0.10794929157345265,
+          "realized_graph_recall": 0.1112509057608944,
+          "realized_graph_precision": 0.14265190503800293,
+          "escaped_defects": 0.0
+        }
+      },
+      "by_repo_strategy": {
+        "kubernetes": {
+          "SSMQ-NoCone": {
+            "p95_latency_min": 931.066580847287,
+            "p50_latency_min": 494.6885436683842,
+            "throughput_prs_per_hr": 5.231215224219909,
+            "merged_prs": 106.05,
+            "rejected_prs": 43.95,
+            "rejected_defective": 11.45,
+            "rejected_persistent_conflict": 25.45,
+            "rejected_false_flaky": 7.05,
+            "false_rejection_rate": 0.0506402799680441,
+            "mean_root_batch_size": 2.0281365701399428,
+            "ci_minutes_per_merged_pr": 87.54937139678721,
+            "invalidation_rate": 0.6340417457801029,
+            "stale_rechecks": 361.7,
+            "runner_utilization": 0.949483607993451,
+            "observed_graph_edge_density": 0.6853691275167785,
+            "realized_graph_recall": 0.8000292875137891,
+            "realized_graph_precision": 0.14296905601253426,
+            "escaped_defects": 0.0
+          },
+          "SSMQ-FilteredCone": {
+            "p95_latency_min": 923.0343425930271,
+            "p50_latency_min": 503.81956831535956,
+            "throughput_prs_per_hr": 5.284021686646815,
+            "merged_prs": 106.25,
+            "rejected_prs": 43.75,
+            "rejected_defective": 11.45,
+            "rejected_persistent_conflict": 25.45,
+            "rejected_false_flaky": 6.85,
+            "false_rejection_rate": 0.0493684656981762,
+            "mean_root_batch_size": 1.9369739395327428,
+            "ci_minutes_per_merged_pr": 86.67585745060488,
+            "invalidation_rate": 0.6525824770657179,
+            "stale_rechecks": 369.3,
+            "runner_utilization": 0.9502915000173365,
+            "observed_graph_edge_density": 0.09914988814317674,
+            "realized_graph_recall": 0.11358543134501235,
+            "realized_graph_precision": 0.14029783393501805,
+            "escaped_defects": 0.0
+          }
+        },
+        "nextjs": {
+          "SSMQ-NoCone": {
+            "p95_latency_min": 852.0928192158228,
+            "p50_latency_min": 411.08576548960025,
+            "throughput_prs_per_hr": 5.370132424031087,
+            "merged_prs": 108.25,
+            "rejected_prs": 41.75,
+            "rejected_defective": 12.7,
+            "rejected_persistent_conflict": 22.1,
+            "rejected_false_flaky": 6.95,
+            "false_rejection_rate": 0.05063898342757572,
+            "mean_root_batch_size": 2.0004337482130228,
+            "ci_minutes_per_merged_pr": 85.05141235291411,
+            "invalidation_rate": 0.6493568267652925,
+            "stale_rechecks": 365.75,
+            "runner_utilization": 0.9485245826087685,
+            "observed_graph_edge_density": 0.5907829977628636,
+            "realized_graph_recall": 0.7999850050614995,
+            "realized_graph_precision": 0.14369887912753712,
+            "escaped_defects": 0.0
+          },
+          "SSMQ-FilteredCone": {
+            "p95_latency_min": 876.4712165427391,
+            "p50_latency_min": 434.59684141207106,
+            "throughput_prs_per_hr": 5.271915436586778,
+            "merged_prs": 109.15,
+            "rejected_prs": 40.85,
+            "rejected_defective": 12.7,
+            "rejected_persistent_conflict": 22.65,
+            "rejected_false_flaky": 5.5,
+            "false_rejection_rate": 0.04006345175286649,
+            "mean_root_batch_size": 1.9631744134012554,
+            "ci_minutes_per_merged_pr": 86.57539675112255,
+            "invalidation_rate": 0.6594703350477003,
+            "stale_rechecks": 381.55,
+            "runner_utilization": 0.9482053731661987,
+            "observed_graph_edge_density": 0.051006711409395965,
+            "realized_graph_recall": 0.06786648179909381,
+            "realized_graph_precision": 0.14131578947368423,
+            "escaped_defects": 0.0
+          }
+        },
+        "typescript": {
+          "SSMQ-NoCone": {
+            "p95_latency_min": 934.6057413326951,
+            "p50_latency_min": 487.7023537627165,
+            "throughput_prs_per_hr": 4.753651154004862,
+            "merged_prs": 100.75,
+            "rejected_prs": 49.25,
+            "rejected_defective": 12.0,
+            "rejected_persistent_conflict": 31.4,
+            "rejected_false_flaky": 5.85,
+            "false_rejection_rate": 0.04244092986324001,
+            "mean_root_batch_size": 1.9828836637535558,
+            "ci_minutes_per_merged_pr": 97.60027229843412,
+            "invalidation_rate": 0.6206375526474843,
+            "stale_rechecks": 372.05,
+            "runner_utilization": 0.9642667966795286,
+            "observed_graph_edge_density": 0.9239373601789709,
+            "realized_graph_recall": 0.7999840125971645,
+            "realized_graph_precision": 0.1445859564164649,
+            "escaped_defects": 0.0
+          },
+          "SSMQ-FilteredCone": {
+            "p95_latency_min": 894.6132535718901,
+            "p50_latency_min": 464.48440823744914,
+            "throughput_prs_per_hr": 4.833876161410815,
+            "merged_prs": 99.9,
+            "rejected_prs": 50.1,
+            "rejected_defective": 12.0,
+            "rejected_persistent_conflict": 30.6,
+            "rejected_false_flaky": 7.5,
+            "false_rejection_rate": 0.05436550432480697,
+            "mean_root_batch_size": 1.776058999160743,
+            "ci_minutes_per_merged_pr": 95.24639621151472,
+            "invalidation_rate": 0.6331030763764578,
+            "stale_rechecks": 368.95,
+            "runner_utilization": 0.9571045549052235,
+            "observed_graph_edge_density": 0.17369127516778524,
+            "realized_graph_recall": 0.15230080413857708,
+            "realized_graph_precision": 0.14634209170530654,
+            "escaped_defects": 0.0
+          }
+        }
+      },
+      "fc_minus_nc": {
+        "p95_latency_min": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "p95_latency_min",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": -7.882109562716201,
+          "ci95": [
+            -33.843343804333166,
+            16.95794140361958
+          ],
+          "sign_test_p": 1.0,
+          "by_repo": {
+            "kubernetes": -8.032238254259926,
+            "nextjs": 24.378397326916257,
+            "typescript": -39.992487760804934
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 10,
+          "n_negative_blocks": 10
+        },
+        "false_rejection_rate": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "false_rejection_rate",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": 2.5742838996611672e-05,
+          "ci95": [
+            -0.0063502870852490375,
+            0.0060679071832062245
+          ],
+          "sign_test_p": 0.8238029479980469,
+          "by_repo": {
+            "kubernetes": -0.0012718142698678965,
+            "nextjs": -0.010575531674709227,
+            "typescript": 0.011924574461566959
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 11,
+          "n_negative_blocks": 9
+        },
+        "stale_rechecks": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "stale_rechecks",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": 6.7666666666666675,
+          "ci95": [
+            -1.9666666666666668,
+            15.016666666666666
+          ],
+          "sign_test_p": 0.11531829833984375,
+          "by_repo": {
+            "kubernetes": 7.6,
+            "nextjs": 15.8,
+            "typescript": -3.1
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 14,
+          "n_negative_blocks": 6
+        },
+        "merged_prs": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "merged_prs",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": 0.08333333333333334,
+          "ci95": [
+            -0.5833333333333333,
+            0.75
+          ],
+          "sign_test_p": 1.0,
+          "by_repo": {
+            "kubernetes": 0.2,
+            "nextjs": 0.9,
+            "typescript": -0.85
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 7,
+          "n_negative_blocks": 8
+        },
+        "rejected_persistent_conflict": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "rejected_persistent_conflict",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": -0.08333333333333334,
+          "ci95": [
+            -0.5833333333333333,
+            0.36666666666666664
+          ],
+          "sign_test_p": 1.0,
+          "by_repo": {
+            "kubernetes": 0.0,
+            "nextjs": 0.55,
+            "typescript": -0.8
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 9,
+          "n_negative_blocks": 8
+        },
+        "ci_minutes_per_merged_pr": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "ci_minutes_per_merged_pr",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": -0.5678018782977634,
+          "ci95": [
+            -2.153710288993497,
+            0.9599258160463032
+          ],
+          "sign_test_p": 1.0,
+          "by_repo": {
+            "kubernetes": -0.8735139461823316,
+            "nextjs": 1.5239843982084422,
+            "typescript": -2.3538760869194006
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 10,
+          "n_negative_blocks": 10
+        },
+        "mean_root_batch_size": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "mean_root_batch_size",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": -0.1117488766705935,
+          "ci95": [
+            -0.13236680457558653,
+            -0.09153520540214247
+          ],
+          "sign_test_p": 1.9073486328125e-06,
+          "by_repo": {
+            "kubernetes": -0.09116263060719994,
+            "nextjs": -0.037259334811767394,
+            "typescript": -0.20682466459281318
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 0,
+          "n_negative_blocks": 20
+        }
+      }
+    },
+    "nominal_ci20": {
+      "meta": {
+        "load": "nominal",
+        "velocity_multiplier": 5.0,
+        "sweep": "ci_duration",
+        "ci_duration_min": 20.0,
+        "ci_duration_std": 2.0,
+        "persistent_conflict_share": 0.03
+      },
+      "by_strategy": {
+        "SSMQ-NoCone": {
+          "p95_latency_min": 1188.2082115255414,
+          "p50_latency_min": 616.5992700664326,
+          "throughput_prs_per_hr": 4.120111497332341,
+          "merged_prs": 105.01666666666667,
+          "rejected_prs": 44.983333333333334,
+          "rejected_defective": 12.05,
+          "rejected_persistent_conflict": 25.933333333333334,
+          "rejected_false_flaky": 7.0,
+          "false_rejection_rate": 0.050698830830360316,
+          "mean_root_batch_size": 1.988617431824462,
+          "ci_minutes_per_merged_pr": 111.8843361534981,
+          "invalidation_rate": 0.6357847908181715,
+          "stale_rechecks": 366.23333333333335,
+          "runner_utilization": 0.9540003192617503,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "realized_graph_recall": 0.7999994350574844,
+          "realized_graph_precision": 0.1437512971855121,
+          "escaped_defects": 0.0
+        },
+        "SSMQ-FilteredCone": {
+          "p95_latency_min": 1204.5067463187393,
+          "p50_latency_min": 625.8434206220476,
+          "throughput_prs_per_hr": 4.061316545036251,
+          "merged_prs": 105.55,
+          "rejected_prs": 44.45,
+          "rejected_defective": 12.05,
+          "rejected_persistent_conflict": 26.316666666666666,
+          "rejected_false_flaky": 6.083333333333333,
+          "false_rejection_rate": 0.04406560822967705,
+          "mean_root_batch_size": 1.8746393116149862,
+          "ci_minutes_per_merged_pr": 113.24758094581573,
+          "invalidation_rate": 0.6531932414505214,
+          "stale_rechecks": 382.1,
+          "runner_utilization": 0.9537460768793244,
+          "observed_graph_edge_density": 0.10794929157345265,
+          "realized_graph_recall": 0.1112509057608944,
+          "realized_graph_precision": 0.14265190503800293,
+          "escaped_defects": 0.0
+        }
+      },
+      "by_repo_strategy": {
+        "kubernetes": {
+          "SSMQ-NoCone": {
+            "p95_latency_min": 1218.0981724217418,
+            "p50_latency_min": 650.6408161098732,
+            "throughput_prs_per_hr": 4.186505358983718,
+            "merged_prs": 106.15,
+            "rejected_prs": 43.85,
+            "rejected_defective": 11.45,
+            "rejected_persistent_conflict": 25.2,
+            "rejected_false_flaky": 7.2,
+            "false_rejection_rate": 0.05165045429896783,
+            "mean_root_batch_size": 2.054652677910604,
+            "ci_minutes_per_merged_pr": 109.39904105581911,
+            "invalidation_rate": 0.6352763265437594,
+            "stale_rechecks": 363.25,
+            "runner_utilization": 0.9504875634316046,
+            "observed_graph_edge_density": 0.6853691275167785,
+            "realized_graph_recall": 0.8000292875137891,
+            "realized_graph_precision": 0.14296905601253426,
+            "escaped_defects": 0.0
+          },
+          "SSMQ-FilteredCone": {
+            "p95_latency_min": 1255.4342747126086,
+            "p50_latency_min": 672.8349283521778,
+            "throughput_prs_per_hr": 4.109373554985064,
+            "merged_prs": 106.7,
+            "rejected_prs": 43.3,
+            "rejected_defective": 11.45,
+            "rejected_persistent_conflict": 25.5,
+            "rejected_false_flaky": 6.35,
+            "false_rejection_rate": 0.045667944357406134,
+            "mean_root_batch_size": 1.922405098559874,
+            "ci_minutes_per_merged_pr": 111.73275567285881,
+            "invalidation_rate": 0.6558424160437516,
+            "stale_rechecks": 383.85,
+            "runner_utilization": 0.952749564878624,
+            "observed_graph_edge_density": 0.09914988814317674,
+            "realized_graph_recall": 0.11358543134501235,
+            "realized_graph_precision": 0.14029783393501805,
+            "escaped_defects": 0.0
+          }
+        },
+        "nextjs": {
+          "SSMQ-NoCone": {
+            "p95_latency_min": 1112.5581992385673,
+            "p50_latency_min": 567.9906739432504,
+            "throughput_prs_per_hr": 4.365680675053627,
+            "merged_prs": 107.45,
+            "rejected_prs": 42.55,
+            "rejected_defective": 12.7,
+            "rejected_persistent_conflict": 22.4,
+            "rejected_false_flaky": 7.45,
+            "false_rejection_rate": 0.0542809418969465,
+            "mean_root_batch_size": 1.939796973104108,
+            "ci_minutes_per_merged_pr": 104.9198104856403,
+            "invalidation_rate": 0.6480474721176641,
+            "stale_rechecks": 359.5,
+            "runner_utilization": 0.9503127647248746,
+            "observed_graph_edge_density": 0.5907829977628636,
+            "realized_graph_recall": 0.7999850050614995,
+            "realized_graph_precision": 0.14369887912753712,
+            "escaped_defects": 0.0
+          },
+          "SSMQ-FilteredCone": {
+            "p95_latency_min": 1162.753257628718,
+            "p50_latency_min": 594.006123573007,
+            "throughput_prs_per_hr": 4.253921071556889,
+            "merged_prs": 110.1,
+            "rejected_prs": 39.9,
+            "rejected_defective": 12.7,
+            "rejected_persistent_conflict": 22.95,
+            "rejected_false_flaky": 4.25,
+            "false_rejection_rate": 0.0310250997948686,
+            "mean_root_batch_size": 1.914181758169967,
+            "ci_minutes_per_merged_pr": 107.3378051643178,
+            "invalidation_rate": 0.6648301899395249,
+            "stale_rechecks": 384.3,
+            "runner_utilization": 0.9488743750605974,
+            "observed_graph_edge_density": 0.051006711409395965,
+            "realized_graph_recall": 0.06786648179909381,
+            "realized_graph_precision": 0.14131578947368423,
+            "escaped_defects": 0.0
+          }
+        },
+        "typescript": {
+          "SSMQ-NoCone": {
+            "p95_latency_min": 1233.9682629163149,
+            "p50_latency_min": 631.1663201461745,
+            "throughput_prs_per_hr": 3.808148457959679,
+            "merged_prs": 101.45,
+            "rejected_prs": 48.55,
+            "rejected_defective": 12.0,
+            "rejected_persistent_conflict": 30.2,
+            "rejected_false_flaky": 6.35,
+            "false_rejection_rate": 0.04616509629516662,
+            "mean_root_batch_size": 1.9714026444586736,
+            "ci_minutes_per_merged_pr": 121.33415691903492,
+            "invalidation_rate": 0.6240305737930911,
+            "stale_rechecks": 375.95,
+            "runner_utilization": 0.9612006296287721,
+            "observed_graph_edge_density": 0.9239373601789709,
+            "realized_graph_recall": 0.7999840125971645,
+            "realized_graph_precision": 0.1445859564164649,
+            "escaped_defects": 0.0
+          },
+          "SSMQ-FilteredCone": {
+            "p95_latency_min": 1195.3327066148909,
+            "p50_latency_min": 610.6892099409577,
+            "throughput_prs_per_hr": 3.8206550085668014,
+            "merged_prs": 99.85,
+            "rejected_prs": 50.15,
+            "rejected_defective": 12.0,
+            "rejected_persistent_conflict": 30.5,
+            "rejected_false_flaky": 7.65,
+            "false_rejection_rate": 0.0555037805367564,
+            "mean_root_batch_size": 1.7873310781151175,
+            "ci_minutes_per_merged_pr": 120.67218200027052,
+            "invalidation_rate": 0.6389071183682875,
+            "stale_rechecks": 378.15,
+            "runner_utilization": 0.9596142906987521,
+            "observed_graph_edge_density": 0.17369127516778524,
+            "realized_graph_recall": 0.15230080413857708,
+            "realized_graph_precision": 0.14634209170530654,
+            "escaped_defects": 0.0
+          }
+        }
+      },
+      "fc_minus_nc": {
+        "p95_latency_min": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "p95_latency_min",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": 16.298534793197827,
+          "ci95": [
+            -5.088519586152768,
+            38.41976364866082
+          ],
+          "sign_test_p": 0.8238029479980469,
+          "by_repo": {
+            "kubernetes": 37.33610229086683,
+            "nextjs": 50.19505839015062,
+            "typescript": -38.63555630142396
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 11,
+          "n_negative_blocks": 9
+        },
+        "false_rejection_rate": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "false_rejection_rate",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": -0.0066332226006832725,
+          "ci95": [
+            -0.013482982360857394,
+            0.0003091607975423687
+          ],
+          "sign_test_p": 0.11531829833984375,
+          "by_repo": {
+            "kubernetes": -0.0059825099415616945,
+            "nextjs": -0.0232558421020779,
+            "typescript": 0.009338684241589776
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 6,
+          "n_negative_blocks": 14
+        },
+        "stale_rechecks": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "stale_rechecks",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": 15.866666666666665,
+          "ci95": [
+            9.483333333333333,
+            22.216666666666665
+          ],
+          "sign_test_p": 0.0004024505615234375,
+          "by_repo": {
+            "kubernetes": 20.6,
+            "nextjs": 24.8,
+            "typescript": 2.2
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 18,
+          "n_negative_blocks": 2
+        },
+        "merged_prs": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "merged_prs",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": 0.5333333333333333,
+          "ci95": [
+            -0.3333333333333333,
+            1.3333333333333333
+          ],
+          "sign_test_p": 0.5034446716308594,
+          "by_repo": {
+            "kubernetes": 0.55,
+            "nextjs": 2.65,
+            "typescript": -1.6
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 12,
+          "n_negative_blocks": 8
+        },
+        "rejected_persistent_conflict": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "rejected_persistent_conflict",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": 0.38333333333333336,
+          "ci95": [
+            -0.08333333333333334,
+            0.8666666666666666
+          ],
+          "sign_test_p": 0.359283447265625,
+          "by_repo": {
+            "kubernetes": 0.3,
+            "nextjs": 0.55,
+            "typescript": 0.3
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 12,
+          "n_negative_blocks": 7
+        },
+        "ci_minutes_per_merged_pr": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "ci_minutes_per_merged_pr",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": 1.3632447923176096,
+          "ci95": [
+            -0.14965642769133544,
+            2.881537243126789
+          ],
+          "sign_test_p": 0.11531829833984375,
+          "by_repo": {
+            "kubernetes": 2.3337146170397283,
+            "nextjs": 2.417994678677492,
+            "typescript": -0.6619749187643912
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 14,
+          "n_negative_blocks": 6
+        },
+        "mean_root_batch_size": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "mean_root_batch_size",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": -0.11397812020947565,
+          "ci95": [
+            -0.14793629574955797,
+            -0.08417420613322234
+          ],
+          "sign_test_p": 4.00543212890625e-05,
+          "by_repo": {
+            "kubernetes": -0.13224757935073003,
+            "nextjs": -0.025615214934141095,
+            "typescript": -0.1840715663435558
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 1,
+          "n_negative_blocks": 19
+        }
+      }
+    },
+    "nominal_persist10": {
+      "meta": {
+        "load": "nominal",
+        "velocity_multiplier": 5.0,
+        "sweep": "persistent_share",
+        "ci_duration_min": 12.0,
+        "ci_duration_std": 2.0,
+        "persistent_conflict_share": 0.1
+      },
+      "by_strategy": {
+        "SSMQ-NoCone": {
+          "p95_latency_min": 482.9454724603982,
+          "p50_latency_min": 248.82874576621123,
+          "throughput_prs_per_hr": 5.928184408286343,
+          "merged_prs": 76.75,
+          "rejected_prs": 73.25,
+          "rejected_defective": 12.05,
+          "rejected_persistent_conflict": 56.8,
+          "rejected_false_flaky": 4.4,
+          "false_rejection_rate": 0.03190956199431254,
+          "mean_root_batch_size": 2.0190752824483056,
+          "ci_minutes_per_merged_pr": 78.01675023884326,
+          "invalidation_rate": 0.4622772527238567,
+          "stale_rechecks": 224.33333333333334,
+          "runner_utilization": 0.9589423564498494,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "realized_graph_recall": 0.7999994350574844,
+          "realized_graph_precision": 0.1437512971855121,
+          "escaped_defects": 0.0
+        },
+        "SSMQ-FilteredCone": {
+          "p95_latency_min": 470.38481037605493,
+          "p50_latency_min": 246.75586124692546,
+          "throughput_prs_per_hr": 6.0633258655829385,
+          "merged_prs": 77.01666666666667,
+          "rejected_prs": 72.98333333333333,
+          "rejected_defective": 12.05,
+          "rejected_persistent_conflict": 56.6,
+          "rejected_false_flaky": 4.333333333333333,
+          "false_rejection_rate": 0.0314325782613128,
+          "mean_root_batch_size": 1.873853245753044,
+          "ci_minutes_per_merged_pr": 76.48758764035465,
+          "invalidation_rate": 0.47722246803238977,
+          "stale_rechecks": 228.3,
+          "runner_utilization": 0.9595291318350132,
+          "observed_graph_edge_density": 0.10794929157345265,
+          "realized_graph_recall": 0.1112509057608944,
+          "realized_graph_precision": 0.14265190503800293,
+          "escaped_defects": 0.0
+        }
+      },
+      "by_repo_strategy": {
+        "kubernetes": {
+          "SSMQ-NoCone": {
+            "p95_latency_min": 533.83482528377,
+            "p50_latency_min": 277.0718978544135,
+            "throughput_prs_per_hr": 6.072472258805692,
+            "merged_prs": 79.0,
+            "rejected_prs": 71.0,
+            "rejected_defective": 11.45,
+            "rejected_persistent_conflict": 55.65,
+            "rejected_false_flaky": 3.9,
+            "false_rejection_rate": 0.027936792762230128,
+            "mean_root_batch_size": 2.05310158422025,
+            "ci_minutes_per_merged_pr": 75.7250136501997,
+            "invalidation_rate": 0.46112891397696937,
+            "stale_rechecks": 224.5,
+            "runner_utilization": 0.954941896623118,
+            "observed_graph_edge_density": 0.6853691275167785,
+            "realized_graph_recall": 0.8000292875137891,
+            "realized_graph_precision": 0.14296905601253426,
+            "escaped_defects": 0.0
+          },
+          "SSMQ-FilteredCone": {
+            "p95_latency_min": 521.1153738376155,
+            "p50_latency_min": 274.17269909565323,
+            "throughput_prs_per_hr": 6.18073286603542,
+            "merged_prs": 79.05,
+            "rejected_prs": 70.95,
+            "rejected_defective": 11.45,
+            "rejected_persistent_conflict": 55.65,
+            "rejected_false_flaky": 3.85,
+            "false_rejection_rate": 0.027757378611598445,
+            "mean_root_batch_size": 1.9142205421669694,
+            "ci_minutes_per_merged_pr": 74.46142634106864,
+            "invalidation_rate": 0.4758572366319516,
+            "stale_rechecks": 228.35,
+            "runner_utilization": 0.9568082269828453,
+            "observed_graph_edge_density": 0.09914988814317674,
+            "realized_graph_recall": 0.11358543134501235,
+            "realized_graph_precision": 0.14029783393501805,
+            "escaped_defects": 0.0
+          }
+        },
+        "nextjs": {
+          "SSMQ-NoCone": {
+            "p95_latency_min": 467.8423813536286,
+            "p50_latency_min": 245.01147415096162,
+            "throughput_prs_per_hr": 6.146894621952155,
+            "merged_prs": 81.75,
+            "rejected_prs": 68.25,
+            "rejected_defective": 12.7,
+            "rejected_persistent_conflict": 50.65,
+            "rejected_false_flaky": 4.9,
+            "false_rejection_rate": 0.0358796887504151,
+            "mean_root_batch_size": 1.9987015410327735,
+            "ci_minutes_per_merged_pr": 74.63036112730097,
+            "invalidation_rate": 0.5034965884019561,
+            "stale_rechecks": 249.3,
+            "runner_utilization": 0.953658130230634,
+            "observed_graph_edge_density": 0.5907829977628636,
+            "realized_graph_recall": 0.7999850050614995,
+            "realized_graph_precision": 0.14369887912753712,
+            "escaped_defects": 0.0
+          },
+          "SSMQ-FilteredCone": {
+            "p95_latency_min": 443.73358880112767,
+            "p50_latency_min": 235.65298963575123,
+            "throughput_prs_per_hr": 6.411980604328558,
+            "merged_prs": 82.45,
+            "rejected_prs": 67.55,
+            "rejected_defective": 12.7,
+            "rejected_persistent_conflict": 50.6,
+            "rejected_false_flaky": 4.25,
+            "false_rejection_rate": 0.030972687962140116,
+            "mean_root_batch_size": 1.913750777141383,
+            "ci_minutes_per_merged_pr": 72.07138888075642,
+            "invalidation_rate": 0.5125213189267269,
+            "stale_rechecks": 248.45,
+            "runner_utilization": 0.9574111032903291,
+            "observed_graph_edge_density": 0.051006711409395965,
+            "realized_graph_recall": 0.06786648179909381,
+            "realized_graph_precision": 0.14131578947368423,
+            "escaped_defects": 0.0
+          }
+        },
+        "typescript": {
+          "SSMQ-NoCone": {
+            "p95_latency_min": 447.15921074379605,
+            "p50_latency_min": 224.40286529325857,
+            "throughput_prs_per_hr": 5.565186344101183,
+            "merged_prs": 69.5,
+            "rejected_prs": 80.5,
+            "rejected_defective": 12.0,
+            "rejected_persistent_conflict": 64.1,
+            "rejected_false_flaky": 4.4,
+            "false_rejection_rate": 0.03191220447029241,
+            "mean_root_batch_size": 2.005422722091893,
+            "ci_minutes_per_merged_pr": 83.69487593902907,
+            "invalidation_rate": 0.4222062557926448,
+            "stale_rechecks": 199.2,
+            "runner_utilization": 0.9682270424957959,
+            "observed_graph_edge_density": 0.9239373601789709,
+            "realized_graph_recall": 0.7999840125971645,
+            "realized_graph_precision": 0.1445859564164649,
+            "escaped_defects": 0.0
+          },
+          "SSMQ-FilteredCone": {
+            "p95_latency_min": 446.3054684894217,
+            "p50_latency_min": 230.44189500937188,
+            "throughput_prs_per_hr": 5.597264126384837,
+            "merged_prs": 69.55,
+            "rejected_prs": 80.45,
+            "rejected_defective": 12.0,
+            "rejected_persistent_conflict": 63.55,
+            "rejected_false_flaky": 4.9,
+            "false_rejection_rate": 0.03556766821019984,
+            "mean_root_batch_size": 1.7935884179507795,
+            "ci_minutes_per_merged_pr": 82.9299476992389,
+            "invalidation_rate": 0.4432888485384908,
+            "stale_rechecks": 208.1,
+            "runner_utilization": 0.9643680652318649,
+            "observed_graph_edge_density": 0.17369127516778524,
+            "realized_graph_recall": 0.15230080413857708,
+            "realized_graph_precision": 0.14634209170530654,
+            "escaped_defects": 0.0
+          }
+        }
+      },
+      "fc_minus_nc": {
+        "p95_latency_min": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "p95_latency_min",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": -12.560662084343273,
+          "ci95": [
+            -25.33272265826989,
+            0.245441575867618
+          ],
+          "sign_test_p": 0.26317596435546875,
+          "by_repo": {
+            "kubernetes": -12.71945144615454,
+            "nextjs": -24.10879255250092,
+            "typescript": -0.853742254374356
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 7,
+          "n_negative_blocks": 13
+        },
+        "false_rejection_rate": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "false_rejection_rate",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": -0.0004769837329997426,
+          "ci95": [
+            -0.0053099296208943296,
+            0.004027102323988081
+          ],
+          "sign_test_p": 0.5034446716308594,
+          "by_repo": {
+            "kubernetes": -0.00017941415063168234,
+            "nextjs": -0.0049070007882749764,
+            "typescript": 0.0036554637399074303
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 12,
+          "n_negative_blocks": 8
+        },
+        "stale_rechecks": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "stale_rechecks",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": 3.9666666666666663,
+          "ci95": [
+            -1.4333333333333336,
+            9.066666666666666
+          ],
+          "sign_test_p": 0.04138946533203125,
+          "by_repo": {
+            "kubernetes": 3.85,
+            "nextjs": -0.85,
+            "typescript": 8.9
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 15,
+          "n_negative_blocks": 5
+        },
+        "merged_prs": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "merged_prs",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": 0.26666666666666666,
+          "ci95": [
+            -0.3833333333333333,
+            0.9166666666666667
+          ],
+          "sign_test_p": 1.0,
+          "by_repo": {
+            "kubernetes": 0.05,
+            "nextjs": 0.7,
+            "typescript": 0.05
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 10,
+          "n_negative_blocks": 10
+        },
+        "rejected_persistent_conflict": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "rejected_persistent_conflict",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": -0.2,
+          "ci95": [
+            -0.7166666666666666,
+            0.33333333333333337
+          ],
+          "sign_test_p": 0.454498291015625,
+          "by_repo": {
+            "kubernetes": 0.0,
+            "nextjs": -0.05,
+            "typescript": -0.55
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 6,
+          "n_negative_blocks": 10
+        },
+        "ci_minutes_per_merged_pr": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "ci_minutes_per_merged_pr",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": -1.5291625984885955,
+          "ci95": [
+            -2.5182730275752614,
+            -0.5423113405590207
+          ],
+          "sign_test_p": 0.11531829833984375,
+          "by_repo": {
+            "kubernetes": -1.2635873091310479,
+            "nextjs": -2.558972246544557,
+            "typescript": -0.7649282397901814
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 6,
+          "n_negative_blocks": 14
+        },
+        "mean_root_batch_size": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "mean_root_batch_size",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": -0.14522203669526162,
+          "ci95": [
+            -0.16720456384081525,
+            -0.12145667422424859
+          ],
+          "sign_test_p": 1.9073486328125e-06,
+          "by_repo": {
+            "kubernetes": -0.13888104205328047,
+            "nextjs": -0.0849507638913906,
+            "typescript": -0.2118343041411138
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 0,
+          "n_negative_blocks": 20
+        }
+      }
+    },
+    "nominal_persist25": {
+      "meta": {
+        "load": "nominal",
+        "velocity_multiplier": 5.0,
+        "sweep": "persistent_share",
+        "ci_duration_min": 12.0,
+        "ci_duration_std": 2.0,
+        "persistent_conflict_share": 0.25
+      },
+      "by_strategy": {
+        "SSMQ-NoCone": {
+          "p95_latency_min": 362.1984348230247,
+          "p50_latency_min": 183.9526070633459,
+          "throughput_prs_per_hr": 4.840389233516149,
+          "merged_prs": 52.833333333333336,
+          "rejected_prs": 97.16666666666667,
+          "rejected_defective": 12.05,
+          "rejected_persistent_conflict": 82.88333333333334,
+          "rejected_false_flaky": 2.2333333333333334,
+          "false_rejection_rate": 0.01618955953634374,
+          "mean_root_batch_size": 2.0655868550942755,
+          "ci_minutes_per_merged_pr": 97.1547835823344,
+          "invalidation_rate": 0.29110249839372554,
+          "stale_rechecks": 120.15,
+          "runner_utilization": 0.9673624490999021,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "realized_graph_recall": 0.7999994350574844,
+          "realized_graph_precision": 0.1437512971855121,
+          "escaped_defects": 0.0
+        },
+        "SSMQ-FilteredCone": {
+          "p95_latency_min": 363.79916915097135,
+          "p50_latency_min": 185.6205925469411,
+          "throughput_prs_per_hr": 4.804439966948087,
+          "merged_prs": 52.483333333333334,
+          "rejected_prs": 97.51666666666667,
+          "rejected_defective": 12.05,
+          "rejected_persistent_conflict": 83.25,
+          "rejected_false_flaky": 2.216666666666667,
+          "false_rejection_rate": 0.016067338412217844,
+          "mean_root_batch_size": 1.899255997730174,
+          "ci_minutes_per_merged_pr": 98.05073824746347,
+          "invalidation_rate": 0.29917830718423527,
+          "stale_rechecks": 123.06666666666666,
+          "runner_utilization": 0.9673944599376052,
+          "observed_graph_edge_density": 0.10794929157345265,
+          "realized_graph_recall": 0.1112509057608944,
+          "realized_graph_precision": 0.14265190503800293,
+          "escaped_defects": 0.0
+        }
+      },
+      "by_repo_strategy": {
+        "kubernetes": {
+          "SSMQ-NoCone": {
+            "p95_latency_min": 426.67677506073585,
+            "p50_latency_min": 215.0677501807881,
+            "throughput_prs_per_hr": 4.877804630221267,
+            "merged_prs": 54.5,
+            "rejected_prs": 95.5,
+            "rejected_defective": 11.45,
+            "rejected_persistent_conflict": 82.1,
+            "rejected_false_flaky": 1.95,
+            "false_rejection_rate": 0.013972375335229359,
+            "mean_root_batch_size": 2.106640184347654,
+            "ci_minutes_per_merged_pr": 95.6273746630208,
+            "invalidation_rate": 0.2859912051918299,
+            "stale_rechecks": 120.05,
+            "runner_utilization": 0.9656955708690077,
+            "observed_graph_edge_density": 0.6853691275167785,
+            "realized_graph_recall": 0.8000292875137891,
+            "realized_graph_precision": 0.14296905601253426,
+            "escaped_defects": 0.0
+          },
+          "SSMQ-FilteredCone": {
+            "p95_latency_min": 411.76828014000273,
+            "p50_latency_min": 200.3671700701589,
+            "throughput_prs_per_hr": 4.901069814008151,
+            "merged_prs": 53.8,
+            "rejected_prs": 96.2,
+            "rejected_defective": 11.45,
+            "rejected_persistent_conflict": 82.7,
+            "rejected_false_flaky": 2.05,
+            "false_rejection_rate": 0.014775515853111857,
+            "mean_root_batch_size": 1.9425635802734846,
+            "ci_minutes_per_merged_pr": 94.26955952545157,
+            "invalidation_rate": 0.2945365572661426,
+            "stale_rechecks": 120.6,
+            "runner_utilization": 0.9572472542155204,
+            "observed_graph_edge_density": 0.09914988814317674,
+            "realized_graph_recall": 0.11358543134501235,
+            "realized_graph_precision": 0.14029783393501805,
+            "escaped_defects": 0.0
+          }
+        },
+        "nextjs": {
+          "SSMQ-NoCone": {
+            "p95_latency_min": 345.46672254226314,
+            "p50_latency_min": 185.1905716281094,
+            "throughput_prs_per_hr": 5.256693342299766,
+            "merged_prs": 58.75,
+            "rejected_prs": 91.25,
+            "rejected_defective": 12.7,
+            "rejected_persistent_conflict": 76.0,
+            "rejected_false_flaky": 2.55,
+            "false_rejection_rate": 0.018626280083815925,
+            "mean_root_batch_size": 2.032560751730255,
+            "ci_minutes_per_merged_pr": 88.2157049381739,
+            "invalidation_rate": 0.3440226888203418,
+            "stale_rechecks": 144.65,
+            "runner_utilization": 0.9599812148617539,
+            "observed_graph_edge_density": 0.5907829977628636,
+            "realized_graph_recall": 0.7999850050614995,
+            "realized_graph_precision": 0.14369887912753712,
+            "escaped_defects": 0.0
+          },
+          "SSMQ-FilteredCone": {
+            "p95_latency_min": 352.58737681458234,
+            "p50_latency_min": 196.08085810580488,
+            "throughput_prs_per_hr": 5.228945029083386,
+            "merged_prs": 58.9,
+            "rejected_prs": 91.1,
+            "rejected_defective": 12.7,
+            "rejected_persistent_conflict": 76.05,
+            "rejected_false_flaky": 2.35,
+            "false_rejection_rate": 0.01713577110283129,
+            "mean_root_batch_size": 1.9159897469538936,
+            "ci_minutes_per_merged_pr": 89.25082579135872,
+            "invalidation_rate": 0.35210501686062184,
+            "stale_rechecks": 149.65,
+            "runner_utilization": 0.9663478373332086,
+            "observed_graph_edge_density": 0.051006711409395965,
+            "realized_graph_recall": 0.06786648179909381,
+            "realized_graph_precision": 0.14131578947368423,
+            "escaped_defects": 0.0
+          }
+        },
+        "typescript": {
+          "SSMQ-NoCone": {
+            "p95_latency_min": 314.45180686607523,
+            "p50_latency_min": 151.59949938114016,
+            "throughput_prs_per_hr": 4.386669728027415,
+            "merged_prs": 45.25,
+            "rejected_prs": 104.75,
+            "rejected_defective": 12.0,
+            "rejected_persistent_conflict": 90.55,
+            "rejected_false_flaky": 2.2,
+            "false_rejection_rate": 0.015970023189985933,
+            "mean_root_batch_size": 2.057559629204917,
+            "ci_minutes_per_merged_pr": 107.62127114580846,
+            "invalidation_rate": 0.24329360116900478,
+            "stale_rechecks": 95.75,
+            "runner_utilization": 0.9764105615689447,
+            "observed_graph_edge_density": 0.9239373601789709,
+            "realized_graph_recall": 0.7999840125971645,
+            "realized_graph_precision": 0.1445859564164649,
+            "escaped_defects": 0.0
+          },
+          "SSMQ-FilteredCone": {
+            "p95_latency_min": 327.0418504983291,
+            "p50_latency_min": 160.41374946485956,
+            "throughput_prs_per_hr": 4.283305057752727,
+            "merged_prs": 44.75,
+            "rejected_prs": 105.25,
+            "rejected_defective": 12.0,
+            "rejected_persistent_conflict": 91.0,
+            "rejected_false_flaky": 2.25,
+            "false_rejection_rate": 0.016290728280710386,
+            "mean_root_batch_size": 1.8392146659631436,
+            "ci_minutes_per_merged_pr": 110.63182942558012,
+            "invalidation_rate": 0.25089334742594144,
+            "stale_rechecks": 98.95,
+            "runner_utilization": 0.9785882882640864,
+            "observed_graph_edge_density": 0.17369127516778524,
+            "realized_graph_recall": 0.15230080413857708,
+            "realized_graph_precision": 0.14634209170530654,
+            "escaped_defects": 0.0
+          }
+        }
+      },
+      "fc_minus_nc": {
+        "p95_latency_min": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "p95_latency_min",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": 1.6007343279466426,
+          "ci95": [
+            -8.53433413336013,
+            11.47279033362842
+          ],
+          "sign_test_p": 0.26317596435546875,
+          "by_repo": {
+            "kubernetes": -14.908494920733125,
+            "nextjs": 7.120654272319198,
+            "typescript": 12.590043632253854
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 13,
+          "n_negative_blocks": 7
+        },
+        "false_rejection_rate": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "false_rejection_rate",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": -0.00012222112412589388,
+          "ci95": [
+            -0.002489246860836332,
+            0.002283009798260598
+          ],
+          "sign_test_p": 0.26317596435546875,
+          "by_repo": {
+            "kubernetes": 0.0008031405178824964,
+            "nextjs": -0.0014905089809846314,
+            "typescript": 0.00032070509072445384
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 7,
+          "n_negative_blocks": 13
+        },
+        "stale_rechecks": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "stale_rechecks",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": 2.916666666666667,
+          "ci95": [
+            -0.6333333333333332,
+            6.65
+          ],
+          "sign_test_p": 0.8238029479980469,
+          "by_repo": {
+            "kubernetes": 0.55,
+            "nextjs": 5.0,
+            "typescript": 3.2
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 11,
+          "n_negative_blocks": 9
+        },
+        "merged_prs": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "merged_prs",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": -0.35,
+          "ci95": [
+            -0.7666666666666667,
+            0.05
+          ],
+          "sign_test_p": 0.332305908203125,
+          "by_repo": {
+            "kubernetes": -0.7,
+            "nextjs": 0.15,
+            "typescript": -0.5
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 6,
+          "n_negative_blocks": 11
+        },
+        "rejected_persistent_conflict": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "rejected_persistent_conflict",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": 0.36666666666666664,
+          "ci95": [
+            -0.08333333333333334,
+            0.85
+          ],
+          "sign_test_p": 0.6476058959960938,
+          "by_repo": {
+            "kubernetes": 0.6,
+            "nextjs": 0.05,
+            "typescript": 0.45
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 11,
+          "n_negative_blocks": 8
+        },
+        "ci_minutes_per_merged_pr": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "ci_minutes_per_merged_pr",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": 0.8959546651290715,
+          "ci95": [
+            -0.867146932328985,
+            2.6628381404574766
+          ],
+          "sign_test_p": 0.8238029479980469,
+          "by_repo": {
+            "kubernetes": -1.357815137569247,
+            "nextjs": 1.0351208531848157,
+            "typescript": 3.010558279771646
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 11,
+          "n_negative_blocks": 9
+        },
+        "mean_root_batch_size": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "mean_root_batch_size",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": -0.16633085736410141,
+          "ci95": [
+            -0.18046904245837386,
+            -0.15146748811260874
+          ],
+          "sign_test_p": 1.9073486328125e-06,
+          "by_repo": {
+            "kubernetes": -0.16407660407416952,
+            "nextjs": -0.11657100477636147,
+            "typescript": -0.21834496324177327
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 0,
+          "n_negative_blocks": 20
+        }
+      }
+    },
+    "saturated_default": {
+      "meta": {
+        "load": "saturated",
+        "velocity_multiplier": 15.0,
+        "sweep": "default",
+        "ci_duration_min": 12.0,
+        "ci_duration_std": 2.0,
+        "persistent_conflict_share": 0.03,
+        "v8_parity_condition": "saturated"
+      },
+      "by_strategy": {
+        "SSMQ-NoCone": {
+          "p95_latency_min": 766.3550467842778,
+          "p50_latency_min": 396.53226899343906,
+          "throughput_prs_per_hr": 6.9776286095489475,
+          "merged_prs": 105.9,
+          "rejected_prs": 44.1,
+          "rejected_defective": 12.05,
+          "rejected_persistent_conflict": 26.783333333333335,
+          "rejected_false_flaky": 5.266666666666667,
+          "false_rejection_rate": 0.03820329190165083,
+          "mean_root_batch_size": 2.0246052182407706,
+          "ci_minutes_per_merged_pr": 66.02873156412808,
+          "invalidation_rate": 0.6250679888191113,
+          "stale_rechecks": 355.5,
+          "runner_utilization": 0.9541284870099552,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "realized_graph_recall": 0.7999994350574844,
+          "realized_graph_precision": 0.1437512971855121,
+          "escaped_defects": 0.0
+        },
+        "SSMQ-FilteredCone": {
+          "p95_latency_min": 770.4793420143341,
+          "p50_latency_min": 394.90868757691976,
+          "throughput_prs_per_hr": 6.929729998637764,
+          "merged_prs": 105.91666666666667,
+          "rejected_prs": 44.083333333333336,
+          "rejected_defective": 12.05,
+          "rejected_persistent_conflict": 26.666666666666668,
+          "rejected_false_flaky": 5.366666666666666,
+          "false_rejection_rate": 0.038930662671105086,
+          "mean_root_batch_size": 1.8786731283366245,
+          "ci_minutes_per_merged_pr": 66.46487595219914,
+          "invalidation_rate": 0.6420451641643211,
+          "stale_rechecks": 367.55,
+          "runner_utilization": 0.9548458299904906,
+          "observed_graph_edge_density": 0.10794929157345265,
+          "realized_graph_recall": 0.1112509057608944,
+          "realized_graph_precision": 0.14265190503800293,
+          "escaped_defects": 0.0
+        }
+      },
+      "by_repo_strategy": {
+        "kubernetes": {
+          "SSMQ-NoCone": {
+            "p95_latency_min": 784.0688336614979,
+            "p50_latency_min": 416.2406898526683,
+            "throughput_prs_per_hr": 7.024997102851236,
+            "merged_prs": 107.2,
+            "rejected_prs": 42.8,
+            "rejected_defective": 11.45,
+            "rejected_persistent_conflict": 25.8,
+            "rejected_false_flaky": 5.55,
+            "false_rejection_rate": 0.04000600245315851,
+            "mean_root_batch_size": 2.0672897580139002,
+            "ci_minutes_per_merged_pr": 65.40707517572007,
+            "invalidation_rate": 0.6292306593698859,
+            "stale_rechecks": 360.75,
+            "runner_utilization": 0.9530069083788953,
+            "observed_graph_edge_density": 0.6853691275167785,
+            "realized_graph_recall": 0.8000292875137891,
+            "realized_graph_precision": 0.14296905601253426,
+            "escaped_defects": 0.0
+          },
+          "SSMQ-FilteredCone": {
+            "p95_latency_min": 788.5032273114582,
+            "p50_latency_min": 414.11269921264557,
+            "throughput_prs_per_hr": 7.039762763227666,
+            "merged_prs": 107.9,
+            "rejected_prs": 42.1,
+            "rejected_defective": 11.45,
+            "rejected_persistent_conflict": 26.2,
+            "rejected_false_flaky": 4.45,
+            "false_rejection_rate": 0.03199796814591634,
+            "mean_root_batch_size": 1.915338190554177,
+            "ci_minutes_per_merged_pr": 65.38671030502593,
+            "invalidation_rate": 0.6464771916430765,
+            "stale_rechecks": 371.55,
+            "runner_utilization": 0.9556494244988591,
+            "observed_graph_edge_density": 0.09914988814317674,
+            "realized_graph_recall": 0.11358543134501235,
+            "realized_graph_precision": 0.14029783393501805,
+            "escaped_defects": 0.0
+          }
+        },
+        "nextjs": {
+          "SSMQ-NoCone": {
+            "p95_latency_min": 732.185435171604,
+            "p50_latency_min": 375.43557354390606,
+            "throughput_prs_per_hr": 7.387492115001801,
+            "merged_prs": 109.05,
+            "rejected_prs": 40.95,
+            "rejected_defective": 12.7,
+            "rejected_persistent_conflict": 23.15,
+            "rejected_false_flaky": 5.1,
+            "false_rejection_rate": 0.03715494295555414,
+            "mean_root_batch_size": 2.0216937725341233,
+            "ci_minutes_per_merged_pr": 62.04513897477229,
+            "invalidation_rate": 0.6344538375284501,
+            "stale_rechecks": 349.35,
+            "runner_utilization": 0.9518823498858415,
+            "observed_graph_edge_density": 0.5907829977628636,
+            "realized_graph_recall": 0.7999850050614995,
+            "realized_graph_precision": 0.14369887912753712,
+            "escaped_defects": 0.0
+          },
+          "SSMQ-FilteredCone": {
+            "p95_latency_min": 740.2096831054375,
+            "p50_latency_min": 375.8900986020241,
+            "throughput_prs_per_hr": 7.265208985646905,
+            "merged_prs": 108.85,
+            "rejected_prs": 41.15,
+            "rejected_defective": 12.7,
+            "rejected_persistent_conflict": 23.1,
+            "rejected_false_flaky": 5.35,
+            "false_rejection_rate": 0.039027102355225426,
+            "mean_root_batch_size": 1.9202466294475122,
+            "ci_minutes_per_merged_pr": 62.89797404581229,
+            "invalidation_rate": 0.6496187247148526,
+            "stale_rechecks": 362.2,
+            "runner_utilization": 0.9498804095440947,
+            "observed_graph_edge_density": 0.051006711409395965,
+            "realized_graph_recall": 0.06786648179909381,
+            "realized_graph_precision": 0.14131578947368423,
+            "escaped_defects": 0.0
+          }
+        },
+        "typescript": {
+          "SSMQ-NoCone": {
+            "p95_latency_min": 782.8108715197312,
+            "p50_latency_min": 397.92054358374287,
+            "throughput_prs_per_hr": 6.520396610793807,
+            "merged_prs": 101.45,
+            "rejected_prs": 48.55,
+            "rejected_defective": 12.0,
+            "rejected_persistent_conflict": 31.4,
+            "rejected_false_flaky": 5.15,
+            "false_rejection_rate": 0.037448930296239843,
+            "mean_root_batch_size": 1.9848321241742883,
+            "ci_minutes_per_merged_pr": 70.63398054189187,
+            "invalidation_rate": 0.6115194695589977,
+            "stale_rechecks": 356.4,
+            "runner_utilization": 0.9574962027651287,
+            "observed_graph_edge_density": 0.9239373601789709,
+            "realized_graph_recall": 0.7999840125971645,
+            "realized_graph_precision": 0.1445859564164649,
+            "escaped_defects": 0.0
+          },
+          "SSMQ-FilteredCone": {
+            "p95_latency_min": 782.7251156261063,
+            "p50_latency_min": 394.7232649160895,
+            "throughput_prs_per_hr": 6.48421824703872,
+            "merged_prs": 101.0,
+            "rejected_prs": 49.0,
+            "rejected_defective": 12.0,
+            "rejected_persistent_conflict": 30.7,
+            "rejected_false_flaky": 6.3,
+            "false_rejection_rate": 0.045766917512173474,
+            "mean_root_batch_size": 1.800434565008184,
+            "ci_minutes_per_merged_pr": 71.10994350575918,
+            "invalidation_rate": 0.6300395761350344,
+            "stale_rechecks": 368.9,
+            "runner_utilization": 0.959007655928518,
+            "observed_graph_edge_density": 0.17369127516778524,
+            "realized_graph_recall": 0.15230080413857708,
+            "realized_graph_precision": 0.14634209170530654,
+            "escaped_defects": 0.0
+          }
+        }
+      },
+      "fc_minus_nc": {
+        "p95_latency_min": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "p95_latency_min",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": 4.124295230056293,
+          "ci95": [
+            -9.904435019516237,
+            18.126438635109302
+          ],
+          "sign_test_p": 0.8238029479980469,
+          "by_repo": {
+            "kubernetes": 4.4343936499603105,
+            "nextjs": 8.024247933833488,
+            "typescript": -0.08575589362491769
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 9,
+          "n_negative_blocks": 11
+        },
+        "false_rejection_rate": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "false_rejection_rate",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": 0.0007273707694542499,
+          "ci95": [
+            -0.00484452627668395,
+            0.005948022089320807
+          ],
+          "sign_test_p": 1.0,
+          "by_repo": {
+            "kubernetes": -0.008008034307242168,
+            "nextjs": 0.001872159399671285,
+            "typescript": 0.008317987215933633
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 10,
+          "n_negative_blocks": 10
+        },
+        "stale_rechecks": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "stale_rechecks",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": 12.05,
+          "ci95": [
+            5.8,
+            18.266666666666666
+          ],
+          "sign_test_p": 0.11531829833984375,
+          "by_repo": {
+            "kubernetes": 10.8,
+            "nextjs": 12.85,
+            "typescript": 12.5
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 14,
+          "n_negative_blocks": 6
+        },
+        "merged_prs": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "merged_prs",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": 0.016666666666666666,
+          "ci95": [
+            -0.6333333333333333,
+            0.7
+          ],
+          "sign_test_p": 1.0,
+          "by_repo": {
+            "kubernetes": 0.7,
+            "nextjs": -0.2,
+            "typescript": -0.45
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 9,
+          "n_negative_blocks": 10
+        },
+        "rejected_persistent_conflict": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "rejected_persistent_conflict",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": -0.11666666666666665,
+          "ci95": [
+            -0.5166666666666667,
+            0.3
+          ],
+          "sign_test_p": 0.454498291015625,
+          "by_repo": {
+            "kubernetes": 0.4,
+            "nextjs": -0.05,
+            "typescript": -0.7
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 6,
+          "n_negative_blocks": 10
+        },
+        "ci_minutes_per_merged_pr": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "ci_minutes_per_merged_pr",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": 0.4361443880710567,
+          "ci95": [
+            -0.470755956512433,
+            1.3443711337796258
+          ],
+          "sign_test_p": 0.5034446716308594,
+          "by_repo": {
+            "kubernetes": -0.020364870694140436,
+            "nextjs": 0.8528350710400009,
+            "typescript": 0.4759629638673097
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 12,
+          "n_negative_blocks": 8
+        },
+        "mean_root_batch_size": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "mean_root_batch_size",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": -0.14593208990414616,
+          "ci95": [
+            -0.164322605717138,
+            -0.1268080355266825
+          ],
+          "sign_test_p": 1.9073486328125e-06,
+          "by_repo": {
+            "kubernetes": -0.1519515674597232,
+            "nextjs": -0.10144714308661099,
+            "typescript": -0.1843975591661043
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 0,
+          "n_negative_blocks": 20
+        }
+      }
+    },
+    "saturated_ci16": {
+      "meta": {
+        "load": "saturated",
+        "velocity_multiplier": 15.0,
+        "sweep": "ci_duration",
+        "ci_duration_min": 16.0,
+        "ci_duration_std": 2.0,
+        "persistent_conflict_share": 0.03
+      },
+      "by_strategy": {
+        "SSMQ-NoCone": {
+          "p95_latency_min": 1075.735079002383,
+          "p50_latency_min": 549.5175877959024,
+          "throughput_prs_per_hr": 5.128721156132217,
+          "merged_prs": 105.88333333333334,
+          "rejected_prs": 44.11666666666667,
+          "rejected_defective": 12.05,
+          "rejected_persistent_conflict": 26.583333333333332,
+          "rejected_false_flaky": 5.483333333333333,
+          "false_rejection_rate": 0.0398220689521637,
+          "mean_root_batch_size": 2.005826314967147,
+          "ci_minutes_per_merged_pr": 90.01050308779283,
+          "invalidation_rate": 0.6308390634493267,
+          "stale_rechecks": 366.4166666666667,
+          "runner_utilization": 0.9554988162678385,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "realized_graph_recall": 0.7999994350574844,
+          "realized_graph_precision": 0.1437512971855121,
+          "escaped_defects": 0.0
+        },
+        "SSMQ-FilteredCone": {
+          "p95_latency_min": 1074.346414607096,
+          "p50_latency_min": 548.8977556317035,
+          "throughput_prs_per_hr": 5.105145620557958,
+          "merged_prs": 105.43333333333334,
+          "rejected_prs": 44.56666666666667,
+          "rejected_defective": 12.05,
+          "rejected_persistent_conflict": 26.633333333333333,
+          "rejected_false_flaky": 5.883333333333334,
+          "false_rejection_rate": 0.04270014111208219,
+          "mean_root_batch_size": 1.8563734922229378,
+          "ci_minutes_per_merged_pr": 90.40789337444134,
+          "invalidation_rate": 0.6473441048613796,
+          "stale_rechecks": 376.96666666666664,
+          "runner_utilization": 0.9560610775432755,
+          "observed_graph_edge_density": 0.10794929157345265,
+          "realized_graph_recall": 0.1112509057608944,
+          "realized_graph_precision": 0.14265190503800293,
+          "escaped_defects": 0.0
+        }
+      },
+      "by_repo_strategy": {
+        "kubernetes": {
+          "SSMQ-NoCone": {
+            "p95_latency_min": 1107.6719845534376,
+            "p50_latency_min": 589.0524633897434,
+            "throughput_prs_per_hr": 5.14073559935627,
+            "merged_prs": 108.05,
+            "rejected_prs": 41.95,
+            "rejected_defective": 11.45,
+            "rejected_persistent_conflict": 25.9,
+            "rejected_false_flaky": 4.6,
+            "false_rejection_rate": 0.03300057180396798,
+            "mean_root_batch_size": 2.019114953317416,
+            "ci_minutes_per_merged_pr": 89.75776987198034,
+            "invalidation_rate": 0.6361814371239705,
+            "stale_rechecks": 375.35,
+            "runner_utilization": 0.9563813054091073,
+            "observed_graph_edge_density": 0.6853691275167785,
+            "realized_graph_recall": 0.8000292875137891,
+            "realized_graph_precision": 0.14296905601253426,
+            "escaped_defects": 0.0
+          },
+          "SSMQ-FilteredCone": {
+            "p95_latency_min": 1073.4672226416164,
+            "p50_latency_min": 561.9692546326785,
+            "throughput_prs_per_hr": 5.242586240322906,
+            "merged_prs": 106.8,
+            "rejected_prs": 43.2,
+            "rejected_defective": 11.45,
+            "rejected_persistent_conflict": 25.8,
+            "rejected_false_flaky": 5.95,
+            "false_rejection_rate": 0.04302124865011917,
+            "mean_root_batch_size": 1.8908942041451353,
+            "ci_minutes_per_merged_pr": 87.8656035900236,
+            "invalidation_rate": 0.6522582071808237,
+            "stale_rechecks": 375.85,
+            "runner_utilization": 0.9569216041114069,
+            "observed_graph_edge_density": 0.09914988814317674,
+            "realized_graph_recall": 0.11358543134501235,
+            "realized_graph_precision": 0.14029783393501805,
+            "escaped_defects": 0.0
+          }
+        },
+        "nextjs": {
+          "SSMQ-NoCone": {
+            "p95_latency_min": 1021.775259066955,
+            "p50_latency_min": 501.9694802203975,
+            "throughput_prs_per_hr": 5.450877989006734,
+            "merged_prs": 108.3,
+            "rejected_prs": 41.7,
+            "rejected_defective": 12.7,
+            "rejected_persistent_conflict": 23.05,
+            "rejected_false_flaky": 5.95,
+            "false_rejection_rate": 0.04350420310744878,
+            "mean_root_batch_size": 2.0213388744268674,
+            "ci_minutes_per_merged_pr": 83.9225966006884,
+            "invalidation_rate": 0.6415079472662375,
+            "stale_rechecks": 357.45,
+            "runner_utilization": 0.949860595076572,
+            "observed_graph_edge_density": 0.5907829977628636,
+            "realized_graph_recall": 0.7999850050614995,
+            "realized_graph_precision": 0.14369887912753712,
+            "escaped_defects": 0.0
+          },
+          "SSMQ-FilteredCone": {
+            "p95_latency_min": 1043.406125456904,
+            "p50_latency_min": 529.7107535367029,
+            "throughput_prs_per_hr": 5.33621303896855,
+            "merged_prs": 108.5,
+            "rejected_prs": 41.5,
+            "rejected_defective": 12.7,
+            "rejected_persistent_conflict": 23.0,
+            "rejected_false_flaky": 5.8,
+            "false_rejection_rate": 0.04233176018195306,
+            "mean_root_batch_size": 1.8944885946571184,
+            "ci_minutes_per_merged_pr": 85.73116843877006,
+            "invalidation_rate": 0.6566775243334688,
+            "stale_rechecks": 374.6,
+            "runner_utilization": 0.9497160775108264,
+            "observed_graph_edge_density": 0.051006711409395965,
+            "realized_graph_recall": 0.06786648179909381,
+            "realized_graph_precision": 0.14131578947368423,
+            "escaped_defects": 0.0
+          }
+        },
+        "typescript": {
+          "SSMQ-NoCone": {
+            "p95_latency_min": 1097.7579933867564,
+            "p50_latency_min": 557.530819777566,
+            "throughput_prs_per_hr": 4.794549880033647,
+            "merged_prs": 101.3,
+            "rejected_prs": 48.7,
+            "rejected_defective": 12.0,
+            "rejected_persistent_conflict": 30.8,
+            "rejected_false_flaky": 5.9,
+            "false_rejection_rate": 0.04296143194507434,
+            "mean_root_batch_size": 1.977025117157157,
+            "ci_minutes_per_merged_pr": 96.35114279070974,
+            "invalidation_rate": 0.6148278059577721,
+            "stale_rechecks": 366.45,
+            "runner_utilization": 0.9602545483178364,
+            "observed_graph_edge_density": 0.9239373601789709,
+            "realized_graph_recall": 0.7999840125971645,
+            "realized_graph_precision": 0.1445859564164649,
+            "escaped_defects": 0.0
+          },
+          "SSMQ-FilteredCone": {
+            "p95_latency_min": 1106.165895722768,
+            "p50_latency_min": 555.0132587257292,
+            "throughput_prs_per_hr": 4.736637582382419,
+            "merged_prs": 101.0,
+            "rejected_prs": 49.0,
+            "rejected_defective": 12.0,
+            "rejected_persistent_conflict": 31.1,
+            "rejected_false_flaky": 5.9,
+            "false_rejection_rate": 0.04274741450417434,
+            "mean_root_batch_size": 1.7837376778665592,
+            "ci_minutes_per_merged_pr": 97.62690809453039,
+            "invalidation_rate": 0.6330965830698461,
+            "stale_rechecks": 380.45,
+            "runner_utilization": 0.9615455510075932,
+            "observed_graph_edge_density": 0.17369127516778524,
+            "realized_graph_recall": 0.15230080413857708,
+            "realized_graph_precision": 0.14634209170530654,
+            "escaped_defects": 0.0
+          }
+        }
+      },
+      "fc_minus_nc": {
+        "p95_latency_min": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "p95_latency_min",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": -1.3886643952868527,
+          "ci95": [
+            -20.82449843377802,
+            18.568463853950004
+          ],
+          "sign_test_p": 0.8238029479980469,
+          "by_repo": {
+            "kubernetes": -34.2047619118212,
+            "nextjs": 21.630866389948988,
+            "typescript": 8.407902336011654
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 9,
+          "n_negative_blocks": 11
+        },
+        "false_rejection_rate": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "false_rejection_rate",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": 0.002878072159918488,
+          "ci95": [
+            -0.004185927889790527,
+            0.009947770312197323
+          ],
+          "sign_test_p": 0.8238029479980469,
+          "by_repo": {
+            "kubernetes": 0.010020676846151183,
+            "nextjs": -0.0011724429254957186,
+            "typescript": -0.00021401744090000248
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 11,
+          "n_negative_blocks": 9
+        },
+        "stale_rechecks": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "stale_rechecks",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": 10.55,
+          "ci95": [
+            4.35,
+            16.766666666666666
+          ],
+          "sign_test_p": 0.11531829833984375,
+          "by_repo": {
+            "kubernetes": 0.5,
+            "nextjs": 17.15,
+            "typescript": 14.0
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 14,
+          "n_negative_blocks": 6
+        },
+        "merged_prs": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "merged_prs",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": -0.45,
+          "ci95": [
+            -1.3166666666666667,
+            0.4
+          ],
+          "sign_test_p": 0.480682373046875,
+          "by_repo": {
+            "kubernetes": -1.25,
+            "nextjs": 0.2,
+            "typescript": -0.3
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 7,
+          "n_negative_blocks": 11
+        },
+        "rejected_persistent_conflict": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "rejected_persistent_conflict",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": 0.05,
+          "ci95": [
+            -0.3333333333333333,
+            0.4166666666666667
+          ],
+          "sign_test_p": 1.0,
+          "by_repo": {
+            "kubernetes": -0.1,
+            "nextjs": -0.05,
+            "typescript": 0.3
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 8,
+          "n_negative_blocks": 8
+        },
+        "ci_minutes_per_merged_pr": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "ci_minutes_per_merged_pr",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": 0.39739028664851944,
+          "ci95": [
+            -1.0202852944912146,
+            1.8278938369065447
+          ],
+          "sign_test_p": 0.8238029479980469,
+          "by_repo": {
+            "kubernetes": -1.8921662819567473,
+            "nextjs": 1.8085718380816616,
+            "typescript": 1.2757653038206442
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 11,
+          "n_negative_blocks": 9
+        },
+        "mean_root_batch_size": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "mean_root_batch_size",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": -0.14945282274420918,
+          "ci95": [
+            -0.1701978362432477,
+            -0.12770253922518587
+          ],
+          "sign_test_p": 1.9073486328125e-06,
+          "by_repo": {
+            "kubernetes": -0.1282207491722809,
+            "nextjs": -0.12685027976974922,
+            "typescript": -0.19328743929059738
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 0,
+          "n_negative_blocks": 20
+        }
+      }
+    },
+    "saturated_ci20": {
+      "meta": {
+        "load": "saturated",
+        "velocity_multiplier": 15.0,
+        "sweep": "ci_duration",
+        "ci_duration_min": 20.0,
+        "ci_duration_std": 2.0,
+        "persistent_conflict_share": 0.03
+      },
+      "by_strategy": {
+        "SSMQ-NoCone": {
+          "p95_latency_min": 1380.2153254841717,
+          "p50_latency_min": 704.7481724696421,
+          "throughput_prs_per_hr": 4.060285821850743,
+          "merged_prs": 105.35,
+          "rejected_prs": 44.65,
+          "rejected_defective": 12.05,
+          "rejected_persistent_conflict": 26.366666666666667,
+          "rejected_false_flaky": 6.233333333333333,
+          "false_rejection_rate": 0.04528572054733717,
+          "mean_root_batch_size": 2.010707927133838,
+          "ci_minutes_per_merged_pr": 113.82809950878169,
+          "invalidation_rate": 0.6365399019804097,
+          "stale_rechecks": 373.01666666666665,
+          "runner_utilization": 0.9573757964138816,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "realized_graph_recall": 0.7999994350574844,
+          "realized_graph_precision": 0.1437512971855121,
+          "escaped_defects": 0.0
+        },
+        "SSMQ-FilteredCone": {
+          "p95_latency_min": 1387.6148409818747,
+          "p50_latency_min": 702.9732585498344,
+          "throughput_prs_per_hr": 4.021162810889935,
+          "merged_prs": 105.35,
+          "rejected_prs": 44.65,
+          "rejected_defective": 12.05,
+          "rejected_persistent_conflict": 26.166666666666668,
+          "rejected_false_flaky": 6.433333333333334,
+          "false_rejection_rate": 0.0465553672146657,
+          "mean_root_batch_size": 1.8614694045165368,
+          "ci_minutes_per_merged_pr": 114.72392889167305,
+          "invalidation_rate": 0.6530993617701917,
+          "stale_rechecks": 386.3,
+          "runner_utilization": 0.9562892855357162,
+          "observed_graph_edge_density": 0.10794929157345265,
+          "realized_graph_recall": 0.1112509057608944,
+          "realized_graph_precision": 0.14265190503800293,
+          "escaped_defects": 0.0
+        }
+      },
+      "by_repo_strategy": {
+        "kubernetes": {
+          "SSMQ-NoCone": {
+            "p95_latency_min": 1402.8958741891856,
+            "p50_latency_min": 734.4523349598925,
+            "throughput_prs_per_hr": 4.073050421902075,
+            "merged_prs": 107.0,
+            "rejected_prs": 43.0,
+            "rejected_defective": 11.45,
+            "rejected_persistent_conflict": 25.5,
+            "rejected_false_flaky": 6.05,
+            "false_rejection_rate": 0.043474447260861644,
+            "mean_root_batch_size": 2.0271696663152863,
+            "ci_minutes_per_merged_pr": 113.25544133103676,
+            "invalidation_rate": 0.6380645537253915,
+            "stale_rechecks": 378.0,
+            "runner_utilization": 0.9566161762108324,
+            "observed_graph_edge_density": 0.6853691275167785,
+            "realized_graph_recall": 0.8000292875137891,
+            "realized_graph_precision": 0.14296905601253426,
+            "escaped_defects": 0.0
+          },
+          "SSMQ-FilteredCone": {
+            "p95_latency_min": 1399.431966697043,
+            "p50_latency_min": 704.3520257322908,
+            "throughput_prs_per_hr": 4.101974645868733,
+            "merged_prs": 107.4,
+            "rejected_prs": 42.6,
+            "rejected_defective": 11.45,
+            "rejected_persistent_conflict": 25.45,
+            "rejected_false_flaky": 5.7,
+            "false_rejection_rate": 0.04090434835267958,
+            "mean_root_batch_size": 1.906972624593724,
+            "ci_minutes_per_merged_pr": 112.53574563519365,
+            "invalidation_rate": 0.6553500218287329,
+            "stale_rechecks": 387.9,
+            "runner_utilization": 0.9576246736971659,
+            "observed_graph_edge_density": 0.09914988814317674,
+            "realized_graph_recall": 0.11358543134501235,
+            "realized_graph_precision": 0.14029783393501805,
+            "escaped_defects": 0.0
+          }
+        },
+        "nextjs": {
+          "SSMQ-NoCone": {
+            "p95_latency_min": 1335.0980636769577,
+            "p50_latency_min": 668.1730029243035,
+            "throughput_prs_per_hr": 4.293315171919392,
+            "merged_prs": 108.2,
+            "rejected_prs": 41.8,
+            "rejected_defective": 12.7,
+            "rejected_persistent_conflict": 22.9,
+            "rejected_false_flaky": 6.2,
+            "false_rejection_rate": 0.04533192478194111,
+            "mean_root_batch_size": 2.024602589809903,
+            "ci_minutes_per_merged_pr": 107.12039956639144,
+            "invalidation_rate": 0.648431455911133,
+            "stale_rechecks": 368.95,
+            "runner_utilization": 0.9554333552321452,
+            "observed_graph_edge_density": 0.5907829977628636,
+            "realized_graph_recall": 0.7999850050614995,
+            "realized_graph_precision": 0.14369887912753712,
+            "escaped_defects": 0.0
+          },
+          "SSMQ-FilteredCone": {
+            "p95_latency_min": 1358.9642737916943,
+            "p50_latency_min": 682.6531029993927,
+            "throughput_prs_per_hr": 4.189643500795839,
+            "merged_prs": 108.05,
+            "rejected_prs": 41.95,
+            "rejected_defective": 12.7,
+            "rejected_persistent_conflict": 22.6,
+            "rejected_false_flaky": 6.65,
+            "false_rejection_rate": 0.04838389671700444,
+            "mean_root_batch_size": 1.8814733469969824,
+            "ci_minutes_per_merged_pr": 109.54500801475933,
+            "invalidation_rate": 0.6664026487356576,
+            "stale_rechecks": 388.45,
+            "runner_utilization": 0.953191737208269,
+            "observed_graph_edge_density": 0.051006711409395965,
+            "realized_graph_recall": 0.06786648179909381,
+            "realized_graph_precision": 0.14131578947368423,
+            "escaped_defects": 0.0
+          }
+        },
+        "typescript": {
+          "SSMQ-NoCone": {
+            "p95_latency_min": 1402.6520385863716,
+            "p50_latency_min": 711.6191795247303,
+            "throughput_prs_per_hr": 3.8144918717307634,
+            "merged_prs": 100.85,
+            "rejected_prs": 49.15,
+            "rejected_defective": 12.0,
+            "rejected_persistent_conflict": 30.7,
+            "rejected_false_flaky": 6.45,
+            "false_rejection_rate": 0.04705078959920876,
+            "mean_root_batch_size": 1.9803515252763255,
+            "ci_minutes_per_merged_pr": 121.10845762891691,
+            "invalidation_rate": 0.6231236963047047,
+            "stale_rechecks": 372.1,
+            "runner_utilization": 0.9600778577986672,
+            "observed_graph_edge_density": 0.9239373601789709,
+            "realized_graph_recall": 0.7999840125971645,
+            "realized_graph_precision": 0.1445859564164649,
+            "escaped_defects": 0.0
+          },
+          "SSMQ-FilteredCone": {
+            "p95_latency_min": 1404.4482824568868,
+            "p50_latency_min": 721.9146469178198,
+            "throughput_prs_per_hr": 3.771870286005234,
+            "merged_prs": 100.6,
+            "rejected_prs": 49.4,
+            "rejected_defective": 12.0,
+            "rejected_persistent_conflict": 30.45,
+            "rejected_false_flaky": 6.95,
+            "false_rejection_rate": 0.050377856574313096,
+            "mean_root_batch_size": 1.7959622419589043,
+            "ci_minutes_per_merged_pr": 122.0910330250662,
+            "invalidation_rate": 0.6375454147461846,
+            "stale_rechecks": 382.55,
+            "runner_utilization": 0.9580514457017142,
+            "observed_graph_edge_density": 0.17369127516778524,
+            "realized_graph_recall": 0.15230080413857708,
+            "realized_graph_precision": 0.14634209170530654,
+            "escaped_defects": 0.0
+          }
+        }
+      },
+      "fc_minus_nc": {
+        "p95_latency_min": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "p95_latency_min",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": 7.3995154977030015,
+          "ci95": [
+            -21.704555597976512,
+            34.797695073079765
+          ],
+          "sign_test_p": 0.5034446716308594,
+          "by_repo": {
+            "kubernetes": -3.4639074921426074,
+            "nextjs": 23.866210114736408,
+            "typescript": 1.7962438705152066
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 12,
+          "n_negative_blocks": 8
+        },
+        "false_rejection_rate": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "false_rejection_rate",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": 0.0012696466673285311,
+          "ci95": [
+            -0.006242498942412733,
+            0.008637352340959014
+          ],
+          "sign_test_p": 1.0,
+          "by_repo": {
+            "kubernetes": -0.0025700989081820585,
+            "nextjs": 0.0030519719350633233,
+            "typescript": 0.0033270669751043294
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 10,
+          "n_negative_blocks": 10
+        },
+        "stale_rechecks": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "stale_rechecks",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": 13.283333333333335,
+          "ci95": [
+            4.766666666666667,
+            21.7
+          ],
+          "sign_test_p": 0.0192108154296875,
+          "by_repo": {
+            "kubernetes": 9.9,
+            "nextjs": 19.5,
+            "typescript": 10.45
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 15,
+          "n_negative_blocks": 4
+        },
+        "merged_prs": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "merged_prs",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": 4.718447854656915e-17,
+          "ci95": [
+            -0.9833333333333332,
+            0.9833333333333334
+          ],
+          "sign_test_p": 0.8238029479980469,
+          "by_repo": {
+            "kubernetes": 0.4,
+            "nextjs": -0.15,
+            "typescript": -0.25
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 11,
+          "n_negative_blocks": 9
+        },
+        "rejected_persistent_conflict": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "rejected_persistent_conflict",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": -0.2,
+          "ci95": [
+            -0.5166666666666666,
+            0.13333333333333333
+          ],
+          "sign_test_p": 0.6476058959960938,
+          "by_repo": {
+            "kubernetes": -0.05,
+            "nextjs": -0.3,
+            "typescript": -0.25
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 8,
+          "n_negative_blocks": 11
+        },
+        "ci_minutes_per_merged_pr": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "ci_minutes_per_merged_pr",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": 0.895829382891361,
+          "ci95": [
+            -1.1008784492929684,
+            2.77976236357839
+          ],
+          "sign_test_p": 0.5034446716308594,
+          "by_repo": {
+            "kubernetes": -0.719695695843108,
+            "nextjs": 2.4246084483679113,
+            "typescript": 0.98257539614928
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 12,
+          "n_negative_blocks": 8
+        },
+        "mean_root_batch_size": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "mean_root_batch_size",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": -0.14923852261730153,
+          "ci95": [
+            -0.16960388715024804,
+            -0.13074808435076973
+          ],
+          "sign_test_p": 1.9073486328125e-06,
+          "by_repo": {
+            "kubernetes": -0.12019704172156236,
+            "nextjs": -0.14312924281292086,
+            "typescript": -0.18438928331742135
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 0,
+          "n_negative_blocks": 20
+        }
+      }
+    },
+    "saturated_persist10": {
+      "meta": {
+        "load": "saturated",
+        "velocity_multiplier": 15.0,
+        "sweep": "persistent_share",
+        "ci_duration_min": 12.0,
+        "ci_duration_std": 2.0,
+        "persistent_conflict_share": 0.1
+      },
+      "by_strategy": {
+        "SSMQ-NoCone": {
+          "p95_latency_min": 651.4569009095619,
+          "p50_latency_min": 325.946198494327,
+          "throughput_prs_per_hr": 5.915621795481614,
+          "merged_prs": 78.01666666666667,
+          "rejected_prs": 71.98333333333333,
+          "rejected_defective": 12.05,
+          "rejected_persistent_conflict": 56.766666666666666,
+          "rejected_false_flaky": 3.1666666666666665,
+          "false_rejection_rate": 0.023023847763105416,
+          "mean_root_batch_size": 2.0348223591355943,
+          "ci_minutes_per_merged_pr": 78.60105227737105,
+          "invalidation_rate": 0.45964513200757856,
+          "stale_rechecks": 227.55,
+          "runner_utilization": 0.9641026398868667,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "realized_graph_recall": 0.7999994350574844,
+          "realized_graph_precision": 0.1437512971855121,
+          "escaped_defects": 0.0
+        },
+        "SSMQ-FilteredCone": {
+          "p95_latency_min": 645.2597210457333,
+          "p50_latency_min": 322.0614690590122,
+          "throughput_prs_per_hr": 5.9709533942147734,
+          "merged_prs": 77.71666666666667,
+          "rejected_prs": 72.28333333333333,
+          "rejected_defective": 12.05,
+          "rejected_persistent_conflict": 56.96666666666667,
+          "rejected_false_flaky": 3.2666666666666666,
+          "false_rejection_rate": 0.02366749779183289,
+          "mean_root_batch_size": 1.864966766253104,
+          "ci_minutes_per_merged_pr": 77.82602713154117,
+          "invalidation_rate": 0.4736358544037255,
+          "stale_rechecks": 231.35,
+          "runner_utilization": 0.9627652130916924,
+          "observed_graph_edge_density": 0.10794929157345265,
+          "realized_graph_recall": 0.1112509057608944,
+          "realized_graph_precision": 0.14265190503800293,
+          "escaped_defects": 0.0
+        }
+      },
+      "by_repo_strategy": {
+        "kubernetes": {
+          "SSMQ-NoCone": {
+            "p95_latency_min": 690.2238815020729,
+            "p50_latency_min": 347.91295652026804,
+            "throughput_prs_per_hr": 5.881846795152951,
+            "merged_prs": 80.15,
+            "rejected_prs": 69.85,
+            "rejected_defective": 11.45,
+            "rejected_persistent_conflict": 55.55,
+            "rejected_false_flaky": 2.85,
+            "false_rejection_rate": 0.02061713124723977,
+            "mean_root_batch_size": 2.0661201290203683,
+            "ci_minutes_per_merged_pr": 78.75549769280805,
+            "invalidation_rate": 0.47179282810590617,
+            "stale_rechecks": 240.55,
+            "runner_utilization": 0.9611074342018833,
+            "observed_graph_edge_density": 0.6853691275167785,
+            "realized_graph_recall": 0.8000292875137891,
+            "realized_graph_precision": 0.14296905601253426,
+            "escaped_defects": 0.0
+          },
+          "SSMQ-FilteredCone": {
+            "p95_latency_min": 662.5659755074189,
+            "p50_latency_min": 334.3065431662884,
+            "throughput_prs_per_hr": 6.1452966383556715,
+            "merged_prs": 79.6,
+            "rejected_prs": 70.4,
+            "rejected_defective": 11.45,
+            "rejected_persistent_conflict": 55.45,
+            "rejected_false_flaky": 3.5,
+            "false_rejection_rate": 0.02511929829646531,
+            "mean_root_batch_size": 1.9238678806811218,
+            "ci_minutes_per_merged_pr": 75.44414317835766,
+            "invalidation_rate": 0.4858102858639632,
+            "stale_rechecks": 237.5,
+            "runner_utilization": 0.9629818505460742,
+            "observed_graph_edge_density": 0.09914988814317674,
+            "realized_graph_recall": 0.11358543134501235,
+            "realized_graph_precision": 0.14029783393501805,
+            "escaped_defects": 0.0
+          }
+        },
+        "nextjs": {
+          "SSMQ-NoCone": {
+            "p95_latency_min": 652.824515693069,
+            "p50_latency_min": 328.9356396565146,
+            "throughput_prs_per_hr": 6.241411879188107,
+            "merged_prs": 83.4,
+            "rejected_prs": 66.6,
+            "rejected_defective": 12.7,
+            "rejected_persistent_conflict": 50.65,
+            "rejected_false_flaky": 3.25,
+            "false_rejection_rate": 0.023713673886185494,
+            "mean_root_batch_size": 2.0305505092352076,
+            "ci_minutes_per_merged_pr": 74.12263155327186,
+            "invalidation_rate": 0.4883982075264761,
+            "stale_rechecks": 243.75,
+            "runner_utilization": 0.9612388414759441,
+            "observed_graph_edge_density": 0.5907829977628636,
+            "realized_graph_recall": 0.7999850050614995,
+            "realized_graph_precision": 0.14369887912753712,
+            "escaped_defects": 0.0
+          },
+          "SSMQ-FilteredCone": {
+            "p95_latency_min": 648.4276068452579,
+            "p50_latency_min": 323.807477904135,
+            "throughput_prs_per_hr": 6.223567424324438,
+            "merged_prs": 83.25,
+            "rejected_prs": 66.75,
+            "rejected_defective": 12.7,
+            "rejected_persistent_conflict": 51.25,
+            "rejected_false_flaky": 2.8,
+            "false_rejection_rate": 0.02049565725726814,
+            "mean_root_batch_size": 1.8729964989560628,
+            "ci_minutes_per_merged_pr": 74.28305921425901,
+            "invalidation_rate": 0.49928168252203886,
+            "stale_rechecks": 248.9,
+            "runner_utilization": 0.9596708908236943,
+            "observed_graph_edge_density": 0.051006711409395965,
+            "realized_graph_recall": 0.06786648179909381,
+            "realized_graph_precision": 0.14131578947368423,
+            "escaped_defects": 0.0
+          }
+        },
+        "typescript": {
+          "SSMQ-NoCone": {
+            "p95_latency_min": 611.3223055335441,
+            "p50_latency_min": 300.9899993061983,
+            "throughput_prs_per_hr": 5.6236067121037845,
+            "merged_prs": 70.5,
+            "rejected_prs": 79.5,
+            "rejected_defective": 12.0,
+            "rejected_persistent_conflict": 64.1,
+            "rejected_false_flaky": 3.4,
+            "false_rejection_rate": 0.024740738155890986,
+            "mean_root_batch_size": 2.007796439151207,
+            "ci_minutes_per_merged_pr": 82.92502758603322,
+            "invalidation_rate": 0.41874436039035345,
+            "stale_rechecks": 198.35,
+            "runner_utilization": 0.9699616439827725,
+            "observed_graph_edge_density": 0.9239373601789709,
+            "realized_graph_recall": 0.7999840125971645,
+            "realized_graph_precision": 0.1445859564164649,
+            "escaped_defects": 0.0
+          },
+          "SSMQ-FilteredCone": {
+            "p95_latency_min": 624.7855807845232,
+            "p50_latency_min": 308.0703861066132,
+            "throughput_prs_per_hr": 5.543996119964212,
+            "merged_prs": 70.3,
+            "rejected_prs": 79.7,
+            "rejected_defective": 12.0,
+            "rejected_persistent_conflict": 64.2,
+            "rejected_false_flaky": 3.5,
+            "false_rejection_rate": 0.025387537821765217,
+            "mean_root_batch_size": 1.798035919122127,
+            "ci_minutes_per_merged_pr": 83.75087900200684,
+            "invalidation_rate": 0.4358155948251746,
+            "stale_rechecks": 207.65,
+            "runner_utilization": 0.9656428979053084,
+            "observed_graph_edge_density": 0.17369127516778524,
+            "realized_graph_recall": 0.15230080413857708,
+            "realized_graph_precision": 0.14634209170530654,
+            "escaped_defects": 0.0
+          }
+        }
+      },
+      "fc_minus_nc": {
+        "p95_latency_min": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "p95_latency_min",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": -6.197179863828666,
+          "ci95": [
+            -19.08554784766882,
+            9.313325395369695
+          ],
+          "sign_test_p": 0.5034446716308594,
+          "by_repo": {
+            "kubernetes": -27.65790599465397,
+            "nextjs": -4.396908847811102,
+            "typescript": 13.463275250979075
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 8,
+          "n_negative_blocks": 12
+        },
+        "false_rejection_rate": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "false_rejection_rate",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": 0.0006436500287274715,
+          "ci95": [
+            -0.004597958423630864,
+            0.00589022710496826
+          ],
+          "sign_test_p": 1.0,
+          "by_repo": {
+            "kubernetes": 0.0045021670492255365,
+            "nextjs": -0.003218016628917353,
+            "typescript": 0.0006467996658742316
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 10,
+          "n_negative_blocks": 9
+        },
+        "stale_rechecks": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "stale_rechecks",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": 3.8,
+          "ci95": [
+            -1.1999999999999997,
+            9.333333333333332
+          ],
+          "sign_test_p": 0.26317596435546875,
+          "by_repo": {
+            "kubernetes": -3.05,
+            "nextjs": 5.15,
+            "typescript": 9.3
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 13,
+          "n_negative_blocks": 7
+        },
+        "merged_prs": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "merged_prs",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": -0.3,
+          "ci95": [
+            -0.9,
+            0.33333333333333337
+          ],
+          "sign_test_p": 0.5034446716308594,
+          "by_repo": {
+            "kubernetes": -0.55,
+            "nextjs": -0.15,
+            "typescript": -0.2
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 8,
+          "n_negative_blocks": 12
+        },
+        "rejected_persistent_conflict": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "rejected_persistent_conflict",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": 0.19999999999999998,
+          "ci95": [
+            -0.65,
+            1.0
+          ],
+          "sign_test_p": 0.480682373046875,
+          "by_repo": {
+            "kubernetes": -0.1,
+            "nextjs": 0.6,
+            "typescript": 0.1
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 11,
+          "n_negative_blocks": 7
+        },
+        "ci_minutes_per_merged_pr": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "ci_minutes_per_merged_pr",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": -0.7750251458298756,
+          "ci95": [
+            -2.1431998936897356,
+            0.589005417412167
+          ],
+          "sign_test_p": 0.8238029479980469,
+          "by_repo": {
+            "kubernetes": -3.3113545144503957,
+            "nextjs": 0.16042766098716185,
+            "typescript": 0.8258514159736073
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 9,
+          "n_negative_blocks": 11
+        },
+        "mean_root_batch_size": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "mean_root_batch_size",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": -0.1698555928824904,
+          "ci95": [
+            -0.18739619783999803,
+            -0.1537681529503417
+          ],
+          "sign_test_p": 1.9073486328125e-06,
+          "by_repo": {
+            "kubernetes": -0.14225224833924605,
+            "nextjs": -0.1575540102791452,
+            "typescript": -0.20976052002908005
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 0,
+          "n_negative_blocks": 20
+        }
+      }
+    },
+    "saturated_persist25": {
+      "meta": {
+        "load": "saturated",
+        "velocity_multiplier": 15.0,
+        "sweep": "persistent_share",
+        "ci_duration_min": 12.0,
+        "ci_duration_std": 2.0,
+        "persistent_conflict_share": 0.25
+      },
+      "by_strategy": {
+        "SSMQ-NoCone": {
+          "p95_latency_min": 520.3965188224548,
+          "p50_latency_min": 246.91572401085295,
+          "throughput_prs_per_hr": 4.821700079785641,
+          "merged_prs": 53.2,
+          "rejected_prs": 96.8,
+          "rejected_defective": 12.05,
+          "rejected_persistent_conflict": 82.76666666666667,
+          "rejected_false_flaky": 1.9833333333333334,
+          "false_rejection_rate": 0.014389684496639661,
+          "mean_root_batch_size": 2.0959609402637356,
+          "ci_minutes_per_merged_pr": 97.59897219952012,
+          "invalidation_rate": 0.28648948506059985,
+          "stale_rechecks": 119.16666666666667,
+          "runner_utilization": 0.9694070983721386,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "realized_graph_recall": 0.7999994350574844,
+          "realized_graph_precision": 0.1437512971855121,
+          "escaped_defects": 0.0
+        },
+        "SSMQ-FilteredCone": {
+          "p95_latency_min": 515.1390449581503,
+          "p50_latency_min": 241.7384594762225,
+          "throughput_prs_per_hr": 4.862228195247548,
+          "merged_prs": 52.85,
+          "rejected_prs": 97.15,
+          "rejected_defective": 12.05,
+          "rejected_persistent_conflict": 82.93333333333334,
+          "rejected_false_flaky": 2.1666666666666665,
+          "false_rejection_rate": 0.015736321800065952,
+          "mean_root_batch_size": 1.9079649163760686,
+          "ci_minutes_per_merged_pr": 97.155693441801,
+          "invalidation_rate": 0.2989593975940694,
+          "stale_rechecks": 123.18333333333334,
+          "runner_utilization": 0.9719390192507281,
+          "observed_graph_edge_density": 0.10794929157345265,
+          "realized_graph_recall": 0.1112509057608944,
+          "realized_graph_precision": 0.14265190503800293,
+          "escaped_defects": 0.0
+        }
+      },
+      "by_repo_strategy": {
+        "kubernetes": {
+          "SSMQ-NoCone": {
+            "p95_latency_min": 545.2850382653435,
+            "p50_latency_min": 256.31211567831417,
+            "throughput_prs_per_hr": 4.834818692436745,
+            "merged_prs": 54.1,
+            "rejected_prs": 95.9,
+            "rejected_defective": 11.45,
+            "rejected_persistent_conflict": 82.75,
+            "rejected_false_flaky": 1.7,
+            "false_rejection_rate": 0.01220883821329544,
+            "mean_root_batch_size": 2.1329849930801146,
+            "ci_minutes_per_merged_pr": 96.36336244709922,
+            "invalidation_rate": 0.29183534073054235,
+            "stale_rechecks": 122.5,
+            "runner_utilization": 0.9655186196147694,
+            "observed_graph_edge_density": 0.6853691275167785,
+            "realized_graph_recall": 0.8000292875137891,
+            "realized_graph_precision": 0.14296905601253426,
+            "escaped_defects": 0.0
+          },
+          "SSMQ-FilteredCone": {
+            "p95_latency_min": 547.0866316425988,
+            "p50_latency_min": 248.3341022937903,
+            "throughput_prs_per_hr": 4.938209402530675,
+            "merged_prs": 54.75,
+            "rejected_prs": 95.25,
+            "rejected_defective": 11.45,
+            "rejected_persistent_conflict": 81.95,
+            "rejected_false_flaky": 1.85,
+            "false_rejection_rate": 0.013295766610802192,
+            "mean_root_batch_size": 1.9579487739396388,
+            "ci_minutes_per_merged_pr": 94.58806565710992,
+            "invalidation_rate": 0.3013844644451181,
+            "stale_rechecks": 126.15,
+            "runner_utilization": 0.9677149394268814,
+            "observed_graph_edge_density": 0.09914988814317674,
+            "realized_graph_recall": 0.11358543134501235,
+            "realized_graph_precision": 0.14029783393501805,
+            "escaped_defects": 0.0
+          }
+        },
+        "nextjs": {
+          "SSMQ-NoCone": {
+            "p95_latency_min": 533.5545039037438,
+            "p50_latency_min": 264.7524740924581,
+            "throughput_prs_per_hr": 5.228313988847317,
+            "merged_prs": 59.65,
+            "rejected_prs": 90.35,
+            "rejected_defective": 12.7,
+            "rejected_persistent_conflict": 75.7,
+            "rejected_false_flaky": 1.95,
+            "false_rejection_rate": 0.014249247170085902,
+            "mean_root_batch_size": 2.0857059276175702,
+            "ci_minutes_per_merged_pr": 89.04303132171466,
+            "invalidation_rate": 0.3255214102154128,
+            "stale_rechecks": 139.75,
+            "runner_utilization": 0.9672821961144014,
+            "observed_graph_edge_density": 0.5907829977628636,
+            "realized_graph_recall": 0.7999850050614995,
+            "realized_graph_precision": 0.14369887912753712,
+            "escaped_defects": 0.0
+          },
+          "SSMQ-FilteredCone": {
+            "p95_latency_min": 526.113084555728,
+            "p50_latency_min": 257.4541145105386,
+            "throughput_prs_per_hr": 5.227680824026991,
+            "merged_prs": 58.65,
+            "rejected_prs": 91.35,
+            "rejected_defective": 12.7,
+            "rejected_persistent_conflict": 76.2,
+            "rejected_false_flaky": 2.45,
+            "false_rejection_rate": 0.017941725449525537,
+            "mean_root_batch_size": 1.9317646817200391,
+            "ci_minutes_per_merged_pr": 89.8286201943136,
+            "invalidation_rate": 0.3361078441459372,
+            "stale_rechecks": 143.3,
+            "runner_utilization": 0.9752405796721405,
+            "observed_graph_edge_density": 0.051006711409395965,
+            "realized_graph_recall": 0.06786648179909381,
+            "realized_graph_precision": 0.14131578947368423,
+            "escaped_defects": 0.0
+          }
+        },
+        "typescript": {
+          "SSMQ-NoCone": {
+            "p95_latency_min": 482.35001429827696,
+            "p50_latency_min": 219.68258226178654,
+            "throughput_prs_per_hr": 4.40196755807286,
+            "merged_prs": 45.85,
+            "rejected_prs": 104.15,
+            "rejected_defective": 12.0,
+            "rejected_persistent_conflict": 89.85,
+            "rejected_false_flaky": 2.3,
+            "false_rejection_rate": 0.01671096810653764,
+            "mean_root_batch_size": 2.069191900093522,
+            "ci_minutes_per_merged_pr": 107.39052282974646,
+            "invalidation_rate": 0.24211170423584427,
+            "stale_rechecks": 95.25,
+            "runner_utilization": 0.9754204793872449,
+            "observed_graph_edge_density": 0.9239373601789709,
+            "realized_graph_recall": 0.7999840125971645,
+            "realized_graph_precision": 0.1445859564164649,
+            "escaped_defects": 0.0
+          },
+          "SSMQ-FilteredCone": {
+            "p95_latency_min": 472.21741867612417,
+            "p50_latency_min": 219.42716162433854,
+            "throughput_prs_per_hr": 4.420794359184978,
+            "merged_prs": 45.15,
+            "rejected_prs": 104.85,
+            "rejected_defective": 12.0,
+            "rejected_persistent_conflict": 90.65,
+            "rejected_false_flaky": 2.2,
+            "false_rejection_rate": 0.015971473339870132,
+            "mean_root_batch_size": 1.834181293468528,
+            "ci_minutes_per_merged_pr": 107.05039447397948,
+            "invalidation_rate": 0.25938588419115294,
+            "stale_rechecks": 100.1,
+            "runner_utilization": 0.9728615386531624,
+            "observed_graph_edge_density": 0.17369127516778524,
+            "realized_graph_recall": 0.15230080413857708,
+            "realized_graph_precision": 0.14634209170530654,
+            "escaped_defects": 0.0
+          }
+        }
+      },
+      "fc_minus_nc": {
+        "p95_latency_min": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "p95_latency_min",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": -5.25747386430442,
+          "ci95": [
+            -17.670141818548096,
+            7.38058449122755
+          ],
+          "sign_test_p": 0.8238029479980469,
+          "by_repo": {
+            "kubernetes": 1.801593377255196,
+            "nextjs": -7.441419348015705,
+            "typescript": -10.13259562215275
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 9,
+          "n_negative_blocks": 11
+        },
+        "false_rejection_rate": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "false_rejection_rate",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": 0.0013466373034262918,
+          "ci95": [
+            -0.0008820364671104812,
+            0.0036082364085445683
+          ],
+          "sign_test_p": 0.359283447265625,
+          "by_repo": {
+            "kubernetes": 0.0010869283975067521,
+            "nextjs": 0.0036924782794396337,
+            "typescript": -0.0007394947666675099
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 12,
+          "n_negative_blocks": 7
+        },
+        "stale_rechecks": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "stale_rechecks",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": 4.016666666666667,
+          "ci95": [
+            0.18333333333333318,
+            7.4833333333333325
+          ],
+          "sign_test_p": 0.04138946533203125,
+          "by_repo": {
+            "kubernetes": 3.65,
+            "nextjs": 3.55,
+            "typescript": 4.85
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 15,
+          "n_negative_blocks": 5
+        },
+        "merged_prs": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "merged_prs",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": -0.35,
+          "ci95": [
+            -0.85,
+            0.14999999999999997
+          ],
+          "sign_test_p": 0.210113525390625,
+          "by_repo": {
+            "kubernetes": 0.65,
+            "nextjs": -1.0,
+            "typescript": -0.7
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 5,
+          "n_negative_blocks": 11
+        },
+        "rejected_persistent_conflict": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "rejected_persistent_conflict",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": 0.16666666666666669,
+          "ci95": [
+            -0.3166666666666667,
+            0.65
+          ],
+          "sign_test_p": 0.8145294189453125,
+          "by_repo": {
+            "kubernetes": -0.8,
+            "nextjs": 0.5,
+            "typescript": 0.8
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 10,
+          "n_negative_blocks": 8
+        },
+        "ci_minutes_per_merged_pr": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "ci_minutes_per_merged_pr",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": -0.4432787577191126,
+          "ci95": [
+            -2.477338706781932,
+            1.5315916944994186
+          ],
+          "sign_test_p": 0.5034446716308594,
+          "by_repo": {
+            "kubernetes": -1.7752967899892993,
+            "nextjs": 0.7855888725989317,
+            "typescript": -0.34012835576697
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 8,
+          "n_negative_blocks": 12
+        },
+        "mean_root_batch_size": {
+          "left": "SSMQ-FilteredCone",
+          "right": "SSMQ-NoCone",
+          "metric": "mean_root_batch_size",
+          "definition": "SSMQ-FilteredCone minus SSMQ-NoCone",
+          "difference": -0.18799602388766684,
+          "ci95": [
+            -0.20067149515505003,
+            -0.17440723572128475
+          ],
+          "sign_test_p": 1.9073486328125e-06,
+          "by_repo": {
+            "kubernetes": -0.17503621914047576,
+            "nextjs": -0.1539412458975308,
+            "typescript": -0.235010606624994
+          },
+          "n_blocks": 20,
+          "n_positive_blocks": 0,
+          "n_negative_blocks": 20
+        }
+      }
+    }
+  },
+  "gap_shifts_vs_default": {
+    "nominal_ci16": {
+      "anchor": "nominal_default",
+      "p95_latency_min": {
+        "left": "SSMQ-FilteredCone",
+        "right": "SSMQ-NoCone",
+        "metric": "p95_latency_min",
+        "definition": "(SSMQ-FilteredCone - SSMQ-NoCone)_target minus (SSMQ-FilteredCone - SSMQ-NoCone)_default",
+        "difference": 7.700831602448065,
+        "ci95": [
+          -17.245900458578085,
+          30.12751579068219
+        ],
+        "sign_test_p": 0.8238029479980469,
+        "by_repo": {
+          "kubernetes": 8.651648759963942,
+          "nextjs": 37.03253023822685,
+          "typescript": -22.581684190846595
+        },
+        "n_blocks": 20,
+        "n_positive_blocks": 11,
+        "n_negative_blocks": 9
+      },
+      "false_rejection_rate": {
+        "left": "SSMQ-FilteredCone",
+        "right": "SSMQ-NoCone",
+        "metric": "false_rejection_rate",
+        "definition": "(SSMQ-FilteredCone - SSMQ-NoCone)_target minus (SSMQ-FilteredCone - SSMQ-NoCone)_default",
+        "difference": -0.00812972963949054,
+        "ci95": [
+          -0.016364429517157435,
+          0.00026189154249428223
+        ],
+        "sign_test_p": 0.26317596435546875,
+        "by_repo": {
+          "kubernetes": -0.015520921836424692,
+          "nextjs": -0.013544524742690734,
+          "typescript": 0.004676257660643806
+        },
+        "n_blocks": 20,
+        "n_positive_blocks": 7,
+        "n_negative_blocks": 13
+      },
+      "stale_rechecks": {
+        "left": "SSMQ-FilteredCone",
+        "right": "SSMQ-NoCone",
+        "metric": "stale_rechecks",
+        "definition": "(SSMQ-FilteredCone - SSMQ-NoCone)_target minus (SSMQ-FilteredCone - SSMQ-NoCone)_default",
+        "difference": 4.85,
+        "ci95": [
+          -3.666666666666667,
+          12.85
+        ],
+        "sign_test_p": 0.26317596435546875,
+        "by_repo": {
+          "kubernetes": 2.9,
+          "nextjs": 14.25,
+          "typescript": -2.6
+        },
+        "n_blocks": 20,
+        "n_positive_blocks": 13,
+        "n_negative_blocks": 7
+      }
+    },
+    "nominal_ci20": {
+      "anchor": "nominal_default",
+      "p95_latency_min": {
+        "left": "SSMQ-FilteredCone",
+        "right": "SSMQ-NoCone",
+        "metric": "p95_latency_min",
+        "definition": "(SSMQ-FilteredCone - SSMQ-NoCone)_target minus (SSMQ-FilteredCone - SSMQ-NoCone)_default",
+        "difference": 31.881475958362095,
+        "ci95": [
+          8.132059972911986,
+          55.77285121944514
+        ],
+        "sign_test_p": 0.01181793212890625,
+        "by_repo": {
+          "kubernetes": 54.019989305090704,
+          "nextjs": 62.84919130146121,
+          "typescript": -21.22475273146562
+        },
+        "n_blocks": 20,
+        "n_positive_blocks": 16,
+        "n_negative_blocks": 4
+      },
+      "false_rejection_rate": {
+        "left": "SSMQ-FilteredCone",
+        "right": "SSMQ-NoCone",
+        "metric": "false_rejection_rate",
+        "definition": "(SSMQ-FilteredCone - SSMQ-NoCone)_target minus (SSMQ-FilteredCone - SSMQ-NoCone)_default",
+        "difference": -0.014788695079170425,
+        "ci95": [
+          -0.02334453684575529,
+          -0.006343038722581332
+        ],
+        "sign_test_p": 0.04138946533203125,
+        "by_repo": {
+          "kubernetes": -0.020231617508118492,
+          "nextjs": -0.026224835170059406,
+          "typescript": 0.0020903674406666218
+        },
+        "n_blocks": 20,
+        "n_positive_blocks": 5,
+        "n_negative_blocks": 15
+      },
+      "stale_rechecks": {
+        "left": "SSMQ-FilteredCone",
+        "right": "SSMQ-NoCone",
+        "metric": "stale_rechecks",
+        "definition": "(SSMQ-FilteredCone - SSMQ-NoCone)_target minus (SSMQ-FilteredCone - SSMQ-NoCone)_default",
+        "difference": 13.95,
+        "ci95": [
+          5.6,
+          22.016666666666666
+        ],
+        "sign_test_p": 0.04138946533203125,
+        "by_repo": {
+          "kubernetes": 15.9,
+          "nextjs": 23.25,
+          "typescript": 2.7
+        },
+        "n_blocks": 20,
+        "n_positive_blocks": 15,
+        "n_negative_blocks": 5
+      }
+    },
+    "nominal_persist10": {
+      "anchor": "nominal_default",
+      "p95_latency_min": {
+        "left": "SSMQ-FilteredCone",
+        "right": "SSMQ-NoCone",
+        "metric": "p95_latency_min",
+        "definition": "(SSMQ-FilteredCone - SSMQ-NoCone)_target minus (SSMQ-FilteredCone - SSMQ-NoCone)_default",
+        "difference": 3.0222790808209954,
+        "ci95": [
+          -12.989674337006932,
+          19.062059672456854
+        ],
+        "sign_test_p": 0.8238029479980469,
+        "by_repo": {
+          "kubernetes": 3.964435568069328,
+          "nextjs": -11.454659641190327,
+          "typescript": 16.557061315583987
+        },
+        "n_blocks": 20,
+        "n_positive_blocks": 11,
+        "n_negative_blocks": 9
+      },
+      "false_rejection_rate": {
+        "left": "SSMQ-FilteredCone",
+        "right": "SSMQ-NoCone",
+        "metric": "false_rejection_rate",
+        "definition": "(SSMQ-FilteredCone - SSMQ-NoCone)_target minus (SSMQ-FilteredCone - SSMQ-NoCone)_default",
+        "difference": -0.008632456211486896,
+        "ci95": [
+          -0.015325490600221323,
+          -0.0024767879873613206
+        ],
+        "sign_test_p": 0.11531829833984375,
+        "by_repo": {
+          "kubernetes": -0.014428521717188478,
+          "nextjs": -0.007875993856256484,
+          "typescript": -0.003592853061015723
+        },
+        "n_blocks": 20,
+        "n_positive_blocks": 6,
+        "n_negative_blocks": 14
+      },
+      "stale_rechecks": {
+        "left": "SSMQ-FilteredCone",
+        "right": "SSMQ-NoCone",
+        "metric": "stale_rechecks",
+        "definition": "(SSMQ-FilteredCone - SSMQ-NoCone)_target minus (SSMQ-FilteredCone - SSMQ-NoCone)_default",
+        "difference": 2.05,
+        "ci95": [
+          -6.116666666666666,
+          9.983333333333333
+        ],
+        "sign_test_p": 0.8238029479980469,
+        "by_repo": {
+          "kubernetes": -0.85,
+          "nextjs": -2.4,
+          "typescript": 9.4
+        },
+        "n_blocks": 20,
+        "n_positive_blocks": 11,
+        "n_negative_blocks": 9
+      }
+    },
+    "nominal_persist25": {
+      "anchor": "nominal_default",
+      "p95_latency_min": {
+        "left": "SSMQ-FilteredCone",
+        "right": "SSMQ-NoCone",
+        "metric": "p95_latency_min",
+        "definition": "(SSMQ-FilteredCone - SSMQ-NoCone)_target minus (SSMQ-FilteredCone - SSMQ-NoCone)_default",
+        "difference": 17.183675493110908,
+        "ci95": [
+          1.4221268119836752,
+          32.68064973801308
+        ],
+        "sign_test_p": 0.26317596435546875,
+        "by_repo": {
+          "kubernetes": 1.7753920934907428,
+          "nextjs": 19.77478718362979,
+          "typescript": 30.000847202212196
+        },
+        "n_blocks": 20,
+        "n_positive_blocks": 13,
+        "n_negative_blocks": 7
+      },
+      "false_rejection_rate": {
+        "left": "SSMQ-FilteredCone",
+        "right": "SSMQ-NoCone",
+        "metric": "false_rejection_rate",
+        "definition": "(SSMQ-FilteredCone - SSMQ-NoCone)_target minus (SSMQ-FilteredCone - SSMQ-NoCone)_default",
+        "difference": -0.008277693602613045,
+        "ci95": [
+          -0.014937638346644336,
+          -0.0023757094731870097
+        ],
+        "sign_test_p": 0.26317596435546875,
+        "by_repo": {
+          "kubernetes": -0.013445967048674299,
+          "nextjs": -0.004459502048966139,
+          "typescript": -0.0069276117101987
+        },
+        "n_blocks": 20,
+        "n_positive_blocks": 7,
+        "n_negative_blocks": 13
+      },
+      "stale_rechecks": {
+        "left": "SSMQ-FilteredCone",
+        "right": "SSMQ-NoCone",
+        "metric": "stale_rechecks",
+        "definition": "(SSMQ-FilteredCone - SSMQ-NoCone)_target minus (SSMQ-FilteredCone - SSMQ-NoCone)_default",
+        "difference": 1.0000000000000002,
+        "ci95": [
+          -6.9,
+          8.833333333333332
+        ],
+        "sign_test_p": 0.8238029479980469,
+        "by_repo": {
+          "kubernetes": -4.15,
+          "nextjs": 3.45,
+          "typescript": 3.7
+        },
+        "n_blocks": 20,
+        "n_positive_blocks": 11,
+        "n_negative_blocks": 9
+      }
+    },
+    "saturated_ci16": {
+      "anchor": "saturated_default",
+      "p95_latency_min": {
+        "left": "SSMQ-FilteredCone",
+        "right": "SSMQ-NoCone",
+        "metric": "p95_latency_min",
+        "definition": "(SSMQ-FilteredCone - SSMQ-NoCone)_target minus (SSMQ-FilteredCone - SSMQ-NoCone)_default",
+        "difference": -5.5129596253431465,
+        "ci95": [
+          -25.70285934861456,
+          15.735056158051965
+        ],
+        "sign_test_p": 0.5034446716308594,
+        "by_repo": {
+          "kubernetes": -38.639155561781514,
+          "nextjs": 13.606618456115502,
+          "typescript": 8.493658229636571
+        },
+        "n_blocks": 20,
+        "n_positive_blocks": 8,
+        "n_negative_blocks": 12
+      },
+      "false_rejection_rate": {
+        "left": "SSMQ-FilteredCone",
+        "right": "SSMQ-NoCone",
+        "metric": "false_rejection_rate",
+        "definition": "(SSMQ-FilteredCone - SSMQ-NoCone)_target minus (SSMQ-FilteredCone - SSMQ-NoCone)_default",
+        "difference": 0.0021507013904642374,
+        "ci95": [
+          -0.00471839259986854,
+          0.009196345231715485
+        ],
+        "sign_test_p": 0.8238029479980469,
+        "by_repo": {
+          "kubernetes": 0.01802871115339335,
+          "nextjs": -0.003044602325167004,
+          "typescript": -0.008532004656833635
+        },
+        "n_blocks": 20,
+        "n_positive_blocks": 9,
+        "n_negative_blocks": 11
+      },
+      "stale_rechecks": {
+        "left": "SSMQ-FilteredCone",
+        "right": "SSMQ-NoCone",
+        "metric": "stale_rechecks",
+        "definition": "(SSMQ-FilteredCone - SSMQ-NoCone)_target minus (SSMQ-FilteredCone - SSMQ-NoCone)_default",
+        "difference": -1.4999999999999998,
+        "ci95": [
+          -9.533333333333333,
+          7.25
+        ],
+        "sign_test_p": 0.6476058959960938,
+        "by_repo": {
+          "kubernetes": -10.3,
+          "nextjs": 4.3,
+          "typescript": 1.5
+        },
+        "n_blocks": 20,
+        "n_positive_blocks": 8,
+        "n_negative_blocks": 11
+      }
+    },
+    "saturated_ci20": {
+      "anchor": "saturated_default",
+      "p95_latency_min": {
+        "left": "SSMQ-FilteredCone",
+        "right": "SSMQ-NoCone",
+        "metric": "p95_latency_min",
+        "definition": "(SSMQ-FilteredCone - SSMQ-NoCone)_target minus (SSMQ-FilteredCone - SSMQ-NoCone)_default",
+        "difference": 3.2752202676467084,
+        "ci95": [
+          -24.37463499131988,
+          30.71934020203897
+        ],
+        "sign_test_p": 0.8238029479980469,
+        "by_repo": {
+          "kubernetes": -7.898301142102918,
+          "nextjs": 15.84196218090292,
+          "typescript": 1.8819997641401245
+        },
+        "n_blocks": 20,
+        "n_positive_blocks": 11,
+        "n_negative_blocks": 9
+      },
+      "false_rejection_rate": {
+        "left": "SSMQ-FilteredCone",
+        "right": "SSMQ-NoCone",
+        "metric": "false_rejection_rate",
+        "definition": "(SSMQ-FilteredCone - SSMQ-NoCone)_target minus (SSMQ-FilteredCone - SSMQ-NoCone)_default",
+        "difference": 0.0005422758978742813,
+        "ci95": [
+          -0.0067811635854315875,
+          0.0076747699942503345
+        ],
+        "sign_test_p": 0.8238029479980469,
+        "by_repo": {
+          "kubernetes": 0.005437935399060108,
+          "nextjs": 0.001179812535392038,
+          "typescript": -0.004990920240829303
+        },
+        "n_blocks": 20,
+        "n_positive_blocks": 9,
+        "n_negative_blocks": 11
+      },
+      "stale_rechecks": {
+        "left": "SSMQ-FilteredCone",
+        "right": "SSMQ-NoCone",
+        "metric": "stale_rechecks",
+        "definition": "(SSMQ-FilteredCone - SSMQ-NoCone)_target minus (SSMQ-FilteredCone - SSMQ-NoCone)_default",
+        "difference": 1.233333333333333,
+        "ci95": [
+          -7.716666666666667,
+          10.533333333333333
+        ],
+        "sign_test_p": 0.8238029479980469,
+        "by_repo": {
+          "kubernetes": -0.9,
+          "nextjs": 6.65,
+          "typescript": -2.05
+        },
+        "n_blocks": 20,
+        "n_positive_blocks": 11,
+        "n_negative_blocks": 9
+      }
+    },
+    "saturated_persist10": {
+      "anchor": "saturated_default",
+      "p95_latency_min": {
+        "left": "SSMQ-FilteredCone",
+        "right": "SSMQ-NoCone",
+        "metric": "p95_latency_min",
+        "definition": "(SSMQ-FilteredCone - SSMQ-NoCone)_target minus (SSMQ-FilteredCone - SSMQ-NoCone)_default",
+        "difference": -10.32147509388496,
+        "ci95": [
+          -23.15293784577537,
+          3.587039220731333
+        ],
+        "sign_test_p": 0.04138946533203125,
+        "by_repo": {
+          "kubernetes": -32.09229964461428,
+          "nextjs": -12.421156781644589,
+          "typescript": 13.549031144603992
+        },
+        "n_blocks": 20,
+        "n_positive_blocks": 5,
+        "n_negative_blocks": 15
+      },
+      "false_rejection_rate": {
+        "left": "SSMQ-FilteredCone",
+        "right": "SSMQ-NoCone",
+        "metric": "false_rejection_rate",
+        "definition": "(SSMQ-FilteredCone - SSMQ-NoCone)_target minus (SSMQ-FilteredCone - SSMQ-NoCone)_default",
+        "difference": -8.372074072677863e-05,
+        "ci95": [
+          -0.007663764098277899,
+          0.007406506812075107
+        ],
+        "sign_test_p": 0.5034446716308594,
+        "by_repo": {
+          "kubernetes": 0.012510201356467705,
+          "nextjs": -0.0050901760285886385,
+          "typescript": -0.007671187550059401
+        },
+        "n_blocks": 20,
+        "n_positive_blocks": 12,
+        "n_negative_blocks": 8
+      },
+      "stale_rechecks": {
+        "left": "SSMQ-FilteredCone",
+        "right": "SSMQ-NoCone",
+        "metric": "stale_rechecks",
+        "definition": "(SSMQ-FilteredCone - SSMQ-NoCone)_target minus (SSMQ-FilteredCone - SSMQ-NoCone)_default",
+        "difference": -8.25,
+        "ci95": [
+          -15.95,
+          -0.4333333333333333
+        ],
+        "sign_test_p": 0.26317596435546875,
+        "by_repo": {
+          "kubernetes": -13.85,
+          "nextjs": -7.7,
+          "typescript": -3.2
+        },
+        "n_blocks": 20,
+        "n_positive_blocks": 7,
+        "n_negative_blocks": 13
+      }
+    },
+    "saturated_persist25": {
+      "anchor": "saturated_default",
+      "p95_latency_min": {
+        "left": "SSMQ-FilteredCone",
+        "right": "SSMQ-NoCone",
+        "metric": "p95_latency_min",
+        "definition": "(SSMQ-FilteredCone - SSMQ-NoCone)_target minus (SSMQ-FilteredCone - SSMQ-NoCone)_default",
+        "difference": -9.381769094360713,
+        "ci95": [
+          -26.445289500763,
+          7.362933910896659
+        ],
+        "sign_test_p": 0.5034446716308594,
+        "by_repo": {
+          "kubernetes": -2.632800272705114,
+          "nextjs": -15.465667281849193,
+          "typescript": -10.046839728527832
+        },
+        "n_blocks": 20,
+        "n_positive_blocks": 8,
+        "n_negative_blocks": 12
+      },
+      "false_rejection_rate": {
+        "left": "SSMQ-FilteredCone",
+        "right": "SSMQ-NoCone",
+        "metric": "false_rejection_rate",
+        "definition": "(SSMQ-FilteredCone - SSMQ-NoCone)_target minus (SSMQ-FilteredCone - SSMQ-NoCone)_default",
+        "difference": 0.000619266533972042,
+        "ci95": [
+          -0.005032170162135774,
+          0.006547838545026921
+        ],
+        "sign_test_p": 1.0,
+        "by_repo": {
+          "kubernetes": 0.00909496270474892,
+          "nextjs": 0.0018203188797683485,
+          "typescript": -0.009057481982601142
+        },
+        "n_blocks": 20,
+        "n_positive_blocks": 10,
+        "n_negative_blocks": 10
+      },
+      "stale_rechecks": {
+        "left": "SSMQ-FilteredCone",
+        "right": "SSMQ-NoCone",
+        "metric": "stale_rechecks",
+        "definition": "(SSMQ-FilteredCone - SSMQ-NoCone)_target minus (SSMQ-FilteredCone - SSMQ-NoCone)_default",
+        "difference": -8.033333333333333,
+        "ci95": [
+          -15.566666666666666,
+          -0.7666666666666663
+        ],
+        "sign_test_p": 0.26317596435546875,
+        "by_repo": {
+          "kubernetes": -7.15,
+          "nextjs": -9.3,
+          "typescript": -7.65
+        },
+        "n_blocks": 20,
+        "n_positive_blocks": 7,
+        "n_negative_blocks": 13
+      }
+    }
+  }
+}

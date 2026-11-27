@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "eval"))
 from verify_v7 import RUNS, digest, member, read_json, require, verify_exports
 
-README = """# Semantic Speculative Merge Queues — review supplement (v8)
+README = """# Semantic Speculative Merge Queues — review supplement (v9)
 
 Unzip the archive and run the following commands from its root. The verification uses
 Python 3.9+ and its standard library and runs offline.
@@ -100,11 +100,11 @@ def populate(stage):
     for pattern in ("data/traces/*.json", "src/ssmq/*.py", "tests/test_*.py"):
         names.update(p.relative_to(ROOT).as_posix() for p in ROOT.glob(pattern))
     names.update({"eval/export_v8_displays.py", "results/v8_paper.json", "eval/verify_submission.py", "eval/__init__.py"})
-    for directory in ("eval/historical_ci", "eval/queue_events_v8", "eval/baselines_v8",
+    for directory in ("eval/historical_ci", "eval/queue_events_v8", "eval/baselines_v8", "eval/sensitivity_v9",
                       "data/historical_ci", "data/queue_events_v8"):
         names.update(p.relative_to(ROOT).as_posix() for p in (ROOT / directory).rglob("*")
                      if p.is_file() and "__pycache__" not in p.parts)
-    additions = ("v8_historical_ci", "v8_queue_events", "v8_baselines")
+    additions = ("v8_historical_ci", "v8_queue_events", "v8_baselines", "v9_sensitivity")
     for run_id in additions:
         names.update(p.relative_to(ROOT).as_posix() for p in (ROOT / "runs" / run_id).iterdir()
                      if p.is_file() and p.name != "manifest.json")

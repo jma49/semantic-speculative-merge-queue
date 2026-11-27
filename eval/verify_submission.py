@@ -15,6 +15,7 @@ def main():
     parser.add_argument("--verify-only", action="store_true", required=True)
     parser.parse_args()
     checks = [
+        ("eval/sensitivity_v9/verify_v9_sensitivity.py", "--verify-only"),
         ("eval/verify_v7.py", "--verify-only"),
         ("eval/baselines_v8/verify_v8_baselines.py", "--verify-only"),
         ("eval/historical_ci/verify_historical_ci.py", "--verify-only"),

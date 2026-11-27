@@ -16,6 +16,12 @@ Crucially, however, \textbf{eliminating cone explosion still fails to yield a re
 \end{itemize}
 Because filtering trades recall for batch width without removing unstacked cross-worker stale invalidations (356--382 rechecks/run), sparse cone exclusion only erases the mega-PR blowup; it does not overcome the moving-base cost of unstacked exact-tree execution.
 
+\subsection{Sensitivity to CI duration and conflict persistence}
+\input{generated/tables/v9_sensitivity}
+Longer jobs increase absolute survivor latency for both policies (Table~\ref{tab:v9sensitivity}). At both offered loads the paired latency intervals include zero for every longer-duration setting. At nominal load and a twenty-minute mean, filtering incurs more stale rechecks even though its latency contrast remains uncertain. These settings vary the mean with fixed jitter; they do not characterize a heavy-tailed service distribution.
+
+Increasing the persistent share while holding the sampled conflict pairs fixed changes who can land. At nominal load the filtered policy's average accepted count falls from about 105 to 53 per stream between the lowest and highest persistence settings. Its survivor P95 falls as well, while runner-minutes per accepted PR increase. Reading the percentile alone would reverse the operational interpretation. Across both higher-persistence settings the intervals for the paired latency contrast include zero at each load.
+
 \subsection{Grounded exact-tree comparators and non-causal profiles}
 Table~\ref{tab:v8comparators} presents all 12 exact-tree policies grouped strictly by membership-partition family (exact parity verified on all 6 frozen v7 controls; zero escapes across all 2,880 v8 records).
 
