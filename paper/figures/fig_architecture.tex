@@ -1,48 +1,51 @@
-% SSMQ End-to-End System Architecture (TikZ Vector Diagram)
+% SSMQ End-to-End System Architecture (v4 — accurately separating offline bench calibration & pending-queue routing)
 \begin{figure*}[t]
 \centering
 \begin{tikzpicture}[
   font=\scriptsize,
-  box/.style={rectangle, rounded corners=2.5pt, draw=#1!75!black, fill=#1!10, thick, minimum height=1.1cm, text width=2.45cm, align=center, inner sep=3pt},
-  smallbox/.style={rectangle, rounded corners=2pt, draw=#1!75!black, fill=#1!12, thick, minimum height=0.82cm, text width=2.35cm, align=center, inner sep=3pt},
+  box/.style={rectangle, rounded corners=2.5pt, draw=#1!75!black, fill=#1!10, thick, minimum height=1.02cm, text width=2.45cm, align=center, inner sep=2.5pt},
+  smallbox/.style={rectangle, rounded corners=2pt, draw=#1!75!black, fill=#1!12, thick, minimum height=0.78cm, text width=2.35cm, align=center, inner sep=2.5pt},
   dec/.style={diamond, aspect=2.0, draw=ssmqPurple!80!black, fill=ssmqPurple!10, thick, align=center, inner sep=1.5pt, font=\scriptsize\bfseries},
   arr/.style={-{Stealth[length=2mm]}, thick, draw=black!75},
   lbl/.style={font=\scriptsize\bfseries, fill=white, inner sep=1.5pt}
 ]
 
-% Row 1: Warm-up -> Packing -> Parallel CI -> Pass? -> Commit
-\node[box=ssmqTeal] (graph) at (0, 1.45) {\textbf{1. Warm-Up Graph $\hat{G}$}\\ Co-change cliques \&\\ 2-level module cones\\ (earliest 25\% PRs)};
+% Row 1: Warm-up -> Multi-Lane Packer -> Pending + CI Workers -> Pass? -> Commit
+\node[box=ssmqTeal] (graph) at (0, 1.35) {\textbf{1. Warm-Up Graph $\hat{G}$}\\ Co-change \& 2-level cones\\ + warm-up P90 risk\\ (earliest 25\% PRs)};
 
-\node[box=ssmqBlue] (queue) at (3.25, 1.45) {\textbf{2. Risk \& Disjoint}\\ \textbf{Multi-Lane Packer}\\ $r(p)\in[0,1]$, Fast ($K{\le}8$)\\ vs.\ Protected ($K{\le}2$)};
+\node[box=ssmqBlue] (queue) at (3.25, 1.35) {\textbf{2. Disjoint Multi-Lane}\\ \textbf{Packer (Alg.~\ref{alg:packing})}\\ Fast ($K{\le}K_{\max}$) vs.\\ Protected ($K{\le}2$)};
 
-\node[box=ssmqBlue] (ci) at (6.75, 1.45) {\textbf{3. $W$ Parallel CI}\\ \textbf{Workers + Mainline}\\ Snapshot check \&\\ persistent-conflict rebase};
+\node[box=ssmqBlue] (ci) at (6.75, 1.35) {\textbf{3. Pending Queue \&}\\ \textbf{$W$ Parallel CI Workers}\\ Snapshot check \&\\ persistent-conflict recheck};
 
-\node[dec] (pass) at (9.95, 1.45) {CI Pass?};
+\node[dec] (pass) at (9.95, 1.35) {CI Pass?};
 
-\node[smallbox=ssmqTeal] (merge) at (13.35, 1.45) {\textbf{Commit to Mainline}\\ Update $\mathrm{Beta}(\alpha,\beta)$\\ (0 Cumulative Escapes)};
+\node[smallbox=ssmqTeal] (merge) at (13.35, 1.35) {\textbf{Commit to Mainline}\\ Update $\mathrm{Beta}(\alpha,\beta)$\\ (0 Modeled Escapes)};
 
-% Row 2 (generous vertical spacing so middle corridor labels never collide)
-\node[box=ssmqPurple] (flaky) at (9.95, -1.15) {\textbf{4. Two-Regime}\\ \textbf{Beta-Binomial Gate}\\ $|B|{=}1$: $\tau_1{=}0.25$\\ $|B|{>}1$: $\tau_B{=}0.50$};
+% Row 2: Flaky Gate -> (Singleton Reject OR Multi-PR Blame) -> Bisection Fallback
+\node[box=ssmqPurple] (flaky) at (9.95, -1.10) {\textbf{4. Two-Regime Flaky}\\ \textbf{Gate (Alg.~\ref{alg:flaky})}\\ $|B|{=}1$: $\tau_1{=}0.25$\\ $|B|{>}1$: $\tau_B{=}0.50$};
 
-\node[box=ssmqOrange] (blame) at (5.35, -1.15) {\textbf{5. 1-Step AST/Stack}\\ \textbf{Causal Blame Ranker}\\ Evict $s_1 \to$ run $B{\setminus}\{s_1\}$\\ \& $\{s_1\}$ in parallel};
+\node[smallbox=ssmqRed] (reject) at (13.35, -1.10) {\textbf{Isolated Reject}\\ Singleton $|B|{=}1$\\ fails flaky gate};
 
-\node[smallbox=ssmqRed] (bisect) at (0.75, -1.15) {\textbf{Bisection Fallback /}\\ \textbf{Isolated Reject}\\ Priority split on $s_2$\\ or reject failing $\{s_1\}$};
+\node[box=ssmqOrange] (blame) at (5.35, -1.10) {\textbf{5. 1-Step Causal Blame}\\ \textbf{(Alg.~\ref{alg:blame}; Calibrated)}\\ Evict $s_1 \to$ enqueue\\ $B{\setminus}\{s_1\}$ \& $\{s_1\}$};
+
+\node[smallbox=ssmqGray] (bisect) at (0.85, -1.10) {\textbf{Bisection Fallback}\\ Split $B{\setminus}\{s_1\}$ with\\ $s_2$ priority hint};
 
 % Primary forward arrows
 \draw[arr] (graph) -- (queue);
 \draw[arr] (queue) -- (ci);
 \draw[arr] (ci) -- (pass);
-\draw[arr] (pass.east) -- node[above, yshift=2pt, font=\scriptsize\bfseries, align=center] {Pass \&\\ Clean Mainline} (merge.west);
+\draw[arr] (pass.east) -- node[above, yshift=2pt, font=\scriptsize\bfseries, align=center] {Pass \&\\ Clean Delta} (merge.west);
 \draw[arr] (pass.south) -- node[lbl, right, xshift=2pt] {Fail} (flaky.north);
-\draw[arr] (flaky.west) -- node[lbl, above, yshift=2pt] {Deterministic} (blame.east);
-\draw[arr] (blame.west) -- node[lbl, above, yshift=2pt] {Miss / $|B|{=}1$} (bisect.east);
+\draw[arr] (flaky.east) -- node[lbl, above, yshift=2pt] {$|B|{=}1$} (reject.west);
+\draw[arr] (flaky.west) -- node[lbl, above, yshift=2pt] {$|B|{>}1$, Det.} (blame.east);
+\draw[arr] (blame.west) -- node[lbl, above, yshift=2pt] {Remainder Fail} (bisect.east);
 
-% Feedback loops routed cleanly through the open middle corridor (y = 0.15)
-\draw[arr, dashed, draw=ssmqPurple!80!black] (flaky.north west) |- (8.2, 0.22) -| node[lbl, pos=0.22, above, text=ssmqPurple!80!black] {Transient Retry} ([xshift=0.45cm]ci.south);
-\draw[arr, dashed, draw=ssmqOrange!85!black] (blame.north) |- (5.8, 0.22) -| node[lbl, pos=0.18, below, yshift=-1pt, text=ssmqOrange!85!black] {Re-dispatch $B{\setminus}\{s_1\}, \{s_1\}$} ([xshift=-0.45cm]ci.south);
-\draw[arr, dotted, draw=ssmqRed!80!black] (bisect.north) |- (1.9, 0.18) -| node[lbl, pos=0.28, above, text=ssmqRed!80!black] {Sub-batches} (queue.south);
+% Feedback loops cleanly routed to Pending Queue (box 3), NEVER back to Packer!
+\draw[arr, dashed, draw=ssmqPurple!80!black] (flaky.north west) |- (8.25, 0.20) -| node[lbl, pos=0.22, above, text=ssmqPurple!80!black] {Transient Retry} ([xshift=0.55cm]ci.south);
+\draw[arr, dashed, draw=ssmqOrange!85!black] (blame.north) |- (6.05, 0.20) -| node[lbl, pos=0.18, below, yshift=-1pt, text=ssmqOrange!85!black] {To Pending: $B{\setminus}\{s_1\},\{s_1\}$} ([xshift=-0.10cm]ci.south);
+\draw[arr, dotted, draw=ssmqGray!80!black] (bisect.north) |- (4.20, 0.22) -| node[lbl, pos=0.22, above, text=ssmqGray!80!black] {Sub-batches to Pending} ([xshift=-0.65cm]ci.south);
 
 \end{tikzpicture}
-\caption{End-to-end architecture of \textbf{SSMQ (Semantic Speculative Merge Queue)}. Historical warm-up traces construct a leak-free dependency graph $\hat{G}$ that guides risk-stratified disjoint batching. On CI failure, SSMQ applies a two-regime Beta-Binomial flaky gate before dispatching deterministic AST/traceback 1-step causal blame (evicting suspect $s_1$ while concurrently verifying $B\setminus\{s_1\}$ and $\{s_1\}$), with guaranteed fallback to binary bisection and cumulative mainline verification.}
+\caption{End-to-end architecture of \textbf{SSMQ}. Warm-up traces build a leak-free dependency graph $\hat{G}$ and P90 risk scales for Algorithm~\ref{alg:packing}. Pending retries, blame splits, and bisection sub-batches preempt fresh batches on $W$ parallel CI workers. In evaluation, \texttt{ASTStackCausalRanker} (Algorithm~\ref{alg:blame}) is executed directly on 80 real Python \texttt{unittest} batches, and its measured Top-1/Top-2 accuracy and latency parameterize the discrete-event replay.}
 \label{fig:architecture}
 \end{figure*}

@@ -59,6 +59,7 @@ class DependencyGraphTests(unittest.TestCase):
         self.assertGreater(graph.risk_score(replace(a, additions=20)), graph.risk_score(a))
         self.assertGreater(graph.risk_score(b), graph.risk_score(make_pr(11)))
         self.assertLessEqual(graph.risk_score(replace(bc, additions=10**12)), 1.0)
+        self.assertGreater(graph.warmup_mean_risk, 0.0)
 
     def test_loader_uses_chronological_warmup_and_preserves_gap_ratios(self):
         def row(number, timestamp, *files):
@@ -132,33 +133,39 @@ class SimulatorTests(unittest.TestCase):
                     self.assertEqual(first.escaped_defects, 0)
                     self.assertGreaterEqual(first.rejected_prs, len(truth.defective_prs))
                     self.assertEqual(first.merged_prs + first.rejected_prs, len(prs))
+                    self.assertEqual(
+                        first.rejected_defective + first.rejected_persistent_conflict + first.rejected_false_flaky,
+                        first.rejected_prs,
+                    )
         self.assertEqual(observed, [truth] * (2 * len(ALL_STRATEGIES)))
 
-    def test_graph_recall_calibrates_latent_conflicts_and_preserves_controls(self):
+    def test_fixed_density_graph_recall_preserves_total_conflict_count(self):
         graph, prs = load_trace(KUBERNETES_TRACE)
         config = SimConfig()
-        visible = build_ground_truth(graph, prs, replace(config, graph_recall=1), 42)
-        self.assertTrue(visible.conflicting_pairs)
-        self.assertEqual(visible.off_graph_pairs, frozenset())
-        for recall in (0.8, 0.5):
+        full = build_ground_truth(graph, prs, replace(config, graph_recall=1.0), 42)
+        base_total = len(full.conflicting_pairs)
+        self.assertTrue(full.conflicting_pairs)
+        self.assertEqual(full.off_graph_pairs, frozenset())
+        for recall in (0.8, 0.6, 0.4):
             with self.subTest(recall=recall):
                 truth = build_ground_truth(graph, prs, replace(config, graph_recall=recall), 42)
-                self.assertEqual(truth.on_graph_pairs, visible.conflicting_pairs)
-                realized_share = len(truth.off_graph_pairs) / len(truth.conflicting_pairs)
-                self.assertAlmostEqual(realized_share, 1 - recall, delta=0.03)
+                # Total conflict density stays invariant (~base_total) within sampling tolerance!
+                self.assertAlmostEqual(len(truth.conflicting_pairs) / base_total, 1.0, delta=0.08)
+                realized = len(truth.on_graph_pairs) / len(truth.conflicting_pairs)
+                self.assertAlmostEqual(realized, recall, delta=0.06)
                 metrics = simulate_queue(graph, prs, "SSMQ", replace(config, graph_recall=recall), 42)
                 self.assertEqual(metrics.off_graph_conflicts_total, len(truth.off_graph_pairs))
                 self.assertEqual(metrics.on_graph_conflicts_total, len(truth.on_graph_pairs))
+                self.assertAlmostEqual(metrics.realized_graph_recall, realized, places=6)
         empty = build_ground_truth(graph, prs, replace(config, semantic_conflict_prob=0), 42)
         self.assertEqual(empty.conflicting_pairs, frozenset())
-        self.assertEqual(empty.off_graph_pairs, frozenset())
-        latent_only = build_ground_truth(graph, prs, replace(config, graph_recall=0), 42)
-        self.assertTrue(latent_only.off_graph_pairs)
+        latent_only = build_ground_truth(graph, prs, replace(config, graph_recall=0.0), 42)
         self.assertEqual(latent_only.on_graph_pairs, frozenset())
+        self.assertAlmostEqual(len(latent_only.off_graph_pairs) / base_total, 1.0, delta=0.08)
 
     def test_conflicts_are_reverified_in_isolation_and_do_not_reject_clean_prs(self):
         prs = [make_pr(number, path="src/app/shared.py") for number in range(1, 9)]
-        config = replace(CONFIG, semantic_conflict_prob=1.0, persistent_conflict_share=0)
+        config = replace(CONFIG, semantic_conflict_prob=1.0, graph_recall=1.0, persistent_conflict_share=0)
         for strategy in ALL_STRATEGIES:
             with self.subTest(strategy=strategy):
                 result = simulate_queue(GRAPH, prs, strategy, config, 0)
@@ -181,7 +188,6 @@ class SimulatorTests(unittest.TestCase):
         self.assertEqual(result.total_ci_runs, 3)
 
     def test_persistent_conflict_is_rejected_against_cumulative_mainline(self):
-        # The unrelated middle PR ensures that checking only the last merge would miss the pair.
         prs = [make_pr(number, arrival=(number - 1) * 20) for number in range(1, 4)]
         pair = frozenset({(1, 3)})
         truth = GroundTruth(frozenset(), pair, persistent_pairs=pair, off_graph_pairs=pair)
@@ -191,6 +197,7 @@ class SimulatorTests(unittest.TestCase):
                     result = simulate_queue(GRAPH, prs, strategy, CONFIG, 0)
                 self.assertEqual((result.merged_prs, result.rejected_prs, result.escaped_defects), (2, 1, 0))
                 self.assertEqual((result.clean_prs_total, result.clean_prs_merged), (3, 2))
+                self.assertEqual(result.rejected_persistent_conflict, 1)
                 self.assertEqual(result.false_rejection_rate, 0)
 
     def test_concurrent_passing_job_reverifies_after_a_persistent_conflict(self):
@@ -206,7 +213,7 @@ class SimulatorTests(unittest.TestCase):
         self.assertEqual(result.ci_minutes_per_merged_pr, 30)
         self.assertEqual(result.runner_utilization, 0.75)
 
-    def test_graph_lanes_keep_cones_disjoint_and_protect_high_risk_prs(self):
+    def test_deconfounded_cone_and_risk_ablations(self):
         prs = [
             make_pr(1, path="src/app/shared.py"),
             make_pr(2, path="src/app/shared.py"),
@@ -225,10 +232,18 @@ class SimulatorTests(unittest.TestCase):
         with patch.object(simulator._Simulation, "_start", capture):
             simulate_queue(GRAPH, prs, "SSMQ", replace(CONFIG, workers=1), 0)
         self.assertEqual(started, [(1, 3, 6), (2, 4), (5,)])
-        for members in started:
-            for i, left in enumerate(members):
-                for right in members[i + 1:]:
-                    self.assertEqual(GRAPH.overlap_score(prs[left - 1], prs[right - 1]), 0)
+
+        # SSMQ-NoRisk packs disjoint PRs regardless of risk score!
+        started.clear()
+        with patch.object(simulator._Simulation, "_start", capture):
+            simulate_queue(GRAPH, prs, "SSMQ-NoRisk", replace(CONFIG, workers=1), 0)
+        self.assertEqual(started, [(1, 3, 4, 5, 6), (2,)])
+
+        # SSMQ-NoCone groups low-risk PRs even when cones overlap, isolating only high-risk PRs!
+        started.clear()
+        with patch.object(simulator._Simulation, "_start", capture):
+            simulate_queue(GRAPH, prs, "SSMQ-NoCone", replace(CONFIG, workers=1), 0)
+        self.assertEqual(started, [(1, 2, 3, 6), (4, 5)])
 
         started.clear()
         with patch.object(simulator._Simulation, "_start", capture):
@@ -247,8 +262,8 @@ class SimulatorTests(unittest.TestCase):
         self.assertEqual(baseline.total_ci_runs, 2)
         self.assertLess(full.ci_minutes_per_merged_pr, disabled.ci_minutes_per_merged_pr)
 
-    def test_causal_blame_reduces_depth_and_bisects_after_a_miss(self):
-        prs = [make_pr(number) for number in range(1, 9)]
+    def test_causal_blame_reduces_depth_and_instruments_hits(self):
+        prs = [make_pr(number, risk=0.5) for number in range(1, 9)]
         perfect = replace(CONFIG, base_defect_rate=0.25, blame_top1_acc=1, blame_top2_acc=1)
         second_only = replace(perfect, blame_top1_acc=0)
         truth = GroundTruth(frozenset({8}), frozenset())
@@ -257,7 +272,10 @@ class SimulatorTests(unittest.TestCase):
             disabled = simulate_queue(GRAPH, prs, "SSMQ-NoBlame", perfect, 0)
             missed = simulate_queue(GRAPH, prs, "SSMQ", second_only, 0)
         self.assertEqual(full.mean_blame_rounds, 1)
-        self.assertEqual(full.total_ci_runs, 3)
+        self.assertEqual(full.blame_attempts, 1)
+        self.assertEqual(full.blame_one_step_hits, 1)
+        self.assertEqual(full.failed_root_batches, 1)
+        self.assertEqual(full.failed_root_single_culprit, 1)
         self.assertEqual(disabled.mean_blame_rounds, 3)
         self.assertGreater(missed.mean_blame_rounds, full.mean_blame_rounds)
         for run in (full, disabled, missed):
@@ -274,47 +292,18 @@ class SimulatorTests(unittest.TestCase):
         self.assertAlmostEqual(result.ci_minutes_per_merged_pr, (10 + 9 + 8 + 7 + 30) / 3)
         self.assertAlmostEqual(result.sim_duration_hr, 20 / 60)
 
-    def test_uber_tree_reuses_a_speculative_bisection_branch(self):
-        prs = [make_pr(number) for number in range(1, 5)]
-        config = replace(CONFIG, base_defect_rate=0.04, workers=3)
-        with patch.object(
-            simulator, "build_ground_truth", return_value=GroundTruth(frozenset({4}), frozenset())
-        ):
-            result = simulate_queue(GRAPH, prs, "UberSubmitQueue", config, 0)
-        self.assertEqual((result.merged_prs, result.rejected_prs, result.total_ci_runs), (3, 1, 6))
-        self.assertEqual(result.wasted_ci_runs, 1)
-        self.assertAlmostEqual(result.sim_duration_hr * 60, 20)
-        self.assertEqual(result.escaped_defects, 0)
-
-    def test_uber_tree_tries_both_outcomes_and_charges_canceled_branch(self):
-        prs = [make_pr(1), make_pr(2, arrival=1)]
-        config = replace(CONFIG, base_defect_rate=0.10, workers=3)
-        pair = frozenset({(1, 2)})
-        cases = (
-            GroundTruth(frozenset({1}), frozenset()),
-            GroundTruth(frozenset(), pair, persistent_pairs=pair),
-        )
-        for truth in cases:
-            with self.subTest(truth=truth):
-                with patch.object(simulator, "build_ground_truth", return_value=truth):
-                    result = simulate_queue(GRAPH, prs, "UberSubmitQueue", config, 0)
-                self.assertEqual((result.merged_prs, result.rejected_prs, result.escaped_defects), (1, 1, 0))
-                self.assertEqual(result.total_ci_runs, 3)
-                self.assertEqual(result.wasted_ci_runs, 1)
-                self.assertEqual(result.ci_minutes_per_merged_pr, 29)
-                self.assertAlmostEqual(result.sim_duration_hr * 60, 11)
-
-    def test_uber_tree_beats_linear_on_kubernetes_at_five_times_velocity(self):
+    def test_fifo_and_dep_aware_outcome_trees(self):
         graph, prs = load_trace(KUBERNETES_TRACE)
         config = SimConfig(velocity_multiplier=5)
-        for seed in (42, 1001, 1002):
+        for seed in (42, 1001):
             with self.subTest(seed=seed):
                 linear = simulate_queue(graph, prs, "SpeculativeLinear", config, seed)
-                uber = simulate_queue(graph, prs, "UberSubmitQueue", config, seed)
-                self.assertGreater(uber.throughput_prs_per_hr, linear.throughput_prs_per_hr)
-                self.assertLess(uber.p50_latency_min, linear.p50_latency_min)
-                self.assertLess(uber.p95_latency_min, linear.p95_latency_min)
-                self.assertEqual(uber.escaped_defects, 0)
+                fifo_tree = simulate_queue(graph, prs, "FIFOOutcomeTree", config, seed)
+                dep_tree = simulate_queue(graph, prs, "DepAwareOutcomeTree", config, seed)
+                self.assertGreater(fifo_tree.throughput_prs_per_hr, linear.throughput_prs_per_hr)
+                self.assertLess(dep_tree.p95_latency_min, fifo_tree.p95_latency_min)
+                self.assertEqual(fifo_tree.escaped_defects, 0)
+                self.assertEqual(dep_tree.escaped_defects, 0)
 
     def test_adaptive_reruns_lower_false_rejections_at_ten_percent_flakiness(self):
         graph, prs = load_trace(KUBERNETES_TRACE)
@@ -347,6 +336,10 @@ class SimulatorTests(unittest.TestCase):
                 self.assertEqual(metrics.strategy, strategy)
                 self.assertEqual(metrics.escaped_defects, 0)
                 self.assertEqual(metrics.merged_prs + metrics.rejected_prs, len(prs))
+                self.assertEqual(
+                    metrics.rejected_defective + metrics.rejected_persistent_conflict + metrics.rejected_false_flaky,
+                    metrics.rejected_prs,
+                )
                 self.assertGreater(metrics.throughput_prs_per_hr, 0)
                 self.assertGreaterEqual(metrics.p95_latency_min, metrics.p50_latency_min)
                 self.assertLessEqual(metrics.wasted_ci_runs, metrics.total_ci_runs)

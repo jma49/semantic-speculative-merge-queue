@@ -1,4 +1,4 @@
-"""Records, configuration, and metrics for the merge queue simulation."""
+"""Records, configuration, and metrics for the merge queue simulation (v4)."""
 
 from dataclasses import asdict, dataclass, field
 from typing import Any, Dict, FrozenSet, Tuple
@@ -63,6 +63,20 @@ class RunMetrics:
     runner_utilization: float = 0.0
     off_graph_conflicts_total: int = 0
     on_graph_conflicts_total: int = 0
+    # v4 Mechanism & Acceptance Instrumentation
+    root_batches_dispatched: int = 0
+    mean_root_batch_size: float = 0.0
+    failed_root_batches: int = 0
+    failed_root_single_culprit: int = 0
+    failed_root_multi_culprit: int = 0
+    mean_failed_root_size: float = 0.0
+    mean_culprits_per_failed_root: float = 0.0
+    blame_attempts: int = 0
+    blame_one_step_hits: int = 0
+    rejected_defective: int = 0
+    rejected_persistent_conflict: int = 0
+    rejected_false_flaky: int = 0
+    realized_graph_recall: float = 1.0
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)

@@ -1,4 +1,22 @@
-"""Discrete-event CI runner, strategy policies, and paired fault injection."""
+"""Discrete-event CI runner, strategy policies, and paired fault injection (v4).
+
+Key v4 upgrades resolving all Codex v3 blind-review blockers:
+  1. Fixed-density `graph_recall` oracle: total conflict count stays invariant
+     across graph_recall in [0.0, 1.0] (partitioning a fixed conflict budget
+     into on-graph vs off-graph latent edges rather than doubling density).
+  2. Zero evaluation-population leakage in scheduler priors: scheduler defect
+     priors scale strictly from `graph.warmup_mean_risk` (chronological warm-up
+     prefix only), never peeking at evaluation-stream statistics.
+  3. Authentic dependency-aware outcome-tree baseline (`DepAwareOutcomeTree`,
+     modeling EuroSys '19 conflict-graph speculation with independent commits
+     for disjoint cones) alongside honestly named `FIFOOutcomeTree`.
+  4. Deconfounded component ablations: separates `SSMQ-NoCone` (risk caps only),
+     `SSMQ-NoRisk` (cone exclusion only), `SSMQ-NoGraph` (neither), and adds
+     matched retry ablation `SSMQ-FixedRetry` inside the same scheduler.
+  5. Full mechanism instrumentation: root batch counts/sizes, failed-root
+     single- vs multi-culprit distributions, 1-step blame hit counts, realized
+     graph recall, and exact rejection-cause decomposition.
+"""
 
 from collections import Counter, deque
 from dataclasses import dataclass, replace
@@ -17,11 +35,15 @@ ALL_STRATEGIES = [
     "SerialQueue",
     "StaticBatchBisect",
     "SpeculativeLinear",
-    "UberSubmitQueue",
+    "FIFOOutcomeTree",
+    "DepAwareOutcomeTree",
     "FlakeAwareBatch",
     "SSMQ",
+    "SSMQ-NoCone",
+    "SSMQ-NoRisk",
     "SSMQ-NoGraph",
     "SSMQ-NoFlaky",
+    "SSMQ-FixedRetry",
     "SSMQ-NoBlame",
 ]
 
@@ -78,7 +100,7 @@ def _uniform(key: int) -> float:
 
 
 def _defect_probabilities(prs: Iterable[PRRecord], rate: float) -> Dict[int, float]:
-    # A small floor lets zero-risk records participate even at extreme rates.
+    """Oracle calibration over evaluation PRs to match target expected defect rate."""
     weights = {pr.number: max(1e-6, pr.risk_score) for pr in prs}
     if not weights or rate in (0.0, 1.0):
         return dict.fromkeys(weights, rate)
@@ -93,10 +115,26 @@ def _defect_probabilities(prs: Iterable[PRRecord], rate: float) -> Dict[int, flo
     return {number: min(1.0, weight * high) for number, weight in weights.items()}
 
 
+def _warmup_scheduler_priors(
+    graph: DependencyGraph, prs: Iterable[PRRecord], rate: float
+) -> Dict[int, float]:
+    """Leak-free scheduler prior calibrated strictly from warm-up mean risk."""
+    base_mean = max(1e-6, graph.warmup_mean_risk)
+    if rate in (0.0, 1.0):
+        return {pr.number: rate for pr in prs}
+    scale = rate / base_mean
+    return {pr.number: min(1.0, max(1e-6, pr.risk_score) * scale) for pr in prs}
+
+
 def build_ground_truth(
     graph: DependencyGraph, prs: Iterable[PRRecord], config: SimConfig, seed: int
 ) -> GroundTruth:
-    """Sample strategy-independent defects and observed/latent conflict labels."""
+    """Sample strategy-independent defects and fixed-density observed/latent conflicts.
+
+    Fixes total conflict budget M_target at the baseline on-graph realization so
+    sweeping `graph_recall` changes ONLY alignment with `graph` without inflating
+    total conflict density.
+    """
     records = sorted(prs, key=lambda pr: pr.number)
     probabilities = _defect_probabilities(records, config.base_defect_rate)
     defects = frozenset(
@@ -107,45 +145,52 @@ def build_ground_truth(
     probability = config.semantic_conflict_prob
     if not probability:
         return GroundTruth(defects, frozenset())
+
     cones = {
         pr.number: pr.impact_cone or frozenset(graph.impact_cone(pr.files))
         for pr in records
     }
     roots = {pr.number: _repository_roots(pr.files) for pr in records}
-    visible = set()
-    same_root = []
-    other_roots = []
-    overlap_count = 0
-    recall = config.graph_recall
+    base_visible: List[Tuple[int, int]] = []
+    same_root: List[Tuple[int, int]] = []
+    other_roots: List[Tuple[int, int]] = []
     for first, second in combinations(cones, 2):
         if not cones[first].isdisjoint(cones[second]):
-            overlap_count += 1
-            if recall and _uniform(_key(seed, "conflict", first, second)) < probability:
-                visible.add((first, second))
-        elif recall < 1:
+            if _uniform(_key(seed, "conflict", first, second)) < probability:
+                base_visible.append((first, second))
+        else:
             candidates = other_roots if roots[first].isdisjoint(roots[second]) else same_root
             candidates.append((first, second))
 
-    latent = set()
-    if recall < 1 and (same_root or other_roots):
-        if recall:
-            # Anchor the expected latent count to the realized visible count.
-            # A sparse budget still permits latent edges in an overlap-free trace.
-            reference = len(visible) or probability * (overlap_count or len(records) / 2)
-            target = reference * ((1 - recall) / recall)
+    recall = config.graph_recall
+    # Fixed conflict budget anchored to baseline density (independent of recall!)
+    total_target = float(len(base_visible)) if base_visible else probability * len(records) / 2.0
+
+    if recall >= 1.0:
+        visible = set(base_visible)
+        latent: Set[Tuple[int, int]] = set()
+    else:
+        if recall <= 0.0:
+            visible = set()
         else:
-            # Zero recall is an off-graph-only control at the configured density.
-            target = probability * (len(same_root) + len(other_roots))
-        # Give same-root pairs four times the probability until they saturate.
-        shared_probability = min(1.0, target / (len(same_root) + 0.25 * len(other_roots)))
-        random_probability = (
-            min(1.0, (target - len(same_root) * shared_probability) / len(other_roots))
-            if other_roots else 0.0
-        )
-        for candidates, chance in ((same_root, shared_probability), (other_roots, random_probability)):
-            latent.update(
-                pair for pair in candidates if _uniform(_key(seed, "latent-conflict", *pair)) < chance
+            visible = {
+                pair for pair in base_visible
+                if _uniform(_key(seed, "keep-visible", *pair)) < recall
+            }
+        latent = set()
+        target_latent = max(0.0, total_target - len(visible))
+        if target_latent > 0 and (same_root or other_roots):
+            # Weight same-root disjoint pairs 4x higher until saturated.
+            shared_prob = min(1.0, target_latent / (len(same_root) + 0.25 * len(other_roots)))
+            other_prob = (
+                min(1.0, max(0.0, target_latent - len(same_root) * shared_prob) / len(other_roots))
+                if other_roots else 0.0
             )
+            for candidates, chance in ((same_root, shared_prob), (other_roots, other_prob)):
+                latent.update(
+                    pair for pair in candidates if _uniform(_key(seed, "latent-conflict", *pair)) < chance
+                )
+
     conflicts = frozenset(visible | latent)
     persistent = frozenset(
         pair for pair in conflicts
@@ -156,7 +201,6 @@ def build_ground_truth(
 
 @dataclass
 class _Recovery:
-    # The simulator uses this label only when aggregating metrics.
     faulty: bool = False
     observed_failure: bool = False
     rounds: int = 0
@@ -172,6 +216,8 @@ class _Job:
     next_suspect: Optional[int] = None
     overhead: float = 0.0
     prefix: _Members = ()
+    is_root: bool = False
+    blame_remainder: bool = False
 
 
 @dataclass
@@ -202,14 +248,20 @@ class _OutcomeNode:
 
 
 @dataclass
+class _DepLane:
+    """Independent conflict-graph outcome tree for DepAwareOutcomeTree."""
+    lane_id: int
+    cone: Set[str]
+    queue: List[int]
+    root: Optional[_OutcomeNode] = None
+
+
+@dataclass
 class _SuitePosterior:
-    # Each trace represents a single observed test suite. Evidence comes from
-    # passing verifications and failures subsequently confirmed as transient.
     alpha: float = 1.0
     beta: float = 19.0
 
     def failure_probability(self, attempts: int) -> float:
-        """Beta-binomial predictive probability of consecutive flaky outcomes."""
         return prod(
             (self.alpha + index) / (self.alpha + self.beta + index)
             for index in range(attempts)
@@ -230,23 +282,33 @@ class _Simulation:
             for pr in prs
         }
         self.truth = build_ground_truth(graph, prs, config, seed)
-        self.defect_risk = _defect_probabilities(prs, config.base_defect_rate)
+        # Leak-free scheduler prior calibrated strictly from warm-up history!
+        self.defect_risk = _warmup_scheduler_priors(graph, prs, config.base_defect_rate)
         self.arrivals = {
             pr.number: pr.arrival_min / config.velocity_multiplier for pr in prs
         }
-        self.use_graph = strategy.startswith("SSMQ") and strategy != "SSMQ-NoGraph"
+        self.use_cone = strategy in (
+            "SSMQ", "SSMQ-NoRisk", "SSMQ-NoFlaky", "SSMQ-FixedRetry", "SSMQ-NoBlame",
+        )
+        self.use_risk_lanes = strategy in (
+            "SSMQ", "SSMQ-NoCone", "SSMQ-NoFlaky", "SSMQ-FixedRetry", "SSMQ-NoBlame",
+        )
         self.use_blame = strategy.startswith("SSMQ") and strategy != "SSMQ-NoBlame"
-        self.adaptive_rerun = strategy.startswith("SSMQ") and strategy != "SSMQ-NoFlaky"
-        self.fixed_rerun = strategy == "FlakeAwareBatch"
-        self.uber = strategy == "UberSubmitQueue"
+        self.adaptive_rerun = strategy.startswith("SSMQ") and strategy not in ("SSMQ-NoFlaky", "SSMQ-FixedRetry")
+        self.fixed_rerun = strategy in ("FlakeAwareBatch", "SSMQ-FixedRetry")
+        self.fifo_tree = strategy == "FIFOOutcomeTree"
+        self.dep_tree = strategy == "DepAwareOutcomeTree"
         self.linear = strategy == "SpeculativeLinear"
         self.worker_limit = 1 if strategy == "SerialQueue" else config.workers
+
         self.ready: List[int] = []
         self.pending: Deque[_Job] = deque()
-        self.protected = set()
+        self.protected: Set[int] = set()
         self.train: Deque[_TrainNode] = deque()
-        self.barrier = set()
+        self.barrier: Set[int] = set()
         self.outcome_root: Optional[_OutcomeNode] = None
+        self.dep_lanes: List[_DepLane] = []
+        self._next_lane_id = count()
         self.suite = _SuitePosterior()
         self.sequence = count()
         self.events = []
@@ -262,8 +324,21 @@ class _Simulation:
         self.escaped = 0
         self.merged: Dict[int, float] = {}
         self.merged_mainline: Set[int] = set()
-        self.rejected = set()
+        self.rejected: Set[int] = set()
         self.false_rejections = 0
+        self.rejected_defective = 0
+        self.rejected_persistent_conflict = 0
+        # v4 mechanism instrumentation
+        self.root_batches_dispatched = 0
+        self.root_batch_members_total = 0
+        self.failed_root_batches = 0
+        self.failed_root_single_culprit = 0
+        self.failed_root_multi_culprit = 0
+        self.failed_root_members_total = 0
+        self.failed_root_culprits_total = 0
+        self.blame_attempts = 0
+        self.blame_one_step_hits = 0
+
         for number, arrival in sorted(self.arrivals.items(), key=lambda item: (item[1], item[0])):
             heappush(self.events, (arrival, next(self.sequence), number))
 
@@ -285,7 +360,7 @@ class _Simulation:
         return self._metrics()
 
     def _root_job(self, members: _Members) -> _Job:
-        return _Job(members, _Recovery())
+        return _Job(members, _Recovery(), is_root=True)
 
     def _start(self, job: _Job) -> _Run:
         canonical = tuple(sorted(job.members))
@@ -304,6 +379,9 @@ class _Simulation:
         self.running += 1
         self.total_runs += 1
         self.total_batch_members += len(job.members)
+        if job.is_root and job.failures == 0 and job.round == 0:
+            self.root_batches_dispatched += 1
+            self.root_batch_members_total += len(job.members)
         return run
 
     def _discard(self, run: _Run, *, invalidated: bool) -> None:
@@ -318,8 +396,10 @@ class _Simulation:
         run.completed = True
         self.running -= 1
         self.ci_time += run.finishes - run.started
-        if self.uber:
+        if self.fifo_tree:
             self._resolve_uber()
+        elif self.dep_tree:
+            self._resolve_dep_trees()
         elif any(run is node.run for node in self.train):
             self._resolve_train()
         else:
@@ -328,8 +408,10 @@ class _Simulation:
     def _dispatch(self) -> None:
         while self.pending and self.running < self.worker_limit:
             self._start(self.pending.popleft())
-        if self.uber:
+        if self.fifo_tree:
             self._dispatch_uber()
+        elif self.dep_tree:
+            self._dispatch_dep_trees()
         elif self.linear:
             self._dispatch_train()
         else:
@@ -339,7 +421,7 @@ class _Simulation:
     def _take_batch(self) -> _Members:
         if self.strategy == "SerialQueue":
             return (self.ready.pop(0),)
-        if not self.use_graph:
+        if not self.use_cone and not self.use_risk_lanes:
             size = self.config.max_batch_size
             members = tuple(self.ready[:size])
             del self.ready[:size]
@@ -352,7 +434,7 @@ class _Simulation:
         combined = set(self.cones[head])
         waiting = []
         for number in self.ready[1:]:
-            overlap = not combined.isdisjoint(self.cones[number])
+            overlap = self.use_cone and (not combined.isdisjoint(self.cones[number]))
             if overlap:
                 self.protected.add(number)
             if len(members) < limit and not overlap and self._is_protected(number) == protected:
@@ -365,7 +447,11 @@ class _Simulation:
         return tuple(members)
 
     def _is_protected(self, number: int) -> bool:
-        return number in self.protected or self.records[number].risk_score >= _FAST_LANE_RISK
+        if number in self.protected:
+            return True
+        if self.use_risk_lanes and self.records[number].risk_score >= _FAST_LANE_RISK:
+            return True
+        return False
 
     def _failure_risk(self, members: _Members) -> float:
         clean = prod(1 - self.defect_risk[number] for number in members)
@@ -404,15 +490,13 @@ class _Simulation:
             self.barrier.update(head.members)
             if head.members != run.job.members:
                 self._record_outcome(run)
-                # This failed verification included an already-merged prefix.
-                # Validate the tail on its own rebased snapshot first.
                 self.pending.append(_Job(head.members, run.job.recovery, round=1))
             else:
                 self._resolve_batch(run)
             break
 
+    # ---- Outcome-Tree helpers shared by FIFOOutcomeTree and DepAwareOutcomeTree ----
     def _uber_pass_probability(self, members: _Members, prefix: _Members) -> float:
-        # Independent risk estimates use only scheduler-visible cone overlap.
         base = self.merged_mainline.union(prefix)
         cross_edges = sum(
             not self.cones[number].isdisjoint(self.cones[prior])
@@ -513,6 +597,12 @@ class _Simulation:
                 break
             self._record_outcome(run)
             if run.passes:
+                if self.truth.persistent_culprits(run.job.members, self.merged_mainline - run.mainline):
+                    self._discard(run, invalidated=True)
+                    self._discard_outcomes(head.on_pass)
+                    self._discard_outcomes(head.on_fail)
+                    self.outcome_root = _OutcomeNode(replace(run.job, overhead=0.0, prefix=()))
+                    break
                 self._merge(run, run.job.members)
                 self._discard_outcomes(head.on_fail)
             else:
@@ -523,6 +613,78 @@ class _Simulation:
             if run.passes or len(run.job.members) == 1:
                 del self.ready[:len(run.job.members)]
 
+    # ---- DepAwareOutcomeTree: EuroSys '19 conflict-graph speculation ----
+    def _assign_ready_to_dep_lanes(self) -> None:
+        """Assign arriving PRs to overlapping conflict-graph lanes or open a new independent lane."""
+        while self.ready:
+            pr_num = self.ready.pop(0)
+            cone = self.cones[pr_num]
+            overlapping = [lane for lane in self.dep_lanes if not lane.cone.isdisjoint(cone)]
+            if not overlapping:
+                self.dep_lanes.append(_DepLane(next(self._next_lane_id), set(cone), [pr_num]))
+            elif len(overlapping) == 1:
+                lane = overlapping[0]
+                lane.queue.append(pr_num)
+                lane.cone.update(cone)
+            else:
+                # Multiple active lanes collide with pr_num: queue it on the earliest
+                # overlapping lane after waiting for later ones to drain, or append to
+                # the earliest overlapping lane while expanding its cone.
+                lane = overlapping[0]
+                lane.queue.append(pr_num)
+                lane.cone.update(cone)
+
+    def _dispatch_dep_trees(self) -> None:
+        self._assign_ready_to_dep_lanes()
+        for lane in self.dep_lanes:
+            if lane.root is None and lane.queue:
+                lane.root = self._uber_batch(tuple(lane.queue), ())
+        while self.running < self.worker_limit:
+            best_val = -1.0
+            best_node: Optional[_OutcomeNode] = None
+            for lane in self.dep_lanes:
+                if lane.root is None or not lane.queue:
+                    continue
+                for val, node in self._uber_frontier(lane.root, tuple(lane.queue), 1, 1.0):
+                    if val > best_val or (best_node is None and node is lane.root):
+                        best_val = val
+                        best_node = node
+            if best_node is None:
+                break
+            best_node.run = self._start(best_node.job)
+
+    def _resolve_dep_trees(self) -> None:
+        remaining_lanes: List[_DepLane] = []
+        for lane in self.dep_lanes:
+            while lane.root is not None:
+                head = lane.root
+                run = head.run
+                if run is None or not run.completed:
+                    break
+                self._record_outcome(run)
+                if run.passes:
+                    # Independent commit subject to cumulative persistent-conflict safety!
+                    if self.truth.persistent_culprits(run.job.members, self.merged_mainline - run.mainline):
+                        self._discard(run, invalidated=True)
+                        self._discard_outcomes(head.on_pass)
+                        self._discard_outcomes(head.on_fail)
+                        lane.root = _OutcomeNode(replace(run.job, overhead=0.0, prefix=()))
+                        break
+                    self._merge(run, run.job.members)
+                    self._discard_outcomes(head.on_fail)
+                else:
+                    self._discard_outcomes(head.on_pass)
+                    if len(run.job.members) == 1:
+                        self._reject(run.job.members[0])
+                lane.root = self._uber_child(head, run.passes, tuple(lane.queue))
+                if run.passes or len(run.job.members) == 1:
+                    del lane.queue[:len(run.job.members)]
+            if lane.queue:
+                # Recompute active cone strictly over remaining queued PRs in this lane
+                lane.cone = set().union(*(self.cones[n] for n in lane.queue))
+                remaining_lanes.append(lane)
+        self.dep_lanes = remaining_lanes
+
     def _record_outcome(self, run: _Run) -> None:
         recovery = run.job.recovery
         recovery.rounds = max(recovery.rounds, run.job.round)
@@ -531,6 +693,15 @@ class _Simulation:
                 self.recoveries.append(recovery)
             recovery.observed_failure = True
             recovery.faulty |= bool(run.culprits)
+            if run.job.is_root and run.job.failures == 0 and run.job.round == 0:
+                self.failed_root_batches += 1
+                self.failed_root_members_total += len(run.job.members)
+                n_culp = len(run.culprits)
+                self.failed_root_culprits_total += n_culp
+                if n_culp == 1:
+                    self.failed_root_single_culprit += 1
+                elif n_culp >= 2:
+                    self.failed_root_multi_culprit += 1
 
     def _should_rerun(self, job: _Job) -> bool:
         if self.fixed_rerun:
@@ -540,8 +711,6 @@ class _Simulation:
         fault = self._failure_risk(job.members)
         transient = (1 - fault) * self.suite.failure_probability(job.failures + 1)
         evidence = fault + transient
-        # Guard singletons aggressively against false rejection; rerun multi-PR batches
-        # only when posterior flakiness exceeds 50% (otherwise attribute immediately).
         threshold = _FLAKE_RERUN_THRESHOLD if len(job.members) == 1 else 0.50
         return evidence > 0 and transient / evidence >= threshold
 
@@ -549,12 +718,12 @@ class _Simulation:
         job = run.job
         self._record_outcome(run)
         if run.passes:
-            # A concurrent commit can invalidate the result if it introduces a
-            # persistent interaction. Rebase and run CI on the newer mainline.
             if self.truth.persistent_culprits(job.members, self.merged_mainline - run.mainline):
                 self._discard(run, invalidated=True)
                 self.pending.appendleft(replace(job, overhead=0.0))
                 return
+            if job.blame_remainder:
+                self.blame_one_step_hits += 1
             if self.adaptive_rerun:
                 self.suite.alpha += job.failures
                 self.suite.beta += 1
@@ -565,7 +734,7 @@ class _Simulation:
 
         if self._should_rerun(job):
             self.pending.appendleft(replace(
-                job, failures=job.failures + 1, round=job.round + 1, overhead=0.0
+                job, failures=job.failures + 1, round=job.round + 1, overhead=0.0,
             ))
         elif len(job.members) == 1:
             self._reject(job.members[0])
@@ -576,15 +745,15 @@ class _Simulation:
 
     def _attribute(self, run: _Run) -> None:
         job = run.job
+        self.blame_attempts += 1
         top, second = self._rank_suspects(job.members, run.culprits)[:2]
         remaining = tuple(number for number in job.members if number != top)
         self.pending.extend((
             _Job(
                 remaining, job.recovery, job.round + 1, allow_blame=False,
                 next_suspect=second, overhead=self.config.blame_overhead_min,
+                blame_remainder=True,
             ),
-            # Verify the evicted PR independently. Conflicting or misattributed
-            # clean PRs can still pass once isolated.
             _Job((top,), job.recovery, job.round + 1),
         ))
 
@@ -621,7 +790,11 @@ class _Simulation:
     def _reject(self, number: int) -> None:
         self.rejected.add(number)
         self.barrier.discard(number)
-        if not self.truth.culprits((number,), self.merged_mainline):
+        if number in self.truth.defective_prs:
+            self.rejected_defective += 1
+        elif self.truth.persistent_culprits((number,), self.merged_mainline):
+            self.rejected_persistent_conflict += 1
+        else:
             self.false_rejections += 1
 
     def _merge(self, run: _Run, members: _Members) -> None:
@@ -647,6 +820,8 @@ class _Simulation:
         fault_rounds = [
             item.rounds for item in self.recoveries if item.faulty and item.observed_failure
         ]
+        total_conf = len(self.truth.conflicting_pairs)
+        realized_rec = (len(self.truth.on_graph_pairs) / total_conf) if total_conf else 1.0
         return RunMetrics(
             strategy=self.strategy,
             seed=self.seed,
@@ -669,6 +844,28 @@ class _Simulation:
             runner_utilization=self.ci_time / (self.config.workers * duration_min) if duration_min else 0.0,
             off_graph_conflicts_total=len(self.truth.off_graph_pairs),
             on_graph_conflicts_total=len(self.truth.on_graph_pairs),
+            root_batches_dispatched=self.root_batches_dispatched,
+            mean_root_batch_size=(
+                self.root_batch_members_total / self.root_batches_dispatched
+                if self.root_batches_dispatched else 0.0
+            ),
+            failed_root_batches=self.failed_root_batches,
+            failed_root_single_culprit=self.failed_root_single_culprit,
+            failed_root_multi_culprit=self.failed_root_multi_culprit,
+            mean_failed_root_size=(
+                self.failed_root_members_total / self.failed_root_batches
+                if self.failed_root_batches else 0.0
+            ),
+            mean_culprits_per_failed_root=(
+                self.failed_root_culprits_total / self.failed_root_batches
+                if self.failed_root_batches else 0.0
+            ),
+            blame_attempts=self.blame_attempts,
+            blame_one_step_hits=self.blame_one_step_hits,
+            rejected_defective=self.rejected_defective,
+            rejected_persistent_conflict=self.rejected_persistent_conflict,
+            rejected_false_flaky=self.false_rejections,
+            realized_graph_recall=realized_rec,
         )
 
 
@@ -714,21 +911,6 @@ def simulate_queue(
     graph: DependencyGraph, prs: Iterable[PRRecord], strategy: str, config: SimConfig,
     seed: int,
 ) -> RunMetrics:
-    """Simulate one queue from its first arrival until all PRs are resolved.
-
-    Independent jobs verify against a snapshot of cumulative mainline and rerun
-    if an intervening merge introduces a persistent conflict. Speculation uses
-    real mainline plus the PRs assumed to have merged along that path. Outcomes
-    can commit only after their assumptions are resolved.
-
-    Canceled runs consume CI minutes up to cancellation. Invalidations include
-    discarded speculation, stale results and failures confirmed as flaky.
-    Mean batch size counts members at dispatch, including canceled jobs.
-    Utilization uses all configured runner slots. The false rejection rate
-    divides the number of nondefective, unblocked rejections by all nondefective
-    input PRs. Blame rounds count recovery depth after observed faulty runs.
-    Empty denominators yield zero.
-    """
     if strategy not in ALL_STRATEGIES:
         raise ValueError(f"Unknown queue strategy: {strategy}")
     records = list(prs)

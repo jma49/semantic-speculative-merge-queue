@@ -1,54 +1,47 @@
-% Real-Trace Motivating Example from kubernetes/kubernetes (PRs #144379, #144378, #144133, #144205, #144345)
+% 100% Algorithm-1-Verified Consecutive 5-PR Window from kubernetes/kubernetes (eval indices 53..57, ZERO skipped PRs!)
 \begin{figure*}[t]
 \centering
 \begin{tikzpicture}[
   font=\scriptsize,
-  prbox/.style={rectangle, rounded corners=2pt, draw=black!65, minimum height=0.64cm, minimum width=2.25cm, align=center, inner sep=2pt},
-  coll/.style={prbox, fill=ssmqRed!18, draw=ssmqRed!80!black, thick},
+  prbox/.style={rectangle, rounded corners=2pt, draw=black!65, minimum height=0.68cm, minimum width=2.35cm, align=center, inner sep=2pt},
+  coll/.style={prbox, fill=ssmqRed!16, draw=ssmqRed!80!black, thick},
+  hrisk/.style={prbox, fill=ssmqOrange!20, draw=ssmqOrange!85!black, thick},
   clean/.style={prbox, fill=ssmqBlue!14, draw=ssmqBlue!80!black},
   lane/.style={rectangle, rounded corners=3pt, draw=#1!70!black, fill=#1!6, inner sep=4pt}
 ]
 
-% Panel (a): FIFO Batching Collision -> Invalidation Storm
-\node[font=\footnotesize\bfseries, anchor=west] at (-0.1, 2.85) {(a) Conventional FIFO Merge Queue (Blind Arrival Order)};
+% Panel (a): Arrival-Ordered FIFO Batching on 5 Consecutive Real Kubernetes PRs
+\node[font=\footnotesize\bfseries, anchor=west] at (-0.1, 2.80) {(a) Conventional FIFO Batching on Five Consecutive \texttt{kubernetes} PRs (Eval Indices 53--57)};
 
-\node[coll] (f1) at (1.2, 1.55) {\textbf{PR \#144379}\\ \texttt{test/e2e\_node}};
-\node[coll] (f2) at (3.75, 1.55) {\textbf{PR \#144378}\\ \texttt{test/e2e\_node}};
-\node[clean] (f3) at (6.3, 1.55) {\textbf{PR \#144133}\\ \texttt{staging/src}};
-\node[clean] (f4) at (8.85, 1.55) {\textbf{PR \#144205}\\ \texttt{pkg/scheduler}};
+\node[coll]  (f1) at (1.25, 1.50) {\textbf{PR \#143839} ($r{=}0.50$)\\ \texttt{staging/src}};
+\node[hrisk] (f2) at (3.90, 1.50) {\textbf{PR \#144202} ($r{=}0.66$)\\ \texttt{pkg/scheduler}};
+\node[clean] (f3) at (6.55, 1.50) {\textbf{PR \#141804} ($r{=}0.40$)\\ \texttt{test/integration}};
+\node[clean] (f4) at (9.20, 1.50) {\textbf{PR \#144251} ($r{=}0.29$)\\ \texttt{test/e2e}};
+\node[coll]  (f5) at (11.85, 1.50) {\textbf{PR \#144257} ($r{=}0.45$)\\ \texttt{staging/src}};
 
-% Collision arc with clear headroom below panel title
-\draw[ssmqRed!85!black, thick, <->] (f1.north) to[bend left=20] node[above, yshift=1pt, font=\scriptsize\bfseries, text=ssmqRed!85!black] {Module Collision (\texttt{test/e2e\_node})} (f2.north);
+% Actual cone-overlap arc between #143839 and #144257 (both in staging/src)
+\draw[ssmqRed!85!black, thick, <->] (f1.north) to[bend left=11] node[above, yshift=1pt, font=\scriptsize\bfseries, text=ssmqRed!85!black] {Observed Cone Overlap (\texttt{staging/src})} (f5.north);
 
-% FIFO batch box (compact caption stays strictly inside box width)
 \begin{scope}[on background layer]
-  \node[lane=ssmqRed, fit=(f1)(f4), label={[font=\scriptsize\bfseries, text=ssmqRed!80!black, yshift=-2pt]below:FIFO Batch $B_{\text{FIFO}}$ ($K=4$): 1 Conflict $\Rightarrow$ Batch Fail \& $O(\log K)$ Bisection}] (fbox) {};
+  \node[lane=ssmqRed, fit=(f1)(f5), label={[font=\scriptsize\bfseries, text=ssmqRed!80!black, yshift=-2pt]below:FIFO Batch ($K{=}5$): Bundles High-Risk \#144202 \& Colliding Pair (\#143839, \#144257) $\Rightarrow$ Hypothetical Failure Stalls All 5 PRs}] (fbox) {};
 \end{scope}
 
-% Outcome callout box cleanly separated on right
-\node[rectangle, rounded corners=2pt, fill=ssmqRed!12, draw=ssmqRed!70!black, align=left, text width=3.85cm, inner sep=4.5pt] at (13.35, 1.55) {
-  \textbf{FIFO Failure Cascade:}\\
-  $\bullet$ Innocent \#144133 \& \#144205 stalled\\
-  $\bullet$ 3--4 extra CI runs to bisect\\
-  $\bullet$ Downstream speculative trains aborted
-};
+% Panel (b): Exact Algorithm 1 Dispatch on the Same 5 Ready PRs
+\node[font=\footnotesize\bfseries, anchor=west] at (-0.1, -0.35) {(b) Exact Algorithm~\ref{alg:packing} Partitioning on Warm-Up Graph $\hat{G}$ (Zero Skipped Records)};
 
-% Panel (b): SSMQ Graph-Disjoint Risk-Stratified Lanes
-\node[font=\footnotesize\bfseries, anchor=west] at (-0.1, -0.30) {(b) SSMQ Dependency-Aware Multi-Lane Packing (Warm-Up Graph $\hat{G}$)};
+\node[clean] (s1) at (1.35, -1.25) {\textbf{PR \#143839} ($r{=}0.50$)\\ \texttt{staging/src}};
+\node[clean] (s3) at (4.15, -1.25) {\textbf{PR \#141804} ($r{=}0.40$)\\ \texttt{test/integration}};
+\node[clean] (s4) at (6.95, -1.25) {\textbf{PR \#144251} ($r{=}0.29$)\\ \texttt{test/e2e}};
 
-\node[clean] (s1) at (1.2, -1.25) {\textbf{PR \#144379}\\ \texttt{test/e2e\_node}};
-\node[clean] (s3) at (3.75, -1.25) {\textbf{PR \#144133}\\ \texttt{staging/src}};
-\node[clean] (s4) at (6.3, -1.25) {\textbf{PR \#144205}\\ \texttt{pkg/scheduler}};
-\node[clean] (s5) at (8.85, -1.25) {\textbf{PR \#144345}\\ \texttt{test/integration}};
-
-\node[prbox, fill=ssmqOrange!20, draw=ssmqOrange!85!black, thick] (p2) at (13.35, -1.25) {\textbf{PR \#144378}\\ \texttt{test/e2e\_node}\\ (Deferred $\to$ Protected)};
+\node[hrisk] (p2) at (10.35, -1.25) {\textbf{PR \#144202} ($r{=}0.66$)\\ High-Risk ($\ge 0.55$)};
+\node[coll]  (p5) at (13.05, -1.25) {\textbf{PR \#144257} ($r{=}0.45$)\\ Cone Overlap $\to \mathcal{P}$};
 
 \begin{scope}[on background layer]
-  \node[lane=ssmqBlue, fit=(s1)(s5), label={[font=\scriptsize\bfseries, text=ssmqBlue!85!black, yshift=-2pt]below:Fast Lane $B_{\text{fast}}$ (Pairwise Disjoint Cones $C(p_i)\cap C(p_j)=\emptyset$) $\Rightarrow$ Single-Round Merge}] (fastbox) {};
-  \node[lane=ssmqOrange, fit=(p2), label={[font=\scriptsize\bfseries, text=ssmqOrange!85!black, yshift=-2pt]below:Protected Lane ($K \le 2$, Bounded Wait)}] (protbox) {};
+  \node[lane=ssmqBlue, fit=(s1)(s4), label={[font=\scriptsize\bfseries, text=ssmqBlue!85!black, yshift=-2pt]below:Fast Lane ($K{=}3$, Pairwise Disjoint Cones, All $r{<}0.55$)}] (fastbox) {};
+  \node[lane=ssmqOrange, fit=(p2)(p5), label={[font=\scriptsize\bfseries, text=ssmqOrange!85!black, yshift=-2pt]below:Protected Lane ($K{\le}2$, Disjoint \& Bounded Wait)}] (protbox) {};
 \end{scope}
 
 \end{tikzpicture}
-\caption{Motivating real-trace example mined from our \texttt{kubernetes/kubernetes} evaluation window (PRs~\#144379, \#144378, \#144133, \#144205, and \#144345). (a)~Conventional FIFO batching bundles colliding PRs~\#144379 and~\#144378 (both editing \texttt{test/e2e\_node}) alongside orthogonal changes, causing a batch failure that penalizes innocent PRs. (b)~SSMQ packs four mutually disjoint PRs into a fast-lane batch and promotes colliding PR~\#144378 to the starvation-bounded protected lane for parallel verification.}
+\caption{Exact Algorithm~\ref{alg:packing} trace vignette on five strictly consecutive evaluation PRs from \texttt{kubernetes/kubernetes} (indices 53--57, zero skipped records). (a)~Arrival-ordered FIFO batching bundles high-risk PR~\#144202 ($r=0.664 \ge 0.55$) and cone-overlapping pair (\#143839, \#144257 on \texttt{staging/src}) with unrelated PRs; under a hypothetical defect or semantic conflict, all five PRs stall behind bisection. (b)~On the actual warm-up graph $\hat{G}$, Algorithm~\ref{alg:packing} packs three low-risk, cone-disjoint PRs into the fast lane and isolates \#144202 (risk) and \#144257 (overlap promotion) into the protected lane ($K \le 2$).}
 \label{fig:motivating}
 \end{figure*}

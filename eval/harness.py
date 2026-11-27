@@ -1,24 +1,32 @@
 #!/usr/bin/env python3
-"""Frozen Sealed Experiment Harness v3 for SSMQ (ICSE / FSE / EuroSys Camera-Ready Polish).
+"""Frozen Sealed Experiment Harness v4 for SSMQ (Post-Codex-v3 Gate 3 Approval).
 
-Preserves prior v1/v2 sealed runs untouched and writes 9 immutable v3 suites
-under `runs/v3_*/`:
-  - v3_exp0_blame_microbench : 64 real executed Python unittest batches
-                               (24 disjoint regressions + 16 co-file distractors
-                               + 24 true pairwise semantic conflicts) evaluating
-                               Random, ChurnRisk, FileTracebackOverlap, and ASTStackCausal
-  - v3_exp1_aa_noise         : Disjoint 20-seed Block A vs B noise calibration
-  - v3_exp2_main_bench       : Main benchmark (6 strategies x 3 repos x 20 seeds, 80% graph recall)
-  - v3_exp3_velocity         : Velocity surge sweep (1x, 3x, 5x, 10x)
-  - v3_exp4_ablation         : Full component ablation (including false-rejection rate)
-  - v3_exp5_graph_recall     : Non-circularity proof (graph_recall 0.40..1.00 + no-conflict control)
-  - v3_exp6_flaky_sweep      : Flaky Pareto sweep (0%, 2%, 5%, 10%, 15%) incl. SSMQ-NoFlaky
-  - v3_exp7_blame_sweep      : Blame Top-1 accuracy sweep (0.50..measured_top1) vs SSMQ-NoBlame
-  - v3_exp8_blame_regime     : Failure-density & large-batch regime sweep characterizing when
-                               1-step causal blame yields substantial vs marginal end-to-end gains
+Preserves prior v1/v2/v3 runs untouched and writes 9 immutable v4 suites under
+`runs/v4_*/` (refusing to overwrite existing sealed runs unless `--force` is set):
+  - v4_exp0_blame_microbench : 80 real executed Python unittest batches across
+                               4 strata (24 disjoint + 16 comment co-file +
+                               16 FUNCTIONAL sibling co-file + 24 semantic
+                               conflicts) + executed leave-one-out recovery +
+                               all 5 rankers timed live.
+  - v4_exp1_aa_noise         : Disjoint 20-seed Block A vs B noise calibration.
+  - v4_exp2_main_bench       : 7 primary strategies (incl. FIFOOutcomeTree &
+                               DepAwareOutcomeTree) x 3 repos x 20 paired seeds.
+  - v4_exp3_velocity         : Velocity sweep (1x, 3x, 5x, 10x) x 6 strategies.
+  - v4_exp4_ablation         : Deconfounded 8-variant ablation separating
+                               SSMQ-NoCone, SSMQ-NoRisk, SSMQ-NoGraph,
+                               SSMQ-NoFlaky, SSMQ-FixedRetry, SSMQ-NoBlame.
+  - v4_exp5_graph_recall     : Fixed-density non-circularity sweep
+                               (graph_recall 0.40..1.00 + zero-conflict control).
+  - v4_exp6_flaky_sweep      : Flaky trade-off sweep (0%..15%) including matched
+                               SSMQ-FixedRetry and SSMQ-NoFlaky inside SSMQ.
+  - v4_exp7_blame_sweep      : Blame Top-1 accuracy sweep (0.50..measured_top1).
+  - v4_exp8_blame_regime     : Controlled 2x2 factorial sweep (defect 8%/16% x
+                               cap K=8/12 at fixed recall=0.80) with full root
+                               batch size & culprit multiplicity instrumentation.
 """
 from __future__ import annotations
 
+import argparse
 import datetime as dt
 import hashlib
 import json
@@ -43,20 +51,24 @@ MAIN_STRATEGIES = [
     "SerialQueue",
     "StaticBatchBisect",
     "SpeculativeLinear",
-    "UberSubmitQueue",
+    "FIFOOutcomeTree",
+    "DepAwareOutcomeTree",
     "FlakeAwareBatch",
     "SSMQ",
 ]
 
 ABLATION_STRATEGIES = [
     "SSMQ",
+    "SSMQ-NoCone",
+    "SSMQ-NoRisk",
     "SSMQ-NoGraph",
     "SSMQ-NoFlaky",
+    "SSMQ-FixedRetry",
     "SSMQ-NoBlame",
     "StaticBatchBisect",
 ]
 
-SEEDS_MAIN = list(range(1001, 1021))  # 20 deterministic seeds
+SEEDS_MAIN = list(range(1001, 1021))  # 20 deterministic paired seeds
 SEEDS_AA_B = list(range(2001, 2021))  # Disjoint 20-seed block for A/A check
 
 
@@ -96,8 +108,12 @@ def seal_run(
     seeds: List[int],
     payload: Any,
     extra_meta: Dict[str, Any],
+    *,
+    force: bool = False,
 ) -> Path:
     run_dir = REPO_ROOT / "runs" / run_id
+    if (run_dir / "manifest.json").exists() and not force:
+        raise FileExistsError(f"Refusing to overwrite sealed run {run_id}; pass --force or a new version.")
     run_dir.mkdir(parents=True, exist_ok=True)
     metrics_path = run_dir / "metrics.json"
     metrics_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
@@ -113,7 +129,7 @@ def seal_run(
     ]
     rec_count = len(payload) if isinstance(payload, list) else len(payload.get("records", []))
     manifest = {
-        "schema_version": "3.0",
+        "schema_version": "4.0",
         "run_id": run_id,
         "experiment": experiment,
         "timestamp_utc": dt.datetime.now(dt.timezone.utc).isoformat(),
@@ -134,14 +150,19 @@ def seal_run(
 
 
 def main() -> None:
-    # EXP-0: 64-batch real executed AST/stack-trace causal blame micro-benchmark
+    parser = argparse.ArgumentParser(description="Frozen Sealed Experiment Harness v4.")
+    parser.add_argument("--force", action="store_true", help="Allow overwriting existing v4 run directories.")
+    args = parser.parse_args()
+
+    # EXP-0: 80-batch real executed AST/stack-trace causal blame micro-benchmark
     blame_summary, blame_records = run_blame_benchmark(seed=2026)
     seal_run(
-        "v3_exp0_blame_microbench",
-        "v3_exp0_blame_microbench",
+        "v4_exp0_blame_microbench",
+        "v4_exp0_blame_microbench",
         [2026],
         {"summary": blame_summary.to_dict(), "records": blame_records},
         {"type": "executable_python_unittest_microbench", "batches": blame_summary.total_failing_batches},
+        force=args.force,
     )
 
     loaded = {name: load_trace(path) for name, path in TRACES.items()}
@@ -167,7 +188,7 @@ def main() -> None:
         warmup_fraction=0.25,
     )
 
-    # EXP-1: A/A Noise Floor Check
+    # EXP-1: Disjoint A/A Noise Calibration
     aa_rows: List[Dict[str, Any]] = []
     for block_name, seeds in (("A", SEEDS_MAIN), ("B", SEEDS_AA_B)):
         for repo_name, (g, prs) in loaded.items():
@@ -177,14 +198,15 @@ def main() -> None:
                 m["block"] = block_name
                 aa_rows.append(m)
     seal_run(
-        "v3_exp1_aa_noise",
-        "v3_exp1_aa_noise",
+        "v4_exp1_aa_noise",
+        "v4_exp1_aa_noise",
         SEEDS_MAIN + SEEDS_AA_B,
         aa_rows,
         {"graph_recall": 0.80, "flaky_rate": 0.05, "persistent_conflict_share": 0.03},
+        force=args.force,
     )
 
-    # EXP-2: Main Benchmark (6 strategies x 3 repos x 20 paired seeds)
+    # EXP-2: Main Benchmark (7 strategies incl. FIFOOutcomeTree & DepAwareOutcomeTree)
     main_rows: List[Dict[str, Any]] = []
     for repo_name, (g, prs) in loaded.items():
         for strat in MAIN_STRATEGIES:
@@ -193,8 +215,8 @@ def main() -> None:
                 m["repo"] = repo_name
                 main_rows.append(m)
     seal_run(
-        "v3_exp2_main_bench",
-        "v3_exp2_main_bench",
+        "v4_exp2_main_bench",
+        "v4_exp2_main_bench",
         SEEDS_MAIN,
         main_rows,
         {
@@ -204,12 +226,20 @@ def main() -> None:
             "persistent_conflict_share": 0.03,
             "blame_top1_acc": measured_top1,
         },
+        force=args.force,
     )
 
     # EXP-3: Velocity Surge Sweep (1x, 3x, 5x, 10x)
     vel_rows: List[Dict[str, Any]] = []
     velocities = [1.0, 3.0, 5.0, 10.0]
-    vel_strats = ["StaticBatchBisect", "SpeculativeLinear", "UberSubmitQueue", "FlakeAwareBatch", "SSMQ"]
+    vel_strats = [
+        "StaticBatchBisect",
+        "SpeculativeLinear",
+        "FIFOOutcomeTree",
+        "DepAwareOutcomeTree",
+        "FlakeAwareBatch",
+        "SSMQ",
+    ]
     for vel in velocities:
         cfg = SimConfig(**{**base_cfg.__dict__, "velocity_multiplier": vel})
         for repo_name, (g, prs) in loaded.items():
@@ -220,14 +250,15 @@ def main() -> None:
                     m["velocity_multiplier"] = vel
                     vel_rows.append(m)
     seal_run(
-        "v3_exp3_velocity",
-        "v3_exp3_velocity",
+        "v4_exp3_velocity",
+        "v4_exp3_velocity",
         SEEDS_MAIN,
         vel_rows,
         {"velocities": velocities, "strategies": vel_strats},
+        force=args.force,
     )
 
-    # EXP-4: Component Ablation
+    # EXP-4: Deconfounded 8-Variant Ablation
     abl_rows: List[Dict[str, Any]] = []
     for repo_name, (g, prs) in loaded.items():
         for strat in ABLATION_STRATEGIES:
@@ -236,14 +267,15 @@ def main() -> None:
                 m["repo"] = repo_name
                 abl_rows.append(m)
     seal_run(
-        "v3_exp4_ablation",
-        "v3_exp4_ablation",
+        "v4_exp4_ablation",
+        "v4_exp4_ablation",
         SEEDS_MAIN,
         abl_rows,
         {"strategies": ABLATION_STRATEGIES},
+        force=args.force,
     )
 
-    # EXP-5: Non-Circularity Proof — Graph Recall Sweep (0.40..1.00) + No-Conflict Control
+    # EXP-5: Fixed-Density Non-Circularity Sweep (graph_recall 0.40..1.00 + Zero-Conflict)
     rec_rows: List[Dict[str, Any]] = []
     rec_settings = [
         ("no_conflict", 0.0, 1.0),
@@ -252,7 +284,7 @@ def main() -> None:
         ("recall_0.80", 0.18, 0.80),
         ("recall_1.00", 0.18, 1.00),
     ]
-    rec_strats = ["StaticBatchBisect", "UberSubmitQueue", "SSMQ"]
+    rec_strats = ["StaticBatchBisect", "FIFOOutcomeTree", "DepAwareOutcomeTree", "SSMQ"]
     for label, cprob, grecall in rec_settings:
         cfg = SimConfig(**{**base_cfg.__dict__, "semantic_conflict_prob": cprob, "graph_recall": grecall})
         for repo_name, (g, prs) in loaded.items():
@@ -265,17 +297,25 @@ def main() -> None:
                     m["semantic_conflict_prob"] = cprob
                     rec_rows.append(m)
     seal_run(
-        "v3_exp5_graph_recall",
-        "v3_exp5_graph_recall",
+        "v4_exp5_graph_recall",
+        "v4_exp5_graph_recall",
         SEEDS_MAIN,
         rec_rows,
         {"regimes": [x[0] for x in rec_settings], "strategies": rec_strats},
+        force=args.force,
     )
 
-    # EXP-6: Flaky Pareto Sweep (0%, 2%, 5%, 10%, 15%) incl. SSMQ-NoFlaky
+    # EXP-6: Flaky Trade-Off Sweep (0%..15%) including matched SSMQ-FixedRetry & SSMQ-NoFlaky
     flaky_rows: List[Dict[str, Any]] = []
     flaky_rates = [0.0, 0.02, 0.05, 0.10, 0.15]
-    flaky_strats = ["StaticBatchBisect", "SpeculativeLinear", "UberSubmitQueue", "FlakeAwareBatch", "SSMQ-NoFlaky", "SSMQ"]
+    flaky_strats = [
+        "StaticBatchBisect",
+        "FlakeAwareBatch",
+        "DepAwareOutcomeTree",
+        "SSMQ-NoFlaky",
+        "SSMQ-FixedRetry",
+        "SSMQ",
+    ]
     for fr in flaky_rates:
         cfg = SimConfig(**{**base_cfg.__dict__, "flaky_rate": fr})
         for repo_name, (g, prs) in loaded.items():
@@ -286,18 +326,19 @@ def main() -> None:
                     m["flaky_rate"] = fr
                     flaky_rows.append(m)
     seal_run(
-        "v3_exp6_flaky_sweep",
-        "v3_exp6_flaky_sweep",
+        "v4_exp6_flaky_sweep",
+        "v4_exp6_flaky_sweep",
         SEEDS_MAIN,
         flaky_rows,
         {"flaky_rates": flaky_rates, "strategies": flaky_strats},
+        force=args.force,
     )
 
-    # EXP-7: Blame Accuracy Sweep matched directly against SSMQ-NoBlame
+    # EXP-7: Blame Accuracy Sweep holding Top-2 offset explicit
     blame_rows: List[Dict[str, Any]] = []
-    blame_accs = [0.50, 0.65, 0.75, 0.85, measured_top1]
+    blame_accs = [0.50, 0.70, 0.85, measured_top1]
     for acc in blame_accs:
-        top2 = min(0.99, acc + 0.06)
+        top2 = min(0.99, max(acc, 0.95))
         cfg = SimConfig(**{**base_cfg.__dict__, "blame_top1_acc": acc, "blame_top2_acc": top2})
         for repo_name, (g, prs) in loaded.items():
             for strat in ("SSMQ", "SSMQ-NoBlame"):
@@ -307,28 +348,29 @@ def main() -> None:
                     m["blame_top1_acc"] = round(acc, 4)
                     blame_rows.append(m)
     seal_run(
-        "v3_exp7_blame_sweep",
-        "v3_exp7_blame_sweep",
+        "v4_exp7_blame_sweep",
+        "v4_exp7_blame_sweep",
         SEEDS_MAIN,
         blame_rows,
         {"blame_top1_accs": [round(a, 4) for a in blame_accs]},
+        force=args.force,
     )
 
-    # EXP-8: Failure-Density & Large-Batch Regime Sweep (characterizing where 1-step blame dominates)
+    # EXP-8: Controlled 2x2 Factorial Blame-Regime Sweep (fixed graph_recall=0.80)
     regime_rows: List[Dict[str, Any]] = []
     regimes = [
-        ("nominal_8pct_k8", 0.08, 8, 0.80),
-        ("elevated_15pct_k8", 0.15, 8, 0.80),
-        ("highdef_22pct_k12", 0.22, 12, 0.60),
-        ("lowrec_15pct_k12", 0.15, 12, 0.40),
+        ("def8_k8", 0.08, 8),
+        ("def16_k8", 0.16, 8),
+        ("def8_k12", 0.08, 12),
+        ("def16_k12", 0.16, 12),
     ]
     regime_strats = ["StaticBatchBisect", "SSMQ-NoBlame", "SSMQ"]
-    for label, drate, kmax, grecall in regimes:
+    for label, drate, kmax in regimes:
         cfg = SimConfig(**{
             **base_cfg.__dict__,
             "base_defect_rate": drate,
             "max_batch_size": kmax,
-            "graph_recall": grecall,
+            "graph_recall": 0.80,
         })
         for repo_name, (g, prs) in loaded.items():
             for strat in regime_strats:
@@ -338,14 +380,14 @@ def main() -> None:
                     m["regime"] = label
                     m["base_defect_rate"] = drate
                     m["max_batch_size"] = kmax
-                    m["graph_recall"] = grecall
                     regime_rows.append(m)
     seal_run(
-        "v3_exp8_blame_regime",
-        "v3_exp8_blame_regime",
+        "v4_exp8_blame_regime",
+        "v4_exp8_blame_regime",
         SEEDS_MAIN,
         regime_rows,
-        {"regimes": [r[0] for r in regimes], "strategies": regime_strats},
+        {"regimes": [r[0] for r in regimes], "strategies": regime_strats, "graph_recall": 0.80},
+        force=args.force,
     )
 
 
