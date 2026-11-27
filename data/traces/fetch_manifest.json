@@ -1,0 +1,55 @@
+{
+  "fetched_at_utc": "2026-11-27T04:48:51.337646+00:00",
+  "method": "default_branch_commit_history_associated_merged_prs",
+  "file_cap_per_pr": 100,
+  "repositories": [
+    {
+      "repo": "kubernetes/kubernetes",
+      "base_branch": "master",
+      "target_prs": 200,
+      "collected_prs": 200,
+      "mainline_commits_scanned": 603,
+      "mainline_commits_without_branch_pr": 3,
+      "newest_commit_oid": "1dc6ca798017266904fccdceb48f27fee5286723",
+      "oldest_commit_oid": "40443de954f6013c184886346a9b744828ef9a4f",
+      "file_cap_per_pr": 100,
+      "prs_with_truncated_files": 5,
+      "time_span_utc": [
+        "2026-11-10T17:04:23Z",
+        "2026-11-26T21:22:49Z"
+      ]
+    },
+    {
+      "repo": "microsoft/TypeScript",
+      "base_branch": "main",
+      "target_prs": 200,
+      "collected_prs": 200,
+      "mainline_commits_scanned": 201,
+      "mainline_commits_without_branch_pr": 1,
+      "newest_commit_oid": "6327ae16673fe527482c24c37814a5b55162395d",
+      "oldest_commit_oid": "4a4b24d5dc96d148641ec6a39c4f5bbf023cbb2f",
+      "file_cap_per_pr": 100,
+      "prs_with_truncated_files": 5,
+      "time_span_utc": [
+        "2026-10-28T07:09:33Z",
+        "2026-11-26T20:54:51Z"
+      ]
+    },
+    {
+      "repo": "vercel/next.js",
+      "base_branch": "canary",
+      "target_prs": 200,
+      "collected_prs": 200,
+      "mainline_commits_scanned": 226,
+      "mainline_commits_without_branch_pr": 26,
+      "newest_commit_oid": "0173455ce60633b2c91e164cf9cbf934a2ab5a77",
+      "oldest_commit_oid": "60f1fa8269884c6c217c6564a0b7ff71058dd871",
+      "file_cap_per_pr": 100,
+      "prs_with_truncated_files": 5,
+      "time_span_utc": [
+        "2026-11-15T21:41:08Z",
+        "2026-11-26T19:12:16Z"
+      ]
+    }
+  ]
+}

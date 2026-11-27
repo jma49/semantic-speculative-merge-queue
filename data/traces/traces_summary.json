@@ -1,32 +1,38 @@
 [
   {
     "repo": "kubernetes/kubernetes",
+    "base_branch": "master",
     "prs": 200,
-    "unique_files": 620,
-    "avg_files_per_pr": 5.82,
+    "unique_files": 1394,
+    "avg_files_per_pr": 12.5,
+    "prs_with_truncated_files": 5,
     "time_span": [
-      "2023-10-31T18:16:38Z",
+      "2026-11-10T17:04:23Z",
       "2026-11-26T21:22:49Z"
     ]
   },
   {
     "repo": "microsoft/TypeScript",
+    "base_branch": "main",
     "prs": 200,
-    "unique_files": 1007,
-    "avg_files_per_pr": 8.48,
+    "unique_files": 1448,
+    "avg_files_per_pr": 11.03,
+    "prs_with_truncated_files": 5,
     "time_span": [
-      "2019-04-25T20:40:24Z",
+      "2026-10-28T07:09:33Z",
       "2026-11-26T20:54:51Z"
     ]
   },
   {
     "repo": "vercel/next.js",
+    "base_branch": "canary",
     "prs": 200,
-    "unique_files": 1460,
-    "avg_files_per_pr": 9.59,
+    "unique_files": 1754,
+    "avg_files_per_pr": 11.14,
+    "prs_with_truncated_files": 5,
     "time_span": [
-      "2026-11-06T13:33:38Z",
-      "2026-11-26T22:14:10Z"
+      "2026-11-15T21:41:08Z",
+      "2026-11-26T19:12:16Z"
     ]
   }
 ]

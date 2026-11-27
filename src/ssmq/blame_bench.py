@@ -235,32 +235,33 @@ DEFECT_PRS: List[PatchPR] = [
 
 # Functional sibling-function co-file distractor pairings:
 # Each entry pairs a defect PR with a REAL EXECUTABLE benign PR modifying a
-# DIFFERENT function in the EXACT SAME FILE (counterbalanced PR IDs & churn!).
-# Even a trivia-filtering file-level ranker sees TWO executable edits to the
-# implicated file; only function-symbol AST + call-graph analysis separates them!
+# DIFFERENT function in the EXACT SAME FILE with IDENTICAL line churn; in
+# `run_blame_benchmark` each pairing is executed under BOTH lexical ID
+# polarities (`pr_a... < pr_d...` and `pr_z... > pr_d...`) so tie-breaking is
+# strictly 50/50 symmetric!
 SIBLING_FUNCTION_PAIRINGS: List[Tuple[PatchPR, PatchPR]] = [
-    # Defect in base_price vs functional sibling edit in compute_tax (both pkg/pricing.py)
-    (DEFECT_PRS[0], PatchPR("pr_a01_pricing_sib_tax", {"pkg/pricing.py": ("return round(subtotal * rate, 2)", "eff_rate = max(0.0, rate)\n    return round(subtotal * eff_rate, 2)")}, "Clamp negative tax rate in compute_tax", 2)),
-    # Defect in apply_discount vs functional sibling edit in base_price (both pkg/pricing.py)
-    (DEFECT_PRS[1], PatchPR("pr_z02_pricing_sib_base", {"pkg/pricing.py": ("return round(units * unit_cost, 2)", "if units < 0:\n        raise ValueError('neg')\n    return round(units * unit_cost, 2)")}, "Validate units in base_price", 2)),
-    # Defect in compute_tax vs functional sibling edit in base_price (both pkg/pricing.py)
-    (DEFECT_PRS[2], PatchPR("pr_a03_pricing_sib_base", {"pkg/pricing.py": ("return round(units * unit_cost, 2)", "if units < 0:\n        raise ValueError('neg')\n    return round(units * unit_cost, 2)")}, "Validate units in base_price", 2)),
-    # Defect in check_stock vs functional sibling edit in restock_level (both pkg/inventory.py)
-    (DEFECT_PRS[3], PatchPR("pr_a04_inv_sib_restock", {"pkg/inventory.py": ("return max(0, 10 - catalog.get(sku, 0))", "target = 10\n    return max(0, target - catalog.get(sku, 0))")}, "Extract restock target in restock_level", 2)),
-    # Defect in reserve_stock vs functional sibling edit in restock_level (both pkg/inventory.py)
-    (DEFECT_PRS[4], PatchPR("pr_z05_inv_sib_restock", {"pkg/inventory.py": ("return max(0, 10 - catalog.get(sku, 0))", "target = 10\n    return max(0, target - catalog.get(sku, 0))")}, "Extract restock target in restock_level", 2)),
-    # Defect in restock_level vs functional sibling edit in check_stock (both pkg/inventory.py)
-    (DEFECT_PRS[5], PatchPR("pr_a06_inv_sib_check", {"pkg/inventory.py": ("return catalog.get(sku, 0) >= qty", "avail = catalog.get(sku, 0)\n    return avail >= qty and qty >= 0")}, "Guard negative qty in check_stock", 2)),
-    # Defect in shipping_fee vs functional sibling edit in estimate_days (both pkg/shipping.py)
-    (DEFECT_PRS[6], PatchPR("pr_a07_ship_sib_days", {"pkg/shipping.py": ('"remote": 7}', '"remote": 7, "island": 9}')}, "Add island zone in estimate_days", 1)),
-    # Defect in estimate_days vs functional sibling edit in shipping_fee (both pkg/shipping.py)
-    (DEFECT_PRS[7], PatchPR("pr_z08_ship_sib_fee", {"pkg/shipping.py": ("base = 5.0 + 1.5 * weight_kg", "w = max(0.0, weight_kg)\n    base = 5.0 + 1.5 * w")}, "Clamp negative weight in shipping_fee", 2)),
-    # Defect in normalize_role vs functional sibling edit in can_approve (both pkg/auth.py)
-    (DEFECT_PRS[8], PatchPR("pr_a09_auth_sib_appr", {"pkg/auth.py": ('if r == "admin":', 'if r in ("admin", "superadmin"):')}, "Support superadmin in can_approve", 1)),
-    # Defect in can_approve vs functional sibling edit in normalize_role (both pkg/auth.py)
-    (DEFECT_PRS[9], PatchPR("pr_z10_auth_sib_norm", {"pkg/auth.py": ("return role.strip().lower()", "cleaned = (role or '').strip().lower()\n    return cleaned")}, "Handle empty role in normalize_role", 2)),
-    # Defect in summarize_entries vs functional sibling edit in format_entry (both pkg/ledger.py)
-    (DEFECT_PRS[10], PatchPR("pr_a11_ledger_sib_fmt", {"pkg/ledger.py": ('"currency": "USD"}', '"currency": "USD", "v": 1}')}, "Add version key in format_entry", 1)),
+    # Defect in base_price vs functional sibling edit in compute_tax (both pkg/pricing.py, 2 lines)
+    (DEFECT_PRS[0], PatchPR("pr_s01_pricing_sib_tax", {"pkg/pricing.py": ("return round(subtotal * rate, 2)", "eff_rate = max(0.0, rate)\n    return round(subtotal * eff_rate, 2)")}, "Clamp negative tax rate in compute_tax", DEFECT_PRS[0].added_lines)),
+    # Defect in apply_discount vs functional sibling edit in base_price (both pkg/pricing.py, 2 lines)
+    (DEFECT_PRS[1], PatchPR("pr_s02_pricing_sib_base", {"pkg/pricing.py": ("return round(units * unit_cost, 2)", "if units < 0:\n        raise ValueError('neg')\n    return round(units * unit_cost, 2)")}, "Validate units in base_price", DEFECT_PRS[1].added_lines)),
+    # Defect in compute_tax vs functional sibling edit in base_price (both pkg/pricing.py, 2 lines)
+    (DEFECT_PRS[2], PatchPR("pr_s03_pricing_sib_base", {"pkg/pricing.py": ("return round(units * unit_cost, 2)", "if units < 0:\n        raise ValueError('neg')\n    return round(units * unit_cost, 2)")}, "Validate units in base_price", DEFECT_PRS[2].added_lines)),
+    # Defect in check_stock vs functional sibling edit in restock_level (both pkg/inventory.py, 2 lines)
+    (DEFECT_PRS[3], PatchPR("pr_s04_inv_sib_restock", {"pkg/inventory.py": ("return max(0, 10 - catalog.get(sku, 0))", "target = 10\n    return max(0, target - catalog.get(sku, 0))")}, "Extract restock target in restock_level", DEFECT_PRS[3].added_lines)),
+    # Defect in reserve_stock vs functional sibling edit in restock_level (both pkg/inventory.py, 1 line)
+    (DEFECT_PRS[4], PatchPR("pr_s05_inv_sib_restock", {"pkg/inventory.py": ("return max(0, 10 - catalog.get(sku, 0))", "return max(0, 10 - catalog.get(sku, 0)) + 0")}, "Explicit floor expression in restock_level", DEFECT_PRS[4].added_lines)),
+    # Defect in restock_level vs functional sibling edit in check_stock (both pkg/inventory.py, 2 lines)
+    (DEFECT_PRS[5], PatchPR("pr_s06_inv_sib_check", {"pkg/inventory.py": ("return catalog.get(sku, 0) >= qty", "avail = catalog.get(sku, 0)\n    return avail >= qty and qty >= 0")}, "Guard negative qty in check_stock", DEFECT_PRS[5].added_lines)),
+    # Defect in shipping_fee vs functional sibling edit in estimate_days (both pkg/shipping.py, 1 line)
+    (DEFECT_PRS[6], PatchPR("pr_s07_ship_sib_days", {"pkg/shipping.py": ('"remote": 7}', '"remote": 7, "island": 9}')}, "Add island zone in estimate_days", DEFECT_PRS[6].added_lines)),
+    # Defect in estimate_days vs functional sibling edit in shipping_fee (both pkg/shipping.py, 1 line)
+    (DEFECT_PRS[7], PatchPR("pr_s08_ship_sib_fee", {"pkg/shipping.py": ("base = 5.0 + 1.5 * weight_kg", "base = 5.0 + 1.5 * max(0.0, weight_kg)")}, "Clamp negative weight in shipping_fee", DEFECT_PRS[7].added_lines)),
+    # Defect in normalize_role vs functional sibling edit in can_approve (both pkg/auth.py, 1 line)
+    (DEFECT_PRS[8], PatchPR("pr_s09_auth_sib_appr", {"pkg/auth.py": ('if r == "admin":', 'if r in ("admin", "superadmin"):')}, "Support superadmin in can_approve", DEFECT_PRS[8].added_lines)),
+    # Defect in can_approve vs functional sibling edit in normalize_role (both pkg/auth.py, 1 line)
+    (DEFECT_PRS[9], PatchPR("pr_s10_auth_sib_norm", {"pkg/auth.py": ("return role.strip().lower()", "return (role or '').strip().lower()")}, "Handle empty role in normalize_role", DEFECT_PRS[9].added_lines)),
+    # Defect in summarize_entries vs functional sibling edit in format_entry (both pkg/ledger.py, 2 lines)
+    (DEFECT_PRS[10], PatchPR("pr_s11_ledger_sib_fmt", {"pkg/ledger.py": ('"currency": "USD"}', '"currency": "USD",\n        "v": 1}')}, "Add version key in format_entry", DEFECT_PRS[10].added_lines)),
 ]
 
 # 6 genuine pairwise semantic conflicts across different files:
@@ -293,14 +294,24 @@ SEMANTIC_CONFLICT_PAIRS: List[Tuple[PatchPR, PatchPR]] = [
 ]
 
 
+def _apply_single_patch_strict(src: str, old: str, new: str, pr_id: str, rel_path: str) -> str:
+    """Apply a single hunk strictly: requires old != new and UNIQUE match (count == 1)."""
+    if old == new:
+        raise ValueError(f"No-op patch for {pr_id} on {rel_path}")
+    matches = src.count(old)
+    if matches != 1:
+        raise ValueError(
+            f"Patch match count {matches} != 1 for {pr_id} on {rel_path}: {old!r}"
+        )
+    return src.replace(old, new, 1)
+
+
 def _apply_patches(prs: List[PatchPR]) -> Dict[str, str]:
-    """Apply all patches strictly — raises ValueError on any unmatched edit."""
+    """Apply all patches strictly — raises ValueError on any missing or ambiguous edit."""
     repo = copy.deepcopy(BASE_REPO)
     for pr in prs:
         for rel_path, (old, new) in pr.files.items():
-            if old not in repo[rel_path]:
-                raise ValueError(f"Patch mismatch for {pr.pr_id} on {rel_path}: {old!r}")
-            repo[rel_path] = repo[rel_path].replace(old, new, 1)
+            repo[rel_path] = _apply_single_patch_strict(repo[rel_path], old, new, pr.pr_id, rel_path)
     return repo
 
 
@@ -314,13 +325,17 @@ def execute_batch(prs: List[PatchPR]) -> Tuple[bool, str]:
             p.parent.mkdir(parents=True, exist_ok=True)
             p.write_text(content, encoding="utf-8")
         proc = subprocess.run(
-            [sys.executable, "-m", "unittest", "discover", "-s", "tests", "-v"],
+            [sys.executable, "-B", "-m", "unittest", "discover", "-s", "tests", "-v"],
             cwd=str(root),
             capture_output=True,
             text=True,
             timeout=15,
         )
-        return proc.returncode == 0, (proc.stdout + "\n" + proc.stderr)
+        out = proc.stdout + "\n" + proc.stderr
+        m_ran = re.search(r"Ran (\d+) test", out)
+        if not m_ran or int(m_ran.group(1)) < 1:
+            raise RuntimeError(f"Unittest executed 0 tests unexpectedly:\n{out}")
+        return proc.returncode == 0, out
 
 
 def _extract_changed_symbols(base_src: str, new_src: str) -> Set[str]:
@@ -413,42 +428,43 @@ def _failing_test_context(
 
 
 def rank_file_raw_overlap(prs: List[PatchPR], traceback_text: str) -> List[str]:
-    """File-level baseline using exact same traceback + specificity-weighted test-to-file evidence (no trivia filter)."""
+    """File-level baseline using exact same file/frame weights and PR-ID tie-break (no trivia filter)."""
     implicated_files, _, file_spec, _ = _failing_test_context(traceback_text)
-    scored: List[Tuple[float, int, str]] = []
+    scored: List[Tuple[float, str]] = []
     for pr in prs:
         score = 0.0
         for rel in pr.files:
+            score += 1.0
             if rel in implicated_files:
-                score += 2.0 + 0.25 * implicated_files[rel]
-            score += 6.0 * file_spec.get(rel, 0.0)
-        scored.append((score, pr.added_lines, pr.pr_id))
-    scored.sort(key=lambda x: (-x[0], -x[1], x[2]))
-    return [pid for _, _, pid in scored]
+                score += 1.0 + 0.2 * implicated_files[rel]
+            score += 2.0 * file_spec.get(rel, 0.0)
+        scored.append((score, pr.pr_id))
+    scored.sort(key=lambda x: (-x[0], x[1]))
+    return [pid for _, pid in scored]
 
 
 def rank_file_trivia_filtered(prs: List[PatchPR], traceback_text: str) -> List[str]:
-    """Strong same-information file-level baseline: filters AST-invariant comment edits
-    and uses the EXACT same specificity-weighted traceback + AST test-to-file evidence
-    as ASTStackCausalRanker, differing ONLY in file vs function-symbol granularity.
+    """Strict nested file-level ablation: IDENTICAL AST trivia filter, IDENTICAL
+    file/frame weights (1.0, 1.0+0.2*d_f, 2.0*file_spec), and IDENTICAL PR-ID
+    tie-break as ASTStackCausalRanker, setting ONLY the function-symbol term to 0.
     """
     implicated_files, _, file_spec, _ = _failing_test_context(traceback_text)
-    scored: List[Tuple[float, int, str]] = []
+    scored: List[Tuple[float, str]] = []
     for pr in prs:
         score = 0.0
         for rel, (old, new) in pr.files.items():
-            patched_src = BASE_REPO[rel].replace(old, new, 1)
+            patched_src = _apply_single_patch_strict(BASE_REPO[rel], old, new, pr.pr_id, rel)
             changed_syms = _extract_changed_symbols(BASE_REPO[rel], patched_src)
             if not changed_syms:
                 score += 0.01
                 continue
             score += 1.0
             if rel in implicated_files:
-                score += 2.0 + 0.25 * implicated_files[rel]
-            score += 6.0 * file_spec.get(rel, 0.0)
-        scored.append((score, pr.added_lines, pr.pr_id))
-    scored.sort(key=lambda x: (-x[0], -x[1], x[2]))
-    return [pid for _, _, pid in scored]
+                score += 1.0 + 0.2 * implicated_files[rel]
+            score += 2.0 * file_spec.get(rel, 0.0)
+        scored.append((score, pr.pr_id))
+    scored.sort(key=lambda x: (-x[0], x[1]))
+    return [pid for _, pid in scored]
 
 
 def rank_ast_stack_causal(prs: List[PatchPR], traceback_text: str) -> List[str]:
@@ -458,7 +474,7 @@ def rank_ast_stack_causal(prs: List[PatchPR], traceback_text: str) -> List[str]:
     for pr in prs:
         score = 0.0
         for rel, (old, new) in pr.files.items():
-            patched_src = BASE_REPO[rel].replace(old, new, 1)
+            patched_src = _apply_single_patch_strict(BASE_REPO[rel], old, new, pr.pr_id, rel)
             changed_syms = _extract_changed_symbols(BASE_REPO[rel], patched_src)
             if not changed_syms:
                 score += 0.01
@@ -500,7 +516,7 @@ class BlameBenchSummary:
     ast_stack_comment_top1_acc: float
     ast_stack_sibling_top1_acc: float
     ast_stack_sem_top1_acc: float
-    # FileTriviaFilteredRanker (strong same-info non-function baseline)
+    # FileTriviaFilteredRanker (strict nested file-level ablation)
     file_trivia_top1_acc: float
     file_trivia_top2_acc: float
     file_trivia_mrr: float
@@ -510,20 +526,29 @@ class BlameBenchSummary:
     file_trivia_comment_top1_acc: float
     file_trivia_sibling_top1_acc: float
     file_trivia_sem_top1_acc: float
-    # FileRawOverlapRanker (file-level without trivia filter)
+    # FileRawOverlapRanker (no trivia filter)
     file_raw_top1_acc: float
     file_raw_top2_acc: float
     file_raw_mrr: float
     file_raw_mean_ms: float
+    file_raw_loo_recovery_rate: float
     file_raw_comment_top1_acc: float
     file_raw_sibling_top1_acc: float
-    # Churn & Random (measured runtime too!)
+    # Churn & Random (ALL metrics measured live, zero missing values!)
     churn_risk_top1_acc: float
     churn_risk_top2_acc: float
+    churn_risk_mrr: float
     churn_risk_mean_ms: float
+    churn_risk_loo_recovery_rate: float
+    churn_risk_comment_top1_acc: float
+    churn_risk_sibling_top1_acc: float
     random_top1_acc: float
     random_top2_acc: float
+    random_mrr: float
     random_mean_ms: float
+    random_loo_recovery_rate: float
+    random_comment_top1_acc: float
+    random_sibling_top1_acc: float
 
     def to_dict(self) -> Dict[str, object]:
         return asdict(self)
@@ -543,26 +568,41 @@ def run_blame_benchmark(seed: int = 2026) -> Tuple[BlameBenchSummary, List[Dict[
             rng.shuffle(batch)
             cases.append(("single_defect", batch, {defect.pr_id}))
 
-    # Stratum 2: 16 comment-only co-file distractor batches
-    for idx, defect in enumerate(DEFECT_PRS):
+    # Stratum 2: 16 SYMMETRICALLY COUNTERBALANCED comment-only co-file distractor batches
+    # Exact 50/50 lexical PR-ID polarity (8 with comment_id < defect_id, 8 with comment_id > defect_id)
+    # and matched line churn so raw file overlap cannot win via lexical ID order!
+    for idx, defect in enumerate(DEFECT_PRS[:8]):
         defect_file = next(iter(defect.files))
-        distractor = COFILE_COMMENT_PRS[defect_file]
-        sizes = (4, 8) if idx < 4 else (6,)
-        for batch_size in sizes:
+        base_comment = COFILE_COMMENT_PRS[defect_file]
+        for prefix in ("pr_a", "pr_z"):
+            distractor = PatchPR(
+                pr_id=f"{prefix}{idx:02d}_{base_comment.pr_id}",
+                files=base_comment.files,
+                description=base_comment.description,
+                added_lines=defect.added_lines,
+            )
+            batch_size = 6
             clean_pool = [c for c in CLEAN_PRS if set(c.files).isdisjoint(defect.files)]
             chosen_clean = rng.sample(clean_pool, min(batch_size - 2, len(clean_pool)))
             batch = chosen_clean + [distractor, defect]
             rng.shuffle(batch)
             cases.append(("cofile_comment", batch, {defect.pr_id}))
 
-    # Stratum 3: 16 FUNCTIONAL sibling-function co-file distractor batches
-    # (real executable edits to a DIFFERENT function in the SAME file!)
+    # Stratum 3: 22 SYMMETRICALLY COUNTERBALANCED functional sibling-function co-file batches
+    # Every single one of the 11 distinct pairings is evaluated with IDENTICAL line churn
+    # under BOTH lexical ID polarities (sib_id < defect_id AND sib_id > defect_id)!
     for idx, (defect, sibling_clean) in enumerate(SIBLING_FUNCTION_PAIRINGS):
-        sizes = (4, 8) if idx < 5 else (6,)
-        for batch_size in sizes:
+        for polarity, prefix in (("lo", "pr_a"), ("hi", "pr_z")):
+            sib_variant = PatchPR(
+                pr_id=f"{prefix}{idx:02d}_{sibling_clean.pr_id}",
+                files=sibling_clean.files,
+                description=sibling_clean.description,
+                added_lines=defect.added_lines,
+            )
+            batch_size = 6
             clean_pool = [c for c in CLEAN_PRS if set(c.files).isdisjoint(defect.files)]
             chosen_clean = rng.sample(clean_pool, min(batch_size - 2, len(clean_pool)))
-            batch = chosen_clean + [sibling_clean, defect]
+            batch = chosen_clean + [sib_variant, defect]
             rng.shuffle(batch)
             cases.append(("cofile_sibling", batch, {defect.pr_id}))
 
@@ -576,28 +616,14 @@ def run_blame_benchmark(seed: int = 2026) -> Tuple[BlameBenchSummary, List[Dict[
             rng.shuffle(batch)
             cases.append(("semantic_conflict", batch, {pr_a.pr_id, pr_b.pr_id}))
 
-    # Accumulators
     counts = {"single_defect": 0, "cofile_comment": 0, "cofile_sibling": 0, "semantic_conflict": 0}
-    ast_hits = {k: 0 for k in counts}
-    ft_hits = {k: 0 for k in counts}
-    fr_hits = {k: 0 for k in counts}
-
-    ast_t1 = ast_t2 = ast_loo = 0
-    ast_rr = 0.0
-    ast_ms_list: List[float] = []
-
-    ft_t1 = ft_t2 = ft_loo = 0
-    ft_rr = 0.0
-    ft_ms_sum = 0.0
-
-    fr_t1 = fr_t2 = 0
-    fr_rr = 0.0
-    fr_ms_sum = 0.0
-
-    churn_t1 = churn_t2 = 0
-    churn_ms_sum = 0.0
-    rand_t1 = rand_t2 = 0
-    rand_ms_sum = 0.0
+    ranker_names = ("ast", "ft", "fr", "churn", "rand")
+    hits = {r: {k: 0 for k in counts} for r in ranker_names}
+    t1 = {r: 0 for r in ranker_names}
+    t2 = {r: 0 for r in ranker_names}
+    rr = {r: 0.0 for r in ranker_names}
+    loo = {r: 0 for r in ranker_names}
+    ms_lists: Dict[str, List[float]] = {r: [] for r in ranker_names}
     executed_failures = 0
 
     for idx, (kind, batch, culprits) in enumerate(cases):
@@ -606,65 +632,48 @@ def run_blame_benchmark(seed: int = 2026) -> Tuple[BlameBenchSummary, List[Dict[
             raise RuntimeError(f"Expected failing batch {idx} ({kind}) passed unexpectedly!")
         executed_failures += 1
         counts[kind] += 1
+        failing_tests = sorted(set(re.findall(r"(?:FAIL|ERROR): (test_[a-zA-Z0-9_]+)", tb)))
+
+        rankings: Dict[str, List[str]] = {}
+        t0 = time.perf_counter()
+        rankings["ast"] = rank_ast_stack_causal(batch, tb)
+        ms_lists["ast"].append((time.perf_counter() - t0) * 1000.0)
 
         t0 = time.perf_counter()
-        ast_rank = rank_ast_stack_causal(batch, tb)
-        ast_ms = (time.perf_counter() - t0) * 1000.0
-        ast_ms_list.append(ast_ms)
+        rankings["ft"] = rank_file_trivia_filtered(batch, tb)
+        ms_lists["ft"].append((time.perf_counter() - t0) * 1000.0)
 
         t0 = time.perf_counter()
-        ft_rank = rank_file_trivia_filtered(batch, tb)
-        ft_ms = (time.perf_counter() - t0) * 1000.0
-        ft_ms_sum += ft_ms
+        rankings["fr"] = rank_file_raw_overlap(batch, tb)
+        ms_lists["fr"].append((time.perf_counter() - t0) * 1000.0)
 
         t0 = time.perf_counter()
-        fr_rank = rank_file_raw_overlap(batch, tb)
-        fr_ms = (time.perf_counter() - t0) * 1000.0
-        fr_ms_sum += fr_ms
-
-        t0 = time.perf_counter()
-        churn_rank = rank_churn_risk(batch)
-        churn_ms_sum += (time.perf_counter() - t0) * 1000.0
+        rankings["churn"] = rank_churn_risk(batch)
+        ms_lists["churn"].append((time.perf_counter() - t0) * 1000.0)
 
         t0 = time.perf_counter()
         rand_rank = [p.pr_id for p in batch]
         rng.shuffle(rand_rank)
-        rand_ms_sum += (time.perf_counter() - t0) * 1000.0
+        rankings["rand"] = rand_rank
+        ms_lists["rand"].append((time.perf_counter() - t0) * 1000.0)
 
-        # Real executed leave-one-out recovery verification for AST and FileTrivia!
-        ast_rem_ok, _ = execute_batch([p for p in batch if p.pr_id != ast_rank[0]])
-        ft_rem_ok = ast_rem_ok if ft_rank[0] == ast_rank[0] else execute_batch([p for p in batch if p.pr_id != ft_rank[0]])[0]
-        ast_loo += int(ast_rem_ok)
-        ft_loo += int(ft_rem_ok)
+        # Real executed leave-one-out recovery for EVERY ranker (cached by evicted PR ID)
+        loo_cache: Dict[str, bool] = {}
+        loo_res: Dict[str, bool] = {}
+        for rname in ranker_names:
+            top1_id = rankings[rname][0]
+            if top1_id not in loo_cache:
+                loo_cache[top1_id] = execute_batch([p for p in batch if p.pr_id != top1_id])[0]
+            loo_res[rname] = loo_cache[top1_id]
+            loo[rname] += int(loo_res[rname])
 
-        a1 = int(ast_rank[0] in culprits)
-        a2 = int(any(x in culprits for x in ast_rank[:2]))
-        ast_first = next(i + 1 for i, x in enumerate(ast_rank) if x in culprits)
-        ast_t1 += a1
-        ast_t2 += a2
-        ast_rr += 1.0 / ast_first
-        ast_hits[kind] += a1
-
-        f1 = int(ft_rank[0] in culprits)
-        f2 = int(any(x in culprits for x in ft_rank[:2]))
-        ft_first = next(i + 1 for i, x in enumerate(ft_rank) if x in culprits)
-        ft_t1 += f1
-        ft_t2 += f2
-        ft_rr += 1.0 / ft_first
-        ft_hits[kind] += f1
-
-        r1 = int(fr_rank[0] in culprits)
-        r2 = int(any(x in culprits for x in fr_rank[:2]))
-        fr_first = next(i + 1 for i, x in enumerate(fr_rank) if x in culprits)
-        fr_t1 += r1
-        fr_t2 += r2
-        fr_rr += 1.0 / fr_first
-        fr_hits[kind] += r1
-
-        churn_t1 += int(churn_rank[0] in culprits)
-        churn_t2 += int(any(x in culprits for x in churn_rank[:2]))
-        rand_t1 += int(rand_rank[0] in culprits)
-        rand_t2 += int(any(x in culprits for x in rand_rank[:2]))
+            r1 = int(top1_id in culprits)
+            r2 = int(any(x in culprits for x in rankings[rname][:2]))
+            first_pos = next(i + 1 for i, x in enumerate(rankings[rname]) if x in culprits)
+            t1[rname] += r1
+            t2[rname] += r2
+            rr[rname] += 1.0 / first_pos
+            hits[rname][kind] += r1
 
         records.append({
             "case_id": idx,
@@ -672,17 +681,21 @@ def run_blame_benchmark(seed: int = 2026) -> Tuple[BlameBenchSummary, List[Dict[
             "batch_size": len(batch),
             "patch_ids": [p.pr_id for p in batch],
             "culprits": sorted(culprits),
-            "ast_top1": ast_rank[0],
-            "ast_top2": ast_rank[:2],
-            "ast_hit_top1": bool(a1),
-            "ast_hit_top2": bool(a2),
-            "ast_loo_pass": bool(ast_rem_ok),
-            "ast_latency_ms": round(ast_ms, 3),
-            "file_trivia_top1": ft_rank[0],
-            "file_trivia_hit_top1": bool(f1),
-            "file_trivia_loo_pass": bool(ft_rem_ok),
-            "file_raw_top1": fr_rank[0],
-            "file_raw_hit_top1": bool(r1),
+            "failing_tests": failing_tests,
+            "ast_top1": rankings["ast"][0],
+            "ast_top2": rankings["ast"][:2],
+            "ast_hit_top1": bool(rankings["ast"][0] in culprits),
+            "ast_hit_top2": bool(any(x in culprits for x in rankings["ast"][:2])),
+            "ast_loo_pass": bool(loo_res["ast"]),
+            "ast_latency_ms": round(ms_lists["ast"][-1], 3),
+            "file_trivia_top1": rankings["ft"][0],
+            "file_trivia_hit_top1": bool(rankings["ft"][0] in culprits),
+            "file_trivia_loo_pass": bool(loo_res["ft"]),
+            "file_raw_top1": rankings["fr"][0],
+            "file_raw_hit_top1": bool(rankings["fr"][0] in culprits),
+            "file_raw_loo_pass": bool(loo_res["fr"]),
+            "churn_loo_pass": bool(loo_res["churn"]),
+            "rand_loo_pass": bool(loo_res["rand"]),
             "traceback_tail": tb.strip().splitlines()[-3:],
         })
 
@@ -693,37 +706,46 @@ def run_blame_benchmark(seed: int = 2026) -> Tuple[BlameBenchSummary, List[Dict[
         cofile_comment_batches=counts["cofile_comment"],
         cofile_sibling_batches=counts["cofile_sibling"],
         semantic_conflict_batches=counts["semantic_conflict"],
-        ast_stack_top1_acc=round(ast_t1 / denom, 4),
-        ast_stack_top2_acc=round(ast_t2 / denom, 4),
-        ast_stack_mrr=round(ast_rr / denom, 4),
-        ast_stack_mean_ms=round(sum(ast_ms_list) / denom, 3),
-        ast_stack_max_ms=round(max(ast_ms_list), 3),
-        ast_stack_loo_recovery_rate=round(ast_loo / denom, 4),
-        ast_stack_disjoint_top1_acc=round(ast_hits["single_defect"] / max(1, counts["single_defect"]), 4),
-        ast_stack_comment_top1_acc=round(ast_hits["cofile_comment"] / max(1, counts["cofile_comment"]), 4),
-        ast_stack_sibling_top1_acc=round(ast_hits["cofile_sibling"] / max(1, counts["cofile_sibling"]), 4),
-        ast_stack_sem_top1_acc=round(ast_hits["semantic_conflict"] / max(1, counts["semantic_conflict"]), 4),
-        file_trivia_top1_acc=round(ft_t1 / denom, 4),
-        file_trivia_top2_acc=round(ft_t2 / denom, 4),
-        file_trivia_mrr=round(ft_rr / denom, 4),
-        file_trivia_mean_ms=round(ft_ms_sum / denom, 3),
-        file_trivia_loo_recovery_rate=round(ft_loo / denom, 4),
-        file_trivia_disjoint_top1_acc=round(ft_hits["single_defect"] / max(1, counts["single_defect"]), 4),
-        file_trivia_comment_top1_acc=round(ft_hits["cofile_comment"] / max(1, counts["cofile_comment"]), 4),
-        file_trivia_sibling_top1_acc=round(ft_hits["cofile_sibling"] / max(1, counts["cofile_sibling"]), 4),
-        file_trivia_sem_top1_acc=round(ft_hits["semantic_conflict"] / max(1, counts["semantic_conflict"]), 4),
-        file_raw_top1_acc=round(fr_t1 / denom, 4),
-        file_raw_top2_acc=round(fr_t2 / denom, 4),
-        file_raw_mrr=round(fr_rr / denom, 4),
-        file_raw_mean_ms=round(fr_ms_sum / denom, 3),
-        file_raw_comment_top1_acc=round(fr_hits["cofile_comment"] / max(1, counts["cofile_comment"]), 4),
-        file_raw_sibling_top1_acc=round(fr_hits["cofile_sibling"] / max(1, counts["cofile_sibling"]), 4),
-        churn_risk_top1_acc=round(churn_t1 / denom, 4),
-        churn_risk_top2_acc=round(churn_t2 / denom, 4),
-        churn_risk_mean_ms=round(churn_ms_sum / denom, 4),
-        random_top1_acc=round(rand_t1 / denom, 4),
-        random_top2_acc=round(rand_t2 / denom, 4),
-        random_mean_ms=round(rand_ms_sum / denom, 4),
+        ast_stack_top1_acc=round(t1["ast"] / denom, 4),
+        ast_stack_top2_acc=round(t2["ast"] / denom, 4),
+        ast_stack_mrr=round(rr["ast"] / denom, 4),
+        ast_stack_mean_ms=round(sum(ms_lists["ast"]) / denom, 3),
+        ast_stack_max_ms=round(max(ms_lists["ast"]), 3),
+        ast_stack_loo_recovery_rate=round(loo["ast"] / denom, 4),
+        ast_stack_disjoint_top1_acc=round(hits["ast"]["single_defect"] / max(1, counts["single_defect"]), 4),
+        ast_stack_comment_top1_acc=round(hits["ast"]["cofile_comment"] / max(1, counts["cofile_comment"]), 4),
+        ast_stack_sibling_top1_acc=round(hits["ast"]["cofile_sibling"] / max(1, counts["cofile_sibling"]), 4),
+        ast_stack_sem_top1_acc=round(hits["ast"]["semantic_conflict"] / max(1, counts["semantic_conflict"]), 4),
+        file_trivia_top1_acc=round(t1["ft"] / denom, 4),
+        file_trivia_top2_acc=round(t2["ft"] / denom, 4),
+        file_trivia_mrr=round(rr["ft"] / denom, 4),
+        file_trivia_mean_ms=round(sum(ms_lists["ft"]) / denom, 3),
+        file_trivia_loo_recovery_rate=round(loo["ft"] / denom, 4),
+        file_trivia_disjoint_top1_acc=round(hits["ft"]["single_defect"] / max(1, counts["single_defect"]), 4),
+        file_trivia_comment_top1_acc=round(hits["ft"]["cofile_comment"] / max(1, counts["cofile_comment"]), 4),
+        file_trivia_sibling_top1_acc=round(hits["ft"]["cofile_sibling"] / max(1, counts["cofile_sibling"]), 4),
+        file_trivia_sem_top1_acc=round(hits["ft"]["semantic_conflict"] / max(1, counts["semantic_conflict"]), 4),
+        file_raw_top1_acc=round(t1["fr"] / denom, 4),
+        file_raw_top2_acc=round(t2["fr"] / denom, 4),
+        file_raw_mrr=round(rr["fr"] / denom, 4),
+        file_raw_mean_ms=round(sum(ms_lists["fr"]) / denom, 3),
+        file_raw_loo_recovery_rate=round(loo["fr"] / denom, 4),
+        file_raw_comment_top1_acc=round(hits["fr"]["cofile_comment"] / max(1, counts["cofile_comment"]), 4),
+        file_raw_sibling_top1_acc=round(hits["fr"]["cofile_sibling"] / max(1, counts["cofile_sibling"]), 4),
+        churn_risk_top1_acc=round(t1["churn"] / denom, 4),
+        churn_risk_top2_acc=round(t2["churn"] / denom, 4),
+        churn_risk_mrr=round(rr["churn"] / denom, 4),
+        churn_risk_mean_ms=round(sum(ms_lists["churn"]) / denom, 4),
+        churn_risk_loo_recovery_rate=round(loo["churn"] / denom, 4),
+        churn_risk_comment_top1_acc=round(hits["churn"]["cofile_comment"] / max(1, counts["cofile_comment"]), 4),
+        churn_risk_sibling_top1_acc=round(hits["churn"]["cofile_sibling"] / max(1, counts["cofile_sibling"]), 4),
+        random_top1_acc=round(t1["rand"] / denom, 4),
+        random_top2_acc=round(t2["rand"] / denom, 4),
+        random_mrr=round(rr["rand"] / denom, 4),
+        random_mean_ms=round(sum(ms_lists["rand"]) / denom, 4),
+        random_loo_recovery_rate=round(loo["rand"] / denom, 4),
+        random_comment_top1_acc=round(hits["rand"]["cofile_comment"] / max(1, counts["cofile_comment"]), 4),
+        random_sibling_top1_acc=round(hits["rand"]["cofile_sibling"] / max(1, counts["cofile_sibling"]), 4),
     )
     return summary, records
 

@@ -99,11 +99,24 @@ def _uniform(key: int) -> float:
     return (key >> 11) / (1 << 53)
 
 
-def _defect_probabilities(prs: Iterable[PRRecord], rate: float) -> Dict[int, float]:
-    """Oracle calibration over evaluation PRs to match target expected defect rate."""
-    weights = {pr.number: max(1e-6, pr.risk_score) for pr in prs}
-    if not weights or rate in (0.0, 1.0):
-        return dict.fromkeys(weights, rate)
+def _defect_probabilities(
+    prs: Iterable[PRRecord], rate: float, risk_correlation: float = 1.0
+) -> Dict[int, float]:
+    """Oracle calibration over evaluation PRs to match target expected defect rate.
+
+    When risk_correlation == 0.0, assigns exact uniform defect probability `rate`
+    independent of scheduler risk features (decoupled sensitivity control).
+    """
+    records = list(prs)
+    if not records or rate in (0.0, 1.0):
+        return {pr.number: rate for pr in records}
+    corr = max(0.0, min(1.0, risk_correlation))
+    if corr == 0.0:
+        return {pr.number: rate for pr in records}
+    weights = {
+        pr.number: max(1e-6, corr * pr.risk_score + (1.0 - corr) * 0.5)
+        for pr in records
+    }
     low, high = 0.0, 1.0 / min(weights.values())
     for _ in range(64):
         scale = (low + high) / 2
@@ -129,14 +142,14 @@ def _warmup_scheduler_priors(
 def build_ground_truth(
     graph: DependencyGraph, prs: Iterable[PRRecord], config: SimConfig, seed: int
 ) -> GroundTruth:
-    """Sample strategy-independent defects and fixed-density observed/latent conflicts.
+    """Sample strategy-independent defects and EXACT-COUNT fixed-density conflicts.
 
-    Fixes total conflict budget M_target at the baseline on-graph realization so
-    sweeping `graph_recall` changes ONLY alignment with `graph` without inflating
-    total conflict density.
+    Fixes total conflict count M = len(base_visible) identically per (repo, seed)
+    across graph_recall in [0.0, 1.0] via exact without-replacement thinning of
+    visible edges and A-Res weighted exact sampling of disjoint off-graph pairs.
     """
     records = sorted(prs, key=lambda pr: pr.number)
-    probabilities = _defect_probabilities(records, config.base_defect_rate)
+    probabilities = _defect_probabilities(records, config.base_defect_rate, config.risk_correlation)
     defects = frozenset(
         number
         for number, probability in probabilities.items()
@@ -162,34 +175,28 @@ def build_ground_truth(
             candidates = other_roots if roots[first].isdisjoint(roots[second]) else same_root
             candidates.append((first, second))
 
-    recall = config.graph_recall
-    # Fixed conflict budget anchored to baseline density (independent of recall!)
-    total_target = float(len(base_visible)) if base_visible else probability * len(records) / 2.0
+    recall = max(0.0, min(1.0, config.graph_recall))
+    total_target = len(base_visible)
 
     if recall >= 1.0:
         visible = set(base_visible)
         latent: Set[Tuple[int, int]] = set()
     else:
-        if recall <= 0.0:
-            visible = set()
-        else:
-            visible = {
-                pair for pair in base_visible
-                if _uniform(_key(seed, "keep-visible", *pair)) < recall
-            }
-        latent = set()
-        target_latent = max(0.0, total_target - len(visible))
-        if target_latent > 0 and (same_root or other_roots):
-            # Weight same-root disjoint pairs 4x higher until saturated.
-            shared_prob = min(1.0, target_latent / (len(same_root) + 0.25 * len(other_roots)))
-            other_prob = (
-                min(1.0, max(0.0, target_latent - len(same_root) * shared_prob) / len(other_roots))
-                if other_roots else 0.0
-            )
-            for candidates, chance in ((same_root, shared_prob), (other_roots, other_prob)):
-                latent.update(
-                    pair for pair in candidates if _uniform(_key(seed, "latent-conflict", *pair)) < chance
-                )
+        keep_n = 0 if recall <= 0.0 else int(round(recall * total_target))
+        ordered_vis = sorted(base_visible, key=lambda pair: (_key(seed, "vis-order", *pair), pair))
+        visible = set(ordered_vis[:keep_n])
+        need_latent = max(0, total_target - len(visible))
+        # Exact without-replacement weighted sampling (A-Res: u^(1/w)), weighting
+        # same-root disjoint pairs 4x higher than cross-root pairs.
+        weighted_pool: List[Tuple[float, Tuple[int, int]]] = []
+        for pair in same_root:
+            u = max(1e-12, _uniform(_key(seed, "latent-order", *pair)))
+            weighted_pool.append((u ** (1.0 / 4.0), pair))
+        for pair in other_roots:
+            u = max(1e-12, _uniform(_key(seed, "latent-order", *pair)))
+            weighted_pool.append((u, pair))
+        weighted_pool.sort(key=lambda item: (-item[0], item[1]))
+        latent = {pair for _, pair in weighted_pool[:need_latent]}
 
     conflicts = frozenset(visible | latent)
     persistent = frozenset(
@@ -615,10 +622,19 @@ class _Simulation:
 
     # ---- DepAwareOutcomeTree: EuroSys '19 conflict-graph speculation ----
     def _assign_ready_to_dep_lanes(self) -> None:
-        """Assign arriving PRs to overlapping conflict-graph lanes or open a new independent lane."""
-        while self.ready:
-            pr_num = self.ready.pop(0)
+        """Assign arriving PRs to disjoint conflict-graph lanes while enforcing
+        strict inter-lane dependency barriers whenever a bridge PR overlaps >= 2
+        active lanes (active lanes remain pairwise cone-disjoint at all times).
+        """
+        still_waiting: List[int] = []
+        blocked_cones: Set[str] = set()
+        for pr_num in self.ready:
             cone = self.cones[pr_num]
+            if not blocked_cones.isdisjoint(cone):
+                # Preserve causal order behind an earlier waiting bridge PR
+                still_waiting.append(pr_num)
+                blocked_cones.update(cone)
+                continue
             overlapping = [lane for lane in self.dep_lanes if not lane.cone.isdisjoint(cone)]
             if not overlapping:
                 self.dep_lanes.append(_DepLane(next(self._next_lane_id), set(cone), [pr_num]))
@@ -627,12 +643,11 @@ class _Simulation:
                 lane.queue.append(pr_num)
                 lane.cone.update(cone)
             else:
-                # Multiple active lanes collide with pr_num: queue it on the earliest
-                # overlapping lane after waiting for later ones to drain, or append to
-                # the earliest overlapping lane while expanding its cone.
-                lane = overlapping[0]
-                lane.queue.append(pr_num)
-                lane.cone.update(cone)
+                # Bridge PR overlaps >= 2 active lanes: hold in dependency barrier
+                # until overlapping upstream lanes drain to <= 1 active lane!
+                still_waiting.append(pr_num)
+                blocked_cones.update(cone)
+        self.ready = still_waiting
 
     def _dispatch_dep_trees(self) -> None:
         self._assign_ready_to_dep_lanes()

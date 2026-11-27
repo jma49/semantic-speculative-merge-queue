@@ -38,6 +38,7 @@ class SimConfig:
     warmup_fraction: float = 0.25
     graph_recall: float = 0.80
     persistent_conflict_share: float = 0.25
+    risk_correlation: float = 1.0
 
 
 @dataclass(frozen=True)

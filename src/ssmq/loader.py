@@ -1,7 +1,7 @@
 """Read chronological GitHub merge traces and construct the evaluation stream."""
 
 import json
-from dataclasses import replace
+from dataclasses import fields, replace
 from datetime import datetime
 from math import isfinite
 from pathlib import Path
@@ -9,6 +9,8 @@ from typing import List, Tuple, Union
 
 from .graph import DependencyGraph
 from .models import PRRecord, SimConfig
+
+_PR_FIELDS = {f.name for f in fields(PRRecord)}
 
 
 def load_trace(
@@ -31,7 +33,7 @@ def load_trace(
     dated_records = [
         (
             datetime.fromisoformat(row["merged_at"].replace("Z", "+00:00")),
-            PRRecord(**{**row, "files": tuple(row["files"])}),
+            PRRecord(**{**{k: v for k, v in row.items() if k in _PR_FIELDS}, "files": tuple(row["files"])}),
         )
         for row in rows
     ]

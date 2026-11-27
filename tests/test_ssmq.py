@@ -146,22 +146,67 @@ class SimulatorTests(unittest.TestCase):
         base_total = len(full.conflicting_pairs)
         self.assertTrue(full.conflicting_pairs)
         self.assertEqual(full.off_graph_pairs, frozenset())
-        for recall in (0.8, 0.6, 0.4):
+        for recall in (0.8, 0.6, 0.4, 0.2, 0.0):
             with self.subTest(recall=recall):
                 truth = build_ground_truth(graph, prs, replace(config, graph_recall=recall), 42)
-                # Total conflict density stays invariant (~base_total) within sampling tolerance!
-                self.assertAlmostEqual(len(truth.conflicting_pairs) / base_total, 1.0, delta=0.08)
+                # v5 EXACT-COUNT fixed-density invariant: zero variance across recall!
+                self.assertEqual(len(truth.conflicting_pairs), base_total)
+                expected_vis = 0 if recall == 0.0 else int(round(recall * base_total))
+                self.assertEqual(len(truth.on_graph_pairs), expected_vis)
                 realized = len(truth.on_graph_pairs) / len(truth.conflicting_pairs)
-                self.assertAlmostEqual(realized, recall, delta=0.06)
                 metrics = simulate_queue(graph, prs, "SSMQ", replace(config, graph_recall=recall), 42)
                 self.assertEqual(metrics.off_graph_conflicts_total, len(truth.off_graph_pairs))
                 self.assertEqual(metrics.on_graph_conflicts_total, len(truth.on_graph_pairs))
                 self.assertAlmostEqual(metrics.realized_graph_recall, realized, places=6)
         empty = build_ground_truth(graph, prs, replace(config, semantic_conflict_prob=0), 42)
         self.assertEqual(empty.conflicting_pairs, frozenset())
-        latent_only = build_ground_truth(graph, prs, replace(config, graph_recall=0.0), 42)
-        self.assertEqual(latent_only.on_graph_pairs, frozenset())
-        self.assertAlmostEqual(len(latent_only.off_graph_pairs) / base_total, 1.0, delta=0.08)
+
+    def test_decoupled_risk_correlation_zero_gives_uniform_defects(self):
+        prs = [make_pr(i, risk=risk) for i, risk in enumerate([0.05, 0.2, 0.5, 0.95])]
+        probs = simulator._defect_probabilities(prs, 0.10, risk_correlation=0.0)
+        for p in probs.values():
+            self.assertAlmostEqual(p, 0.10, places=12)
+
+    def test_warmup_priors_have_zero_eval_leakage(self):
+        warmup = [
+            PRRecord(1, ("src/a/x.py",), additions=10),
+            PRRecord(2, ("src/b/y.py",), additions=40),
+        ]
+        graph = DependencyGraph(warmup)
+        pr_target = make_pr(10, path="src/a/x.py", risk=0.4)
+        p_a = simulator._warmup_scheduler_priors(graph, [pr_target, make_pr(11, risk=0.1)], 0.08)
+        p_b = simulator._warmup_scheduler_priors(graph, [pr_target, make_pr(11, risk=0.99)], 0.08)
+        self.assertEqual(p_a[10], p_b[10])
+
+    def test_dep_aware_tree_bridge_pr_enforces_disjoint_lane_invariant(self):
+        # Exact Codex v4 counterexample: lane {a}, lane {b}, then bridge PR {a, b}!
+        pr1 = PRRecord(1, ("mod_a/f/a.py",), risk_score=0.1, arrival_min=0.0)
+        pr2 = PRRecord(2, ("mod_b/f/b.py",), risk_score=0.1, arrival_min=0.0)
+        pr3 = PRRecord(3, ("mod_a/f/a.py", "mod_b/f/b.py"), risk_score=0.1, arrival_min=0.0)
+        sim = simulator._Simulation(GRAPH, [pr1, pr2, pr3], "DepAwareOutcomeTree", CONFIG, 0)
+        orig_dispatch = sim._dispatch_dep_trees
+        checked_ticks = 0
+
+        def checked_dispatch():
+            nonlocal checked_ticks
+            orig_dispatch()
+            checked_ticks += 1
+            # Active lanes MUST remain strictly pairwise cone-disjoint at every tick!
+            for i in range(len(sim.dep_lanes)):
+                for j in range(i + 1, len(sim.dep_lanes)):
+                    self.assertTrue(
+                        sim.dep_lanes[i].cone.isdisjoint(sim.dep_lanes[j].cone),
+                        msg=f"Active lanes overlapped: {sim.dep_lanes[i].cone} vs {sim.dep_lanes[j].cone}",
+                    )
+            # If both pr1 and pr2 are active in separate lanes, bridge pr3 MUST NOT be in any active lane!
+            active_members = {m for lane in sim.dep_lanes for m in lane.queue}
+            if 1 in active_members and 2 in active_members:
+                self.assertNotIn(3, active_members)
+
+        sim._dispatch_dep_trees = checked_dispatch
+        metrics = sim.run()
+        self.assertGreaterEqual(checked_ticks, 2)
+        self.assertEqual((metrics.merged_prs, metrics.rejected_prs, metrics.escaped_defects), (3, 0, 0))
 
     def test_conflicts_are_reverified_in_isolation_and_do_not_reject_clean_prs(self):
         prs = [make_pr(number, path="src/app/shared.py") for number in range(1, 9)]

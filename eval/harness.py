@@ -1,28 +1,29 @@
 #!/usr/bin/env python3
-"""Frozen Sealed Experiment Harness v4 for SSMQ (Post-Codex-v3 Gate 3 Approval).
+"""Frozen Sealed Experiment Harness v5 for SSMQ (Post-Codex-v4 Revision).
 
-Preserves prior v1/v2/v3 runs untouched and writes 9 immutable v4 suites under
-`runs/v4_*/` (refusing to overwrite existing sealed runs unless `--force` is set):
-  - v4_exp0_blame_microbench : 80 real executed Python unittest batches across
-                               4 strata (24 disjoint + 16 comment co-file +
-                               16 FUNCTIONAL sibling co-file + 24 semantic
-                               conflicts) + executed leave-one-out recovery +
-                               all 5 rankers timed live.
-  - v4_exp1_aa_noise         : Disjoint 20-seed Block A vs B noise calibration.
-  - v4_exp2_main_bench       : 7 primary strategies (incl. FIFOOutcomeTree &
-                               DepAwareOutcomeTree) x 3 repos x 20 paired seeds.
-  - v4_exp3_velocity         : Velocity sweep (1x, 3x, 5x, 10x) x 6 strategies.
-  - v4_exp4_ablation         : Deconfounded 8-variant ablation separating
-                               SSMQ-NoCone, SSMQ-NoRisk, SSMQ-NoGraph,
-                               SSMQ-NoFlaky, SSMQ-FixedRetry, SSMQ-NoBlame.
-  - v4_exp5_graph_recall     : Fixed-density non-circularity sweep
-                               (graph_recall 0.40..1.00 + zero-conflict control).
-  - v4_exp6_flaky_sweep      : Flaky trade-off sweep (0%..15%) including matched
-                               SSMQ-FixedRetry and SSMQ-NoFlaky inside SSMQ.
-  - v4_exp7_blame_sweep      : Blame Top-1 accuracy sweep (0.50..measured_top1).
-  - v4_exp8_blame_regime     : Controlled 2x2 factorial sweep (defect 8%/16% x
-                               cap K=8/12 at fixed recall=0.80) with full root
-                               batch size & culprit multiplicity instrumentation.
+Writes 11 immutable v5 suites under `<runs-dir>/v5_*/` (refusing to overwrite
+existing sealed runs unless `--force` is set, and supporting `--runs-dir` for
+non-destructive reproduction):
+  - v5_exp0_blame_microbench   : 86 symmetrically counterbalanced real Python
+                                 unittest batches (24 disjoint + 16 50/50 comment
+                                 + 22 50/50 functional sibling + 24 semantic
+                                 conflicts) + live LOO recovery for ALL 5 rankers.
+  - v5_exp1_aa_noise           : Disjoint 20-seed Block A vs B noise calibration.
+  - v5_exp2_main_bench         : 7 primary strategies (incl. bridge-safe
+                                 DepAwareOutcomeTree) x 3 consecutive OSS traces x 20 seeds.
+  - v5_exp3_velocity           : Velocity sweep (1x, 3x, 5x, 10x) x 6 strategies.
+  - v5_exp4_ablation           : 8-variant ablation (NoCone, NoRisk, NoGraph,
+                                 NoFlaky, FixedRetry, NoBlame).
+  - v5_exp5_graph_recall       : Exact-count paired fixed-density recall sweep
+                                 (0%, 40%, 60%, 80%, 100% + zero-conflict control).
+  - v5_exp6_flaky_sweep        : Flaky trade-off sweep (0%..15%) incl. SSMQ-FixedRetry.
+  - v5_exp7_blame_sweep        : Blame Top-1 accuracy sweep (0.50..measured_top1).
+  - v5_exp8_blame_regime       : Controlled 2x2 factorial sweep (defect 8%/16% x K=8/12).
+  - v5_exp9_decoupled_sens     : Decoupled sensitivity controls (risk_correlation=0.0
+                                 uniform defects at recall=80% & 40%, plus recall=0%).
+  - v5_exp10_real_git_replay   : 10-seed real exact-Git-tree (`git init`, `git merge`,
+                                 live `unittest`, live `ASTStackCausalRanker`) replay
+                                 comparing StaticBatchBisect vs SSMQ (0 oracle proxy).
 """
 from __future__ import annotations
 
@@ -30,6 +31,7 @@ import argparse
 import datetime as dt
 import hashlib
 import json
+import platform
 import subprocess
 import sys
 from pathlib import Path
@@ -40,12 +42,24 @@ sys.path.insert(0, str(REPO_ROOT / "src"))
 
 from ssmq import SimConfig, load_trace, simulate_queue
 from ssmq.blame_bench import run_blame_benchmark
+from ssmq.git_replay import run_git_replay_suite
 
 TRACES = {
     "kubernetes": REPO_ROOT / "data" / "traces" / "kubernetes_kubernetes.json",
     "typescript": REPO_ROOT / "data" / "traces" / "microsoft_TypeScript.json",
     "nextjs": REPO_ROOT / "data" / "traces" / "vercel_next_js.json",
 }
+
+HARNESS_FILES = [
+    REPO_ROOT / "eval" / "harness.py",
+    REPO_ROOT / "src" / "ssmq" / "__init__.py",
+    REPO_ROOT / "src" / "ssmq" / "simulator.py",
+    REPO_ROOT / "src" / "ssmq" / "graph.py",
+    REPO_ROOT / "src" / "ssmq" / "loader.py",
+    REPO_ROOT / "src" / "ssmq" / "models.py",
+    REPO_ROOT / "src" / "ssmq" / "blame_bench.py",
+    REPO_ROOT / "src" / "ssmq" / "git_replay.py",
+]
 
 MAIN_STRATEGIES = [
     "SerialQueue",
@@ -70,6 +84,8 @@ ABLATION_STRATEGIES = [
 
 SEEDS_MAIN = list(range(1001, 1021))  # 20 deterministic paired seeds
 SEEDS_AA_B = list(range(2001, 2021))  # Disjoint 20-seed block for A/A check
+SEEDS_GIT = list(range(10))           # 10 deterministic seeds for real-Git replay
+FROZEN_BLAME_OVERHEAD_MIN = 0.00004   # Frozen ~2.4 ms constant so replay is bit-deterministic
 
 
 def sha256_file(path: Path) -> str:
@@ -83,7 +99,7 @@ def sha256_file(path: Path) -> str:
 def _git_commit() -> str:
     try:
         res = subprocess.run(
-            ["git", "rev-parse", "--short", "HEAD"],
+            ["git", "rev-parse", "HEAD"],
             cwd=str(REPO_ROOT),
             capture_output=True,
             text=True,
@@ -103,6 +119,7 @@ def _combined_sha(paths: List[Path]) -> str:
 
 
 def seal_run(
+    runs_root: Path,
     run_id: str,
     experiment: str,
     seeds: List[int],
@@ -111,32 +128,28 @@ def seal_run(
     *,
     force: bool = False,
 ) -> Path:
-    run_dir = REPO_ROOT / "runs" / run_id
+    run_dir = runs_root / run_id
     if (run_dir / "manifest.json").exists() and not force:
-        raise FileExistsError(f"Refusing to overwrite sealed run {run_id}; pass --force or a new version.")
+        raise FileExistsError(
+            f"Refusing to overwrite sealed run {run_id} in {runs_root}; pass --runs-dir <new_dir> or --force."
+        )
     run_dir.mkdir(parents=True, exist_ok=True)
     metrics_path = run_dir / "metrics.json"
-    metrics_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    metrics_path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
     m_sha = sha256_file(metrics_path)
 
-    harness_files = [
-        REPO_ROOT / "eval" / "harness.py",
-        REPO_ROOT / "src" / "ssmq" / "simulator.py",
-        REPO_ROOT / "src" / "ssmq" / "graph.py",
-        REPO_ROOT / "src" / "ssmq" / "loader.py",
-        REPO_ROOT / "src" / "ssmq" / "models.py",
-        REPO_ROOT / "src" / "ssmq" / "blame_bench.py",
-    ]
     rec_count = len(payload) if isinstance(payload, list) else len(payload.get("records", []))
     manifest = {
-        "schema_version": "4.0",
+        "schema_version": "5.0",
         "run_id": run_id,
         "experiment": experiment,
         "timestamp_utc": dt.datetime.now(dt.timezone.utc).isoformat(),
         "git_commit": _git_commit(),
-        "harness_sha256": _combined_sha(harness_files),
+        "python_version": platform.python_version(),
+        "platform": platform.platform(),
+        "harness_sha256": _combined_sha(HARNESS_FILES),
         "dataset_sha256": _combined_sha(list(TRACES.values())),
-        "command": "python3 eval/harness.py",
+        "command": f"python3 eval/harness.py --runs-dir {runs_root.name}",
         "seeds": seeds,
         "record_count": rec_count,
         "metrics_file": "metrics.json",
@@ -145,30 +158,45 @@ def seal_run(
         "meta": extra_meta,
     }
     (run_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
-    print(f"SEALED {run_id}: {rec_count} records, commit={manifest['git_commit']}, sha256={m_sha[:12]}")
+    print(f"SEALED {run_id}: {rec_count} records, commit={manifest['git_commit'][:10]}, sha256={m_sha[:12]}", flush=True)
     return run_dir
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Frozen Sealed Experiment Harness v4.")
-    parser.add_argument("--force", action="store_true", help="Allow overwriting existing v4 run directories.")
+    parser = argparse.ArgumentParser(description="Frozen Sealed Experiment Harness v5.")
+    parser.add_argument(
+        "--runs-dir",
+        type=Path,
+        default=REPO_ROOT / "runs",
+        help="Destination directory for sealed runs (default: runs/).",
+    )
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Allow overwriting existing v5 run directories inside --runs-dir.",
+    )
     args = parser.parse_args()
+    runs_root = args.runs_dir if args.runs_dir.is_absolute() else (REPO_ROOT / args.runs_dir)
 
-    # EXP-0: 80-batch real executed AST/stack-trace causal blame micro-benchmark
+    # EXP-0: 86-batch symmetrically counterbalanced real Python blame micro-benchmark
     blame_summary, blame_records = run_blame_benchmark(seed=2026)
     seal_run(
-        "v4_exp0_blame_microbench",
-        "v4_exp0_blame_microbench",
+        runs_root,
+        "v5_exp0_blame_microbench",
+        "v5_exp0_blame_microbench",
         [2026],
         {"summary": blame_summary.to_dict(), "records": blame_records},
-        {"type": "executable_python_unittest_microbench", "batches": blame_summary.total_failing_batches},
+        {
+            "type": "executable_python_unittest_microbench",
+            "batches": blame_summary.total_failing_batches,
+            "symmetric_id_churn_balance": True,
+        },
         force=args.force,
     )
 
     loaded = {name: load_trace(path) for name, path in TRACES.items()}
     measured_top1 = blame_summary.ast_stack_top1_acc
     measured_top2 = min(0.99, blame_summary.ast_stack_top2_acc)
-    measured_overhead_min = round(blame_summary.ast_stack_mean_ms / 60000.0, 6)
 
     base_cfg = SimConfig(
         workers=8,
@@ -182,9 +210,10 @@ def main() -> None:
         flaky_rate=0.05,
         graph_recall=0.80,
         persistent_conflict_share=0.03,
+        risk_correlation=1.0,
         blame_top1_acc=measured_top1,
         blame_top2_acc=measured_top2,
-        blame_overhead_min=measured_overhead_min,
+        blame_overhead_min=FROZEN_BLAME_OVERHEAD_MIN,
         warmup_fraction=0.25,
     )
 
@@ -198,15 +227,16 @@ def main() -> None:
                 m["block"] = block_name
                 aa_rows.append(m)
     seal_run(
-        "v4_exp1_aa_noise",
-        "v4_exp1_aa_noise",
+        runs_root,
+        "v5_exp1_aa_noise",
+        "v5_exp1_aa_noise",
         SEEDS_MAIN + SEEDS_AA_B,
         aa_rows,
         {"graph_recall": 0.80, "flaky_rate": 0.05, "persistent_conflict_share": 0.03},
         force=args.force,
     )
 
-    # EXP-2: Main Benchmark (7 strategies incl. FIFOOutcomeTree & DepAwareOutcomeTree)
+    # EXP-2: Main Benchmark (7 strategies incl. bridge-safe DepAwareOutcomeTree)
     main_rows: List[Dict[str, Any]] = []
     for repo_name, (g, prs) in loaded.items():
         for strat in MAIN_STRATEGIES:
@@ -215,8 +245,9 @@ def main() -> None:
                 m["repo"] = repo_name
                 main_rows.append(m)
     seal_run(
-        "v4_exp2_main_bench",
-        "v4_exp2_main_bench",
+        runs_root,
+        "v5_exp2_main_bench",
+        "v5_exp2_main_bench",
         SEEDS_MAIN,
         main_rows,
         {
@@ -225,6 +256,7 @@ def main() -> None:
             "graph_recall": 0.80,
             "persistent_conflict_share": 0.03,
             "blame_top1_acc": measured_top1,
+            "frozen_blame_overhead_min": FROZEN_BLAME_OVERHEAD_MIN,
         },
         force=args.force,
     )
@@ -250,15 +282,16 @@ def main() -> None:
                     m["velocity_multiplier"] = vel
                     vel_rows.append(m)
     seal_run(
-        "v4_exp3_velocity",
-        "v4_exp3_velocity",
+        runs_root,
+        "v5_exp3_velocity",
+        "v5_exp3_velocity",
         SEEDS_MAIN,
         vel_rows,
         {"velocities": velocities, "strategies": vel_strats},
         force=args.force,
     )
 
-    # EXP-4: Deconfounded 8-Variant Ablation
+    # EXP-4: Component Ablation
     abl_rows: List[Dict[str, Any]] = []
     for repo_name, (g, prs) in loaded.items():
         for strat in ABLATION_STRATEGIES:
@@ -267,18 +300,20 @@ def main() -> None:
                 m["repo"] = repo_name
                 abl_rows.append(m)
     seal_run(
-        "v4_exp4_ablation",
-        "v4_exp4_ablation",
+        runs_root,
+        "v5_exp4_ablation",
+        "v5_exp4_ablation",
         SEEDS_MAIN,
         abl_rows,
         {"strategies": ABLATION_STRATEGIES},
         force=args.force,
     )
 
-    # EXP-5: Fixed-Density Non-Circularity Sweep (graph_recall 0.40..1.00 + Zero-Conflict)
+    # EXP-5: EXACT-COUNT Paired Fixed-Density Non-Circularity Sweep (0%..100% + Zero-Conflict)
     rec_rows: List[Dict[str, Any]] = []
     rec_settings = [
         ("no_conflict", 0.0, 1.0),
+        ("recall_0.00", 0.18, 0.00),
         ("recall_0.40", 0.18, 0.40),
         ("recall_0.60", 0.18, 0.60),
         ("recall_0.80", 0.18, 0.80),
@@ -297,15 +332,16 @@ def main() -> None:
                     m["semantic_conflict_prob"] = cprob
                     rec_rows.append(m)
     seal_run(
-        "v4_exp5_graph_recall",
-        "v4_exp5_graph_recall",
+        runs_root,
+        "v5_exp5_graph_recall",
+        "v5_exp5_graph_recall",
         SEEDS_MAIN,
         rec_rows,
-        {"regimes": [x[0] for x in rec_settings], "strategies": rec_strats},
+        {"regimes": [x[0] for x in rec_settings], "strategies": rec_strats, "exact_paired_density": True},
         force=args.force,
     )
 
-    # EXP-6: Flaky Trade-Off Sweep (0%..15%) including matched SSMQ-FixedRetry & SSMQ-NoFlaky
+    # EXP-6: Flaky Trade-Off Sweep (0%..15%)
     flaky_rows: List[Dict[str, Any]] = []
     flaky_rates = [0.0, 0.02, 0.05, 0.10, 0.15]
     flaky_strats = [
@@ -326,15 +362,16 @@ def main() -> None:
                     m["flaky_rate"] = fr
                     flaky_rows.append(m)
     seal_run(
-        "v4_exp6_flaky_sweep",
-        "v4_exp6_flaky_sweep",
+        runs_root,
+        "v5_exp6_flaky_sweep",
+        "v5_exp6_flaky_sweep",
         SEEDS_MAIN,
         flaky_rows,
         {"flaky_rates": flaky_rates, "strategies": flaky_strats},
         force=args.force,
     )
 
-    # EXP-7: Blame Accuracy Sweep holding Top-2 offset explicit
+    # EXP-7: Blame Accuracy Sweep
     blame_rows: List[Dict[str, Any]] = []
     blame_accs = [0.50, 0.70, 0.85, measured_top1]
     for acc in blame_accs:
@@ -348,15 +385,16 @@ def main() -> None:
                     m["blame_top1_acc"] = round(acc, 4)
                     blame_rows.append(m)
     seal_run(
-        "v4_exp7_blame_sweep",
-        "v4_exp7_blame_sweep",
+        runs_root,
+        "v5_exp7_blame_sweep",
+        "v5_exp7_blame_sweep",
         SEEDS_MAIN,
         blame_rows,
         {"blame_top1_accs": [round(a, 4) for a in blame_accs]},
         force=args.force,
     )
 
-    # EXP-8: Controlled 2x2 Factorial Blame-Regime Sweep (fixed graph_recall=0.80)
+    # EXP-8: Controlled 2x2 Factorial Blame-Regime Sweep
     regime_rows: List[Dict[str, Any]] = []
     regimes = [
         ("def8_k8", 0.08, 8),
@@ -382,11 +420,57 @@ def main() -> None:
                     m["max_batch_size"] = kmax
                     regime_rows.append(m)
     seal_run(
-        "v4_exp8_blame_regime",
-        "v4_exp8_blame_regime",
+        runs_root,
+        "v5_exp8_blame_regime",
+        "v5_exp8_blame_regime",
         SEEDS_MAIN,
         regime_rows,
         {"regimes": [r[0] for r in regimes], "strategies": regime_strats, "graph_recall": 0.80},
+        force=args.force,
+    )
+
+    # EXP-9: Decoupled Sensitivity Controls (breaks risk-score coupling & tests recall=0%)
+    decoupled_rows: List[Dict[str, Any]] = []
+    dec_settings = [
+        ("uncorr_rec80", 0.0, 0.80),
+        ("uncorr_rec40", 0.0, 0.40),
+        ("uncorr_rec00", 0.0, 0.00),
+    ]
+    dec_strats = ["StaticBatchBisect", "DepAwareOutcomeTree", "SSMQ"]
+    for label, rcorr, grecall in dec_settings:
+        cfg = SimConfig(**{
+            **base_cfg.__dict__,
+            "risk_correlation": rcorr,
+            "graph_recall": grecall,
+        })
+        for repo_name, (g, prs) in loaded.items():
+            for strat in dec_strats:
+                for s in SEEDS_MAIN:
+                    m = simulate_queue(g, prs, strat, cfg, s).to_dict()
+                    m["repo"] = repo_name
+                    m["regime"] = label
+                    m["risk_correlation"] = rcorr
+                    m["graph_recall"] = grecall
+                    decoupled_rows.append(m)
+    seal_run(
+        runs_root,
+        "v5_exp9_decoupled_sens",
+        "v5_exp9_decoupled_sens",
+        SEEDS_MAIN,
+        decoupled_rows,
+        {"regimes": [x[0] for x in dec_settings], "strategies": dec_strats},
+        force=args.force,
+    )
+
+    # EXP-10: Real Exact-Git-Tree Merge Queue Replay (live git merge + unittest + ASTStackCausalRanker)
+    git_rows = run_git_replay_suite(seeds=SEEDS_GIT)
+    seal_run(
+        runs_root,
+        "v5_exp10_real_git_replay",
+        "v5_exp10_real_git_replay",
+        SEEDS_GIT,
+        git_rows,
+        {"type": "real_git_merge_unittest_live_blame", "strategies": ["StaticBatchBisect", "SSMQ"], "max_batch": 4},
         force=args.force,
     )
 
