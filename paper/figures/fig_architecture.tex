@@ -15,11 +15,11 @@
 
 \node[box=ssmqBlue] (queue) at (3.25, 1.40) {\textbf{2. Disjoint Multi-Lane}\\ \textbf{Packer (Alg.~\ref{alg:packing})}\\ Fast ($K{\le}K_{\max}$) vs.\\ Protected ($K{\le}2$)};
 
-\node[box=ssmqBlue] (ci) at (6.75, 1.40) {\textbf{3. Pending Queue \&}\\ \textbf{$W$ Parallel CI Workers}\\ Preempts fresh batches;\\ exact-tree / delta check};
+\node[box=ssmqBlue] (ci) at (6.75, 1.40) {\textbf{3. Pending Queue \&}\\ \textbf{$W$ Parallel CI Workers}\\ Preempts fresh batches;\\ simulated delta check};
 
 \node[dec] (pass) at (10.05, 1.40) {CI Pass?};
 
-\node[smallbox=ssmqTeal] (merge) at (13.40, 1.40) {\textbf{Commit to Mainline}\\ Update $\mathrm{Beta}(\alpha,\beta)$\\ (0 Modeled/Git Escapes)};
+\node[smallbox=ssmqTeal] (merge) at (13.40, 1.40) {\textbf{Commit to Mainline}\\ Update $\mathrm{Beta}(\alpha,\beta)$\\ after clean delta};
 
 % Row 2: Flaky Gate -> (Singleton Reject OR Multi-PR Blame OR Bisection when allow_blame=False)
 \node[box=ssmqPurple, text width=2.25cm] (flaky) at (9.75, -1.20) {\textbf{4. Two-Regime Flaky}\\ \textbf{Gate (Alg.~\ref{alg:flaky})}\\ $|B|{=}1$: $\tau_1{=}0.25$\\ $|B|{>}1$: $\tau_B{=}0.50$};
@@ -51,6 +51,6 @@
 \draw[arr, dotted, draw=ssmqGray!80!black] (bisect.north) |- (4.20, 0.22) -| node[lbl, pos=0.22, above, text=ssmqGray!80!black] {Sub-batches to Pending} ([xshift=-0.65cm]ci.south);
 
 \end{tikzpicture}
-\caption{End-to-end architecture of \textbf{SSMQ}. Warm-up traces build a leak-free dependency graph $\hat{G}$ and P90 risk scales for Algorithm~\ref{alg:packing}. Pending retries, stale-pass rechecks, blame splits, and bisection sub-batches preempt fresh batches on $W$ parallel workers. When a remainder batch (\texttt{allow\_blame=False}) fails CI and the flaky gate, it bypasses Step~5 and routes directly to bisection (Step~6). Algorithm~\ref{alg:blame} executes live on 86 Python \texttt{unittest} batches and in our real-Git replay, while its measured accuracy parameterizes the macro trace simulator.}
+\caption{End-to-end architecture of \textbf{SSMQ}. Warm-up traces build a leak-free dependency graph $\hat{G}$ and P90 risk scales for Algorithm~\ref{alg:packing}. Pending retries, stale-pass rechecks, blame splits, and bisection sub-batches preempt fresh batches on $W$ parallel workers. When a remainder batch (\texttt{allow\_blame=False}) fails CI and the flaky gate, it bypasses Step~5 and routes directly to bisection (Step~6). The simulator models suspect selection. The Git experiment executes the ranker and tests a new candidate when the base changes.}
 \label{fig:architecture}
 \end{figure*}

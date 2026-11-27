@@ -27,21 +27,19 @@
 
 \newtheorem{proposition}{Proposition}
 
-% Deterministic empirical macros — auto-generated from sealed v5 runs (runs/v5_*/manifest.json)
-\input{generated/numbers.tex}
+\input{generated/v6}
+
 
 \begin{document}
 
-\title{Semantic Speculative Merge Queues: Graph-Disjoint Batching and Causal Fault Attribution for High-Velocity CI}
+\title{Semantic Speculative Merge Queues: When to Separate Changes and When to Retest}
 
 \author{\IEEEauthorblockN{Anonymous Author(s)}}
 
 \maketitle
 
 \begin{abstract}
-High-velocity software delivery strains Continuous Integration (CI) merge queues. Standard batching queues group pull requests (PRs) in arrival (FIFO) order and isolate failures via $O(\log K)$ binary bisection. Auditing 600 strictly consecutive default-branch merges across \texttt{kubernetes/kubernetes}, \texttt{microsoft/TypeScript}, and \texttt{vercel/next.js} reveals that every 8-PR FIFO window (\TraceFifoOverlapPct{}\%) contains at least one two-level module collision, exposing arrival-ordered batches to pairwise semantic conflicts alongside flaky tests.
-
-We present \textbf{SSMQ (Semantic Speculative Merge Queue)}, integrating (1)~\emph{graph-disjoint risk-stratified batching}, learning co-change and two-level directory impact cones strictly from chronological warm-up commits to pack disjoint low-risk PRs into fast lanes while bounding hotspot wait in protected lanes; (2)~\emph{two-regime Beta-Binomial flaky gating}, shielding singletons from flaky rejection while suppressing batch reruns below $50\%$ transient posterior; and (3)~\emph{fail-safe 1-step AST/traceback suspect ranking} with bisection fallback. On \BenchTotalBatches{} executed Python \texttt{unittest} failure batches with 50/50 ID- and churn-balanced comment (\BenchCommentBatches{}) and sibling-function co-file (\BenchSiblingBatches{}) distractors, \texttt{ASTStackCausalRanker} reaches \BenchASTTopOnePct{}\% Top-1 accuracy and \BenchASTLOOPct{}\% leave-one-out recovery in \BenchASTMs{}~ms mean (\BenchASTMaxMs{}~ms max), versus \BenchFileTriviaTopOnePct{}\% Top-1 (\BenchASTSiblingPct{}\% vs.\ \BenchFileTriviaSiblingPct{}\% on siblings) for a nested file ablation. Across 10 exact-Git-tree replays running live \texttt{git merge}, \texttt{unittest}, and \texttt{ASTStackCausalRanker} with no synthetic oracle, SSMQ cuts CI runs by \GitReplayCISavePct{}\% and bisection splits by \GitReplaySplitSavePct{}\% (\TotalEscapedDefects{} escapes). Across \TotalSealedRuns{} SHA-256-sealed v5 suites (\TotalSealedRecords{} finite-burst records, \TotalEscapedDefects{} modeled escapes), SSMQ lowers survivor P95 latency by \LatRedVsStaticPct{}\% over static FIFO (\SSMQPNinetyFiveLat{} vs.\ \StaticPNinetyFiveLat{}~min, Holm $p\HolmPLatVsStatic{}$, $|\delta|=\CliffsLatVsStatic{}$) and \LatRedVsDepTreePct{}\% over a bridge-safe dependency-aware outcome-tree proxy (\DepTreePNinetyFiveLat{}~min, $p\HolmPLatVsDepTree{}$), saving \CostSaveVsStaticPct{}\% CI cost over static FIFO, retaining P95 gains under uncorrelated uniform defects (\UncorrRecEightySSMQ{} vs.\ \UncorrRecEightyStatic{}~min), and reversing cleanly at $0\%$ recall and zero conflict.
+A merge queue can test several pull requests together, but a failing batch leaves the queue with two decisions: which changes to separate and which results remain valid as the target branch advances. We study these decisions in a head-anchored queue that uses past co-changes to form batches, retries likely transient failures, and uses traceback evidence to choose a change to isolate. We distinguish three sources of evidence. Public merge records from Kubernetes, TypeScript, and Next.js describe opportunities to reorder work. A paired discrete-event experiment measures latency, acceptance, and runner consumption under explicit assumptions about faults. Executable Git experiments vary batch packing and suspect selection independently and force two independently passing candidates to share a stale base. Across \TraceCount{} public changes, directory overlap is common. In the main simulation the queue improves mean survivor P95 by \DisjointAdvantage{} minutes against retry-matched disjoint batching. Under directory-derived conflict labels, cone exclusion instead costs \DirectoryPenalty{} minutes relative to the same policy without exclusion. At fixed disjoint packing the AST ranker requires \GitAstTests{} tests versus \GitFileTests{} for its file-level ablation. A passing test on an earlier commit can admit a failing combination, even when both changes merge cleanly. Rechecking the combined tree prevents this failure in the controlled cases. The results characterize scheduling and recovery trade-offs within the evaluated workloads; deployment requires measurements of actual arrivals, interference, and test coverage.
 \end{abstract}
 
 \begin{IEEEkeywords}

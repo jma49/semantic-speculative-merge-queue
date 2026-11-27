@@ -88,6 +88,35 @@ class DependencyGraphTests(unittest.TestCase):
 
 
 class SimulatorTests(unittest.TestCase):
+    def test_directory_proxy_labels_are_invariant_to_cone_replacement(self):
+        prs = [make_pr(i, path=f"src/dir{i % 3}/file{i}") for i in range(12)]
+        config = replace(CONFIG, ground_truth_mode="independent_eval_coupling", semantic_conflict_prob=1)
+        proxy = build_ground_truth(GRAPH, prs, config, 5)
+        saturated = [replace(pr, impact_cone=frozenset({"common"})) for pr in prs]
+        altered = build_ground_truth(GRAPH, saturated, config, 5)
+        self.assertEqual(proxy.conflicting_pairs, altered.conflicting_pairs)
+        self.assertEqual(proxy.persistent_pairs, altered.persistent_pairs)
+        self.assertEqual(proxy.conflicting_pairs, proxy.off_graph_pairs)
+        self.assertEqual(altered.conflicting_pairs, altered.on_graph_pairs)
+
+    def test_dense_graph_recall_has_feasible_exact_pair_budget(self):
+        prs = [make_pr(i, path="shared" if i < 9 else "other") for i in range(10)]
+        config = replace(CONFIG, semantic_conflict_prob=1, feasible_recall_budget=True)
+        for recall in (0, 0.4, 0.6, 0.8, 1.0):
+            truth = build_ground_truth(GRAPH, prs, replace(config, graph_recall=recall), 5)
+            self.assertEqual(len(truth.conflicting_pairs), 9)
+            self.assertEqual(len(truth.on_graph_pairs), round(9 * recall))
+        empty = simulate_queue(GRAPH, prs, "SSMQ", CONFIG, 5)
+        self.assertIsNone(empty.realized_graph_recall)
+
+    def test_dag_discards_pass_descendants_of_failed_ancestor(self):
+        prs = [make_pr(i, path="a") for i in range(3)]
+        truth = GroundTruth(frozenset({0}), frozenset())
+        with patch.object(simulator, "build_ground_truth", return_value=truth):
+            result = simulate_queue(GRAPH, prs, "PerPRDAGRetry", CONFIG, 5)
+        self.assertEqual((result.merged_prs, result.rejected_prs, result.escaped_defects), (2, 1, 0))
+        self.assertGreater(result.wasted_ci_runs, 0)
+
     def test_calibrated_expected_defect_rate(self):
         prs = [make_pr(i, risk=risk) for i, risk in enumerate([0.0, 0.1, 0.2, 0.4])]
         for rate in (0.0, 0.08, 0.75, 1.0):

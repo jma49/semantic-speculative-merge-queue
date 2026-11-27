@@ -1,0 +1,1030 @@
+{
+  "main": {
+    "default": {
+      "by_strategy": {
+        "DepAwareOutcomeTree": {
+          "p95_latency_min": 311.31331791545045,
+          "throughput_prs_per_hr": 10.868438027442851,
+          "merged_prs": 108.2,
+          "ci_minutes_per_merged_pr": 44.084175830958586,
+          "realized_graph_recall": 0.7999994350574844,
+          "realized_graph_precision": 0.1437512971855121,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "bridge_wait_min_total": 48.5406016246759,
+          "canceled_ci_minutes": 2195.608785155362,
+          "false_rejection_rate": 0.02056329384377996,
+          "escaped_defects": 0.0
+        },
+        "DepTreeRetry": {
+          "p95_latency_min": 477.81697596835664,
+          "throughput_prs_per_hr": 8.565471923037759,
+          "merged_prs": 109.31666666666666,
+          "ci_minutes_per_merged_pr": 56.98379827937349,
+          "realized_graph_recall": 0.7999994350574844,
+          "realized_graph_precision": 0.1437512971855121,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "bridge_wait_min_total": 54.4988499936809,
+          "canceled_ci_minutes": 2793.124295070118,
+          "false_rejection_rate": 0.009545685025989589,
+          "escaped_defects": 0.0
+        },
+        "DisjointBatchRetry": {
+          "p95_latency_min": 70.13320322869622,
+          "throughput_prs_per_hr": 19.722850476367583,
+          "merged_prs": 108.51666666666667,
+          "ci_minutes_per_merged_pr": 19.492878903764257,
+          "realized_graph_recall": 0.7999994350574844,
+          "realized_graph_precision": 0.1437512971855121,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "bridge_wait_min_total": 0.0,
+          "canceled_ci_minutes": 0.0,
+          "false_rejection_rate": 0.014778179372958089,
+          "escaped_defects": 0.0
+        },
+        "PerPRDAGRetry": {
+          "p95_latency_min": 628.1273020644325,
+          "throughput_prs_per_hr": 7.259602873897462,
+          "merged_prs": 109.15,
+          "ci_minutes_per_merged_pr": 31.696792312936587,
+          "realized_graph_recall": 0.7999994350574844,
+          "realized_graph_precision": 0.1437512971855121,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "bridge_wait_min_total": 0.0,
+          "canceled_ci_minutes": 305.6363298772848,
+          "false_rejection_rate": 0.011585156374635395,
+          "escaped_defects": 0.0
+        },
+        "SSMQ": {
+          "p95_latency_min": 66.54320300500711,
+          "throughput_prs_per_hr": 19.88029822350102,
+          "merged_prs": 108.58333333333333,
+          "ci_minutes_per_merged_pr": 19.15285822457058,
+          "realized_graph_recall": 0.7999994350574844,
+          "realized_graph_precision": 0.1437512971855121,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "bridge_wait_min_total": 0.0,
+          "canceled_ci_minutes": 0.0,
+          "false_rejection_rate": 0.015267570923561654,
+          "escaped_defects": 0.0
+        },
+        "StaticBatchBisect": {
+          "p95_latency_min": 95.03663158786198,
+          "throughput_prs_per_hr": 18.694988117298383,
+          "merged_prs": 107.53333333333333,
+          "ci_minutes_per_merged_pr": 20.42236522796663,
+          "realized_graph_recall": 0.7999994350574844,
+          "realized_graph_precision": 0.1437512971855121,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "bridge_wait_min_total": 0.0,
+          "canceled_ci_minutes": 0.0,
+          "false_rejection_rate": 0.02563663822931164,
+          "escaped_defects": 0.0
+        }
+      },
+      "p95_difference": {
+        "DepAwareOutcomeTree": {
+          "difference": -244.77011491044337,
+          "ci95": [
+            -252.52201475570828,
+            -237.0898590722974
+          ],
+          "sign_test_p": 1.9073486328125e-06,
+          "by_repo": {
+            "kubernetes": -253.3587547805605,
+            "nextjs": -208.67462729888302,
+            "typescript": -272.27696265188655
+          }
+        },
+        "DepTreeRetry": {
+          "difference": -411.2737729633494,
+          "ci95": [
+            -437.4672820344987,
+            -386.25540884225364
+          ],
+          "sign_test_p": 1.9073486328125e-06,
+          "by_repo": {
+            "kubernetes": -423.16090220870694,
+            "nextjs": -331.7907457726283,
+            "typescript": -478.8696709087132
+          }
+        },
+        "DisjointBatchRetry": {
+          "difference": -3.5900002236890964,
+          "ci95": [
+            -5.9047007474064275,
+            -1.7148020303020126
+          ],
+          "sign_test_p": 0.01181793212890625,
+          "by_repo": {
+            "kubernetes": -8.345692081086712,
+            "nextjs": -2.4355386693635483,
+            "typescript": 0.011230079382972491
+          }
+        },
+        "PerPRDAGRetry": {
+          "difference": -561.5840990594253,
+          "ci95": [
+            -587.0623419097875,
+            -534.6133478033937
+          ],
+          "sign_test_p": 1.9073486328125e-06,
+          "by_repo": {
+            "kubernetes": -501.25220810650535,
+            "nextjs": -466.7339985545849,
+            "typescript": -716.7660905171855
+          }
+        },
+        "StaticBatchBisect": {
+          "difference": -28.493428582854857,
+          "ci95": [
+            -32.54114634045706,
+            -24.333731210771226
+          ],
+          "sign_test_p": 1.9073486328125e-06,
+          "by_repo": {
+            "kubernetes": -34.16394627169862,
+            "nextjs": -17.83000698864992,
+            "typescript": -33.48633248821602
+          }
+        }
+      }
+    }
+  },
+  "recall": {
+    "recall_0.0": {
+      "by_strategy": {
+        "DisjointBatchRetry": {
+          "p95_latency_min": 85.08000301311944,
+          "throughput_prs_per_hr": 20.739135018663664,
+          "merged_prs": 115.98333333333333,
+          "ci_minutes_per_merged_pr": 19.513384721441696,
+          "realized_graph_recall": 0.0,
+          "realized_graph_precision": 0.0,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "bridge_wait_min_total": 0.0,
+          "canceled_ci_minutes": 0.0,
+          "false_rejection_rate": 0.018765682139356078,
+          "escaped_defects": 0.0
+        },
+        "SSMQ": {
+          "p95_latency_min": 76.66115504293613,
+          "throughput_prs_per_hr": 21.138565754123707,
+          "merged_prs": 116.05,
+          "ci_minutes_per_merged_pr": 18.818176302138234,
+          "realized_graph_recall": 0.0,
+          "realized_graph_precision": 0.0,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "bridge_wait_min_total": 0.0,
+          "canceled_ci_minutes": 0.0,
+          "false_rejection_rate": 0.018883241929935655,
+          "escaped_defects": 0.0
+        },
+        "SSMQ-NoCone": {
+          "p95_latency_min": 73.75255973538906,
+          "throughput_prs_per_hr": 20.917219489319685,
+          "merged_prs": 117.58333333333333,
+          "ci_minutes_per_merged_pr": 18.24464636096029,
+          "realized_graph_recall": 0.0,
+          "realized_graph_precision": 0.0,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "bridge_wait_min_total": 0.0,
+          "canceled_ci_minutes": 0.0,
+          "false_rejection_rate": 0.009204926700853449,
+          "escaped_defects": 0.0
+        },
+        "StaticBatchBisect": {
+          "p95_latency_min": 78.1419938873714,
+          "throughput_prs_per_hr": 21.286057481644587,
+          "merged_prs": 115.78333333333333,
+          "ci_minutes_per_merged_pr": 16.984048567375364,
+          "realized_graph_recall": 0.0,
+          "realized_graph_precision": 0.0,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "bridge_wait_min_total": 0.0,
+          "canceled_ci_minutes": 0.0,
+          "false_rejection_rate": 0.025355909112307957,
+          "escaped_defects": 0.0
+        }
+      },
+      "p95_difference": {
+        "DisjointBatchRetry": {
+          "difference": -8.418847970183302,
+          "ci95": [
+            -10.06806358131917,
+            -6.904166011483658
+          ],
+          "sign_test_p": 1.9073486328125e-06,
+          "by_repo": {
+            "kubernetes": -13.501582757692784,
+            "nextjs": -11.349414537651247,
+            "typescript": -0.4055466152058724
+          }
+        },
+        "SSMQ-NoCone": {
+          "difference": 2.908595307547081,
+          "ci95": [
+            -0.12759036155161912,
+            5.867956265529456
+          ],
+          "sign_test_p": 0.26317596435546875,
+          "by_repo": {
+            "kubernetes": 3.7615570373481284,
+            "nextjs": -8.219952876107914,
+            "typescript": 13.184181761401026
+          }
+        },
+        "StaticBatchBisect": {
+          "difference": -1.480838844435256,
+          "ci95": [
+            -5.699315450797316,
+            2.5706111545639687
+          ],
+          "sign_test_p": 0.8238029479980469,
+          "by_repo": {
+            "kubernetes": 3.928542205846007,
+            "nextjs": -8.345855160671631,
+            "typescript": -0.025203578480144095
+          }
+        }
+      }
+    },
+    "recall_0.4": {
+      "by_strategy": {
+        "DisjointBatchRetry": {
+          "p95_latency_min": 77.77869053605625,
+          "throughput_prs_per_hr": 20.52261504941163,
+          "merged_prs": 113.45,
+          "ci_minutes_per_merged_pr": 19.24519778416561,
+          "realized_graph_recall": 0.40001470338975487,
+          "realized_graph_precision": 0.05875675930658599,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "bridge_wait_min_total": 0.0,
+          "canceled_ci_minutes": 0.0,
+          "false_rejection_rate": 0.017191978528690522,
+          "escaped_defects": 0.0
+        },
+        "SSMQ": {
+          "p95_latency_min": 71.9212706016893,
+          "throughput_prs_per_hr": 20.767512351318633,
+          "merged_prs": 113.45,
+          "ci_minutes_per_merged_pr": 18.70453295052444,
+          "realized_graph_recall": 0.40001470338975487,
+          "realized_graph_precision": 0.05875675930658599,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "bridge_wait_min_total": 0.0,
+          "canceled_ci_minutes": 0.0,
+          "false_rejection_rate": 0.01708238162471016,
+          "escaped_defects": 0.0
+        },
+        "SSMQ-NoCone": {
+          "p95_latency_min": 78.24176222653038,
+          "throughput_prs_per_hr": 20.269570728694145,
+          "merged_prs": 114.61666666666666,
+          "ci_minutes_per_merged_pr": 19.096016984659673,
+          "realized_graph_recall": 0.40001470338975487,
+          "realized_graph_precision": 0.05875675930658599,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "bridge_wait_min_total": 0.0,
+          "canceled_ci_minutes": 0.0,
+          "false_rejection_rate": 0.009443501767539393,
+          "escaped_defects": 0.0
+        },
+        "StaticBatchBisect": {
+          "p95_latency_min": 87.41217050177471,
+          "throughput_prs_per_hr": 20.39684074832704,
+          "merged_prs": 113.0,
+          "ci_minutes_per_merged_pr": 18.406845508372655,
+          "realized_graph_recall": 0.40001470338975487,
+          "realized_graph_precision": 0.05875675930658599,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "bridge_wait_min_total": 0.0,
+          "canceled_ci_minutes": 0.0,
+          "false_rejection_rate": 0.024370301198820755,
+          "escaped_defects": 0.0
+        }
+      },
+      "p95_difference": {
+        "DisjointBatchRetry": {
+          "difference": -5.857419934366936,
+          "ci95": [
+            -7.869594486627027,
+            -3.925446687778576
+          ],
+          "sign_test_p": 0.0004024505615234375,
+          "by_repo": {
+            "kubernetes": -13.067886490025904,
+            "nextjs": -3.770702512472275,
+            "typescript": -0.7336708006026317
+          }
+        },
+        "SSMQ-NoCone": {
+          "difference": -6.320491624841063,
+          "ci95": [
+            -9.681278197493148,
+            -3.2207364052081786
+          ],
+          "sign_test_p": 0.01181793212890625,
+          "by_repo": {
+            "kubernetes": -8.969899538553637,
+            "nextjs": -10.953356922900923,
+            "typescript": 0.9617815869313698
+          }
+        },
+        "StaticBatchBisect": {
+          "difference": -15.49089990008541,
+          "ci95": [
+            -20.36559101258795,
+            -10.916566522277346
+          ],
+          "sign_test_p": 4.00543212890625e-05,
+          "by_repo": {
+            "kubernetes": -22.233423067360015,
+            "nextjs": -13.99347099675452,
+            "typescript": -10.245805636141693
+          }
+        }
+      }
+    },
+    "recall_0.6": {
+      "by_strategy": {
+        "DisjointBatchRetry": {
+          "p95_latency_min": 73.34535171080417,
+          "throughput_prs_per_hr": 20.650922932017316,
+          "merged_prs": 113.11666666666666,
+          "ci_minutes_per_merged_pr": 18.83488539166564,
+          "realized_graph_recall": 0.5999852966102452,
+          "realized_graph_precision": 0.08812878489167937,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "bridge_wait_min_total": 0.0,
+          "canceled_ci_minutes": 0.0,
+          "false_rejection_rate": 0.0170603650076435,
+          "escaped_defects": 0.0
+        },
+        "SSMQ": {
+          "p95_latency_min": 68.64922480743596,
+          "throughput_prs_per_hr": 20.811988250044994,
+          "merged_prs": 113.2,
+          "ci_minutes_per_merged_pr": 18.435420854969063,
+          "realized_graph_recall": 0.5999852966102452,
+          "realized_graph_precision": 0.08812878489167937,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "bridge_wait_min_total": 0.0,
+          "canceled_ci_minutes": 0.0,
+          "false_rejection_rate": 0.016958606109478015,
+          "escaped_defects": 0.0
+        },
+        "SSMQ-NoCone": {
+          "p95_latency_min": 76.65291983212016,
+          "throughput_prs_per_hr": 20.350372760981795,
+          "merged_prs": 114.06666666666666,
+          "ci_minutes_per_merged_pr": 18.930316276754127,
+          "realized_graph_recall": 0.5999852966102452,
+          "realized_graph_precision": 0.08812878489167937,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "bridge_wait_min_total": 0.0,
+          "canceled_ci_minutes": 0.0,
+          "false_rejection_rate": 0.009806857924704497,
+          "escaped_defects": 0.0
+        },
+        "StaticBatchBisect": {
+          "p95_latency_min": 88.90563440358044,
+          "throughput_prs_per_hr": 20.11102876266519,
+          "merged_prs": 112.45,
+          "ci_minutes_per_merged_pr": 18.648006096727592,
+          "realized_graph_recall": 0.5999852966102452,
+          "realized_graph_precision": 0.08812878489167937,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "bridge_wait_min_total": 0.0,
+          "canceled_ci_minutes": 0.0,
+          "false_rejection_rate": 0.024408139717740248,
+          "escaped_defects": 0.0
+        }
+      },
+      "p95_difference": {
+        "DisjointBatchRetry": {
+          "difference": -4.696126903368208,
+          "ci95": [
+            -6.059848211195567,
+            -3.323315546235478
+          ],
+          "sign_test_p": 1.9073486328125e-06,
+          "by_repo": {
+            "kubernetes": -9.823364629729863,
+            "nextjs": -3.655546784658172,
+            "typescript": -0.6094692957165904
+          }
+        },
+        "SSMQ-NoCone": {
+          "difference": -8.003695024684205,
+          "ci95": [
+            -11.516294195442576,
+            -4.628763980671264
+          ],
+          "sign_test_p": 0.0025768280029296875,
+          "by_repo": {
+            "kubernetes": -13.184923549926049,
+            "nextjs": -10.533794356433035,
+            "typescript": -0.2923671676935321
+          }
+        },
+        "StaticBatchBisect": {
+          "difference": -20.25640959614447,
+          "ci95": [
+            -24.296509100534387,
+            -16.057907799140498
+          ],
+          "sign_test_p": 1.9073486328125e-06,
+          "by_repo": {
+            "kubernetes": -28.63191279821723,
+            "nextjs": -16.331233996610234,
+            "typescript": -15.80608199360594
+          }
+        }
+      }
+    },
+    "recall_0.8": {
+      "by_strategy": {
+        "DisjointBatchRetry": {
+          "p95_latency_min": 67.79524552901438,
+          "throughput_prs_per_hr": 20.8558570764827,
+          "merged_prs": 113.31666666666666,
+          "ci_minutes_per_merged_pr": 18.163839890444425,
+          "realized_graph_recall": 0.8000047641917629,
+          "realized_graph_precision": 0.11750916643490678,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "bridge_wait_min_total": 0.0,
+          "canceled_ci_minutes": 0.0,
+          "false_rejection_rate": 0.016469780016132217,
+          "escaped_defects": 0.0
+        },
+        "SSMQ": {
+          "p95_latency_min": 64.16214702506521,
+          "throughput_prs_per_hr": 21.009286759946963,
+          "merged_prs": 113.38333333333334,
+          "ci_minutes_per_merged_pr": 17.823111258739413,
+          "realized_graph_recall": 0.8000047641917629,
+          "realized_graph_precision": 0.11750916643490678,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "bridge_wait_min_total": 0.0,
+          "canceled_ci_minutes": 0.0,
+          "false_rejection_rate": 0.01695917156673578,
+          "escaped_defects": 0.0
+        },
+        "SSMQ-NoCone": {
+          "p95_latency_min": 74.23894352699064,
+          "throughput_prs_per_hr": 20.551681405140247,
+          "merged_prs": 114.13333333333334,
+          "ci_minutes_per_merged_pr": 18.714074195100117,
+          "realized_graph_recall": 0.8000047641917629,
+          "realized_graph_precision": 0.11750916643490678,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "bridge_wait_min_total": 0.0,
+          "canceled_ci_minutes": 0.0,
+          "false_rejection_rate": 0.010072291381315645,
+          "escaped_defects": 0.0
+        },
+        "StaticBatchBisect": {
+          "p95_latency_min": 87.49319420957342,
+          "throughput_prs_per_hr": 20.118553551502576,
+          "merged_prs": 112.28333333333333,
+          "ci_minutes_per_merged_pr": 18.712697120518516,
+          "realized_graph_recall": 0.8000047641917629,
+          "realized_graph_precision": 0.11750916643490678,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "bridge_wait_min_total": 0.0,
+          "canceled_ci_minutes": 0.0,
+          "false_rejection_rate": 0.026742594021395862,
+          "escaped_defects": 0.0
+        }
+      },
+      "p95_difference": {
+        "DisjointBatchRetry": {
+          "difference": -3.63309850394916,
+          "ci95": [
+            -5.893947780381835,
+            -1.8471163992728379
+          ],
+          "sign_test_p": 0.0025768280029296875,
+          "by_repo": {
+            "kubernetes": -8.345692081086712,
+            "nextjs": -2.4355386693635483,
+            "typescript": -0.11806476139721873
+          }
+        },
+        "SSMQ-NoCone": {
+          "difference": -10.07679650192542,
+          "ci95": [
+            -13.11128766611304,
+            -7.002191894362078
+          ],
+          "sign_test_p": 0.0004024505615234375,
+          "by_repo": {
+            "kubernetes": -19.68527463121123,
+            "nextjs": -8.674547095811514,
+            "typescript": -1.8705677787535193
+          }
+        },
+        "StaticBatchBisect": {
+          "difference": -23.331047184508208,
+          "ci95": [
+            -26.97147769263318,
+            -19.87085222860194
+          ],
+          "sign_test_p": 1.9073486328125e-06,
+          "by_repo": {
+            "kubernetes": -34.16394627169862,
+            "nextjs": -17.83000698864992,
+            "typescript": -17.999188293176083
+          }
+        }
+      }
+    },
+    "recall_1.0": {
+      "by_strategy": {
+        "DisjointBatchRetry": {
+          "p95_latency_min": 60.33974137047229,
+          "throughput_prs_per_hr": 21.276561129070902,
+          "merged_prs": 114.36666666666666,
+          "ci_minutes_per_merged_pr": 17.295196942125195,
+          "realized_graph_recall": 1.0,
+          "realized_graph_precision": 0.14688554419826536,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "bridge_wait_min_total": 0.0,
+          "canceled_ci_minutes": 0.0,
+          "false_rejection_rate": 0.015601405561066763,
+          "escaped_defects": 0.0
+        },
+        "SSMQ": {
+          "p95_latency_min": 59.09733805515513,
+          "throughput_prs_per_hr": 21.325660514629636,
+          "merged_prs": 114.21666666666667,
+          "ci_minutes_per_merged_pr": 17.22680379559928,
+          "realized_graph_recall": 1.0,
+          "realized_graph_precision": 0.14688554419826536,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "bridge_wait_min_total": 0.0,
+          "canceled_ci_minutes": 0.0,
+          "false_rejection_rate": 0.017454793537285202,
+          "escaped_defects": 0.0
+        },
+        "SSMQ-NoCone": {
+          "p95_latency_min": 71.2412125719946,
+          "throughput_prs_per_hr": 20.89289109688424,
+          "merged_prs": 114.98333333333333,
+          "ci_minutes_per_merged_pr": 18.07384365564925,
+          "realized_graph_recall": 1.0,
+          "realized_graph_precision": 0.14688554419826536,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "bridge_wait_min_total": 0.0,
+          "canceled_ci_minutes": 0.0,
+          "false_rejection_rate": 0.010306653326770884,
+          "escaped_defects": 0.0
+        },
+        "StaticBatchBisect": {
+          "p95_latency_min": 86.19699302079889,
+          "throughput_prs_per_hr": 20.415744458210003,
+          "merged_prs": 113.1,
+          "ci_minutes_per_merged_pr": 18.39234008199743,
+          "realized_graph_recall": 1.0,
+          "realized_graph_precision": 0.14688554419826536,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "bridge_wait_min_total": 0.0,
+          "canceled_ci_minutes": 0.0,
+          "false_rejection_rate": 0.026626811131967944,
+          "escaped_defects": 0.0
+        }
+      },
+      "p95_difference": {
+        "DisjointBatchRetry": {
+          "difference": -1.2424033153171523,
+          "ci95": [
+            -2.9392475450003728,
+            0.3398074950698565
+          ],
+          "sign_test_p": 0.5034446716308594,
+          "by_repo": {
+            "kubernetes": -1.7350791106022592,
+            "nextjs": -1.904666160249049,
+            "typescript": -0.08746467510014888
+          }
+        },
+        "SSMQ-NoCone": {
+          "difference": -12.143874516839471,
+          "ci95": [
+            -14.459131169894818,
+            -9.876711343476071
+          ],
+          "sign_test_p": 1.9073486328125e-06,
+          "by_repo": {
+            "kubernetes": -23.57386863787833,
+            "nextjs": -9.402332480081665,
+            "typescript": -3.4554224325584224
+          }
+        },
+        "StaticBatchBisect": {
+          "difference": -27.099654965643754,
+          "ci95": [
+            -30.259467435878417,
+            -24.025542034641457
+          ],
+          "sign_test_p": 1.9073486328125e-06,
+          "by_repo": {
+            "kubernetes": -41.90389077760743,
+            "nextjs": -21.587974852302175,
+            "typescript": -17.807099267021655
+          }
+        }
+      }
+    }
+  },
+  "proxy": {
+    "directory_no_flakes": {
+      "by_strategy": {
+        "DisjointBatchRetry": {
+          "p95_latency_min": 43.28231676229184,
+          "throughput_prs_per_hr": 25.158958595579193,
+          "merged_prs": 131.46666666666667,
+          "ci_minutes_per_merged_pr": 12.939654473975638,
+          "realized_graph_recall": 0.9923794977717223,
+          "realized_graph_precision": 0.03176676425604387,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "bridge_wait_min_total": 0.0,
+          "canceled_ci_minutes": 0.0,
+          "false_rejection_rate": 0.0,
+          "escaped_defects": 0.0
+        },
+        "SSMQ": {
+          "p95_latency_min": 43.20485956278623,
+          "throughput_prs_per_hr": 25.19461294417456,
+          "merged_prs": 131.46666666666667,
+          "ci_minutes_per_merged_pr": 12.978442160062615,
+          "realized_graph_recall": 0.9923794977717223,
+          "realized_graph_precision": 0.03176676425604387,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "bridge_wait_min_total": 0.0,
+          "canceled_ci_minutes": 0.0,
+          "false_rejection_rate": 0.0,
+          "escaped_defects": 0.0
+        },
+        "SSMQ-NoCone": {
+          "p95_latency_min": 36.35452155027472,
+          "throughput_prs_per_hr": 25.136954201873944,
+          "merged_prs": 131.46666666666667,
+          "ci_minutes_per_merged_pr": 12.011418381763415,
+          "realized_graph_recall": 0.9923794977717223,
+          "realized_graph_precision": 0.03176676425604387,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "bridge_wait_min_total": 0.0,
+          "canceled_ci_minutes": 0.0,
+          "false_rejection_rate": 0.0,
+          "escaped_defects": 0.0
+        },
+        "StaticBatchBisect": {
+          "p95_latency_min": 52.14836381618922,
+          "throughput_prs_per_hr": 24.809094631476814,
+          "merged_prs": 131.48333333333332,
+          "ci_minutes_per_merged_pr": 12.467227077205559,
+          "realized_graph_recall": 0.9923794977717223,
+          "realized_graph_precision": 0.03176676425604387,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "bridge_wait_min_total": 0.0,
+          "canceled_ci_minutes": 0.0,
+          "false_rejection_rate": 0.0,
+          "escaped_defects": 0.0
+        }
+      },
+      "p95_difference": {
+        "DisjointBatchRetry": {
+          "difference": -0.07745719950561372,
+          "ci95": [
+            -0.9093226936395306,
+            0.8047971901801677
+          ],
+          "sign_test_p": 0.5034446716308594,
+          "by_repo": {
+            "kubernetes": -0.7722023157140082,
+            "nextjs": 0.6195424851038339,
+            "typescript": -0.07971176790666697
+          }
+        },
+        "SSMQ-NoCone": {
+          "difference": 6.850338012511507,
+          "ci95": [
+            5.2110891806086626,
+            8.699339089301839
+          ],
+          "sign_test_p": 4.00543212890625e-05,
+          "by_repo": {
+            "kubernetes": 17.086683767858155,
+            "nextjs": 1.5196114626303796,
+            "typescript": 1.9447188070459844
+          }
+        },
+        "StaticBatchBisect": {
+          "difference": -8.943504253402988,
+          "ci95": [
+            -11.489971753478699,
+            -6.517581484368947
+          ],
+          "sign_test_p": 4.00543212890625e-05,
+          "by_repo": {
+            "kubernetes": 0.01653501531992596,
+            "nextjs": -8.759538505291175,
+            "typescript": -18.087509270237717
+          }
+        }
+      }
+    },
+    "directory_no_persistence": {
+      "by_strategy": {
+        "DisjointBatchRetry": {
+          "p95_latency_min": 46.89674917019773,
+          "throughput_prs_per_hr": 25.68391467212739,
+          "merged_prs": 135.15,
+          "ci_minutes_per_merged_pr": 13.062579511983547,
+          "realized_graph_recall": 0.9923794977717223,
+          "realized_graph_precision": 0.03176676425604387,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "bridge_wait_min_total": 0.0,
+          "canceled_ci_minutes": 0.0,
+          "false_rejection_rate": 0.02109351715893693,
+          "escaped_defects": 0.0
+        },
+        "SSMQ": {
+          "p95_latency_min": 47.60038840006072,
+          "throughput_prs_per_hr": 25.72231530178867,
+          "merged_prs": 135.08333333333334,
+          "ci_minutes_per_merged_pr": 13.213364790340309,
+          "realized_graph_recall": 0.9923794977717223,
+          "realized_graph_precision": 0.03176676425604387,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "bridge_wait_min_total": 0.0,
+          "canceled_ci_minutes": 0.0,
+          "false_rejection_rate": 0.02159551146263544,
+          "escaped_defects": 0.0
+        },
+        "SSMQ-NoCone": {
+          "p95_latency_min": 35.66364783251901,
+          "throughput_prs_per_hr": 25.95933067500049,
+          "merged_prs": 136.28333333333333,
+          "ci_minutes_per_merged_pr": 11.609479284702411,
+          "realized_graph_recall": 0.9923794977717223,
+          "realized_graph_precision": 0.03176676425604387,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "bridge_wait_min_total": 0.0,
+          "canceled_ci_minutes": 0.0,
+          "false_rejection_rate": 0.012924444375843787,
+          "escaped_defects": 0.0
+        },
+        "StaticBatchBisect": {
+          "p95_latency_min": 45.9637221048364,
+          "throughput_prs_per_hr": 25.461942650988828,
+          "merged_prs": 134.11666666666667,
+          "ci_minutes_per_merged_pr": 11.484265775600882,
+          "realized_graph_recall": 0.9923794977717223,
+          "realized_graph_precision": 0.03176676425604387,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "bridge_wait_min_total": 0.0,
+          "canceled_ci_minutes": 0.0,
+          "false_rejection_rate": 0.028691559349390168,
+          "escaped_defects": 0.0
+        }
+      },
+      "p95_difference": {
+        "DisjointBatchRetry": {
+          "difference": 0.7036392298629929,
+          "ci95": [
+            -0.5348385182518769,
+            1.9571093733053513
+          ],
+          "sign_test_p": 0.5034446716308594,
+          "by_repo": {
+            "kubernetes": 2.0672361781227333,
+            "nextjs": 0.015933378753943295,
+            "typescript": 0.02774813271230201
+          }
+        },
+        "SSMQ-NoCone": {
+          "difference": 11.936740567541712,
+          "ci95": [
+            10.300363380347733,
+            13.488996232408676
+          ],
+          "sign_test_p": 1.9073486328125e-06,
+          "by_repo": {
+            "kubernetes": 24.131393571850246,
+            "nextjs": 2.9629402068094692,
+            "typescript": 8.715887923965422
+          }
+        },
+        "StaticBatchBisect": {
+          "difference": 1.6366662952243238,
+          "ci95": [
+            -0.7332416132827724,
+            3.939808545357812
+          ],
+          "sign_test_p": 0.5034446716308594,
+          "by_repo": {
+            "kubernetes": 15.053750485075273,
+            "nextjs": -3.795390196419457,
+            "typescript": -6.348361402982844
+          }
+        }
+      }
+    },
+    "directory_proxy": {
+      "by_strategy": {
+        "DisjointBatchRetry": {
+          "p95_latency_min": 49.705126178032636,
+          "throughput_prs_per_hr": 24.404258025992455,
+          "merged_prs": 129.0,
+          "ci_minutes_per_merged_pr": 14.081443794624166,
+          "realized_graph_recall": 0.9923794977717223,
+          "realized_graph_precision": 0.03176676425604387,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "bridge_wait_min_total": 0.0,
+          "canceled_ci_minutes": 0.0,
+          "false_rejection_rate": 0.01881302827522731,
+          "escaped_defects": 0.0
+        },
+        "SSMQ": {
+          "p95_latency_min": 49.997836755750704,
+          "throughput_prs_per_hr": 24.434014003063385,
+          "merged_prs": 128.88333333333333,
+          "ci_minutes_per_merged_pr": 14.206811708794934,
+          "realized_graph_recall": 0.9923794977717223,
+          "realized_graph_precision": 0.03176676425604387,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "bridge_wait_min_total": 0.0,
+          "canceled_ci_minutes": 0.0,
+          "false_rejection_rate": 0.019923362138493758,
+          "escaped_defects": 0.0
+        },
+        "SSMQ-NoCone": {
+          "p95_latency_min": 41.66610556412022,
+          "throughput_prs_per_hr": 24.562542792174533,
+          "merged_prs": 130.03333333333333,
+          "ci_minutes_per_merged_pr": 13.034354446091578,
+          "realized_graph_recall": 0.9923794977717223,
+          "realized_graph_precision": 0.03176676425604387,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "bridge_wait_min_total": 0.0,
+          "canceled_ci_minutes": 0.0,
+          "false_rejection_rate": 0.011233929534897267,
+          "escaped_defects": 0.0
+        },
+        "StaticBatchBisect": {
+          "p95_latency_min": 53.74626150394648,
+          "throughput_prs_per_hr": 24.041000030421788,
+          "merged_prs": 127.98333333333333,
+          "ci_minutes_per_merged_pr": 12.982912577233979,
+          "realized_graph_recall": 0.9923794977717223,
+          "realized_graph_precision": 0.03176676425604387,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "bridge_wait_min_total": 0.0,
+          "canceled_ci_minutes": 0.0,
+          "false_rejection_rate": 0.026911214313252108,
+          "escaped_defects": 0.0
+        }
+      },
+      "p95_difference": {
+        "DisjointBatchRetry": {
+          "difference": 0.292710577718075,
+          "ci95": [
+            -0.8456933439025173,
+            1.5027576048801168
+          ],
+          "sign_test_p": 0.26317596435546875,
+          "by_repo": {
+            "kubernetes": 0.9183703345116377,
+            "nextjs": -0.36917969583831756,
+            "typescript": 0.3289410944809049
+          }
+        },
+        "SSMQ-NoCone": {
+          "difference": 8.331731191630489,
+          "ci95": [
+            6.3146347914181655,
+            10.41585931234582
+          ],
+          "sign_test_p": 1.9073486328125e-06,
+          "by_repo": {
+            "kubernetes": 21.534683549575853,
+            "nextjs": 1.2156605349896967,
+            "typescript": 2.244849490325919
+          }
+        },
+        "StaticBatchBisect": {
+          "difference": -3.74842474819577,
+          "ci95": [
+            -6.193335937204701,
+            -1.3247241185574432
+          ],
+          "sign_test_p": 0.04138946533203125,
+          "by_repo": {
+            "kubernetes": 9.335367315550704,
+            "nextjs": -7.539634991371346,
+            "typescript": -13.04100656876667
+          }
+        }
+      }
+    },
+    "uniform_pairs": {
+      "by_strategy": {
+        "DisjointBatchRetry": {
+          "p95_latency_min": 84.62463053401434,
+          "throughput_prs_per_hr": 17.826669964216535,
+          "merged_prs": 100.81666666666666,
+          "ci_minutes_per_merged_pr": 22.688657667056084,
+          "realized_graph_recall": 0.7333465274184033,
+          "realized_graph_precision": 0.17999055259488833,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "bridge_wait_min_total": 0.0,
+          "canceled_ci_minutes": 0.0,
+          "false_rejection_rate": 0.013351633056557382,
+          "escaped_defects": 0.0
+        },
+        "SSMQ": {
+          "p95_latency_min": 79.62402951604459,
+          "throughput_prs_per_hr": 17.921064581463785,
+          "merged_prs": 100.7,
+          "ci_minutes_per_merged_pr": 22.46843939785058,
+          "realized_graph_recall": 0.7333465274184033,
+          "realized_graph_precision": 0.17999055259488833,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "bridge_wait_min_total": 0.0,
+          "canceled_ci_minutes": 0.0,
+          "false_rejection_rate": 0.013595337940845663,
+          "escaped_defects": 0.0
+        },
+        "SSMQ-NoCone": {
+          "p95_latency_min": 102.31528213958829,
+          "throughput_prs_per_hr": 16.396687102573857,
+          "merged_prs": 101.21666666666667,
+          "ci_minutes_per_merged_pr": 24.92732023236115,
+          "realized_graph_recall": 0.7333465274184033,
+          "realized_graph_precision": 0.17999055259488833,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "bridge_wait_min_total": 0.0,
+          "canceled_ci_minutes": 0.0,
+          "false_rejection_rate": 0.009782073189086127,
+          "escaped_defects": 0.0
+        },
+        "StaticBatchBisect": {
+          "p95_latency_min": 109.63323511341464,
+          "throughput_prs_per_hr": 16.55882846046197,
+          "merged_prs": 99.7,
+          "ci_minutes_per_merged_pr": 23.836968484626468,
+          "realized_graph_recall": 0.7333465274184033,
+          "realized_graph_precision": 0.17999055259488833,
+          "observed_graph_edge_density": 0.7333631618195376,
+          "bridge_wait_min_total": 0.0,
+          "canceled_ci_minutes": 0.0,
+          "false_rejection_rate": 0.025781259509768704,
+          "escaped_defects": 0.0
+        }
+      },
+      "p95_difference": {
+        "DisjointBatchRetry": {
+          "difference": -5.000601017969769,
+          "ci95": [
+            -7.351817831738704,
+            -2.6899274796586643
+          ],
+          "sign_test_p": 0.11531829833984375,
+          "by_repo": {
+            "kubernetes": -2.9658308702704668,
+            "nextjs": -12.800349874498547,
+            "typescript": 0.7643776908597075
+          }
+        },
+        "SSMQ-NoCone": {
+          "difference": -22.69125262354371,
+          "ci95": [
+            -26.086100789544844,
+            -19.337063065687595
+          ],
+          "sign_test_p": 1.9073486328125e-06,
+          "by_repo": {
+            "kubernetes": -25.226621349722755,
+            "nextjs": -16.641142699920373,
+            "typescript": -26.205993820988
+          }
+        },
+        "StaticBatchBisect": {
+          "difference": -30.009205597370062,
+          "ci95": [
+            -34.823381055383294,
+            -24.778412216122955
+          ],
+          "sign_test_p": 1.9073486328125e-06,
+          "by_repo": {
+            "kubernetes": -36.67660521890816,
+            "nextjs": -16.827232324723077,
+            "typescript": -36.523779248478945
+          }
+        }
+      }
+    }
+  }
+}

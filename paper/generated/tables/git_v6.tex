@@ -1,0 +1,10 @@
+\begin{table}[t]\centering\small
+\caption{Git factorial totals over paired streams. Tests include a final check. Splits include both bisections and ranker decisions. Attempts include textual conflicts.}\label{tab:gitfactorial}
+\begin{tabular}{llrrr}\toprule Packing & Recovery & Tests & Splits & Attempts \\ \midrule
+FIFO & Bisect & 133 & 48 & 256 \\
+FIFO & File & 133 & 48 & 269 \\
+FIFO & AST & 121 & 42 & 254 \\
+Disjoint & Bisect & 130 & 41 & 236 \\
+Disjoint & File & 126 & 39 & 239 \\
+Disjoint & AST & 112 & 32 & 223 \\
+\bottomrule\end{tabular}\end{table}

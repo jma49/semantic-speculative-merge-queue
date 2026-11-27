@@ -1,0 +1,23 @@
+{
+  "TraceCount": 600,
+  "DisjointAdvantage": 3.6,
+  "DisjointLow": 1.7,
+  "DisjointHigh": 5.9,
+  "DirectoryPenalty": 8.3,
+  "DirectoryLow": 6.3,
+  "DirectoryHigh": 10.4,
+  "GitAstTests": 112,
+  "GitFileTests": 126,
+  "QuixSiblingN": 12,
+  "QuixSiblingAst": 12,
+  "QuixSiblingFile": 6,
+  "QuixSiblingBlind": 6,
+  "QuixSameN": 12,
+  "QuixSameAst": 6,
+  "QuixSameFile": 6,
+  "QuixSameBlind": 6,
+  "QuixDoubleN": 12,
+  "QuixDoubleAst": 0,
+  "QuixDoubleFile": 0,
+  "QuixDoubleBlind": 0
+}

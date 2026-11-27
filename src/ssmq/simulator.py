@@ -37,6 +37,9 @@ ALL_STRATEGIES = [
     "SpeculativeLinear",
     "FIFOOutcomeTree",
     "DepAwareOutcomeTree",
+    "DepTreeRetry",
+    "PerPRDAGRetry",
+    "DisjointBatchRetry",
     "FlakeAwareBatch",
     "SSMQ",
     "SSMQ-NoCone",
@@ -163,6 +166,17 @@ def build_ground_truth(
         pr.number: pr.impact_cone or frozenset(graph.impact_cone(pr.files))
         for pr in records
     }
+    if config.ground_truth_mode != "parametric":
+        # Select labels without scheduler cones, then assess the frozen predictor.
+        parents = {pr.number: {path.rpartition("/")[0] for path in pr.files} for pr in records}
+        eligible = (
+            (a, b) for a, b in combinations(parents, 2)
+            if config.ground_truth_mode == "uniform_pairs" or not parents[a].isdisjoint(parents[b])
+        )
+        conflicts = frozenset(pair for pair in eligible if _uniform(_key(seed, "independent", *pair)) < probability)
+        persistent = frozenset(pair for pair in conflicts if _uniform(_key(seed, "persistent", *pair)) < config.persistent_conflict_share)
+        off = frozenset((a, b) for a, b in conflicts if cones[a].isdisjoint(cones[b]))
+        return GroundTruth(defects, conflicts, persistent, off)
     roots = {pr.number: _repository_roots(pr.files) for pr in records}
     base_visible: List[Tuple[int, int]] = []
     same_root: List[Tuple[int, int]] = []
@@ -177,6 +191,10 @@ def build_ground_truth(
 
     recall = max(0.0, min(1.0, config.graph_recall))
     total_target = len(base_visible)
+
+    if config.feasible_recall_budget:
+        total_target = min(total_target, len(same_root) + len(other_roots))
+        base_visible = sorted(base_visible, key=lambda pair: (_key(seed, "vis-order", *pair), pair))[:total_target]
 
     if recall >= 1.0:
         visible = set(base_visible)
@@ -302,9 +320,10 @@ class _Simulation:
         )
         self.use_blame = strategy.startswith("SSMQ") and strategy != "SSMQ-NoBlame"
         self.adaptive_rerun = strategy.startswith("SSMQ") and strategy not in ("SSMQ-NoFlaky", "SSMQ-FixedRetry")
+        self.adaptive_rerun |= strategy in ("DepTreeRetry", "PerPRDAGRetry", "DisjointBatchRetry")
         self.fixed_rerun = strategy in ("FlakeAwareBatch", "SSMQ-FixedRetry")
         self.fifo_tree = strategy == "FIFOOutcomeTree"
-        self.dep_tree = strategy == "DepAwareOutcomeTree"
+        self.dep_tree = strategy in ("DepAwareOutcomeTree", "DepTreeRetry")
         self.linear = strategy == "SpeculativeLinear"
         self.worker_limit = 1 if strategy == "SerialQueue" else config.workers
 
@@ -316,6 +335,12 @@ class _Simulation:
         self.outcome_root: Optional[_OutcomeNode] = None
         self.dep_lanes: List[_DepLane] = []
         self._next_lane_id = count()
+        self.dag_runs: Dict[int, _Run] = {}
+        self.dag_jobs: Dict[int, _Job] = {}
+        self.dag_ancestors: Dict[int, Set[int]] = {}
+        self.bridge_wait = 0.0
+        self.bridge_count = 0
+        self.canceled_ci = 0.0
         self.suite = _SuitePosterior()
         self.sequence = count()
         self.events = []
@@ -350,8 +375,11 @@ class _Simulation:
             heappush(self.events, (arrival, next(self.sequence), number))
 
     def run(self) -> RunMetrics:
+        previous_event = 0.0
         while self.events:
             when = self.events[0][0]
+            self.bridge_wait += (when - previous_event) * self.bridge_count
+            previous_event = when
             while self.events and self.events[0][0] == when:
                 _, _, event = heappop(self.events)
                 if isinstance(event, int):
@@ -395,6 +423,7 @@ class _Simulation:
         if not run.completed:
             self.running -= 1
             self.ci_time += self.now - run.started
+            self.canceled_ci += self.now - run.started
         run.wasted = True
         self.wasted_runs += 1
         self.invalidated_runs += int(invalidated)
@@ -403,7 +432,9 @@ class _Simulation:
         run.completed = True
         self.running -= 1
         self.ci_time += run.finishes - run.started
-        if self.fifo_tree:
+        if self.strategy == "PerPRDAGRetry":
+            self._resolve_dag()
+        elif self.fifo_tree:
             self._resolve_uber()
         elif self.dep_tree:
             self._resolve_dep_trees()
@@ -415,7 +446,9 @@ class _Simulation:
     def _dispatch(self) -> None:
         while self.pending and self.running < self.worker_limit:
             self._start(self.pending.popleft())
-        if self.fifo_tree:
+        if self.strategy == "PerPRDAGRetry":
+            self._dispatch_dag()
+        elif self.fifo_tree:
             self._dispatch_uber()
         elif self.dep_tree:
             self._dispatch_dep_trees()
@@ -425,9 +458,66 @@ class _Simulation:
             while self.ready and self.running < self.worker_limit:
                 self._start(self._root_job(self._take_batch()))
 
+    def _dispatch_dag(self) -> None:
+        # Directed edges point from earlier overlapping PRs to later arrivals.
+        for number in self.ready:
+            ancestors = set()
+            for older, upstream in self.dag_ancestors.items():
+                if not self.cones[number].isdisjoint(self.cones[older]):
+                    ancestors.add(older)
+                    ancestors.update(upstream)
+            self.dag_ancestors[number] = ancestors
+            self.dag_jobs[number] = self._root_job((number,))
+        self.ready.clear()
+        for number, ancestors in self.dag_ancestors.items():
+            if self.running >= self.worker_limit:
+                break
+            if number in self.dag_runs or len(ancestors) >= self.config.max_spec_depth:
+                continue
+            prefix = tuple(sorted(ancestors))
+            self.dag_runs[number] = self._start(replace(self.dag_jobs[number], prefix=prefix))
+
+    def _resolve_dag(self) -> None:
+        for number, ancestors in list(self.dag_ancestors.items()):
+            run = self.dag_runs.get(number)
+            if ancestors or run is None or not run.completed:
+                continue
+            job = run.job
+            self._record_outcome(run)
+            if run.passes and self.truth.persistent_culprits(job.members, self.merged_mainline - run.mainline):
+                self._discard(run, invalidated=True)
+                del self.dag_runs[number]
+                continue
+            if not run.passes and self._should_rerun(job):
+                self.dag_jobs[number] = replace(job, failures=job.failures + 1, round=job.round + 1)
+                del self.dag_runs[number]
+                continue
+            if run.passes:
+                self._merge(run, job.members)
+                self._credit_retry(job)
+            else:
+                self._reject(number)
+            del self.dag_ancestors[number], self.dag_jobs[number], self.dag_runs[number]
+            for successor, upstream in self.dag_ancestors.items():
+                upstream.discard(number)
+                predicted = self.dag_runs.get(successor)
+                if not run.passes and predicted is not None and number in predicted.job.prefix:
+                    self._discard(predicted, invalidated=True)
+                    del self.dag_runs[successor]
+
     def _take_batch(self) -> _Members:
         if self.strategy == "SerialQueue":
             return (self.ready.pop(0),)
+        if self.strategy == "DisjointBatchRetry":
+            members, used, waiting = [], set(), []
+            for number in self.ready:
+                if len(members) < self.config.max_batch_size and used.isdisjoint(self.cones[number]):
+                    members.append(number)
+                    used.update(self.cones[number])
+                else:
+                    waiting.append(number)
+            self.ready = waiting
+            return tuple(members)
         if not self.use_cone and not self.use_risk_lanes:
             size = self.config.max_batch_size
             members = tuple(self.ready[:size])
@@ -648,6 +738,7 @@ class _Simulation:
                 still_waiting.append(pr_num)
                 blocked_cones.update(cone)
         self.ready = still_waiting
+        self.bridge_count = len(still_waiting)
 
     def _dispatch_dep_trees(self) -> None:
         self._assign_ready_to_dep_lanes()
@@ -686,7 +777,14 @@ class _Simulation:
                         lane.root = _OutcomeNode(replace(run.job, overhead=0.0, prefix=()))
                         break
                     self._merge(run, run.job.members)
+                    self._credit_retry(run.job)
                     self._discard_outcomes(head.on_fail)
+                elif self._should_rerun(run.job):
+                    self._discard_outcomes(head.on_pass)
+                    self._discard_outcomes(head.on_fail)
+                    lane.root = _OutcomeNode(replace(run.job, failures=run.job.failures + 1,
+                                                     round=run.job.round + 1), head.following)
+                    break
                 else:
                     self._discard_outcomes(head.on_pass)
                     if len(run.job.members) == 1:
@@ -729,6 +827,13 @@ class _Simulation:
         threshold = _FLAKE_RERUN_THRESHOLD if len(job.members) == 1 else 0.50
         return evidence > 0 and transient / evidence >= threshold
 
+    def _credit_retry(self, job: _Job) -> None:
+        if self.adaptive_rerun:
+            self.suite.alpha += job.failures
+            self.suite.beta += 1
+        self.wasted_runs += job.failures
+        self.invalidated_runs += job.failures
+
     def _resolve_batch(self, run: _Run) -> None:
         job = run.job
         self._record_outcome(run)
@@ -739,11 +844,7 @@ class _Simulation:
                 return
             if job.blame_remainder:
                 self.blame_one_step_hits += 1
-            if self.adaptive_rerun:
-                self.suite.alpha += job.failures
-                self.suite.beta += 1
-            self.wasted_runs += job.failures
-            self.invalidated_runs += job.failures
+            self._credit_retry(job)
             self._merge(run, job.members)
             return
 
@@ -836,7 +937,9 @@ class _Simulation:
             item.rounds for item in self.recoveries if item.faulty and item.observed_failure
         ]
         total_conf = len(self.truth.conflicting_pairs)
-        realized_rec = (len(self.truth.on_graph_pairs) / total_conf) if total_conf else 1.0
+        realized_rec = (len(self.truth.on_graph_pairs) / total_conf) if total_conf else None
+        edge_count = sum(not a.isdisjoint(b) for a, b in combinations(self.cones.values(), 2))
+        pair_count = len(self.cones) * (len(self.cones) - 1) // 2
         return RunMetrics(
             strategy=self.strategy,
             seed=self.seed,
@@ -881,6 +984,10 @@ class _Simulation:
             rejected_persistent_conflict=self.rejected_persistent_conflict,
             rejected_false_flaky=self.false_rejections,
             realized_graph_recall=realized_rec,
+            realized_graph_precision=len(self.truth.on_graph_pairs) / edge_count if edge_count else None,
+            observed_graph_edge_density=edge_count / pair_count if pair_count else 0,
+            bridge_wait_min_total=self.bridge_wait,
+            canceled_ci_minutes=self.canceled_ci,
         )
 
 
@@ -894,6 +1001,8 @@ def _percentile(ordered: List[float], percentile: float) -> float:
 
 
 def _validate(config: SimConfig, prs: List[PRRecord]) -> None:
+    if config.ground_truth_mode not in ("parametric", "independent_eval_coupling", "uniform_pairs"):
+        raise ValueError("unrecognized ground-truth mode")
     for name in ("workers", "max_batch_size", "max_spec_depth"):
         value = getattr(config, name)
         if type(value) is not int or value < 1:

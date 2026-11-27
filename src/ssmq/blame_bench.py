@@ -30,6 +30,7 @@ from __future__ import annotations
 
 import ast
 import copy
+import difflib
 import random
 import re
 import subprocess
@@ -40,10 +41,11 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Dict, List, Set, Tuple
 
-# Base multi-module Python repository: 13 production functions + 6 integration test methods
+# Base multi-module Python repository: 13 production functions + 11 test methods
 BASE_REPO: Dict[str, str] = {
     "pkg/__init__.py": "",
     "pkg/pricing.py": """\
+# module: pricing
 def base_price(units: int, unit_cost: float) -> float:
     return round(units * unit_cost, 2)
 
@@ -54,6 +56,7 @@ def compute_tax(subtotal: float, rate: float = 0.08) -> float:
     return round(subtotal * rate, 2)
 """,
     "pkg/inventory.py": """\
+# module: inventory
 def check_stock(sku: str, qty: int, catalog: dict) -> bool:
     return catalog.get(sku, 0) >= qty
 
@@ -66,6 +69,7 @@ def restock_level(sku: str, catalog: dict) -> int:
     return max(0, 10 - catalog.get(sku, 0))
 """,
     "pkg/shipping.py": """\
+# module: shipping
 def shipping_fee(weight_kg: float, express: bool = False) -> float:
     base = 5.0 + 1.5 * weight_kg
     return round(base * 2.0 if express else base, 2)
@@ -76,6 +80,7 @@ def estimate_days(zone: str, express: bool = False) -> int:
     return max(1, days // 2) if express else days
 """,
     "pkg/auth.py": """\
+# module: auth
 def normalize_role(role: str) -> str:
     return role.strip().lower()
 
@@ -88,6 +93,7 @@ def can_approve(role: str, amount: float) -> bool:
     return amount <= 100.0
 """,
     "pkg/ledger.py": """\
+# module: ledger
 def format_entry(order_id: str, total: float) -> dict:
     return {"order_id": order_id, "total": round(total, 2), "currency": "USD"}
 
@@ -95,6 +101,7 @@ def summarize_entries(entries: list) -> float:
     return round(sum(e["total"] for e in entries), 2)
 """,
     "pkg/checkout.py": """\
+# module: checkout
 from pkg.pricing import base_price, apply_discount, compute_tax
 from pkg.inventory import check_stock, reserve_stock
 from pkg.shipping import shipping_fee, estimate_days
@@ -207,14 +214,56 @@ CLEAN_PRS: List[PatchPR] = [
     PatchPR("pr_c12_checkout_meta", {"pkg/checkout.py": ('"total": total,', '"total": total,\n        "discount_applied": discount > 0,')}, "Include discount_applied metadata in checkout", 1),
 ]
 
-# Comment-only co-file distractors (test AST trivia filtering)
+def patch_diff_counts(pr: PatchPR) -> Tuple[int, int]:
+    """Return exact (added_lines, deleted_lines) from difflib.unified_diff against BASE_REPO."""
+    added = 0
+    deleted = 0
+    for rel, (old, new) in pr.files.items():
+        base_src = BASE_REPO[rel]
+        patched = _apply_single_patch_strict(base_src, old, new, pr.pr_id, rel)
+        for line in difflib.unified_diff(
+            base_src.splitlines(), patched.splitlines(), lineterm=""
+        ):
+            if line.startswith("+++") or line.startswith("---"):
+                continue
+            if line.startswith("+"):
+                added += 1
+            elif line.startswith("-"):
+                deleted += 1
+    return added, deleted
+
+
+def make_matched_comment_distractor(defect: PatchPR, pr_id: str) -> PatchPR:
+    """Create a comment-only co-file distractor matching the defect's EXACT (added, deleted) diff lines."""
+    rel = next(iter(defect.files))
+    mod = Path(rel).stem
+    add_n, del_n = patch_diff_counts(defect)
+    if del_n != 1:
+        raise ValueError(f"Expected 1 deleted line in defect {defect.pr_id}, got {del_n}")
+    old_hdr = f"# module: {mod}"
+    if add_n == 1:
+        new_hdr = f"# module: {mod} (audited helper routines)"
+    elif add_n == 2:
+        new_hdr = f"# module: {mod} (audited helper routines)\n# pure deterministic utilities for CI"
+    else:
+        lines = [f"# module: {mod} (line {i + 1})" for i in range(add_n)]
+        new_hdr = "\n".join(lines)
+    return PatchPR(
+        pr_id=pr_id,
+        files={rel: (old_hdr, new_hdr)},
+        description=f"Update comment header in {mod}",
+        added_lines=add_n,
+    )
+
+
+# Comment-only co-file distractors (used by tests & matched comment generator)
 COFILE_COMMENT_PRS: Dict[str, PatchPR] = {
-    "pkg/pricing.py": PatchPR("pr_m01_pricing_comment", {"pkg/pricing.py": ("def base_price(", "# Pricing helpers for order totals.\n# Monetary amounts are rounded to cents.\ndef base_price(")}, "Add comment header in pricing", 2),
-    "pkg/inventory.py": PatchPR("pr_m02_inv_comment", {"pkg/inventory.py": ("def check_stock(", "# Inventory catalog utilities.\n# Negative balances are rejected.\ndef check_stock(")}, "Add comment header in inventory", 2),
-    "pkg/shipping.py": PatchPR("pr_m03_ship_comment", {"pkg/shipping.py": ("def shipping_fee(", "# Shipping cost and transit estimators.\n# Express halves transit days.\ndef shipping_fee(")}, "Add comment header in shipping", 2),
-    "pkg/auth.py": PatchPR("pr_m04_auth_comment", {"pkg/auth.py": ("def normalize_role(", "# Role-based approval policy.\n# Managers approve up to 1000 USD.\ndef normalize_role(")}, "Add comment header in auth", 2),
-    "pkg/ledger.py": PatchPR("pr_m05_ledger_comment", {"pkg/ledger.py": ("def format_entry(", "# Ledger formatting and summary.\n# Totals rounded to cents.\ndef format_entry(")}, "Add comment header in ledger", 2),
-    "pkg/checkout.py": PatchPR("pr_m06_checkout_comment", {"pkg/checkout.py": ("def process_order(", "# Orchestrates order validation and ledger.\n# Raises on stock or approval error.\ndef process_order(")}, "Add comment header in checkout", 2),
+    "pkg/pricing.py": PatchPR("pr_m01_pricing_comment", {"pkg/pricing.py": ("# module: pricing", "# module: pricing (order totals)\n# amounts rounded to cents")}, "Add comment header in pricing", 2),
+    "pkg/inventory.py": PatchPR("pr_m02_inv_comment", {"pkg/inventory.py": ("# module: inventory", "# module: inventory (catalog utilities)\n# rejects negative balances")}, "Add comment header in inventory", 2),
+    "pkg/shipping.py": PatchPR("pr_m03_ship_comment", {"pkg/shipping.py": ("# module: shipping", "# module: shipping (transit estimators)\n# express halves days")}, "Add comment header in shipping", 2),
+    "pkg/auth.py": PatchPR("pr_m04_auth_comment", {"pkg/auth.py": ("# module: auth", "# module: auth (approval policy)\n# managers approve up to 1000")}, "Add comment header in auth", 2),
+    "pkg/ledger.py": PatchPR("pr_m05_ledger_comment", {"pkg/ledger.py": ("# module: ledger", "# module: ledger (entry formatting)\n# rounded to cents")}, "Add comment header in ledger", 2),
+    "pkg/checkout.py": PatchPR("pr_m06_checkout_comment", {"pkg/checkout.py": ("# module: checkout", "# module: checkout (order pipeline)\n# raises on stock/auth error")}, "Add comment header in checkout", 2),
 }
 
 # 12 real single-PR functional defects spanning every module (balanced 1-2 lines!)
@@ -242,10 +291,10 @@ DEFECT_PRS: List[PatchPR] = [
 SIBLING_FUNCTION_PAIRINGS: List[Tuple[PatchPR, PatchPR]] = [
     # Defect in base_price vs functional sibling edit in compute_tax (both pkg/pricing.py, 2 lines)
     (DEFECT_PRS[0], PatchPR("pr_s01_pricing_sib_tax", {"pkg/pricing.py": ("return round(subtotal * rate, 2)", "eff_rate = max(0.0, rate)\n    return round(subtotal * eff_rate, 2)")}, "Clamp negative tax rate in compute_tax", DEFECT_PRS[0].added_lines)),
-    # Defect in apply_discount vs functional sibling edit in base_price (both pkg/pricing.py, 2 lines)
-    (DEFECT_PRS[1], PatchPR("pr_s02_pricing_sib_base", {"pkg/pricing.py": ("return round(units * unit_cost, 2)", "if units < 0:\n        raise ValueError('neg')\n    return round(units * unit_cost, 2)")}, "Validate units in base_price", DEFECT_PRS[1].added_lines)),
-    # Defect in compute_tax vs functional sibling edit in base_price (both pkg/pricing.py, 2 lines)
-    (DEFECT_PRS[2], PatchPR("pr_s03_pricing_sib_base", {"pkg/pricing.py": ("return round(units * unit_cost, 2)", "if units < 0:\n        raise ValueError('neg')\n    return round(units * unit_cost, 2)")}, "Validate units in base_price", DEFECT_PRS[2].added_lines)),
+    # Defect in apply_discount vs functional sibling edit in base_price (both pkg/pricing.py, exact +2/-1)
+    (DEFECT_PRS[1], PatchPR("pr_s02_pricing_sib_base", {"pkg/pricing.py": ("return round(units * unit_cost, 2)", "safe_units = max(0, units)\n    return round(safe_units * unit_cost, 2)")}, "Clamp negative units in base_price", DEFECT_PRS[1].added_lines)),
+    # Defect in compute_tax vs functional sibling edit in base_price (both pkg/pricing.py, exact +2/-1)
+    (DEFECT_PRS[2], PatchPR("pr_s03_pricing_sib_base", {"pkg/pricing.py": ("return round(units * unit_cost, 2)", "safe_units = max(0, units)\n    return round(safe_units * unit_cost, 2)")}, "Clamp negative units in base_price", DEFECT_PRS[2].added_lines)),
     # Defect in check_stock vs functional sibling edit in restock_level (both pkg/inventory.py, 2 lines)
     (DEFECT_PRS[3], PatchPR("pr_s04_inv_sib_restock", {"pkg/inventory.py": ("return max(0, 10 - catalog.get(sku, 0))", "target = 10\n    return max(0, target - catalog.get(sku, 0))")}, "Extract restock target in restock_level", DEFECT_PRS[3].added_lines)),
     # Defect in reserve_stock vs functional sibling edit in restock_level (both pkg/inventory.py, 1 line)
@@ -569,17 +618,13 @@ def run_blame_benchmark(seed: int = 2026) -> Tuple[BlameBenchSummary, List[Dict[
             cases.append(("single_defect", batch, {defect.pr_id}))
 
     # Stratum 2: 16 SYMMETRICALLY COUNTERBALANCED comment-only co-file distractor batches
-    # Exact 50/50 lexical PR-ID polarity (8 with comment_id < defect_id, 8 with comment_id > defect_id)
-    # and matched line churn so raw file overlap cannot win via lexical ID order!
+    # Exact 50/50 lexical PR-ID polarity AND exact actual diff (added, deleted) line matching!
     for idx, defect in enumerate(DEFECT_PRS[:8]):
         defect_file = next(iter(defect.files))
         base_comment = COFILE_COMMENT_PRS[defect_file]
         for prefix in ("pr_a", "pr_z"):
-            distractor = PatchPR(
-                pr_id=f"{prefix}{idx:02d}_{base_comment.pr_id}",
-                files=base_comment.files,
-                description=base_comment.description,
-                added_lines=defect.added_lines,
+            distractor = make_matched_comment_distractor(
+                defect, f"{prefix}{idx:02d}_{base_comment.pr_id}"
             )
             batch_size = 6
             clean_pool = [c for c in CLEAN_PRS if set(c.files).isdisjoint(defect.files)]
@@ -681,6 +726,9 @@ def run_blame_benchmark(seed: int = 2026) -> Tuple[BlameBenchSummary, List[Dict[
             "batch_size": len(batch),
             "patch_ids": [p.pr_id for p in batch],
             "culprits": sorted(culprits),
+            "patch_diff_counts": {p.pr_id: patch_diff_counts(p) for p in batch},
+            "rankings": rankings,
+            "tested_complements": loo_cache,
             "failing_tests": failing_tests,
             "ast_top1": rankings["ast"][0],
             "ast_top2": rankings["ast"][:2],

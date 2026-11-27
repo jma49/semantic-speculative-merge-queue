@@ -1,7 +1,7 @@
-"""Records, configuration, and metrics for the merge queue simulation (v4)."""
+"""Records, configuration, and metrics for the merge queue simulation (v6)."""
 
 from dataclasses import asdict, dataclass, field
-from typing import Any, Dict, FrozenSet, Tuple
+from typing import Any, Dict, FrozenSet, Optional, Tuple
 
 
 @dataclass(frozen=True)
@@ -39,6 +39,15 @@ class SimConfig:
     graph_recall: float = 0.80
     persistent_conflict_share: float = 0.25
     risk_correlation: float = 1.0
+    # v6 controls:
+    # - ground_truth_mode: "parametric" (controlled recall sweep) or
+    #   "independent_eval_coupling" (derived strictly from evaluation-window file/subdir/cochange
+    #   structure without ever reading scheduler warm-up graph G_hat).
+    # - feasible_recall_budget: when True in parametric mode, caps per-seed total conflict target
+    #   at min(len(base_visible), len(disjoint_pairs)) so EVERY repo (including dense TypeScript)
+    #   maintains EXACT identical total conflict counts across the entire recall sweep [0%, 100%].
+    ground_truth_mode: str = "parametric"
+    feasible_recall_budget: bool = False
 
 
 @dataclass(frozen=True)
@@ -64,7 +73,7 @@ class RunMetrics:
     runner_utilization: float = 0.0
     off_graph_conflicts_total: int = 0
     on_graph_conflicts_total: int = 0
-    # v4 Mechanism & Acceptance Instrumentation
+    # Mechanism & acceptance instrumentation
     root_batches_dispatched: int = 0
     mean_root_batch_size: float = 0.0
     failed_root_batches: int = 0
@@ -77,7 +86,12 @@ class RunMetrics:
     rejected_defective: int = 0
     rejected_persistent_conflict: int = 0
     rejected_false_flaky: int = 0
-    realized_graph_recall: float = 1.0
+    realized_graph_recall: Optional[float] = None
+    # v6 non-circular graph quality & comparator diagnostics
+    realized_graph_precision: Optional[float] = None
+    observed_graph_edge_density: float = 0.0
+    bridge_wait_min_total: float = 0.0
+    canceled_ci_minutes: float = 0.0
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)

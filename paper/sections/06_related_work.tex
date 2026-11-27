@@ -1,33 +1,9 @@
 \section{Related Work}
 \label{sec:related}
+\textbf{Grouping and speculation.} Studies of CI adoption document both earlier feedback and its integration cost~\cite{hilton2016usage,zhao2017impact,bernardo2023impact,wessel2023github}. Large-scale systems exploit regression selection, batching, and multi-stage verification~\cite{elbaum2014techniques,memon2017taming,juloori2025scale}. SubmitQueue uses a conflict analyzer and speculative outcomes to validate changes ahead of the integration frontier~\cite{ananthanarayanan2019keeping}. Our dependency-aware policies are reproducible models that expose dependencies and retry behavior; our experiments cannot determine performance relative to Uber's production service.
 
-Table~\ref{tab:related_taxonomy} contrasts SSMQ with prior merge-queue and CI verification designs.
+Olmedo et al.\ already formulate PR ordering as a sequence of unconflicting groups and optimize integration efficiency in terms of conflict-resolution cost~\cite{olmedo2022improving}. PR prioritization and predictive PR batching also use estimated risk to improve merge pipelines~\cite{jungwirth2025improving,jungwirth2026predictive}. Earlier work examines failure-history batching, parallel batch tests, and weighted bisection~\cite{bavand2021mining,fallahzadeh2023accelerating,najafi2019bisecting}. Our question concerns the incremental effects of packing and recovery, including the cost of extra tests and the loss of validity when the base changes. Disjoint grouping and low-risk batching each predate this work.
 
-\begin{table*}[t]
-\centering
-\scriptsize
-\setlength{\tabcolsep}{4pt}
-\caption{Qualitative Comparison of Merge Queue \& CI Verification Paradigms.}
-\label{tab:related_taxonomy}
-\begin{tabular}{lcccc}
-\toprule
-\textbf{System / Paradigm} & \textbf{Dependency Awareness} & \textbf{Speculation / Batching} & \textbf{Flaky Gating} & \textbf{Fault Attribution} \\
-\midrule
-Bors / GitHub Merge Queue~\cite{fallahzadeh2023accelerating} & None (FIFO) & Static batch / staged groups & None & Bisection / group rebuild \\
-GitLab Merge Trains & None (FIFO) & Linear prefix train & None & Head abort \& restart \\
-SubmitQueue (Uber~\cite{ananthanarayanan2019keeping}) & Conflict graph + risk model & Dependency-aware outcome tree & External / unmodeled & Outcome-tree branch split \\
-Flake-Aware Bisection~\cite{henderson2023flake} & None (post-submit) & Culprit search (fixed retry baseline) & Bayesian & Noisy binary bisection \\
-Predictive Build/Test Selection~\cite{machalica2019predictive,jin2023hybridcisave} & Target / test granularity & Single-PR build \& test pruning & Orthogonal & N/A (composable) \\
-\textbf{SSMQ (Ours)} & \textbf{Cone-Disjoint ($\hat{G}$)} & \textbf{Risk-Stratified Lanes} & \textbf{2-Regime Beta-Binomial} & \textbf{1-Step AST + Fallback} \\
-\bottomrule
-\end{tabular}
-\end{table*}
+\textbf{Test selection and transient failures.} Transition-based selection, learning-based test prioritization, and joint build/test selection can reduce the cost of each CI job~\cite{leong2019assessing,machalica2019predictive,spieker2017reinforcement,jin2023hybridcisave,schwendner2025practical}. We hold the suite fixed in the Git experiment. Flaky tests can involve test order, environment, and shared infrastructure~\cite{luo2014empirical,lam2020large,romano2021empirical,tahir2023test,parry2025systemic}. DeFlaker and iDFlakies use additional measurements to diagnose flakes~\cite{bell2018laker,lam2019idflakies}. Noisy culprit search also benefits from explicit treatment of retries~\cite{ziftci2017broke,henderson2023flake}. Our gate uses queue outcomes as a low-cost heuristic; its posterior is conditional on its risk model.
 
-\textbf{CI Merge Queues, Reordering, and Selection.}
-Empirical studies confirm CI improves defect containment while adding queueing and compute cost~\cite{hilton2016usage,zhao2017impact,bernardo2023impact,wessel2023github}. At scale, Google's TAP~\cite{elbaum2014techniques,memon2017taming} batched regression runs, Uber's SubmitQueue~\cite{ananthanarayanan2019keeping} speculated over conflict-graph outcome trees, and Meta~\cite{juloori2025scale} split pre- and post-merge stages. Subsequent work studied failure-history batching~\cite{bavand2021mining}, parallel batch testing~\cite{fallahzadeh2023accelerating}, risk-weighted bisection~\cite{najafi2019bisecting}, and PR prioritization~\cite{jungwirth2025improving}. Orthogonal selection shrinks per-job cost via transition models~\cite{leong2019assessing}, predictive ML~\cite{machalica2019predictive}, reinforcement learning~\cite{spieker2017reinforcement}, joint build/test pruning~\cite{jin2023hybridcisave}, and pipeline scheduling~\cite{schwendner2025practical}. SSMQ unifies warm-up cone-disjoint packing, asymmetric flaky gating, and AST blame in one queue policy composable with build/test selection.
-
-\textbf{Flaky Tests and Noisy Culprit Isolation.}
-Longitudinal studies document widespread unit, UI, and integration flakiness~\cite{luo2014empirical,lam2020large,romano2021empirical,tahir2023test}, including systemic bursts~\cite{parry2025systemic}. DeFlaker~\cite{bell2018laker} and iDFlakies~\cite{lam2019idflakies} detect flakes via coverage diffs and test-order permutation, whereas Ziftci and Reardon~\cite{ziftci2017broke} and Henderson et al.~\cite{henderson2023flake} target post-submit culprit search under noise (benchmarking fixed retries). SSMQ embeds online asymmetric Beta-Binomial gating directly into pre-merge scheduling to separate singleton protection from batch splitting.
-
-\textbf{Merge Conflicts and Fault Localization.}
-Prior work predicts textual conflicts~\cite{owhadikareshk2019predicting}, applies PR impact analysis to review~\cite{gmen2025enhanced}, and resolves conflicts with neural models~\cite{zhang2022trained,svyatkovskiy2022program}; spectrum-based localization (Tarantula~\cite{jones2005empirical}, Ochiai~\cite{abreu2009practical}) needs coverage matrices, and LLM stack-trace localization~\cite{jambigi2025fault} requires model inference. SSMQ avoids co-scheduling colliding cones and ranks suspects via zero-instrumentation AST function diffs and 1-hop call graphs in \BenchASTMs{}~ms with bisection fallback.
+\textbf{Interference and localization.} Textual-conflict prediction and learned conflict resolution address whether edits can be combined and how to repair them~\cite{owhadikareshk2019predicting,zhang2022trained,svyatkovskiy2022program}. Test-based semantic conflict detection compares behaviors of program versions~\cite{dasilva2024semantic}. PR impact analysis can guide review~\cite{gmen2025enhanced}. Coverage-based localization and learned stack analysis rank candidate program locations~\cite{jones2005empirical,abreu2009practical,jambigi2025fault}. We rank whole changes against one observed failure and execute the proposed complement. For an interaction either endpoint may clear the failure; a successful intervention need not uniquely identify a defect.

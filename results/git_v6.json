@@ -1,0 +1,56 @@
+{
+  "FIFO+Bisect": {
+    "candidate_unittest_runs": 123,
+    "total_unittest_runs": 133,
+    "total_decompositions": 48,
+    "total_git_merges": 256,
+    "git_merge_conflicts": 3,
+    "merged_prs": 90,
+    "real_escaped_defects": 0
+  },
+  "FIFO+FileTrivia": {
+    "candidate_unittest_runs": 123,
+    "total_unittest_runs": 133,
+    "total_decompositions": 48,
+    "total_git_merges": 269,
+    "git_merge_conflicts": 3,
+    "merged_prs": 90,
+    "real_escaped_defects": 0
+  },
+  "FIFO+ASTStack": {
+    "candidate_unittest_runs": 111,
+    "total_unittest_runs": 121,
+    "total_decompositions": 42,
+    "total_git_merges": 254,
+    "git_merge_conflicts": 3,
+    "merged_prs": 90,
+    "real_escaped_defects": 0
+  },
+  "Disjoint+Bisect": {
+    "candidate_unittest_runs": 120,
+    "total_unittest_runs": 130,
+    "total_decompositions": 41,
+    "total_git_merges": 236,
+    "git_merge_conflicts": 0,
+    "merged_prs": 90,
+    "real_escaped_defects": 0
+  },
+  "Disjoint+FileTrivia": {
+    "candidate_unittest_runs": 116,
+    "total_unittest_runs": 126,
+    "total_decompositions": 39,
+    "total_git_merges": 239,
+    "git_merge_conflicts": 0,
+    "merged_prs": 90,
+    "real_escaped_defects": 0
+  },
+  "Disjoint+ASTStack": {
+    "candidate_unittest_runs": 102,
+    "total_unittest_runs": 112,
+    "total_decompositions": 32,
+    "total_git_merges": 223,
+    "git_merge_conflicts": 0,
+    "merged_prs": 90,
+    "real_escaped_defects": 0
+  }
+}

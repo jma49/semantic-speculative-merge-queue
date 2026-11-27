@@ -3,11 +3,13 @@
     "repo": "kubernetes/kubernetes",
     "base_branch": "master",
     "prs": 200,
-    "unique_files": 1394,
-    "avg_files_per_pr": 12.5,
-    "prs_with_truncated_files": 5,
+    "unique_files": 1623,
+    "avg_files_per_pr": 14.19,
+    "public_window_merged_count": 200,
+    "omitted_pr_count": 0,
+    "prs_with_truncated_files": 0,
     "time_span": [
-      "2026-11-10T17:04:23Z",
+      "2026-11-10T18:12:05Z",
       "2026-11-26T21:22:49Z"
     ]
   },
@@ -15,9 +17,11 @@
     "repo": "microsoft/TypeScript",
     "base_branch": "main",
     "prs": 200,
-    "unique_files": 1448,
-    "avg_files_per_pr": 11.03,
-    "prs_with_truncated_files": 5,
+    "unique_files": 3141,
+    "avg_files_per_pr": 21.3,
+    "public_window_merged_count": 200,
+    "omitted_pr_count": 0,
+    "prs_with_truncated_files": 0,
     "time_span": [
       "2026-10-28T07:09:33Z",
       "2026-11-26T20:54:51Z"
@@ -27,9 +31,11 @@
     "repo": "vercel/next.js",
     "base_branch": "canary",
     "prs": 200,
-    "unique_files": 1754,
-    "avg_files_per_pr": 11.14,
-    "prs_with_truncated_files": 5,
+    "unique_files": 2210,
+    "avg_files_per_pr": 13.62,
+    "public_window_merged_count": 200,
+    "omitted_pr_count": 0,
+    "prs_with_truncated_files": 0,
     "time_span": [
       "2026-11-15T21:41:08Z",
       "2026-11-26T19:12:16Z"

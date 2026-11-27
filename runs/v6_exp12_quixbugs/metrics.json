@@ -1,0 +1,1843 @@
+{
+  "vectors": {
+    "bucketsort": {
+      "eligible": 7,
+      "upstream": 7
+    },
+    "gcd": {
+      "eligible": 6,
+      "upstream": 6
+    },
+    "knapsack": {
+      "eligible": 9,
+      "upstream": 10
+    },
+    "lis": {
+      "eligible": 12,
+      "upstream": 12
+    },
+    "max_sublist_sum": {
+      "eligible": 6,
+      "upstream": 6
+    },
+    "possible_change": {
+      "eligible": 10,
+      "upstream": 10
+    }
+  },
+  "distinct_executed_trees": 41,
+  "records": [
+    {
+      "faults": [
+        "bucketsort"
+      ],
+      "kind": "sibling",
+      "neutral_function": "gcd",
+      "fault_ids": [
+        "a"
+      ],
+      "neutral_id": "z",
+      "failing_tests": [
+        "test_bucketsort"
+      ],
+      "outcomes": {
+        "full_ast": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        },
+        "full_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        },
+        "absent_ast": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        },
+        "absent_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        }
+      }
+    },
+    {
+      "faults": [
+        "bucketsort"
+      ],
+      "kind": "sibling",
+      "neutral_function": "gcd",
+      "fault_ids": [
+        "z"
+      ],
+      "neutral_id": "a",
+      "failing_tests": [
+        "test_bucketsort"
+      ],
+      "outcomes": {
+        "full_ast": {
+          "ranking": [
+            "z",
+            "a"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        },
+        "full_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        },
+        "absent_ast": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        },
+        "absent_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        }
+      }
+    },
+    {
+      "faults": [
+        "bucketsort"
+      ],
+      "kind": "same_function",
+      "neutral_function": "bucketsort",
+      "fault_ids": [
+        "a"
+      ],
+      "neutral_id": "z",
+      "failing_tests": [
+        "test_bucketsort"
+      ],
+      "outcomes": {
+        "full_ast": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        },
+        "full_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        },
+        "absent_ast": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        },
+        "absent_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        }
+      }
+    },
+    {
+      "faults": [
+        "bucketsort"
+      ],
+      "kind": "same_function",
+      "neutral_function": "bucketsort",
+      "fault_ids": [
+        "z"
+      ],
+      "neutral_id": "a",
+      "failing_tests": [
+        "test_bucketsort"
+      ],
+      "outcomes": {
+        "full_ast": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        },
+        "full_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        },
+        "absent_ast": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        },
+        "absent_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        }
+      }
+    },
+    {
+      "faults": [
+        "bucketsort",
+        "gcd"
+      ],
+      "kind": "two_faults",
+      "neutral_function": "knapsack",
+      "fault_ids": [
+        "a",
+        "m"
+      ],
+      "neutral_id": "z",
+      "failing_tests": [
+        "test_bucketsort",
+        "test_gcd"
+      ],
+      "outcomes": {
+        "full_ast": {
+          "ranking": [
+            "m",
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": false
+        },
+        "full_file": {
+          "ranking": [
+            "a",
+            "m",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": false
+        },
+        "absent_ast": {
+          "ranking": [
+            "a",
+            "m",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": false
+        },
+        "absent_file": {
+          "ranking": [
+            "a",
+            "m",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": false
+        }
+      }
+    },
+    {
+      "faults": [
+        "bucketsort",
+        "gcd"
+      ],
+      "kind": "two_faults",
+      "neutral_function": "knapsack",
+      "fault_ids": [
+        "z",
+        "m"
+      ],
+      "neutral_id": "a",
+      "failing_tests": [
+        "test_bucketsort",
+        "test_gcd"
+      ],
+      "outcomes": {
+        "full_ast": {
+          "ranking": [
+            "m",
+            "z",
+            "a"
+          ],
+          "top1_fault": true,
+          "complement_pass": false
+        },
+        "full_file": {
+          "ranking": [
+            "a",
+            "m",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        },
+        "absent_ast": {
+          "ranking": [
+            "a",
+            "m",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        },
+        "absent_file": {
+          "ranking": [
+            "a",
+            "m",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        }
+      }
+    },
+    {
+      "faults": [
+        "gcd"
+      ],
+      "kind": "sibling",
+      "neutral_function": "knapsack",
+      "fault_ids": [
+        "a"
+      ],
+      "neutral_id": "z",
+      "failing_tests": [
+        "test_gcd"
+      ],
+      "outcomes": {
+        "full_ast": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        },
+        "full_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        },
+        "absent_ast": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        },
+        "absent_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        }
+      }
+    },
+    {
+      "faults": [
+        "gcd"
+      ],
+      "kind": "sibling",
+      "neutral_function": "knapsack",
+      "fault_ids": [
+        "z"
+      ],
+      "neutral_id": "a",
+      "failing_tests": [
+        "test_gcd"
+      ],
+      "outcomes": {
+        "full_ast": {
+          "ranking": [
+            "z",
+            "a"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        },
+        "full_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        },
+        "absent_ast": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        },
+        "absent_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        }
+      }
+    },
+    {
+      "faults": [
+        "gcd"
+      ],
+      "kind": "same_function",
+      "neutral_function": "gcd",
+      "fault_ids": [
+        "a"
+      ],
+      "neutral_id": "z",
+      "failing_tests": [
+        "test_gcd"
+      ],
+      "outcomes": {
+        "full_ast": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        },
+        "full_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        },
+        "absent_ast": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        },
+        "absent_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        }
+      }
+    },
+    {
+      "faults": [
+        "gcd"
+      ],
+      "kind": "same_function",
+      "neutral_function": "gcd",
+      "fault_ids": [
+        "z"
+      ],
+      "neutral_id": "a",
+      "failing_tests": [
+        "test_gcd"
+      ],
+      "outcomes": {
+        "full_ast": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        },
+        "full_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        },
+        "absent_ast": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        },
+        "absent_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        }
+      }
+    },
+    {
+      "faults": [
+        "gcd",
+        "knapsack"
+      ],
+      "kind": "two_faults",
+      "neutral_function": "lis",
+      "fault_ids": [
+        "a",
+        "m"
+      ],
+      "neutral_id": "z",
+      "failing_tests": [
+        "test_gcd",
+        "test_knapsack"
+      ],
+      "outcomes": {
+        "full_ast": {
+          "ranking": [
+            "a",
+            "m",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": false
+        },
+        "full_file": {
+          "ranking": [
+            "a",
+            "m",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": false
+        },
+        "absent_ast": {
+          "ranking": [
+            "a",
+            "m",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": false
+        },
+        "absent_file": {
+          "ranking": [
+            "a",
+            "m",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": false
+        }
+      }
+    },
+    {
+      "faults": [
+        "gcd",
+        "knapsack"
+      ],
+      "kind": "two_faults",
+      "neutral_function": "lis",
+      "fault_ids": [
+        "z",
+        "m"
+      ],
+      "neutral_id": "a",
+      "failing_tests": [
+        "test_gcd",
+        "test_knapsack"
+      ],
+      "outcomes": {
+        "full_ast": {
+          "ranking": [
+            "z",
+            "m",
+            "a"
+          ],
+          "top1_fault": true,
+          "complement_pass": false
+        },
+        "full_file": {
+          "ranking": [
+            "a",
+            "m",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        },
+        "absent_ast": {
+          "ranking": [
+            "a",
+            "m",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        },
+        "absent_file": {
+          "ranking": [
+            "a",
+            "m",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        }
+      }
+    },
+    {
+      "faults": [
+        "knapsack"
+      ],
+      "kind": "sibling",
+      "neutral_function": "lis",
+      "fault_ids": [
+        "a"
+      ],
+      "neutral_id": "z",
+      "failing_tests": [
+        "test_knapsack"
+      ],
+      "outcomes": {
+        "full_ast": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        },
+        "full_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        },
+        "absent_ast": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        },
+        "absent_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        }
+      }
+    },
+    {
+      "faults": [
+        "knapsack"
+      ],
+      "kind": "sibling",
+      "neutral_function": "lis",
+      "fault_ids": [
+        "z"
+      ],
+      "neutral_id": "a",
+      "failing_tests": [
+        "test_knapsack"
+      ],
+      "outcomes": {
+        "full_ast": {
+          "ranking": [
+            "z",
+            "a"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        },
+        "full_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        },
+        "absent_ast": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        },
+        "absent_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        }
+      }
+    },
+    {
+      "faults": [
+        "knapsack"
+      ],
+      "kind": "same_function",
+      "neutral_function": "knapsack",
+      "fault_ids": [
+        "a"
+      ],
+      "neutral_id": "z",
+      "failing_tests": [
+        "test_knapsack"
+      ],
+      "outcomes": {
+        "full_ast": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        },
+        "full_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        },
+        "absent_ast": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        },
+        "absent_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        }
+      }
+    },
+    {
+      "faults": [
+        "knapsack"
+      ],
+      "kind": "same_function",
+      "neutral_function": "knapsack",
+      "fault_ids": [
+        "z"
+      ],
+      "neutral_id": "a",
+      "failing_tests": [
+        "test_knapsack"
+      ],
+      "outcomes": {
+        "full_ast": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        },
+        "full_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        },
+        "absent_ast": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        },
+        "absent_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        }
+      }
+    },
+    {
+      "faults": [
+        "knapsack",
+        "lis"
+      ],
+      "kind": "two_faults",
+      "neutral_function": "max_sublist_sum",
+      "fault_ids": [
+        "a",
+        "m"
+      ],
+      "neutral_id": "z",
+      "failing_tests": [
+        "test_knapsack",
+        "test_lis"
+      ],
+      "outcomes": {
+        "full_ast": {
+          "ranking": [
+            "a",
+            "m",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": false
+        },
+        "full_file": {
+          "ranking": [
+            "a",
+            "m",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": false
+        },
+        "absent_ast": {
+          "ranking": [
+            "a",
+            "m",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": false
+        },
+        "absent_file": {
+          "ranking": [
+            "a",
+            "m",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": false
+        }
+      }
+    },
+    {
+      "faults": [
+        "knapsack",
+        "lis"
+      ],
+      "kind": "two_faults",
+      "neutral_function": "max_sublist_sum",
+      "fault_ids": [
+        "z",
+        "m"
+      ],
+      "neutral_id": "a",
+      "failing_tests": [
+        "test_knapsack",
+        "test_lis"
+      ],
+      "outcomes": {
+        "full_ast": {
+          "ranking": [
+            "m",
+            "z",
+            "a"
+          ],
+          "top1_fault": true,
+          "complement_pass": false
+        },
+        "full_file": {
+          "ranking": [
+            "a",
+            "m",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        },
+        "absent_ast": {
+          "ranking": [
+            "a",
+            "m",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        },
+        "absent_file": {
+          "ranking": [
+            "a",
+            "m",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        }
+      }
+    },
+    {
+      "faults": [
+        "lis"
+      ],
+      "kind": "sibling",
+      "neutral_function": "max_sublist_sum",
+      "fault_ids": [
+        "a"
+      ],
+      "neutral_id": "z",
+      "failing_tests": [
+        "test_lis"
+      ],
+      "outcomes": {
+        "full_ast": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        },
+        "full_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        },
+        "absent_ast": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        },
+        "absent_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        }
+      }
+    },
+    {
+      "faults": [
+        "lis"
+      ],
+      "kind": "sibling",
+      "neutral_function": "max_sublist_sum",
+      "fault_ids": [
+        "z"
+      ],
+      "neutral_id": "a",
+      "failing_tests": [
+        "test_lis"
+      ],
+      "outcomes": {
+        "full_ast": {
+          "ranking": [
+            "z",
+            "a"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        },
+        "full_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        },
+        "absent_ast": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        },
+        "absent_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        }
+      }
+    },
+    {
+      "faults": [
+        "lis"
+      ],
+      "kind": "same_function",
+      "neutral_function": "lis",
+      "fault_ids": [
+        "a"
+      ],
+      "neutral_id": "z",
+      "failing_tests": [
+        "test_lis"
+      ],
+      "outcomes": {
+        "full_ast": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        },
+        "full_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        },
+        "absent_ast": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        },
+        "absent_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        }
+      }
+    },
+    {
+      "faults": [
+        "lis"
+      ],
+      "kind": "same_function",
+      "neutral_function": "lis",
+      "fault_ids": [
+        "z"
+      ],
+      "neutral_id": "a",
+      "failing_tests": [
+        "test_lis"
+      ],
+      "outcomes": {
+        "full_ast": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        },
+        "full_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        },
+        "absent_ast": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        },
+        "absent_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        }
+      }
+    },
+    {
+      "faults": [
+        "lis",
+        "max_sublist_sum"
+      ],
+      "kind": "two_faults",
+      "neutral_function": "possible_change",
+      "fault_ids": [
+        "a",
+        "m"
+      ],
+      "neutral_id": "z",
+      "failing_tests": [
+        "test_lis",
+        "test_max_sublist_sum"
+      ],
+      "outcomes": {
+        "full_ast": {
+          "ranking": [
+            "a",
+            "m",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": false
+        },
+        "full_file": {
+          "ranking": [
+            "a",
+            "m",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": false
+        },
+        "absent_ast": {
+          "ranking": [
+            "a",
+            "m",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": false
+        },
+        "absent_file": {
+          "ranking": [
+            "a",
+            "m",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": false
+        }
+      }
+    },
+    {
+      "faults": [
+        "lis",
+        "max_sublist_sum"
+      ],
+      "kind": "two_faults",
+      "neutral_function": "possible_change",
+      "fault_ids": [
+        "z",
+        "m"
+      ],
+      "neutral_id": "a",
+      "failing_tests": [
+        "test_lis",
+        "test_max_sublist_sum"
+      ],
+      "outcomes": {
+        "full_ast": {
+          "ranking": [
+            "m",
+            "z",
+            "a"
+          ],
+          "top1_fault": true,
+          "complement_pass": false
+        },
+        "full_file": {
+          "ranking": [
+            "a",
+            "m",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        },
+        "absent_ast": {
+          "ranking": [
+            "a",
+            "m",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        },
+        "absent_file": {
+          "ranking": [
+            "a",
+            "m",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        }
+      }
+    },
+    {
+      "faults": [
+        "max_sublist_sum"
+      ],
+      "kind": "sibling",
+      "neutral_function": "possible_change",
+      "fault_ids": [
+        "a"
+      ],
+      "neutral_id": "z",
+      "failing_tests": [
+        "test_max_sublist_sum"
+      ],
+      "outcomes": {
+        "full_ast": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        },
+        "full_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        },
+        "absent_ast": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        },
+        "absent_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        }
+      }
+    },
+    {
+      "faults": [
+        "max_sublist_sum"
+      ],
+      "kind": "sibling",
+      "neutral_function": "possible_change",
+      "fault_ids": [
+        "z"
+      ],
+      "neutral_id": "a",
+      "failing_tests": [
+        "test_max_sublist_sum"
+      ],
+      "outcomes": {
+        "full_ast": {
+          "ranking": [
+            "z",
+            "a"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        },
+        "full_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        },
+        "absent_ast": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        },
+        "absent_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        }
+      }
+    },
+    {
+      "faults": [
+        "max_sublist_sum"
+      ],
+      "kind": "same_function",
+      "neutral_function": "max_sublist_sum",
+      "fault_ids": [
+        "a"
+      ],
+      "neutral_id": "z",
+      "failing_tests": [
+        "test_max_sublist_sum"
+      ],
+      "outcomes": {
+        "full_ast": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        },
+        "full_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        },
+        "absent_ast": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        },
+        "absent_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        }
+      }
+    },
+    {
+      "faults": [
+        "max_sublist_sum"
+      ],
+      "kind": "same_function",
+      "neutral_function": "max_sublist_sum",
+      "fault_ids": [
+        "z"
+      ],
+      "neutral_id": "a",
+      "failing_tests": [
+        "test_max_sublist_sum"
+      ],
+      "outcomes": {
+        "full_ast": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        },
+        "full_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        },
+        "absent_ast": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        },
+        "absent_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        }
+      }
+    },
+    {
+      "faults": [
+        "max_sublist_sum",
+        "possible_change"
+      ],
+      "kind": "two_faults",
+      "neutral_function": "bucketsort",
+      "fault_ids": [
+        "a",
+        "m"
+      ],
+      "neutral_id": "z",
+      "failing_tests": [
+        "test_max_sublist_sum",
+        "test_possible_change"
+      ],
+      "outcomes": {
+        "full_ast": {
+          "ranking": [
+            "m",
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": false
+        },
+        "full_file": {
+          "ranking": [
+            "a",
+            "m",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": false
+        },
+        "absent_ast": {
+          "ranking": [
+            "a",
+            "m",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": false
+        },
+        "absent_file": {
+          "ranking": [
+            "a",
+            "m",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": false
+        }
+      }
+    },
+    {
+      "faults": [
+        "max_sublist_sum",
+        "possible_change"
+      ],
+      "kind": "two_faults",
+      "neutral_function": "bucketsort",
+      "fault_ids": [
+        "z",
+        "m"
+      ],
+      "neutral_id": "a",
+      "failing_tests": [
+        "test_max_sublist_sum",
+        "test_possible_change"
+      ],
+      "outcomes": {
+        "full_ast": {
+          "ranking": [
+            "m",
+            "z",
+            "a"
+          ],
+          "top1_fault": true,
+          "complement_pass": false
+        },
+        "full_file": {
+          "ranking": [
+            "a",
+            "m",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        },
+        "absent_ast": {
+          "ranking": [
+            "a",
+            "m",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        },
+        "absent_file": {
+          "ranking": [
+            "a",
+            "m",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        }
+      }
+    },
+    {
+      "faults": [
+        "possible_change"
+      ],
+      "kind": "sibling",
+      "neutral_function": "bucketsort",
+      "fault_ids": [
+        "a"
+      ],
+      "neutral_id": "z",
+      "failing_tests": [
+        "test_possible_change"
+      ],
+      "outcomes": {
+        "full_ast": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        },
+        "full_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        },
+        "absent_ast": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        },
+        "absent_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        }
+      }
+    },
+    {
+      "faults": [
+        "possible_change"
+      ],
+      "kind": "sibling",
+      "neutral_function": "bucketsort",
+      "fault_ids": [
+        "z"
+      ],
+      "neutral_id": "a",
+      "failing_tests": [
+        "test_possible_change"
+      ],
+      "outcomes": {
+        "full_ast": {
+          "ranking": [
+            "z",
+            "a"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        },
+        "full_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        },
+        "absent_ast": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        },
+        "absent_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        }
+      }
+    },
+    {
+      "faults": [
+        "possible_change"
+      ],
+      "kind": "same_function",
+      "neutral_function": "possible_change",
+      "fault_ids": [
+        "a"
+      ],
+      "neutral_id": "z",
+      "failing_tests": [
+        "test_possible_change"
+      ],
+      "outcomes": {
+        "full_ast": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        },
+        "full_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        },
+        "absent_ast": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        },
+        "absent_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": true
+        }
+      }
+    },
+    {
+      "faults": [
+        "possible_change"
+      ],
+      "kind": "same_function",
+      "neutral_function": "possible_change",
+      "fault_ids": [
+        "z"
+      ],
+      "neutral_id": "a",
+      "failing_tests": [
+        "test_possible_change"
+      ],
+      "outcomes": {
+        "full_ast": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        },
+        "full_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        },
+        "absent_ast": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        },
+        "absent_file": {
+          "ranking": [
+            "a",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        }
+      }
+    },
+    {
+      "faults": [
+        "possible_change",
+        "bucketsort"
+      ],
+      "kind": "two_faults",
+      "neutral_function": "gcd",
+      "fault_ids": [
+        "a",
+        "m"
+      ],
+      "neutral_id": "z",
+      "failing_tests": [
+        "test_bucketsort",
+        "test_possible_change"
+      ],
+      "outcomes": {
+        "full_ast": {
+          "ranking": [
+            "a",
+            "m",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": false
+        },
+        "full_file": {
+          "ranking": [
+            "a",
+            "m",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": false
+        },
+        "absent_ast": {
+          "ranking": [
+            "a",
+            "m",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": false
+        },
+        "absent_file": {
+          "ranking": [
+            "a",
+            "m",
+            "z"
+          ],
+          "top1_fault": true,
+          "complement_pass": false
+        }
+      }
+    },
+    {
+      "faults": [
+        "possible_change",
+        "bucketsort"
+      ],
+      "kind": "two_faults",
+      "neutral_function": "gcd",
+      "fault_ids": [
+        "z",
+        "m"
+      ],
+      "neutral_id": "a",
+      "failing_tests": [
+        "test_bucketsort",
+        "test_possible_change"
+      ],
+      "outcomes": {
+        "full_ast": {
+          "ranking": [
+            "z",
+            "m",
+            "a"
+          ],
+          "top1_fault": true,
+          "complement_pass": false
+        },
+        "full_file": {
+          "ranking": [
+            "a",
+            "m",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        },
+        "absent_ast": {
+          "ranking": [
+            "a",
+            "m",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        },
+        "absent_file": {
+          "ranking": [
+            "a",
+            "m",
+            "z"
+          ],
+          "top1_fault": false,
+          "complement_pass": false
+        }
+      }
+    }
+  ]
+}
