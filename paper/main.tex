@@ -1,0 +1,49 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{hyperref}
+
+% Deterministic empirical macros — auto-generated from sealed runs (runs/*/manifest.json)
+\input{generated/numbers.tex}
+
+\begin{document}
+
+\title{Semantic Speculative Merge Queues: Graph-Disjoint Batching and Agentic Fault Attribution for High-Velocity CI}
+
+\author{\IEEEauthorblockN{Jincheng Ma}
+\IEEEauthorblockA{\textit{Independent Researcher}\\
+San Francisco Bay Area, CA, USA}
+}
+
+\maketitle
+
+\begin{abstract}
+AI coding agents are accelerating pull-request (PR) arrival rates by $3\times$--$10\times$, turning Continuous Integration (CI) merge queues into the primary delivery bottleneck. Conventional merge queues combine FIFO static batching or linear speculative trains with blind $O(\log K)$ binary bisection on failure. Under high PR velocity, overlapping module edits and non-deterministic flaky tests trigger cascading \emph{speculative invalidation storms} that saturate CI runners and inflate tail merge latency.
+
+We present \textbf{SSMQ (Semantic Speculative Merge Queue)}, a dependency-aware merge queue scheduler integrating three mechanisms: (1) \emph{graph-disjoint risk-stratified batching}, which learns file co-change and module-proximity impact cones from historical commits to pack semantically orthogonal low-risk PRs into fast-lane batches while isolating overlapping or high-risk changes; (2) \emph{Beta-Binomial flaky-tolerant selective re-verification}, which distinguishes transient suite flakiness from deterministic regressions; and (3) \emph{1-step causal blame attribution}, which prioritizes likely culprit eviction before falling back to binary bisection. We evaluate SSMQ in a controlled discrete-event replay across \TotalSealedRecords{} sealed runs over 600 real merged PRs (150 chronological warm-up PRs and 450 evaluation PRs) from \texttt{kubernetes/kubernetes}, \texttt{microsoft/TypeScript}, and \texttt{vercel/next.js}, recording \TotalEscapedDefects{} within-job verification escapes across all simulated merges. At $5\times$ arrival velocity and $5\%$ test flakiness, SSMQ achieves \SSMQThroughput{} PRs/hr throughput and \SSMQPNinetyFiveLat{}~min mean per-run P95 merge latency at \SSMQCICost{} CI runner-minutes/PR---reducing P95 latency by \LatRedVsStaticPct{}\% vs.\ static FIFO batching (\StaticPNinetyFiveLat{}~min) while also outperforming linear speculative trains (\SpecLinPNinetyFiveLat{}~min, \LatRedVsSpecLinPct{}\% reduction) and a restricted SubmitQueue-inspired linear-prefix proxy (\UberPNinetyFiveLat{}~min, \LatRedVsUberPct{}\% reduction), and cutting CI compute by \CostSaveVsStaticPct{}\% vs.\ static batching and \CostSaveVsFlakePct{}\% vs.\ fixed-retry batching.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Continuous Integration, Merge Queues, Speculative Execution, Change Impact Analysis, Flaky Tests, Fault Attribution
+\end{IEEEkeywords}
+
+\input{sections/01_introduction.tex}
+\input{sections/02_methodology.tex}
+\input{sections/03_evaluation_setup.tex}
+\input{sections/04_results.tex}
+\input{sections/05_related_work.tex}
+\input{sections/06_discussion_threats.tex}
+\input{sections/07_conclusion.tex}
+\input{sections/ai_disclosure.tex}
+
+\bibliographystyle{IEEEtran}
+\bibliography{../literature/refs}
+
+\end{document}

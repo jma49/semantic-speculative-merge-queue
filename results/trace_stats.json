@@ -1,0 +1,53 @@
+{
+  "total_prs": 600,
+  "repositories": [
+    {
+      "repo": "kubernetes/kubernetes",
+      "sha256": "2e5a3ffbed0d3feb9be399a363d99e4d568414d1f077b009d9dfc80be4bd8f2e",
+      "prs": 200,
+      "span_hours": 26931.1,
+      "median_gap_min": 99.6,
+      "p95_gap_min": 2731.05,
+      "unique_files": 620,
+      "mean_files_per_pr": 5.82,
+      "median_churn_loc": 81.0,
+      "p95_churn_loc": 2588.2,
+      "truncated_file_list_prs": 6,
+      "hotspot_gini": 0.386,
+      "fifo_k8_module_overlap_rate": 1.0,
+      "disjoint_batch4_feasibility_rate": 0.4973
+    },
+    {
+      "repo": "microsoft/TypeScript",
+      "sha256": "7d6bc69724858175de9305c8495645b0aab1e57e6aac779642a1fd5b12d137de",
+      "prs": 200,
+      "span_hours": 66528.24,
+      "median_gap_min": 36.42,
+      "p95_gap_min": 4019.34,
+      "unique_files": 1007,
+      "mean_files_per_pr": 8.48,
+      "median_churn_loc": 160.5,
+      "p95_churn_loc": 3216.2,
+      "truncated_file_list_prs": 8,
+      "hotspot_gini": 0.358,
+      "fifo_k8_module_overlap_rate": 1.0,
+      "disjoint_batch4_feasibility_rate": 0.2216
+    },
+    {
+      "repo": "vercel/next.js",
+      "sha256": "bbb2ba2c7daf747957ed3ad8bf9d49418b25148428dfd6c83150b6655fd369c5",
+      "prs": 200,
+      "span_hours": 488.68,
+      "median_gap_min": 31.52,
+      "p95_gap_min": 427.5,
+      "unique_files": 1460,
+      "mean_files_per_pr": 9.59,
+      "median_churn_loc": 109.0,
+      "p95_churn_loc": 2750.8,
+      "truncated_file_list_prs": 16,
+      "hotspot_gini": 0.212,
+      "fifo_k8_module_overlap_rate": 1.0,
+      "disjoint_batch4_feasibility_rate": 0.8378
+    }
+  ]
+}

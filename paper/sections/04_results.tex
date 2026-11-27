@@ -1,0 +1,32 @@
+\section{Experimental Results}
+\label{sec:results}
+
+Every numerical result in this section is linked deterministically via LaTeX macros from our \TotalSealedRuns{} sealed experiment suites (\TotalSealedRecords{} total runs, \TotalEscapedDefects{} escaped defects).
+
+\input{generated/tables/main_benchmark.tex}
+
+\subsection{RQ1: End-to-End Throughput, Latency, and CI Compute}
+Table~\ref{tab:main_benchmark} summarizes aggregate performance across all three open-source repositories at $5\times$ AI-agent PR velocity ($30$ PRs/hr) and $5\%$ test flakiness. \textbf{SSMQ} achieves the strongest performance across all primary dimensions simultaneously:
+\begin{itemize}
+    \item \textbf{Throughput}: SSMQ merges \SSMQThroughput{} PRs/hr, outperforming \texttt{StaticBatchBisect} (\StaticThroughput{} PRs/hr, +\GainThroughputVsStaticPct{}\%), \texttt{FlakeAwareBatch} (\FlakeBatchThroughput{} PRs/hr, +\GainThroughputVsFlakePct{}\%), \texttt{SpeculativeLinear} (\SpecLinThroughput{} PRs/hr, +\GainThroughputVsSpecLinPct{}\%), \texttt{UberSubmitQueue} (\UberThroughput{} PRs/hr, +\GainThroughputVsUberPct{}\%), and \texttt{SerialQueue} (\SerialThroughput{} PRs/hr).
+    \item \textbf{Tail Merge Latency}: SSMQ compresses P95 merge latency to \SSMQPNinetyFiveLat{}~min (P50 \SSMQPFiftyLat{}~min), representing a \LatRedVsStaticPct{}\% reduction over \texttt{StaticBatchBisect} (\StaticPNinetyFiveLat{}~min), \LatRedVsSpecLinPct{}\% over \texttt{SpeculativeLinear} (\SpecLinPNinetyFiveLat{}~min), and \LatRedVsUberPct{}\% over \texttt{UberSubmitQueue} (\UberPNinetyFiveLat{}~min; Cliff's $|\delta|=\CliffsDeltaLatVsUber{}$).
+    \item \textbf{CI Compute Efficiency}: SSMQ consumes only \SSMQCICost{} CI runner-minutes per merged PR---saving \CostSaveVsStaticPct{}\% vs.\ \texttt{StaticBatchBisect} (\StaticCICost{}~min/PR, Cliff's $|\delta|=\CliffsDeltaCostVsStatic{}$), \CostSaveVsUberPct{}\% vs.\ \texttt{UberSubmitQueue} (\UberCICost{}~min/PR, $|\delta|=\CliffsDeltaCostVsUber{}$), \CostSaveVsFlakePct{}\% vs.\ \texttt{FlakeAwareBatch} (\FlakeBatchCICost{}~min/PR), and \CostSaveVsSpecLinPct{}\% vs.\ \texttt{SpeculativeLinear} (\SpecLinCICost{}~min/PR).
+    \item \textbf{Invalidation & Fault Isolation}: Linear speculative trains suffer a \SpecLinInvalidRatePct{}\% speculative invalidation rate due to cascading downstream aborts, whereas SSMQ limits invalidation to \SSMQInvalidRatePct{}\% and reduces mean blame rounds per faulty batch from \StaticBlameRounds{} (\texttt{StaticBatchBisect}) and \FlakeBatchBlameRounds{} (\texttt{FlakeAwareBatch}) down to \SSMQBlameRounds{} (-\BlameRedVsStaticPct{}\% vs.\ static bisection).
+\end{itemize}
+
+\textbf{Velocity Surge Scaling ($1\times$ to $10\times$).} Under extreme $10\times$ arrival velocity (\texttt{exp2\_velocity\_sweep\_v1}), linear and risk-gated single-train queues hit a hard saturation ceiling (\texttt{UberSubmitQueue} stalls at \UberTenXThroughput{} PRs/hr with \UberTenXPNinetyFiveLat{}~min P95 latency). In contrast, SSMQ scales smoothly to \SSMQTenXThroughput{} PRs/hr (vs.\ \StaticTenXThroughput{} PRs/hr for \texttt{StaticBatchBisect}) while keeping P95 latency bounded at \SSMQTenXPNinetyFiveLat{}~min.
+
+\input{generated/tables/ablation.tex}
+
+\subsection{RQ2: Component Ablation Analysis}
+Table~\ref{tab:ablation} isolates each SSMQ mechanism under identical paired traces (\texttt{exp3\_ablation\_v1}):
+\begin{enumerate}
+    \item \textbf{Graph-Disjoint Batching is the Dominant Lever}: Removing dependency-graph packing (\texttt{SSMQ-NoGraph}) degrades P95 latency from \SSMQPNinetyFiveLat{}~min to \AblNoGraphLat{}~min and increases CI compute from \SSMQCICost{} to \AblNoGraphCICost{}~min/PR. Without graph-disjoint lanes, FIFO batching bundles overlapping PRs that trigger avoidable semantic conflicts.
+    \item \textbf{1-Step Causal Blame Reduces Recovery Overhead}: Disabling causal blame (\texttt{SSMQ-NoBlame}) increases mean blame rounds from \SSMQBlameRounds{} to \AblNoBlameRounds{} and nudges CI compute from \SSMQCICost{} to \AblNoBlameCICost{}~min/PR. Because graph-disjoint batching already eliminates intra-batch semantic conflicts before CI runs, blame attribution activates mainly on true single-PR defects; its marginal impact grows substantially whenever conflict rates or batch sizes increase.
+    \item \textbf{Flaky-Rerun Trade-Off Boundary}: Interestingly, disabling selective flaky reruns (\texttt{SSMQ-NoFlaky}) yields slightly lower P95 latency (\AblNoFlakyLat{}~min) and CI cost (\AblNoFlakyCICost{}~min/PR) at $\phi=5\%$. This reveals an important empirical trade-off: when graph-disjoint batches already have high pass rates and moderate batch size, rerunning a failed batch once incurs a full extra build on genuinely defective batches, whereas splitting/blaming immediately isolates true defects faster. Conversely, unconditional reruns (\texttt{FlakeAwareBatch}) severely inflate both latency (\FlakeBatchPNinetyFiveLat{}~min) and cost (\FlakeBatchCICost{}~min/PR).
+\end{enumerate}
+
+\subsection{RQ3: Robustness Under Extreme Flakiness and Imperfect Blame}
+\textbf{Flaky Test Sweep ($0\%$--$10\%$).} Across \texttt{exp4a\_flaky\_sweep\_v1}, as non-deterministic flakiness rises to an extreme $\phi=10\%$, \texttt{SpeculativeLinear} degrades sharply to \SpecLinFlakyTenCost{} CI min/PR and \texttt{UberSubmitQueue} reaches \UberFlakyTenCost{}~min/PR, whereas SSMQ remains the most efficient scheduler at \SSMQFlakyTenCost{}~min/PR.
+
+\textbf{Imperfect Causal Attribution ($50\%$--$95\%$).} Across \texttt{exp4b\_blame\_accuracy\_v1}, varying causal blame Top-1 accuracy from $95\%$ down to $50\%$ increases mean blame rounds only slightly from \BlameNinetyFiveRounds{} to \BlameFiftyRounds{}---still less than half the \StaticBlameRounds{} rounds required by \texttt{StaticBatchBisect}. Because SSMQ validates evicted suspects in parallel and falls back deterministically to binary bisection on misattribution, imperfect LLM-based fault localization never compromises mainline safety or collapses queue performance.

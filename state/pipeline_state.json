@@ -1,0 +1,35 @@
+{
+  "topic_slug": "semantic-speculative-merge-queue",
+  "title": "Semantic Speculative Merge Queues: Graph-Disjoint Batching and Agentic Fault Attribution for High-Velocity CI",
+  "target_venue": "ICSE / FSE / ASE (IEEEtran)",
+  "created_utc": "2026-11-27T00:50:01.296351+00:00",
+  "current_stage": "GATE_3_HUMAN_REVIEW_DECISION",
+  "gates": {
+    "G1_PLAN_FREEZE": {
+      "status": "ready_for_human_signoff",
+      "approved_by": null,
+      "approved_at": null
+    },
+    "G2_RESULTS_AUDIT": {
+      "status": "passed_deterministic_audit",
+      "approved_by": null,
+      "approved_at": null
+    },
+    "G3_REVIEW_DECISION": {
+      "status": "awaiting_human_decision_and_claude_sat_pm_pass",
+      "approved_by": null,
+      "approved_at": null
+    },
+    "G4_SUBMISSION_COMPLIANCE": {
+      "status": "pending",
+      "approved_by": null,
+      "approved_at": null
+    }
+  },
+  "revision_rounds": 1,
+  "max_revision_rounds": 3,
+  "claude_post_reset_slot": {
+    "available_after": "2026-11-28T15:00:00-08:00",
+    "planned_role": "Primary Writer prose polish + independent third-family adversarial PC review (Claude Opus 5.5)"
+  }
+}

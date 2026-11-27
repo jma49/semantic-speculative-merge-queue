@@ -1,0 +1,30 @@
+\section{Introduction}
+\label{sec:intro}
+
+Continuous Integration (CI) has become the backbone of modern software engineering, guarding mainline branches against regressions across thousands of daily pull requests (PRs)~\cite{zhao2017impact,bernardo2023impact,wessel2023github}. However, the rapid adoption of autonomous coding agents has shifted the software engineering bottleneck from code authoring to pre-merge verification. As PR arrival velocity climbs $3\times$--$10\times$, serial verification saturates immediately, forcing engineering organizations to adopt batched or speculative merge queues~\cite{ananthanarayanan2019keeping,fallahzadeh2023accelerating,juloori2025scale,jungwirth2025improving}.
+
+Existing merge queue architectures suffer from a structural blind spot: they treat pull requests as opaque FIFO tokens. Both static batching (e.g., Bors and GitHub Merge Queue) and linear speculative merge trains (e.g., GitLab Merge Trains and Mergify) group consecutive PRs strictly by arrival order without inspecting which modules or dependency cones those PRs touch. Consequently, two individually valid PRs touching overlapping modules frequently collide semantically when combined in the same batch or speculative train~\cite{zhang2022trained,svyatkovskiy2022program,owhadikareshk2019predicting}. Combined with pervasive test flakiness~\cite{luo2014empirical,bell2018laker,lam2019idflakies,lam2020large,parry2025systemic}, a single failure triggers either a cascading abort of every downstream speculative build or recursive $O(\log K)$ binary bisection rounds~\cite{elbaum2014techniques,fallahzadeh2023accelerating}.
+
+We formalize this collapse as a \emph{speculative invalidation storm}. In a batch or speculative window of $K$ PRs, clean survival requires avoiding individual defects ($q_i$), pairwise semantic conflicts ($P(c_{ij})$), and transient suite flakiness ($\phi$):
+\begin{equation}
+P(\text{pass}) = (1 - \phi) \prod_{i=1}^{K}(1 - q_i) \prod_{1 \le i < j \le K}(1 - P(c_{ij})).
+\label{eq:survival}
+\end{equation}
+Because pairwise conflict terms scale quadratically as $\binom{K}{2}$ whenever FIFO batches co-locate PRs with intersecting impact cones, increasing batch size or speculation depth under high PR velocity rapidly degrades effective throughput rather than improving it.
+
+To resolve this bottleneck, we introduce \textbf{SSMQ (Semantic Speculative Merge Queue)}, a semantics-aware merge queue scheduler built around three tightly coupled mechanisms:
+\begin{enumerate}
+    \item \textbf{Graph-Disjoint Risk-Stratified Batching}: Learns file co-change and module-proximity dependency cones exclusively from historical warm-up commits, dynamically packing low-risk PRs with zero pairwise impact-cone overlap into high-throughput fast-lane batches while routing high-risk or overlapping PRs into small protected lanes.
+    \item \textbf{Beta-Binomial Flaky-Tolerant Selective Re-Verification}: Maintains an online conjugate Beta-Binomial posterior over suite flakiness to decide whether a failed batch warrants selective re-verification instead of blind unconditional reruns or immediate batch teardown.
+    \item \textbf{1-Step Causal Blame Attribution}: On deterministic batch failure, leverages impact-cone and risk-informed suspect ranking (abstracting lightweight agentic stack-to-diff fault localization~\cite{jambigi2025fault,ziftci2017broke}) to evict the Top-1 suspect and validate the remaining innocent PRs in one verification round, falling back gracefully to binary bisection if the remainder still fails.
+\end{enumerate}
+
+We evaluate SSMQ using a zero-dependency discrete-event simulator driven by 600 real merged PR traces across three major open-source repositories (\texttt{kubernetes/kubernetes}, \texttt{microsoft/TypeScript}, and \texttt{vercel/next.js}) across \TotalSealedRuns{} sealed multi-seed experiment suites (\TotalSealedRecords{} total simulation records) with an explicit A/A noise floor calibration (\AANoiseThroughputPct{}\% throughput noise, \AANoiseComputePct{}\% compute noise). All reported metrics are generated deterministically from SHA-256-sealed manifests without manual transcription, and every strategy enforces a strict zero-escaped-defect mainline safety invariant (\TotalEscapedDefects{} escaped defects).
+
+\textbf{Contributions.} This paper makes four contributions:
+\begin{itemize}
+    \item A formal characterization of speculative invalidation storms in high-velocity CI merge queues under overlapping edits and test flakiness.
+    \item The design and open-source implementation of \textbf{SSMQ}, unifying graph-disjoint risk-stratified batching, online Beta-Binomial flaky gating, and fail-safe 1-step causal blame attribution.
+    \item A reproducible, trace-driven benchmark over 600 real PRs from three industrial-scale open-source ecosystems comparing six queue architectures and three ablations across $1\times$--$10\times$ velocities, $0\%$--$10\%$ flaky rates, and $50\%$--$95\%$ attribution accuracy.
+    \item An empirical discovery of component dominance and crossover boundaries: graph-disjoint batching provides the largest single reduction in P95 latency and CI compute, 1-step causal blame degrades gracefully even at $50\%$ Top-1 accuracy, and online flaky reruns exhibit a measurable trade-off threshold against clean graph-disjoint batches.
+\end{itemize}

@@ -1,0 +1,3765 @@
+[
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 121646,
+    "created_at": "2023-10-31T15:27:35Z",
+    "merged_at": "2023-10-31T18:16:38Z",
+    "additions": 1,
+    "deletions": 24,
+    "changed_files_count": 3,
+    "commit_count": 1,
+    "author": "wojtek-t",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/errors.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/errors/storage.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/etcd3/store.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 131085,
+    "created_at": "2025-03-27T16:58:18Z",
+    "merged_at": "2025-05-04T22:31:55Z",
+    "additions": 12,
+    "deletions": 1,
+    "changed_files_count": 2,
+    "commit_count": 1,
+    "author": "kayrus",
+    "files": [
+      "staging/src/k8s.io/cloud-provider/controllers/service/controller.go",
+      "staging/src/k8s.io/cloud-provider/controllers/service/controller_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 131562,
+    "created_at": "2025-04-30T14:43:33Z",
+    "merged_at": "2025-05-27T20:36:23Z",
+    "additions": 2,
+    "deletions": 2,
+    "changed_files_count": 2,
+    "commit_count": 1,
+    "author": "logica0419",
+    "files": [
+      "cmd/kube-proxy/app/options.go",
+      "pkg/proxy/endpointschangetracker_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 129079,
+    "created_at": "2024-12-04T12:55:25Z",
+    "merged_at": "2026-06-15T08:57:23Z",
+    "additions": 197,
+    "deletions": 9,
+    "changed_files_count": 5,
+    "commit_count": 4,
+    "author": "Tal-or",
+    "files": [
+      "pkg/kubelet/cm/cpumanager/policy_static.go",
+      "pkg/kubelet/cm/cpumanager/policy_static_test.go",
+      "pkg/kubelet/cm/cpumanager/state/state.go",
+      "pkg/kubelet/cm/cpumanager/state/state_test.go",
+      "test/e2e_node/cpu_manager_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 142591,
+    "created_at": "2026-10-01T11:32:40Z",
+    "merged_at": "2026-10-05T11:06:37Z",
+    "additions": 142,
+    "deletions": 5,
+    "changed_files_count": 6,
+    "commit_count": 2,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/errors/storage.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/etcd3/store.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/correctness/correctness.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/correctness/model.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/store_tests.go",
+      "test/integration/apiserver/apiserver_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 142770,
+    "created_at": "2026-10-07T03:27:53Z",
+    "merged_at": "2026-10-09T17:51:39Z",
+    "additions": 175,
+    "deletions": 0,
+    "changed_files_count": 5,
+    "commit_count": 1,
+    "author": "cwedgwood",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/server/deprecated_insecure_serving.go",
+      "staging/src/k8s.io/apiserver/pkg/server/header_value_count_go127.go",
+      "staging/src/k8s.io/apiserver/pkg/server/header_value_count_pre_go127.go",
+      "staging/src/k8s.io/apiserver/pkg/server/secure_serving.go",
+      "staging/src/k8s.io/apiserver/pkg/server/secure_serving_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 142773,
+    "created_at": "2026-10-07T03:38:37Z",
+    "merged_at": "2026-10-10T14:35:19Z",
+    "additions": 175,
+    "deletions": 0,
+    "changed_files_count": 5,
+    "commit_count": 1,
+    "author": "cwedgwood",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/server/deprecated_insecure_serving.go",
+      "staging/src/k8s.io/apiserver/pkg/server/header_value_count_go127.go",
+      "staging/src/k8s.io/apiserver/pkg/server/header_value_count_pre_go127.go",
+      "staging/src/k8s.io/apiserver/pkg/server/secure_serving.go",
+      "staging/src/k8s.io/apiserver/pkg/server/secure_serving_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 142771,
+    "created_at": "2026-10-07T03:34:57Z",
+    "merged_at": "2026-10-10T14:35:19Z",
+    "additions": 175,
+    "deletions": 0,
+    "changed_files_count": 5,
+    "commit_count": 1,
+    "author": "cwedgwood",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/server/deprecated_insecure_serving.go",
+      "staging/src/k8s.io/apiserver/pkg/server/header_value_count_go127.go",
+      "staging/src/k8s.io/apiserver/pkg/server/header_value_count_pre_go127.go",
+      "staging/src/k8s.io/apiserver/pkg/server/secure_serving.go",
+      "staging/src/k8s.io/apiserver/pkg/server/secure_serving_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 142772,
+    "created_at": "2026-10-07T03:35:02Z",
+    "merged_at": "2026-10-10T14:35:19Z",
+    "additions": 175,
+    "deletions": 0,
+    "changed_files_count": 5,
+    "commit_count": 1,
+    "author": "cwedgwood",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/server/deprecated_insecure_serving.go",
+      "staging/src/k8s.io/apiserver/pkg/server/header_value_count_go127.go",
+      "staging/src/k8s.io/apiserver/pkg/server/header_value_count_pre_go127.go",
+      "staging/src/k8s.io/apiserver/pkg/server/secure_serving.go",
+      "staging/src/k8s.io/apiserver/pkg/server/secure_serving_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 142939,
+    "created_at": "2026-10-12T12:28:20Z",
+    "merged_at": "2026-10-12T16:14:30Z",
+    "additions": 3,
+    "deletions": 15,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/watch_cache.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143015,
+    "created_at": "2026-10-14T08:24:12Z",
+    "merged_at": "2026-10-14T09:13:13Z",
+    "additions": 84,
+    "deletions": 71,
+    "changed_files_count": 3,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher_testing_utils_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher_whitebox_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 142978,
+    "created_at": "2026-10-13T13:04:26Z",
+    "merged_at": "2026-10-14T10:19:03Z",
+    "additions": 37,
+    "deletions": 20,
+    "changed_files_count": 4,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/delegator.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/watch_cache.go",
+      "test/integration/apiserver/tracing/tracing_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143023,
+    "created_at": "2026-10-14T12:52:45Z",
+    "merged_at": "2026-10-14T14:44:23Z",
+    "additions": 70,
+    "deletions": 74,
+    "changed_files_count": 3,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cache_watcher.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cache_watcher_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143021,
+    "created_at": "2026-10-14T12:08:59Z",
+    "merged_at": "2026-10-14T18:36:06Z",
+    "additions": 126,
+    "deletions": 9,
+    "changed_files_count": 3,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher_whitebox_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/delegator.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/testing/mock.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143062,
+    "created_at": "2026-10-15T11:59:56Z",
+    "merged_at": "2026-10-16T14:40:40Z",
+    "additions": 27,
+    "deletions": 24,
+    "changed_files_count": 4,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/delegator.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/watch_cache.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/watch_cache_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 142050,
+    "created_at": "2026-09-12T06:52:14Z",
+    "merged_at": "2026-10-16T15:26:31Z",
+    "additions": 212,
+    "deletions": 9,
+    "changed_files_count": 6,
+    "commit_count": 1,
+    "author": "rahulbabu95",
+    "files": [
+      "pkg/scheduler/framework/plugins/interpodaffinity/filtering.go",
+      "pkg/scheduler/framework/plugins/interpodaffinity/filtering_test.go",
+      "pkg/scheduler/framework/plugins/interpodaffinity/plugin.go",
+      "pkg/scheduler/framework/plugins/interpodaffinity/scoring.go",
+      "pkg/scheduler/framework/plugins/interpodaffinity/scoring_test.go",
+      "test/integration/scheduler/filters/filters_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 141563,
+    "created_at": "2026-08-25T00:02:40Z",
+    "merged_at": "2026-10-16T15:30:13Z",
+    "additions": 212,
+    "deletions": 9,
+    "changed_files_count": 6,
+    "commit_count": 1,
+    "author": "rahulbabu95",
+    "files": [
+      "pkg/scheduler/framework/plugins/interpodaffinity/filtering.go",
+      "pkg/scheduler/framework/plugins/interpodaffinity/filtering_test.go",
+      "pkg/scheduler/framework/plugins/interpodaffinity/plugin.go",
+      "pkg/scheduler/framework/plugins/interpodaffinity/scoring.go",
+      "pkg/scheduler/framework/plugins/interpodaffinity/scoring_test.go",
+      "test/integration/scheduler/filters/filters_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143100,
+    "created_at": "2026-10-16T13:48:24Z",
+    "merged_at": "2026-10-16T15:30:31Z",
+    "additions": 138,
+    "deletions": 78,
+    "changed_files_count": 6,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cache_watcher_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher_slow_watcher_bench_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher_whitebox_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/correctness/correctness.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/utils.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/watcher_tests.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 142198,
+    "created_at": "2026-09-17T22:55:14Z",
+    "merged_at": "2026-10-16T17:20:13Z",
+    "additions": 112,
+    "deletions": 37,
+    "changed_files_count": 2,
+    "commit_count": 3,
+    "author": "danwinship",
+    "files": [
+      "pkg/proxy/conntrack/sysctls.go",
+      "pkg/proxy/conntrack/sysctls_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 142049,
+    "created_at": "2026-09-12T06:52:13Z",
+    "merged_at": "2026-10-16T23:20:09Z",
+    "additions": 212,
+    "deletions": 9,
+    "changed_files_count": 6,
+    "commit_count": 1,
+    "author": "rahulbabu95",
+    "files": [
+      "pkg/scheduler/framework/plugins/interpodaffinity/filtering.go",
+      "pkg/scheduler/framework/plugins/interpodaffinity/filtering_test.go",
+      "pkg/scheduler/framework/plugins/interpodaffinity/plugin.go",
+      "pkg/scheduler/framework/plugins/interpodaffinity/scoring.go",
+      "pkg/scheduler/framework/plugins/interpodaffinity/scoring_test.go",
+      "test/integration/scheduler/filters/filters_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143125,
+    "created_at": "2026-10-17T07:03:16Z",
+    "merged_at": "2026-10-18T19:01:39Z",
+    "additions": 1,
+    "deletions": 0,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "tico88612",
+    "files": [
+      "staging/src/k8s.io/component-base/metrics/OWNERS"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143165,
+    "created_at": "2026-10-19T09:35:05Z",
+    "merged_at": "2026-10-19T10:21:19Z",
+    "additions": 9,
+    "deletions": 39,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143166,
+    "created_at": "2026-10-19T09:51:26Z",
+    "merged_at": "2026-10-19T13:07:09Z",
+    "additions": 79,
+    "deletions": 59,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/etcd3/store.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143169,
+    "created_at": "2026-10-19T10:28:38Z",
+    "merged_at": "2026-10-19T14:01:32Z",
+    "additions": 11,
+    "deletions": 18,
+    "changed_files_count": 2,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher_whitebox_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143172,
+    "created_at": "2026-10-19T12:40:43Z",
+    "merged_at": "2026-10-19T15:05:23Z",
+    "additions": 304,
+    "deletions": 3,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/store_tests.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143178,
+    "created_at": "2026-10-19T14:33:27Z",
+    "merged_at": "2026-10-20T07:29:11Z",
+    "additions": 27,
+    "deletions": 164,
+    "changed_files_count": 2,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher_whitebox_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143092,
+    "created_at": "2026-10-16T12:01:08Z",
+    "merged_at": "2026-10-20T10:59:10Z",
+    "additions": 109,
+    "deletions": 196,
+    "changed_files_count": 9,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher_whitebox_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/watch_cache.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/watch_cache_interval_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/etcd3/watcher_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/watcher_tests.go",
+      "test/integration/apiserver/storage/correctness_test.go",
+      "test/integration/apiserver/storage/traffic.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143259,
+    "created_at": "2026-10-21T08:09:59Z",
+    "merged_at": "2026-10-21T11:12:46Z",
+    "additions": 27,
+    "deletions": 31,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/etcd3/store.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143232,
+    "created_at": "2026-10-20T16:29:57Z",
+    "merged_at": "2026-10-21T12:23:11Z",
+    "additions": 170,
+    "deletions": 125,
+    "changed_files_count": 3,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/watch_cache.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/watch_cache_interval.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/watch_cache_interval_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143262,
+    "created_at": "2026-10-21T08:58:20Z",
+    "merged_at": "2026-10-21T13:13:00Z",
+    "additions": 83,
+    "deletions": 77,
+    "changed_files_count": 4,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cache_watcher.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cache_watcher_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher_whitebox_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143272,
+    "created_at": "2026-10-21T12:38:28Z",
+    "merged_at": "2026-10-21T14:45:52Z",
+    "additions": 33,
+    "deletions": 64,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/etcd3/store.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143302,
+    "created_at": "2026-10-22T08:34:09Z",
+    "merged_at": "2026-10-22T10:23:56Z",
+    "additions": 35,
+    "deletions": 34,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/etcd3/store.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143304,
+    "created_at": "2026-10-22T09:46:10Z",
+    "merged_at": "2026-10-23T12:07:31Z",
+    "additions": 64,
+    "deletions": 56,
+    "changed_files_count": 5,
+    "commit_count": 2,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cache_watcher.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cache_watcher_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/watch_cache_interval.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/watch_cache_interval_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143352,
+    "created_at": "2026-10-23T11:57:35Z",
+    "merged_at": "2026-10-23T16:13:26Z",
+    "additions": 13,
+    "deletions": 9,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/etcd3/store.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143276,
+    "created_at": "2026-10-21T13:18:27Z",
+    "merged_at": "2026-10-26T09:41:55Z",
+    "additions": 13,
+    "deletions": 17,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/watch_cache.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143353,
+    "created_at": "2026-10-23T13:14:44Z",
+    "merged_at": "2026-10-26T11:10:01Z",
+    "additions": 91,
+    "deletions": 43,
+    "changed_files_count": 3,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cache_watcher.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cache_watcher_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143407,
+    "created_at": "2026-10-26T09:50:56Z",
+    "merged_at": "2026-10-26T11:58:08Z",
+    "additions": 16,
+    "deletions": 14,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/etcd3/store.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143410,
+    "created_at": "2026-10-26T11:06:49Z",
+    "merged_at": "2026-10-26T12:56:00Z",
+    "additions": 40,
+    "deletions": 34,
+    "changed_files_count": 4,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cache_watcher.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cache_watcher_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher_whitebox_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143418,
+    "created_at": "2026-10-26T13:20:42Z",
+    "merged_at": "2026-10-26T14:54:07Z",
+    "additions": 11,
+    "deletions": 11,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/etcd3/store.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143419,
+    "created_at": "2026-10-26T13:30:31Z",
+    "merged_at": "2026-10-26T15:42:23Z",
+    "additions": 2,
+    "deletions": 2,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143411,
+    "created_at": "2026-10-26T11:26:28Z",
+    "merged_at": "2026-10-27T09:53:02Z",
+    "additions": 60,
+    "deletions": 27,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/etcd3/store.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143431,
+    "created_at": "2026-10-26T17:06:10Z",
+    "merged_at": "2026-10-27T09:53:11Z",
+    "additions": 24,
+    "deletions": 16,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143465,
+    "created_at": "2026-10-27T13:43:14Z",
+    "merged_at": "2026-10-27T15:45:34Z",
+    "additions": 10,
+    "deletions": 21,
+    "changed_files_count": 2,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher_whitebox_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143459,
+    "created_at": "2026-10-27T09:24:43Z",
+    "merged_at": "2026-10-28T12:37:37Z",
+    "additions": 213,
+    "deletions": 190,
+    "changed_files_count": 2,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/etcd3/store.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/txn.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143496,
+    "created_at": "2026-10-28T11:03:02Z",
+    "merged_at": "2026-10-28T12:37:45Z",
+    "additions": 321,
+    "deletions": 121,
+    "changed_files_count": 5,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher_whitebox_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/etcd3/store_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/recorder.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/store_tests.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143515,
+    "created_at": "2026-10-28T14:36:20Z",
+    "merged_at": "2026-10-28T20:42:18Z",
+    "additions": 55,
+    "deletions": 7,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/store_tests.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143520,
+    "created_at": "2026-10-28T18:27:15Z",
+    "merged_at": "2026-10-29T01:58:44Z",
+    "additions": 122,
+    "deletions": 10,
+    "changed_files_count": 3,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/etcd3/store_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/store_tests.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143566,
+    "created_at": "2026-10-29T13:20:12Z",
+    "merged_at": "2026-10-29T15:24:02Z",
+    "additions": 478,
+    "deletions": 7,
+    "changed_files_count": 4,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher_testing_utils_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/etcd3/watcher_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/watcher_tests.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 141006,
+    "created_at": "2026-07-28T20:15:22Z",
+    "merged_at": "2026-10-29T16:11:33Z",
+    "additions": 65,
+    "deletions": 0,
+    "changed_files_count": 2,
+    "commit_count": 2,
+    "author": "karlkfi",
+    "files": [
+      "pkg/kubelet/prober/prober_manager.go",
+      "pkg/kubelet/prober/prober_manager_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143565,
+    "created_at": "2026-10-29T13:00:59Z",
+    "merged_at": "2026-10-29T16:25:51Z",
+    "additions": 355,
+    "deletions": 11,
+    "changed_files_count": 10,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/delegator.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/testing/mock.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/etcd3/store.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/etcd3/store_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/interfaces.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/correctness/storage.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/store_tests.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/txn.go",
+      "test/integration/apiserver/storage/faults.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 141005,
+    "created_at": "2026-07-28T20:15:15Z",
+    "merged_at": "2026-10-29T16:29:32Z",
+    "additions": 65,
+    "deletions": 0,
+    "changed_files_count": 2,
+    "commit_count": 2,
+    "author": "karlkfi",
+    "files": [
+      "pkg/kubelet/prober/prober_manager.go",
+      "pkg/kubelet/prober/prober_manager_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143500,
+    "created_at": "2026-10-28T12:04:54Z",
+    "merged_at": "2026-10-29T19:01:51Z",
+    "additions": 19,
+    "deletions": 15,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143573,
+    "created_at": "2026-10-29T17:35:15Z",
+    "merged_at": "2026-10-29T20:49:39Z",
+    "additions": 45,
+    "deletions": 15,
+    "changed_files_count": 3,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/correctness/model.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/store_tests.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143584,
+    "created_at": "2026-10-29T23:40:16Z",
+    "merged_at": "2026-10-30T01:35:45Z",
+    "additions": 136,
+    "deletions": 126,
+    "changed_files_count": 2,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/watcher_tests.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143583,
+    "created_at": "2026-10-29T23:27:29Z",
+    "merged_at": "2026-10-30T03:20:18Z",
+    "additions": 109,
+    "deletions": 130,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143592,
+    "created_at": "2026-10-30T08:49:47Z",
+    "merged_at": "2026-10-30T10:34:05Z",
+    "additions": 19,
+    "deletions": 13,
+    "changed_files_count": 3,
+    "commit_count": 2,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/delegator.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/txn.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143595,
+    "created_at": "2026-10-30T09:25:56Z",
+    "merged_at": "2026-10-30T11:25:51Z",
+    "additions": 19,
+    "deletions": 24,
+    "changed_files_count": 4,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cache_watcher.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cache_watcher_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/watcher_tests.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143605,
+    "created_at": "2026-10-30T12:48:49Z",
+    "merged_at": "2026-10-30T16:10:20Z",
+    "additions": 47,
+    "deletions": 17,
+    "changed_files_count": 3,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/etcd3/watcher_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/watcher_tests.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143607,
+    "created_at": "2026-10-30T13:09:56Z",
+    "merged_at": "2026-10-30T16:58:14Z",
+    "additions": 59,
+    "deletions": 34,
+    "changed_files_count": 3,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/etcd3/store_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/store_tests.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143633,
+    "created_at": "2026-10-30T16:23:46Z",
+    "merged_at": "2026-10-30T18:54:07Z",
+    "additions": 75,
+    "deletions": 56,
+    "changed_files_count": 8,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher_whitebox_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/testing/mock.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/watch_cache_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/etcd3/store_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/correctness/model.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/correctness/storage_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/store_tests.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143676,
+    "created_at": "2026-11-01T14:33:57Z",
+    "merged_at": "2026-11-01T16:21:03Z",
+    "additions": 90,
+    "deletions": 44,
+    "changed_files_count": 3,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/utils.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/watcher_tests.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143681,
+    "created_at": "2026-11-01T18:58:46Z",
+    "merged_at": "2026-11-02T07:59:19Z",
+    "additions": 39,
+    "deletions": 13,
+    "changed_files_count": 4,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher_whitebox_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/utils.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/watcher_tests.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143597,
+    "created_at": "2026-10-30T09:47:08Z",
+    "merged_at": "2026-11-02T11:07:55Z",
+    "additions": 126,
+    "deletions": 128,
+    "changed_files_count": 9,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/delegator.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/testing/mock.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/etcd3/store.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/etcd3/store_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/interfaces.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/correctness/storage.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/store_tests.go",
+      "test/integration/apiserver/storage/faults.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143634,
+    "created_at": "2026-10-30T16:27:18Z",
+    "merged_at": "2026-11-02T15:47:57Z",
+    "additions": 81,
+    "deletions": 36,
+    "changed_files_count": 4,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cache_watcher.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cache_watcher_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher_whitebox_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143735,
+    "created_at": "2026-11-03T08:07:12Z",
+    "merged_at": "2026-11-03T08:55:52Z",
+    "additions": 148,
+    "deletions": 132,
+    "changed_files_count": 2,
+    "commit_count": 2,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher_whitebox_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143720,
+    "created_at": "2026-11-02T20:40:44Z",
+    "merged_at": "2026-11-03T10:27:03Z",
+    "additions": 50,
+    "deletions": 127,
+    "changed_files_count": 4,
+    "commit_count": 5,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cache_watcher.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cache_watcher_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher_whitebox_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143738,
+    "created_at": "2026-11-03T09:11:01Z",
+    "merged_at": "2026-11-03T14:41:27Z",
+    "additions": 121,
+    "deletions": 72,
+    "changed_files_count": 2,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/watch_cache.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/watch_cache_freshness.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143743,
+    "created_at": "2026-11-03T09:36:43Z",
+    "merged_at": "2026-11-03T14:41:46Z",
+    "additions": 45,
+    "deletions": 41,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143754,
+    "created_at": "2026-11-03T15:50:07Z",
+    "merged_at": "2026-11-03T18:04:57Z",
+    "additions": 245,
+    "deletions": 0,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/watch_cache_freshness_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143847,
+    "created_at": "2026-11-05T13:43:25Z",
+    "merged_at": "2026-11-05T21:03:22Z",
+    "additions": 204,
+    "deletions": 4,
+    "changed_files_count": 2,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/utils.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/watcher_tests.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143880,
+    "created_at": "2026-11-06T09:49:45Z",
+    "merged_at": "2026-11-06T12:01:53Z",
+    "additions": 269,
+    "deletions": 144,
+    "changed_files_count": 5,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher_whitebox_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/lister_watcher_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/utils.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/watch_expectations.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/watcher_tests.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143890,
+    "created_at": "2026-11-06T13:34:20Z",
+    "merged_at": "2026-11-06T15:39:58Z",
+    "additions": 14,
+    "deletions": 15,
+    "changed_files_count": 2,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/watch_cache.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143891,
+    "created_at": "2026-11-06T13:36:07Z",
+    "merged_at": "2026-11-06T15:40:08Z",
+    "additions": 44,
+    "deletions": 16,
+    "changed_files_count": 2,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cache_watcher.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143893,
+    "created_at": "2026-11-06T14:05:15Z",
+    "merged_at": "2026-11-06T17:27:43Z",
+    "additions": 457,
+    "deletions": 79,
+    "changed_files_count": 6,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/correctness/model.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/correctness/model_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/correctness/replay.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/correctness/storage.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/correctness/storage_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/correctness/watch.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143357,
+    "created_at": "2026-10-23T17:15:51Z",
+    "merged_at": "2026-11-06T20:37:38Z",
+    "additions": 217,
+    "deletions": 70,
+    "changed_files_count": 7,
+    "commit_count": 2,
+    "author": "tico88612",
+    "files": [
+      "hack/tools/instrumentation/documentation/documentation-list.yaml",
+      "hack/tools/instrumentation/testdata/stable-metrics-list.yaml",
+      "staging/src/k8s.io/apiserver/pkg/admission/metrics/metrics.go",
+      "staging/src/k8s.io/apiserver/pkg/admission/metrics/metrics_test.go",
+      "staging/src/k8s.io/apiserver/pkg/admission/plugin/webhook/mutating/plugin_test.go",
+      "staging/src/k8s.io/apiserver/pkg/admission/plugin/webhook/testing/testcase.go",
+      "staging/src/k8s.io/apiserver/pkg/admission/plugin/webhook/validating/plugin_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143913,
+    "created_at": "2026-11-07T05:07:00Z",
+    "merged_at": "2026-11-07T10:03:33Z",
+    "additions": 4,
+    "deletions": 8,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/watcher_tests.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143912,
+    "created_at": "2026-11-07T04:35:44Z",
+    "merged_at": "2026-11-07T11:59:35Z",
+    "additions": 31,
+    "deletions": 0,
+    "changed_files_count": 2,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cache_watcher.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143073,
+    "created_at": "2026-10-15T18:56:03Z",
+    "merged_at": "2026-11-08T01:19:38Z",
+    "additions": 79,
+    "deletions": 0,
+    "changed_files_count": 2,
+    "commit_count": 1,
+    "author": "YO-WHATS-UP2",
+    "files": [
+      "staging/src/k8s.io/streaming/pkg/httpstream/spdy/roundtripper.go",
+      "staging/src/k8s.io/streaming/pkg/httpstream/spdy/roundtripper_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143918,
+    "created_at": "2026-11-07T08:01:50Z",
+    "merged_at": "2026-11-08T14:43:35Z",
+    "additions": 23,
+    "deletions": 21,
+    "changed_files_count": 3,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cache_watcher.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher_whitebox_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143930,
+    "created_at": "2026-11-07T22:00:46Z",
+    "merged_at": "2026-11-08T14:43:43Z",
+    "additions": 26,
+    "deletions": 21,
+    "changed_files_count": 7,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cache_watcher.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cache_watcher_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher_whitebox_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/watch_cache.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/watch_cache_interval_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/watch_cache_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143953,
+    "created_at": "2026-11-08T16:29:30Z",
+    "merged_at": "2026-11-08T17:21:38Z",
+    "additions": 6,
+    "deletions": 1,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher_whitebox_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143833,
+    "created_at": "2026-11-05T11:32:14Z",
+    "merged_at": "2026-11-09T04:35:41Z",
+    "additions": 15,
+    "deletions": 14,
+    "changed_files_count": 6,
+    "commit_count": 2,
+    "author": "serathius",
+    "files": [
+      "pkg/features/kube_features.go",
+      "staging/src/k8s.io/apiserver/pkg/features/kube_features.go",
+      "test/compatibility_lifecycle/reference/feature_list.md",
+      "test/compatibility_lifecycle/reference/versioned_feature_list.yaml",
+      "test/integration/apiserver/tracing/tracing_test.go",
+      "test/integration/dra/dra.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143703,
+    "created_at": "2026-11-02T13:58:58Z",
+    "merged_at": "2026-11-09T14:35:58Z",
+    "additions": 234,
+    "deletions": 28,
+    "changed_files_count": 11,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "pkg/features/kube_features.go",
+      "staging/src/k8s.io/apiserver/pkg/features/kube_features.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher_whitebox_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/delegator/delegator_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/watcher_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/etcd3/watcher_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/correctness/storage_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/watcher_tests.go",
+      "test/compatibility_lifecycle/reference/feature_list.md",
+      "test/compatibility_lifecycle/reference/versioned_feature_list.yaml"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143978,
+    "created_at": "2026-11-09T15:06:27Z",
+    "merged_at": "2026-11-09T15:53:54Z",
+    "additions": 86,
+    "deletions": 22,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cache_watcher_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143981,
+    "created_at": "2026-11-09T15:36:35Z",
+    "merged_at": "2026-11-09T21:13:43Z",
+    "additions": 26,
+    "deletions": 2,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/watcher_tests.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143979,
+    "created_at": "2026-11-09T15:11:57Z",
+    "merged_at": "2026-11-10T16:14:04Z",
+    "additions": 110,
+    "deletions": 13,
+    "changed_files_count": 2,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/watch_cache_history.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/watch_cache_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144013,
+    "created_at": "2026-11-10T13:33:33Z",
+    "merged_at": "2026-11-10T16:14:16Z",
+    "additions": 15,
+    "deletions": 1,
+    "changed_files_count": 2,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher_whitebox_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143980,
+    "created_at": "2026-11-09T15:30:52Z",
+    "merged_at": "2026-11-10T17:04:23Z",
+    "additions": 41,
+    "deletions": 15,
+    "changed_files_count": 2,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher_whitebox_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143987,
+    "created_at": "2026-11-09T16:49:27Z",
+    "merged_at": "2026-11-10T17:04:34Z",
+    "additions": 18,
+    "deletions": 5,
+    "changed_files_count": 2,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cache_watcher.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143838,
+    "created_at": "2026-11-05T12:06:02Z",
+    "merged_at": "2026-11-11T16:10:07Z",
+    "additions": 213,
+    "deletions": 54,
+    "changed_files_count": 4,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cache_watcher.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cache_watcher_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/watcher_tests.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143158,
+    "created_at": "2026-10-18T19:35:04Z",
+    "merged_at": "2026-11-12T22:55:52Z",
+    "additions": 6231,
+    "deletions": 1680,
+    "changed_files_count": 95,
+    "commit_count": 16,
+    "author": "natasha41575",
+    "files": [
+      "api/openapi-spec/swagger.json",
+      "api/openapi-spec/v3/api__v1_openapi.json",
+      "cmd/kube-scheduler/app/server_test.go",
+      "hack/tools/instrumentation/documentation/documentation-list.yaml",
+      "pkg/api/v1/pod/util.go",
+      "pkg/api/v1/pod/util_test.go",
+      "pkg/apis/core/types.go",
+      "pkg/features/kube_features.go",
+      "pkg/generated/openapi/zz_generated.openapi.go",
+      "pkg/kubelet/allocation/allocation_manager.go",
+      "pkg/kubelet/allocation/allocation_manager_test.go",
+      "pkg/kubelet/status/status_manager.go",
+      "pkg/kubelet/status/status_manager_test.go",
+      "pkg/scheduler/algorithm.go",
+      "pkg/scheduler/algorithm_test.go",
+      "pkg/scheduler/apis/config/testing/defaults/defaults.go",
+      "pkg/scheduler/apis/config/v1/default_plugins_test.go",
+      "pkg/scheduler/apis/config/v1/defaults_test.go",
+      "pkg/scheduler/backend/heap/heap.go",
+      "pkg/scheduler/backend/heap/heap_test.go",
+      "pkg/scheduler/backend/queue/active_queue.go",
+      "pkg/scheduler/backend/queue/scheduling_queue.go",
+      "pkg/scheduler/backend/queue/scheduling_queue_test.go",
+      "pkg/scheduler/eventhandlers.go",
+      "pkg/scheduler/eventhandlers_test.go",
+      "pkg/scheduler/framework/api_calls/pod_status_patch.go",
+      "pkg/scheduler/framework/api_calls/pod_status_patch_test.go",
+      "pkg/scheduler/framework/events.go",
+      "pkg/scheduler/framework/events_test.go",
+      "pkg/scheduler/framework/interface.go",
+      "pkg/scheduler/framework/plugins/defaultpreemption/default_preemption.go",
+      "pkg/scheduler/framework/plugins/defaultpreemption/default_preemption_test.go",
+      "pkg/scheduler/framework/plugins/deferredpodscheduling/deferred_pod_scheduling.go",
+      "pkg/scheduler/framework/plugins/deferredpodscheduling/deferred_pod_scheduling_test.go",
+      "pkg/scheduler/framework/plugins/dynamicresources/dynamicresources.go",
+      "pkg/scheduler/framework/plugins/dynamicresources/dynamicresources_test.go",
+      "pkg/scheduler/framework/plugins/helper/resource_fit.go",
+      "pkg/scheduler/framework/plugins/helper/resource_fit_test.go",
+      "pkg/scheduler/framework/plugins/interpodaffinity/filtering.go",
+      "pkg/scheduler/framework/plugins/interpodaffinity/filtering_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144072,
+    "created_at": "2026-11-12T00:36:19Z",
+    "merged_at": "2026-11-13T13:11:53Z",
+    "additions": 107,
+    "deletions": 11,
+    "changed_files_count": 3,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/testing/setup/setup.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/watcher_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144167,
+    "created_at": "2026-11-15T11:21:31Z",
+    "merged_at": "2026-11-15T23:09:54Z",
+    "additions": 25,
+    "deletions": 4,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "dims",
+    "files": [
+      "pkg/apis/certificates/validation/validation_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144147,
+    "created_at": "2026-11-14T10:00:53Z",
+    "merged_at": "2026-11-16T07:30:13Z",
+    "additions": 2,
+    "deletions": 2,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "Javokhir2001",
+    "files": [
+      "test/integration/framework/test_server.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143958,
+    "created_at": "2026-11-08T19:27:48Z",
+    "merged_at": "2026-11-16T09:47:57Z",
+    "additions": 89,
+    "deletions": 27,
+    "changed_files_count": 3,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cache_watcher.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/watcher_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143537,
+    "created_at": "2026-10-29T01:13:08Z",
+    "merged_at": "2026-11-16T13:04:19Z",
+    "additions": 930,
+    "deletions": 176,
+    "changed_files_count": 5,
+    "commit_count": 1,
+    "author": "helayoty",
+    "files": [
+      "pkg/controller/job/job_controller.go",
+      "pkg/controller/job/job_controller_test.go",
+      "pkg/controller/job/job_scheduling_manager.go",
+      "pkg/controller/job/job_scheduling_manager_test.go",
+      "test/integration/job/job_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144195,
+    "created_at": "2026-11-16T09:59:20Z",
+    "merged_at": "2026-11-16T15:44:34Z",
+    "additions": 43,
+    "deletions": 33,
+    "changed_files_count": 9,
+    "commit_count": 3,
+    "author": "p0lyn0mial",
+    "files": [
+      "cmd/kube-controller-manager/app/options/options_test.go",
+      "pkg/controller/devicetainteviction/device_taint_eviction_test.go",
+      "pkg/features/kube_features.go",
+      "staging/src/k8s.io/apiserver/pkg/features/kube_features.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/lister_watcher_test.go",
+      "staging/src/k8s.io/client-go/features/known_features.go",
+      "test/compatibility_lifecycle/reference/feature_list.md",
+      "test/compatibility_lifecycle/reference/versioned_feature_list.yaml",
+      "test/integration/apimachinery/watchlist_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143911,
+    "created_at": "2026-11-07T01:32:07Z",
+    "merged_at": "2026-11-17T01:28:17Z",
+    "additions": 180,
+    "deletions": 2,
+    "changed_files_count": 7,
+    "commit_count": 2,
+    "author": "adamwathieu",
+    "files": [
+      "pkg/kubelet/kubelet.go",
+      "pkg/kubelet/kubelet_test.go",
+      "pkg/kubelet/pleg/generic.go",
+      "pkg/kubelet/pleg/generic_test.go",
+      "pkg/kubelet/pleg/pleg.go",
+      "pkg/kubelet/pod_workers.go",
+      "pkg/kubelet/pod_workers_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 142883,
+    "created_at": "2026-10-09T17:24:27Z",
+    "merged_at": "2026-11-17T04:56:08Z",
+    "additions": 150,
+    "deletions": 3,
+    "changed_files_count": 2,
+    "commit_count": 2,
+    "author": "jesseward",
+    "files": [
+      "pkg/kubelet/kubelet_pod_level_resources_status_windows_test.go",
+      "pkg/kubelet/kubelet_pods.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144227,
+    "created_at": "2026-11-16T20:31:44Z",
+    "merged_at": "2026-11-17T07:48:42Z",
+    "additions": 68,
+    "deletions": 2,
+    "changed_files_count": 3,
+    "commit_count": 2,
+    "author": "cici37",
+    "files": [
+      "staging/src/k8s.io/apiextensions-apiserver/pkg/apiserver/schema/cel/celcoststability_test.go",
+      "staging/src/k8s.io/apiserver/pkg/cel/library/cost.go",
+      "staging/src/k8s.io/dynamic-resource-allocation/cel/compile_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144152,
+    "created_at": "2026-11-14T13:45:00Z",
+    "merged_at": "2026-11-17T07:48:44Z",
+    "additions": 58,
+    "deletions": 2,
+    "changed_files_count": 2,
+    "commit_count": 1,
+    "author": "Acd-kk",
+    "files": [
+      "staging/src/k8s.io/apiextensions-apiserver/pkg/apiserver/schema/cel/celcoststability_test.go",
+      "staging/src/k8s.io/apiserver/pkg/cel/library/cost.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 141705,
+    "created_at": "2026-08-31T07:52:17Z",
+    "merged_at": "2026-11-17T09:28:20Z",
+    "additions": 54,
+    "deletions": 3,
+    "changed_files_count": 4,
+    "commit_count": 1,
+    "author": "piyushrajyadav",
+    "files": [
+      "staging/src/k8s.io/dynamic-resource-allocation/structured/internal/allocatortesting/allocator_testing.go",
+      "staging/src/k8s.io/dynamic-resource-allocation/structured/internal/experimental/pools_experimental.go",
+      "staging/src/k8s.io/dynamic-resource-allocation/structured/internal/incubating/pools_incubating.go",
+      "staging/src/k8s.io/dynamic-resource-allocation/structured/internal/stable/pools_stable.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143546,
+    "created_at": "2026-10-29T03:42:22Z",
+    "merged_at": "2026-11-17T12:48:11Z",
+    "additions": 360,
+    "deletions": 339,
+    "changed_files_count": 20,
+    "commit_count": 1,
+    "author": "divyanshuprakas-h",
+    "files": [
+      "test/integration/scheduler/batch/batch_test.go",
+      "test/integration/scheduler/bind/bind_test.go",
+      "test/integration/scheduler/eventhandler/eventhandler_test.go",
+      "test/integration/scheduler/extender/extender_test.go",
+      "test/integration/scheduler/filters/filters_test.go",
+      "test/integration/scheduler/nominated_node_name/nominated_node_name_test.go",
+      "test/integration/scheduler/plugins/plugins_test.go",
+      "test/integration/scheduler/podgroup/cpg_test.go",
+      "test/integration/scheduler/podgroup/podgroup_pvc_test.go",
+      "test/integration/scheduler/podgroup/podgroup_test.go",
+      "test/integration/scheduler/preemption/deferred_resize_preemption_test.go",
+      "test/integration/scheduler/preemption/misc/miscpreemption_test.go",
+      "test/integration/scheduler/preemption/nominatednodename/nominatednodename_test.go",
+      "test/integration/scheduler/preemption/podgroup/podgrouppreemption_test.go",
+      "test/integration/scheduler/preemption/preemption_test.go",
+      "test/integration/scheduler/queueing/queue.go",
+      "test/integration/scheduler/rescheduling_test.go",
+      "test/integration/scheduler/scheduler_test.go",
+      "test/integration/scheduler/scoring/priorities_test.go",
+      "test/integration/scheduler/util.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143839,
+    "created_at": "2026-11-05T12:37:34Z",
+    "merged_at": "2026-11-17T12:48:20Z",
+    "additions": 59,
+    "deletions": 7,
+    "changed_files_count": 2,
+    "commit_count": 1,
+    "author": "ronnybaturov-redis",
+    "files": [
+      "staging/src/k8s.io/client-go/tools/cache/reflector.go",
+      "staging/src/k8s.io/client-go/tools/cache/reflector_watchlist_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144202,
+    "created_at": "2026-11-16T12:32:00Z",
+    "merged_at": "2026-11-17T12:48:29Z",
+    "additions": 499,
+    "deletions": 0,
+    "changed_files_count": 3,
+    "commit_count": 1,
+    "author": "antekjb",
+    "files": [
+      "pkg/scheduler/backend/cache/cache_test.go",
+      "pkg/scheduler/backend/cache/snapshot.go",
+      "pkg/scheduler/backend/cache/snapshot_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 141804,
+    "created_at": "2026-09-02T16:35:34Z",
+    "merged_at": "2026-11-17T16:12:28Z",
+    "additions": 30,
+    "deletions": 10,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "pacoxu",
+    "files": [
+      "test/integration/scheduler/preemption/podgroup/podgrouppreemption_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144251,
+    "created_at": "2026-11-17T12:47:59Z",
+    "merged_at": "2026-11-17T16:12:37Z",
+    "additions": 7,
+    "deletions": 2,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "pohly",
+    "files": [
+      "test/e2e/apimachinery/crd_selectable_fields.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144257,
+    "created_at": "2026-11-17T14:52:46Z",
+    "merged_at": "2026-11-17T19:00:18Z",
+    "additions": 33,
+    "deletions": 2,
+    "changed_files_count": 2,
+    "commit_count": 1,
+    "author": "gnufied",
+    "files": [
+      "staging/src/k8s.io/csi-translation-lib/plugins/vsphere_volume.go",
+      "staging/src/k8s.io/csi-translation-lib/plugins/vsphere_volume_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 142693,
+    "created_at": "2026-10-05T19:05:45Z",
+    "merged_at": "2026-11-17T20:52:26Z",
+    "additions": 5285,
+    "deletions": 702,
+    "changed_files_count": 69,
+    "commit_count": 1,
+    "author": "torredil",
+    "files": [
+      "api/openapi-spec/swagger.json",
+      "api/openapi-spec/v3/apis__storage.k8s.io__v1_openapi.json",
+      "go.mod",
+      "go.sum",
+      "pkg/apis/storage/types.go",
+      "pkg/apis/storage/v1/zz_generated.conversion.go",
+      "pkg/apis/storage/v1/zz_generated.validations.go",
+      "pkg/apis/storage/v1beta1/zz_generated.conversion.go",
+      "pkg/apis/storage/v1beta1/zz_generated.validations.go",
+      "pkg/apis/storage/validation/validation.go",
+      "pkg/apis/storage/validation/validation_test.go",
+      "pkg/apis/storage/zz_generated.deepcopy.go",
+      "pkg/features/kube_features.go",
+      "pkg/generated/openapi/zz_generated.openapi.go",
+      "pkg/registry/storage/csinode/strategy.go",
+      "pkg/registry/storage/csinode/strategy_test.go",
+      "pkg/volume/csi/csi_client.go",
+      "pkg/volume/csi/csi_client_test.go",
+      "pkg/volume/csi/csi_drivers_store.go",
+      "pkg/volume/csi/csi_node_updater.go",
+      "pkg/volume/csi/csi_node_updater_test.go",
+      "pkg/volume/csi/csi_plugin.go",
+      "pkg/volume/csi/csi_plugin_test.go",
+      "pkg/volume/csi/fake/fake_client.go",
+      "pkg/volume/csi/nodeinfomanager/nodeinfomanager.go",
+      "pkg/volume/csi/nodeinfomanager/nodeinfomanager_test.go",
+      "staging/src/k8s.io/api/storage/v1/generated.pb.go",
+      "staging/src/k8s.io/api/storage/v1/generated.proto",
+      "staging/src/k8s.io/api/storage/v1/types.go",
+      "staging/src/k8s.io/api/storage/v1/types_swagger_doc_generated.go",
+      "staging/src/k8s.io/api/storage/v1/zz_generated.deepcopy.go",
+      "staging/src/k8s.io/api/storage/v1/zz_generated.model_name.go",
+      "staging/src/k8s.io/api/storage/v1beta1/generated.pb.go",
+      "staging/src/k8s.io/api/storage/v1beta1/generated.proto",
+      "staging/src/k8s.io/api/storage/v1beta1/types.go",
+      "staging/src/k8s.io/api/storage/v1beta1/types_swagger_doc_generated.go",
+      "staging/src/k8s.io/api/storage/v1beta1/zz_generated.deepcopy.go",
+      "staging/src/k8s.io/api/storage/v1beta1/zz_generated.model_name.go",
+      "staging/src/k8s.io/api/testdata/HEAD/storage.k8s.io.v1.CSINode.json",
+      "staging/src/k8s.io/api/testdata/HEAD/storage.k8s.io.v1.CSINode.pb"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143619,
+    "created_at": "2026-10-30T15:38:41Z",
+    "merged_at": "2026-11-17T20:52:37Z",
+    "additions": 1657,
+    "deletions": 1732,
+    "changed_files_count": 41,
+    "commit_count": 1,
+    "author": "divyanshuprakas-h",
+    "files": [
+      "test/integration/node/lifecycle_test.go",
+      "test/integration/node/node_status_mutation_test.go",
+      "test/integration/podgc/podgc_test.go",
+      "test/integration/scheduler/batch/batch_test.go",
+      "test/integration/scheduler/bind/bind_test.go",
+      "test/integration/scheduler/eventhandler/eventhandler_test.go",
+      "test/integration/scheduler/extender/extender_test.go",
+      "test/integration/scheduler/filters/filters_test.go",
+      "test/integration/scheduler/nominated_node_name/nominated_node_name_test.go",
+      "test/integration/scheduler/plugins/plugins_test.go",
+      "test/integration/scheduler/podgroup/cpg_test.go",
+      "test/integration/scheduler/podgroup/hierarchy_validation_test.go",
+      "test/integration/scheduler/podgroup/podgroup_affinity_test.go",
+      "test/integration/scheduler/podgroup/podgroup_pvc_test.go",
+      "test/integration/scheduler/podgroup/podgroup_test.go",
+      "test/integration/scheduler/podgroup/queueing/interleaving_test.go",
+      "test/integration/scheduler/podgroup/queueing/queueing_test.go",
+      "test/integration/scheduler/podgroup/queueing_test.go",
+      "test/integration/scheduler/podgroup/stepsframework/stepsframework.go",
+      "test/integration/scheduler/podgroup/topology_aware_scheduling/cpg_tas_test.go",
+      "test/integration/scheduler/podgroup/topology_aware_scheduling/tas_multi_placement_test.go",
+      "test/integration/scheduler/podgroup/topology_aware_scheduling/tas_test.go",
+      "test/integration/scheduler/preemption/asyncframework/async_framework.go",
+      "test/integration/scheduler/preemption/deferred_resize_preemption_test.go",
+      "test/integration/scheduler/preemption/misc/miscpreemption_test.go",
+      "test/integration/scheduler/preemption/node_capacity_decrease_test.go",
+      "test/integration/scheduler/preemption/nominatednodename/nominatednodename_test.go",
+      "test/integration/scheduler/preemption/podgroup/podgrouppreemption_test.go",
+      "test/integration/scheduler/preemption/preemption_test.go",
+      "test/integration/scheduler/prequeueinghint/prequeueinghint_test.go",
+      "test/integration/scheduler/queueing/queue.go",
+      "test/integration/scheduler/queueing/queue_test.go",
+      "test/integration/scheduler/rescheduling_test.go",
+      "test/integration/scheduler/scheduler_test.go",
+      "test/integration/scheduler/scoring/priorities_test.go",
+      "test/integration/scheduler/taint/taint_test.go",
+      "test/integration/scheduler/util.go",
+      "test/integration/util/util.go",
+      "test/integration/util/util_test.go",
+      "test/integration/volumescheduling/storage_capacity_scoring_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144264,
+    "created_at": "2026-11-17T16:20:30Z",
+    "merged_at": "2026-11-17T23:18:24Z",
+    "additions": 47,
+    "deletions": 3,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "SchSeba",
+    "files": [
+      "staging/src/k8s.io/dynamic-resource-allocation/structured/internal/experimental/allocator_experimental.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144270,
+    "created_at": "2026-11-18T00:02:32Z",
+    "merged_at": "2026-11-18T02:48:21Z",
+    "additions": 193,
+    "deletions": 75,
+    "changed_files_count": 26,
+    "commit_count": 2,
+    "author": "cici37",
+    "files": [
+      "go.mod",
+      "go.sum",
+      "staging/src/k8s.io/apiextensions-apiserver/go.mod",
+      "staging/src/k8s.io/apiextensions-apiserver/go.sum",
+      "staging/src/k8s.io/apiextensions-apiserver/pkg/apiserver/schema/cel/celcoststability_test.go",
+      "staging/src/k8s.io/apiserver/go.mod",
+      "staging/src/k8s.io/apiserver/go.sum",
+      "staging/src/k8s.io/apiserver/pkg/cel/library/cost.go",
+      "staging/src/k8s.io/cloud-provider/go.mod",
+      "staging/src/k8s.io/cloud-provider/go.sum",
+      "staging/src/k8s.io/controller-manager/go.mod",
+      "staging/src/k8s.io/controller-manager/go.sum",
+      "staging/src/k8s.io/dynamic-resource-allocation/cel/compile_test.go",
+      "staging/src/k8s.io/dynamic-resource-allocation/go.mod",
+      "staging/src/k8s.io/dynamic-resource-allocation/go.sum",
+      "staging/src/k8s.io/kube-aggregator/go.mod",
+      "staging/src/k8s.io/kube-aggregator/go.sum",
+      "staging/src/k8s.io/kube-controller-manager/go.sum",
+      "staging/src/k8s.io/kube-scheduler/go.sum",
+      "staging/src/k8s.io/pod-security-admission/go.mod",
+      "staging/src/k8s.io/pod-security-admission/go.sum",
+      "staging/src/k8s.io/sample-apiserver/go.mod",
+      "staging/src/k8s.io/sample-apiserver/go.sum",
+      "vendor/cel.dev/cel-go/common/cost/estimator.go",
+      "vendor/cel.dev/cel-go/ext/lists.go",
+      "vendor/modules.txt"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144268,
+    "created_at": "2026-11-17T20:31:48Z",
+    "merged_at": "2026-11-18T07:40:12Z",
+    "additions": 9,
+    "deletions": 1,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "nojnhuh",
+    "files": [
+      "staging/src/k8s.io/ktesting/contexthelper_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 142837,
+    "created_at": "2026-10-08T14:10:38Z",
+    "merged_at": "2026-11-18T15:54:33Z",
+    "additions": 848,
+    "deletions": 32,
+    "changed_files_count": 10,
+    "commit_count": 6,
+    "author": "Tal-or",
+    "files": [
+      "cmd/kubelet/app/options/options.go",
+      "cmd/kubelet/app/server.go",
+      "cmd/kubelet/app/server_test.go",
+      "pkg/kubelet/cm/cgroup_manager_linux.go",
+      "pkg/kubelet/cm/cgroup_manager_linux_test.go",
+      "pkg/kubelet/cm/node_container_manager_linux_test.go",
+      "pkg/kubelet/cm/qos_container_manager_linux.go",
+      "pkg/kubelet/cm/qos_container_manager_linux_test.go",
+      "test/e2e_node/node_container_manager_test.go",
+      "test/e2e_node/util.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 140665,
+    "created_at": "2026-07-17T02:24:59Z",
+    "merged_at": "2026-11-18T17:30:12Z",
+    "additions": 6059,
+    "deletions": 1,
+    "changed_files_count": 18,
+    "commit_count": 1,
+    "author": "benjaminapetersen",
+    "files": [
+      "staging/src/k8s.io/apiserver/plugin/pkg/authenticator/token/oidc/oidc.go",
+      "staging/src/k8s.io/component-helpers/auth/admission/README.md",
+      "staging/src/k8s.io/component-helpers/auth/admission/admission.go",
+      "staging/src/k8s.io/component-helpers/auth/admission/admission_test.go",
+      "staging/src/k8s.io/component-helpers/auth/admission/builder.go",
+      "staging/src/k8s.io/component-helpers/auth/admission/builder_test.go",
+      "staging/src/k8s.io/component-helpers/auth/admission/doc.go",
+      "staging/src/k8s.io/component-helpers/auth/admission/examples/Dockerfile",
+      "staging/src/k8s.io/component-helpers/auth/admission/examples/in-cluster.yaml",
+      "staging/src/k8s.io/component-helpers/auth/admission/examples/main.go",
+      "staging/src/k8s.io/component-helpers/auth/admission/examples/out-of-cluster.yaml",
+      "staging/src/k8s.io/component-helpers/auth/admission/verifier.go",
+      "staging/src/k8s.io/component-helpers/auth/admission/verifier_test.go",
+      "staging/src/k8s.io/component-helpers/go.mod",
+      "staging/src/k8s.io/component-helpers/go.sum",
+      "staging/src/k8s.io/kube-scheduler/go.sum",
+      "staging/src/k8s.io/kubectl/go.sum",
+      "test/integration/auth/webhookauth_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144293,
+    "created_at": "2026-11-18T15:21:17Z",
+    "merged_at": "2026-11-18T17:30:23Z",
+    "additions": 4,
+    "deletions": 1,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "liggitt",
+    "files": [
+      "staging/src/k8s.io/component-helpers/auth/rbac/reconciliation/namespace.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144137,
+    "created_at": "2026-11-13T23:47:07Z",
+    "merged_at": "2026-11-18T19:36:30Z",
+    "additions": 528,
+    "deletions": 115,
+    "changed_files_count": 13,
+    "commit_count": 3,
+    "author": "tallclair",
+    "files": [
+      "pkg/kubelet/allocation/allocation_manager.go",
+      "pkg/kubelet/allocation/allocation_manager_test.go",
+      "pkg/kubelet/allocation/state/state_checkpoint_test.go",
+      "pkg/kubelet/allocation/state/state_mem.go",
+      "pkg/kubelet/allocation/state/state_mem_test.go",
+      "pkg/kubelet/kubelet.go",
+      "pkg/kubelet/kubelet_pods.go",
+      "pkg/kubelet/kubelet_test.go",
+      "pkg/kubelet/kuberuntime/kuberuntime_manager.go",
+      "pkg/kubelet/pod_workers.go",
+      "pkg/kubelet/pod_workers_test.go",
+      "pkg/kubelet/status/status_manager.go",
+      "pkg/kubelet/status/status_manager_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144304,
+    "created_at": "2026-11-18T17:08:18Z",
+    "merged_at": "2026-11-18T19:36:41Z",
+    "additions": 6,
+    "deletions": 6,
+    "changed_files_count": 3,
+    "commit_count": 1,
+    "author": "jeremyrickard",
+    "files": [
+      "build/build-image/cross/VERSION",
+      "build/common.sh",
+      "build/dependencies.yaml"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144303,
+    "created_at": "2026-11-18T16:57:30Z",
+    "merged_at": "2026-11-18T21:24:07Z",
+    "additions": 8,
+    "deletions": 0,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "natasha41575",
+    "files": [
+      "test/integration/scheduler/preemption/deferred_resize_preemption_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143242,
+    "created_at": "2026-10-20T21:29:45Z",
+    "merged_at": "2026-11-18T22:46:25Z",
+    "additions": 2413,
+    "deletions": 173,
+    "changed_files_count": 27,
+    "commit_count": 9,
+    "author": "nmn3m",
+    "files": [
+      "api/openapi-spec/swagger.json",
+      "api/openapi-spec/v3/apis__resource.k8s.io__v1alpha3_openapi.json",
+      "hack/tools/instrumentation/documentation/documentation-list.yaml",
+      "pkg/apis/resource/types.go",
+      "pkg/apis/resource/validation/validation_resourcepoolstatusrequest.go",
+      "pkg/apis/resource/validation/validation_resourcepoolstatusrequest_test.go",
+      "pkg/controller/resourcepoolstatusrequest/controller.go",
+      "pkg/controller/resourcepoolstatusrequest/controller_test.go",
+      "pkg/controller/resourcepoolstatusrequest/metrics/metrics.go",
+      "pkg/controller/resourcepoolstatusrequest/metrics/metrics_test.go",
+      "pkg/controller/resourcepoolstatusrequest/sync_observability_test.go",
+      "pkg/generated/openapi/zz_generated.openapi.go",
+      "pkg/printers/internalversion/printers.go",
+      "pkg/printers/internalversion/printers_test.go",
+      "pkg/registry/resource/resourcepoolstatusrequest/storage/storage_test.go",
+      "pkg/registry/resource/resourcepoolstatusrequest/strategy_test.go",
+      "staging/src/k8s.io/api/resource/v1alpha3/generated.proto",
+      "staging/src/k8s.io/api/resource/v1alpha3/types.go",
+      "staging/src/k8s.io/api/resource/v1alpha3/types_swagger_doc_generated.go",
+      "staging/src/k8s.io/client-go/applyconfigurations/resource/v1alpha3/resourcepoolstatusrequest.go",
+      "staging/src/k8s.io/client-go/applyconfigurations/resource/v1alpha3/resourcepoolstatusrequeststatus.go",
+      "staging/src/k8s.io/client-go/applyconfigurations/resource/v1alpha3/shareablesummarystatus.go",
+      "staging/src/k8s.io/kubectl/pkg/describe/describe.go",
+      "staging/src/k8s.io/kubectl/pkg/describe/describe_test.go",
+      "test/e2e/dra/dra.go",
+      "test/integration/dra/resourcepoolstatusrequest_scale_test.go",
+      "test/integration/dra/resourcepoolstatusrequest_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143864,
+    "created_at": "2026-11-05T22:06:57Z",
+    "merged_at": "2026-11-18T23:40:12Z",
+    "additions": 164,
+    "deletions": 123,
+    "changed_files_count": 12,
+    "commit_count": 4,
+    "author": "tallclair",
+    "files": [
+      "pkg/api/v1/resource/helpers.go",
+      "pkg/api/v1/resource/helpers_test.go",
+      "pkg/controller/podautoscaler/replica_calculator.go",
+      "pkg/controller/podautoscaler/replica_calculator_test.go",
+      "pkg/kubelet/eviction/helpers.go",
+      "pkg/kubelet/kubelet_resources.go",
+      "pkg/kubelet/kuberuntime/kuberuntime_container_linux.go",
+      "pkg/kubelet/qos/helpers.go",
+      "pkg/kubelet/qos/policy.go",
+      "pkg/scheduler/framework/types.go",
+      "pkg/scheduler/framework/types_test.go",
+      "pkg/volume/emptydir/empty_dir.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143998,
+    "created_at": "2026-11-10T00:25:15Z",
+    "merged_at": "2026-11-19T00:30:29Z",
+    "additions": 682,
+    "deletions": 42,
+    "changed_files_count": 13,
+    "commit_count": 1,
+    "author": "ndixita",
+    "files": [
+      "pkg/apis/core/validation/pod_validation_options.go",
+      "pkg/apis/core/validation/pod_validation_options_test.go",
+      "pkg/apis/core/validation/validation.go",
+      "pkg/apis/core/validation/validation_test.go",
+      "pkg/features/kube_features.go",
+      "pkg/scheduler/framework/plugins/dynamicresources/nodeallocatabledynamicresources.go",
+      "pkg/scheduler/framework/plugins/dynamicresources/nodeallocatabledynamicresources_test.go",
+      "pkg/scheduler/framework/plugins/feature/feature.go",
+      "test/compatibility_lifecycle/reference/feature_list.md",
+      "test/compatibility_lifecycle/reference/versioned_feature_list.yaml",
+      "test/e2e_node/cpu_manager_test.go",
+      "test/e2e_node/memory_manager_test.go",
+      "test/integration/pods/pods_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144158,
+    "created_at": "2026-11-14T21:18:24Z",
+    "merged_at": "2026-11-19T00:30:38Z",
+    "additions": 3,
+    "deletions": 3,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "dims",
+    "files": [
+      "test/e2e_node/swap_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144273,
+    "created_at": "2026-11-18T05:46:07Z",
+    "merged_at": "2026-11-19T00:30:47Z",
+    "additions": 414,
+    "deletions": 21,
+    "changed_files_count": 3,
+    "commit_count": 1,
+    "author": "ndixita",
+    "files": [
+      "pkg/quota/v1/evaluator/core/pods.go",
+      "pkg/quota/v1/evaluator/core/pods_test.go",
+      "test/integration/quota/quota_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144276,
+    "created_at": "2026-11-18T07:24:39Z",
+    "merged_at": "2026-11-19T00:30:57Z",
+    "additions": 0,
+    "deletions": 8,
+    "changed_files_count": 2,
+    "commit_count": 1,
+    "author": "aojea",
+    "files": [
+      "staging/src/k8s.io/cri-api/pkg/apis/runtime/v1/api.pb.go",
+      "staging/src/k8s.io/cri-api/pkg/apis/runtime/v1/api.proto"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144298,
+    "created_at": "2026-11-18T16:21:21Z",
+    "merged_at": "2026-11-19T00:31:05Z",
+    "additions": 297,
+    "deletions": 28,
+    "changed_files_count": 6,
+    "commit_count": 1,
+    "author": "ndixita",
+    "files": [
+      "pkg/kubelet/cm/cgroup_manager_linux.go",
+      "pkg/kubelet/cm/cgroup_manager_linux_test.go",
+      "pkg/kubelet/kubelet_pod_level_resources_status_test.go",
+      "pkg/kubelet/kubelet_pod_level_resources_status_windows_test.go",
+      "pkg/kubelet/kubelet_pods.go",
+      "pkg/kubelet/kubelet_pods_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144307,
+    "created_at": "2026-11-18T17:52:47Z",
+    "merged_at": "2026-11-19T00:31:15Z",
+    "additions": 5,
+    "deletions": 1,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "helayoty",
+    "files": [
+      "test/integration/job/job_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 137023,
+    "created_at": "2026-02-14T08:40:15Z",
+    "merged_at": "2026-11-19T01:44:15Z",
+    "additions": 969,
+    "deletions": 815,
+    "changed_files_count": 2,
+    "commit_count": 1,
+    "author": "HirazawaUi",
+    "files": [
+      "staging/src/k8s.io/cri-api/pkg/apis/runtime/v1/api.pb.go",
+      "staging/src/k8s.io/cri-api/pkg/apis/runtime/v1/api.proto"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144234,
+    "created_at": "2026-11-17T06:50:26Z",
+    "merged_at": "2026-11-19T01:44:25Z",
+    "additions": 1251,
+    "deletions": 488,
+    "changed_files_count": 14,
+    "commit_count": 3,
+    "author": "tallclair",
+    "files": [
+      "pkg/kubelet/allocation/state/checkpoint_test.go",
+      "pkg/kubelet/allocation/state/checkpoint_v1.go",
+      "pkg/kubelet/allocation/state/checkpoint_v2.go",
+      "pkg/kubelet/allocation/state/state_checkpoint.go",
+      "pkg/kubelet/allocation/state/state_checkpoint_test.go",
+      "pkg/kubelet/cm/helpers.go",
+      "pkg/kubelet/cm/helpers_linux_test.go",
+      "pkg/kubelet/cm/helpers_test.go",
+      "pkg/kubelet/kubelet.go",
+      "pkg/kubelet/kuberuntime/kuberuntime_actuated_test.go",
+      "pkg/kubelet/kuberuntime/kuberuntime_container.go",
+      "pkg/kubelet/kuberuntime/kuberuntime_container_linux.go",
+      "pkg/kubelet/kuberuntime/kuberuntime_manager.go",
+      "pkg/kubelet/kuberuntime/kuberuntime_manager_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144020,
+    "created_at": "2026-11-10T15:03:27Z",
+    "merged_at": "2026-11-19T06:36:15Z",
+    "additions": 4451,
+    "deletions": 216,
+    "changed_files_count": 33,
+    "commit_count": 1,
+    "author": "HirazawaUi",
+    "files": [
+      "pkg/features/kube_features.go",
+      "pkg/kubelet/container/probe_lifecycle.go",
+      "pkg/kubelet/kubelet.go",
+      "pkg/kubelet/kubelet_pods_test.go",
+      "pkg/kubelet/kubelet_probes_test.go",
+      "pkg/kubelet/kubelet_test.go",
+      "pkg/kubelet/kuberuntime/fake_kuberuntime_manager.go",
+      "pkg/kubelet/kuberuntime/kuberuntime_container.go",
+      "pkg/kubelet/kuberuntime/kuberuntime_manager.go",
+      "pkg/kubelet/kuberuntime/kuberuntime_manager_test.go",
+      "pkg/kubelet/kuberuntime/probe_lifecycle_test.go",
+      "pkg/kubelet/prober/container_bound_manager.go",
+      "pkg/kubelet/prober/container_bound_manager_test.go",
+      "pkg/kubelet/prober/container_bound_worker.go",
+      "pkg/kubelet/prober/container_bound_worker_test.go",
+      "pkg/kubelet/prober/probe_result.go",
+      "pkg/kubelet/prober/prober.go",
+      "pkg/kubelet/prober/prober_manager.go",
+      "pkg/kubelet/prober/prober_manager_test.go",
+      "pkg/kubelet/prober/prober_test.go",
+      "pkg/kubelet/prober/results/results_manager.go",
+      "pkg/kubelet/prober/results/results_manager_test.go",
+      "pkg/kubelet/prober/scale_test.go",
+      "pkg/kubelet/prober/testing/fake_manager.go",
+      "pkg/kubelet/prober/worker.go",
+      "pkg/kubelet/prober/worker_test.go",
+      "pkg/probe/grpc/grpc.go",
+      "pkg/probe/grpc/grpc_test.go",
+      "pkg/probe/tcp/tcp.go",
+      "pkg/probe/tcp/tcp_test.go",
+      "test/compatibility_lifecycle/reference/feature_list.md",
+      "test/compatibility_lifecycle/reference/versioned_feature_list.yaml",
+      "test/e2e_node/container_scoped_probes_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144295,
+    "created_at": "2026-11-18T15:54:32Z",
+    "merged_at": "2026-11-19T06:36:25Z",
+    "additions": 1512,
+    "deletions": 63,
+    "changed_files_count": 13,
+    "commit_count": 4,
+    "author": "ndixita",
+    "files": [
+      "api/openapi-spec/swagger.json",
+      "api/openapi-spec/v3/api__v1_openapi.json",
+      "pkg/apis/core/types.go",
+      "pkg/generated/openapi/zz_generated.openapi.go",
+      "pkg/scheduler/framework/plugins/helper/resource_fit.go",
+      "pkg/scheduler/framework/plugins/helper/resource_fit_test.go",
+      "pkg/scheduler/framework/types_test.go",
+      "staging/src/k8s.io/api/core/v1/generated.proto",
+      "staging/src/k8s.io/api/core/v1/types.go",
+      "staging/src/k8s.io/api/core/v1/types_swagger_doc_generated.go",
+      "staging/src/k8s.io/client-go/applyconfigurations/core/v1/podstatus.go",
+      "staging/src/k8s.io/component-helpers/resource/helpers.go",
+      "staging/src/k8s.io/component-helpers/resource/helpers_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 139409,
+    "created_at": "2026-06-01T12:19:54Z",
+    "merged_at": "2026-11-19T07:34:14Z",
+    "additions": 2505,
+    "deletions": 7,
+    "changed_files_count": 37,
+    "commit_count": 2,
+    "author": "stlaz",
+    "files": [
+      "api/api-rules/violation_exceptions.list",
+      "cmd/kube-controller-manager/app/certificates.go",
+      "cmd/kube-controller-manager/app/controller_descriptor.go",
+      "cmd/kube-controller-manager/app/controllermanager_test.go",
+      "cmd/kube-controller-manager/app/options/options.go",
+      "cmd/kube-controller-manager/app/options/options_test.go",
+      "cmd/kube-controller-manager/app/options/serviceservingsigner.go",
+      "cmd/kube-controller-manager/names/controller_names.go",
+      "pkg/apis/certificates/types.go",
+      "pkg/controller/apis/config/fuzzer/fuzzer.go",
+      "pkg/controller/apis/config/types.go",
+      "pkg/controller/apis/config/v1alpha1/defaults.go",
+      "pkg/controller/apis/config/v1alpha1/zz_generated.conversion.go",
+      "pkg/controller/apis/config/zz_generated.deepcopy.go",
+      "pkg/controller/certificates/podcertssigner/config/doc.go",
+      "pkg/controller/certificates/podcertssigner/config/types.go",
+      "pkg/controller/certificates/podcertssigner/config/v1alpha1/conversion.go",
+      "pkg/controller/certificates/podcertssigner/config/v1alpha1/defaults.go",
+      "pkg/controller/certificates/podcertssigner/config/v1alpha1/doc.go",
+      "pkg/controller/certificates/podcertssigner/config/v1alpha1/register.go",
+      "pkg/controller/certificates/podcertssigner/config/v1alpha1/zz_generated.conversion.go",
+      "pkg/controller/certificates/podcertssigner/config/zz_generated.deepcopy.go",
+      "pkg/controller/certificates/podcertssigner/podcertssigner.go",
+      "pkg/controller/certificates/podcertssigner/podcertssigner_test.go",
+      "pkg/features/kube_features.go",
+      "pkg/generated/openapi/zz_generated.openapi.go",
+      "plugin/pkg/auth/authorizer/rbac/bootstrappolicy/controller_policy.go",
+      "plugin/pkg/auth/authorizer/rbac/bootstrappolicy/testdata/controller-roles-featuregates.yaml",
+      "staging/src/k8s.io/apiserver/pkg/server/dynamiccertificates/cert_key.go",
+      "staging/src/k8s.io/apiserver/pkg/server/dynamiccertificates/dynamic_serving_content.go",
+      "staging/src/k8s.io/kube-controller-manager/config/v1alpha1/types.go",
+      "staging/src/k8s.io/kube-controller-manager/config/v1alpha1/zz_generated.deepcopy.go",
+      "staging/src/k8s.io/kube-controller-manager/config/v1alpha1/zz_generated.model_name.go",
+      "test/compatibility_lifecycle/reference/feature_list.md",
+      "test/compatibility_lifecycle/reference/versioned_feature_list.yaml",
+      "test/e2e/auth/service_serving_signer.go",
+      "test/e2e/feature/feature.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 140536,
+    "created_at": "2026-07-14T12:05:59Z",
+    "merged_at": "2026-11-19T07:34:23Z",
+    "additions": 332,
+    "deletions": 159,
+    "changed_files_count": 31,
+    "commit_count": 3,
+    "author": "ndixita",
+    "files": [
+      "pkg/api/pod/util_test.go",
+      "pkg/api/v1/resource/helpers_test.go",
+      "pkg/apis/core/v1/helper/qos/qos_test.go",
+      "pkg/controller/podautoscaler/replica_calculator_test.go",
+      "pkg/features/kube_features.go",
+      "pkg/kubelet/cm/container_manager_linux_test.go",
+      "pkg/kubelet/cm/cpumanager/policy_static_restore_test.go",
+      "pkg/kubelet/cm/cpumanager/policy_static_test.go",
+      "pkg/kubelet/cm/cpumanager/topology_hints_test.go",
+      "pkg/kubelet/cm/helpers_linux_test.go",
+      "pkg/kubelet/cm/helpers_test.go",
+      "pkg/kubelet/cm/memorymanager/policy_static_restore_test.go",
+      "pkg/kubelet/cm/memorymanager/policy_static_test.go",
+      "pkg/kubelet/cm/qos_container_manager_linux_test.go",
+      "pkg/kubelet/kubelet_resources_test.go",
+      "pkg/kubelet/kuberuntime/kuberuntime_container_linux_test.go",
+      "pkg/kubelet/kuberuntime/kuberuntime_sandbox_linux_test.go",
+      "pkg/kubelet/qos/policy_test.go",
+      "pkg/quota/v1/evaluator/core/pods_test.go",
+      "pkg/registry/core/pod/strategy_test.go",
+      "pkg/scheduler/framework/types_test.go",
+      "plugin/pkg/admission/limitranger/admission_test.go",
+      "plugin/pkg/admission/resourcequota/admission_test.go",
+      "test/compatibility_lifecycle/reference/feature_list.md",
+      "test/compatibility_lifecycle/reference/versioned_feature_list.yaml",
+      "test/conformance/testdata/conformance.yaml",
+      "test/e2e/common/node/downwardapi.go",
+      "test/e2e/common/node/pod_level_resources.go",
+      "test/e2e_node/cpu_manager_test.go",
+      "test/e2e_node/memory_manager_test.go",
+      "test/integration/pods/pods_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144330,
+    "created_at": "2026-11-19T06:54:25Z",
+    "merged_at": "2026-11-19T13:54:27Z",
+    "additions": 1,
+    "deletions": 1,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "Tal-or",
+    "files": [
+      "test/e2e_node/node_container_manager_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 142885,
+    "created_at": "2026-10-09T18:01:50Z",
+    "merged_at": "2026-11-19T17:48:14Z",
+    "additions": 4650,
+    "deletions": 97,
+    "changed_files_count": 56,
+    "commit_count": 3,
+    "author": "ajaysundark",
+    "files": [
+      "cmd/kubelet/app/server.go",
+      "pkg/api/pod/util.go",
+      "pkg/apis/core/helper/qos/qos.go",
+      "pkg/apis/core/types.go",
+      "pkg/apis/core/v1/defaults.go",
+      "pkg/apis/core/v1/defaults_test.go",
+      "pkg/apis/core/v1/helper/qos/qos.go",
+      "pkg/apis/core/v1/helper/qos/qos_test.go",
+      "pkg/apis/core/validation/pod_validation_options.go",
+      "pkg/apis/core/validation/pod_validation_options_test.go",
+      "pkg/apis/core/validation/validation.go",
+      "pkg/apis/core/validation/validation_test.go",
+      "pkg/features/kube_features.go",
+      "pkg/generated/openapi/zz_generated.openapi.go",
+      "pkg/kubelet/allocation/handlers.go",
+      "pkg/kubelet/allocation/handlers_test.go",
+      "pkg/kubelet/apis/config/types.go",
+      "pkg/kubelet/apis/config/validation/validation.go",
+      "pkg/kubelet/apis/config/validation/validation_test.go",
+      "pkg/kubelet/cm/cgroup_manager_linux.go",
+      "pkg/kubelet/cm/cgroup_v2_manager_linux.go",
+      "pkg/kubelet/cm/fake_pod_container_manager.go",
+      "pkg/kubelet/cm/helpers.go",
+      "pkg/kubelet/cm/helpers_linux.go",
+      "pkg/kubelet/cm/helpers_linux_test.go",
+      "pkg/kubelet/cm/pod_container_manager_linux.go",
+      "pkg/kubelet/cm/pod_container_manager_linux_test.go",
+      "pkg/kubelet/container/helpers.go",
+      "pkg/kubelet/container/testing/fake_runtime.go",
+      "pkg/kubelet/container/testing/fake_runtime_helper.go",
+      "pkg/kubelet/events/event.go",
+      "pkg/kubelet/kubelet.go",
+      "pkg/kubelet/kubelet_pods.go",
+      "pkg/kubelet/kubelet_pods_test.go",
+      "pkg/kubelet/kuberuntime/helpers.go",
+      "pkg/kubelet/kuberuntime/kuberuntime_container.go",
+      "pkg/kubelet/kuberuntime/kuberuntime_container_linux.go",
+      "pkg/kubelet/kuberuntime/kuberuntime_container_linux_test.go",
+      "pkg/kubelet/kuberuntime/kuberuntime_container_unsupported.go",
+      "pkg/kubelet/kuberuntime/kuberuntime_container_windows.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143673,
+    "created_at": "2026-11-01T13:02:42Z",
+    "merged_at": "2026-11-19T21:02:15Z",
+    "additions": 1464,
+    "deletions": 12,
+    "changed_files_count": 107,
+    "commit_count": 7,
+    "author": "AkihiroSuda",
+    "files": [
+      "api/openapi-spec/swagger.json",
+      "api/openapi-spec/v3/api__v1_openapi.json",
+      "api/openapi-spec/v3/apis__apps__v1_openapi.json",
+      "api/openapi-spec/v3/apis__batch__v1_openapi.json",
+      "pkg/api/pod/util.go",
+      "pkg/api/pod/util_test.go",
+      "pkg/apis/core/types.go",
+      "pkg/apis/core/v1/zz_generated.validations.go",
+      "pkg/apis/core/validation/validation.go",
+      "pkg/apis/core/validation/validation_test.go",
+      "pkg/apis/core/zz_generated.deepcopy.go",
+      "pkg/features/kube_features.go",
+      "pkg/generated/openapi/zz_generated.openapi.go",
+      "pkg/kubelet/allocation/allocation_manager_test.go",
+      "pkg/kubelet/container/runtime.go",
+      "pkg/kubelet/container/runtime_test.go",
+      "pkg/kubelet/kubelet.go",
+      "pkg/kubelet/kubelet_node_declared_features.go",
+      "pkg/kubelet/kubelet_node_declared_features_test.go",
+      "pkg/kubelet/kubelet_pods.go",
+      "pkg/kubelet/kubelet_pods_test.go",
+      "pkg/kubelet/kuberuntime/helpers.go",
+      "pkg/kubelet/kuberuntime/kuberuntime_container_linux_test.go",
+      "pkg/kubelet/kuberuntime/security_context.go",
+      "pkg/kubelet/nodestatus/setters.go",
+      "pkg/kubelet/nodestatus/setters_test.go",
+      "pkg/registry/core/node/strategy.go",
+      "pkg/registry/core/node/strategy_test.go",
+      "staging/src/k8s.io/api/core/v1/generated.pb.go",
+      "staging/src/k8s.io/api/core/v1/generated.proto",
+      "staging/src/k8s.io/api/core/v1/types.go",
+      "staging/src/k8s.io/api/core/v1/types_swagger_doc_generated.go",
+      "staging/src/k8s.io/api/core/v1/zz_generated.deepcopy.go",
+      "staging/src/k8s.io/api/testdata/HEAD/apps.v1.DaemonSet.json",
+      "staging/src/k8s.io/api/testdata/HEAD/apps.v1.DaemonSet.pb",
+      "staging/src/k8s.io/api/testdata/HEAD/apps.v1.DaemonSet.yaml",
+      "staging/src/k8s.io/api/testdata/HEAD/apps.v1.Deployment.json",
+      "staging/src/k8s.io/api/testdata/HEAD/apps.v1.Deployment.pb",
+      "staging/src/k8s.io/api/testdata/HEAD/apps.v1.Deployment.yaml",
+      "staging/src/k8s.io/api/testdata/HEAD/apps.v1.ReplicaSet.json"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144348,
+    "created_at": "2026-11-19T14:29:00Z",
+    "merged_at": "2026-11-20T05:56:13Z",
+    "additions": 270,
+    "deletions": 20,
+    "changed_files_count": 3,
+    "commit_count": 1,
+    "author": "serathius",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/registry/generic/registry/dryrun_test.go",
+      "staging/src/k8s.io/apiserver/pkg/registry/generic/registry/store_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143400,
+    "created_at": "2026-10-26T03:34:24Z",
+    "merged_at": "2026-11-20T10:48:17Z",
+    "additions": 1747,
+    "deletions": 8,
+    "changed_files_count": 20,
+    "commit_count": 5,
+    "author": "lukaszwojciechowski",
+    "files": [
+      "pkg/kubelet/allocation/allocation_manager.go",
+      "pkg/kubelet/allocation/allocation_manager_test.go",
+      "pkg/kubelet/cm/cpumanager/admit_transaction.go",
+      "pkg/kubelet/cm/cpumanager/admit_transaction_test.go",
+      "pkg/kubelet/cm/cpumanager/cpu_manager.go",
+      "pkg/kubelet/cm/cpumanager/cpu_manager_test.go",
+      "pkg/kubelet/cm/cpumanager/policy.go",
+      "pkg/kubelet/cm/cpumanager/policy_static.go",
+      "pkg/kubelet/cm/cpumanager/policy_static_test.go",
+      "pkg/kubelet/cm/cpumanager/state/state.go",
+      "pkg/kubelet/cm/cpumanager/state/state_checkpoint.go",
+      "pkg/kubelet/cm/cpumanager/state/state_checkpoint_test.go",
+      "pkg/kubelet/cm/cpumanager/state/state_mem.go",
+      "pkg/kubelet/cm/cpumanager/state/state_mem_test.go",
+      "pkg/kubelet/cm/cpumanager/state/state_test.go",
+      "pkg/kubelet/cm/topologymanager/fake_topology_manager.go",
+      "pkg/kubelet/cm/topologymanager/scope.go",
+      "pkg/kubelet/cm/topologymanager/topology_manager.go",
+      "pkg/kubelet/cm/topologymanager/topology_manager_test.go",
+      "pkg/kubelet/lifecycle/interfaces.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144352,
+    "created_at": "2026-11-19T15:43:06Z",
+    "merged_at": "2026-11-20T12:56:15Z",
+    "additions": 5,
+    "deletions": 0,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "dims",
+    "files": [
+      "test/e2e_node/restart_all_containers_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144366,
+    "created_at": "2026-11-20T01:31:49Z",
+    "merged_at": "2026-11-20T13:58:14Z",
+    "additions": 7,
+    "deletions": 5,
+    "changed_files_count": 3,
+    "commit_count": 1,
+    "author": "dims",
+    "files": [
+      "test/conformance/testdata/conformance.yaml",
+      "test/e2e/common/node/downwardapi.go",
+      "test/e2e/common/node/pod_level_resources.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144360,
+    "created_at": "2026-11-19T18:59:59Z",
+    "merged_at": "2026-11-20T15:42:15Z",
+    "additions": 1,
+    "deletions": 1,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "jeremyrickard",
+    "files": [
+      ".go-version"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144359,
+    "created_at": "2026-11-19T18:59:54Z",
+    "merged_at": "2026-11-20T15:42:15Z",
+    "additions": 1,
+    "deletions": 1,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "jeremyrickard",
+    "files": [
+      ".go-version"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144357,
+    "created_at": "2026-11-19T18:59:50Z",
+    "merged_at": "2026-11-20T15:42:15Z",
+    "additions": 1,
+    "deletions": 1,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "jeremyrickard",
+    "files": [
+      ".go-version"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144358,
+    "created_at": "2026-11-19T18:59:50Z",
+    "merged_at": "2026-11-20T16:34:12Z",
+    "additions": 7,
+    "deletions": 7,
+    "changed_files_count": 4,
+    "commit_count": 1,
+    "author": "jeremyrickard",
+    "files": [
+      "build/build-image/cross/VERSION",
+      "build/common.sh",
+      "build/dependencies.yaml",
+      "test/utils/image/manifest.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144356,
+    "created_at": "2026-11-19T18:59:48Z",
+    "merged_at": "2026-11-20T16:40:18Z",
+    "additions": 7,
+    "deletions": 7,
+    "changed_files_count": 4,
+    "commit_count": 1,
+    "author": "jeremyrickard",
+    "files": [
+      "build/build-image/cross/VERSION",
+      "build/common.sh",
+      "build/dependencies.yaml",
+      "test/utils/image/manifest.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144355,
+    "created_at": "2026-11-19T18:59:47Z",
+    "merged_at": "2026-11-20T17:16:16Z",
+    "additions": 7,
+    "deletions": 7,
+    "changed_files_count": 4,
+    "commit_count": 1,
+    "author": "jeremyrickard",
+    "files": [
+      "build/build-image/cross/VERSION",
+      "build/common.sh",
+      "build/dependencies.yaml",
+      "test/utils/image/manifest.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143456,
+    "created_at": "2026-10-27T08:17:41Z",
+    "merged_at": "2026-11-20T17:20:30Z",
+    "additions": 6959,
+    "deletions": 142,
+    "changed_files_count": 27,
+    "commit_count": 7,
+    "author": "troychiu",
+    "files": [
+      "pkg/scheduler/framework/events.go",
+      "pkg/scheduler/framework/plugins/dynamicresources/claims.go",
+      "pkg/scheduler/framework/plugins/dynamicresources/dra_manager.go",
+      "pkg/scheduler/framework/plugins/dynamicresources/dynamicresources.go",
+      "pkg/scheduler/framework/plugins/dynamicresources/dynamicresources_test.go",
+      "pkg/scheduler/framework/plugins/dynamicresources/extendeddynamicresources.go",
+      "pkg/scheduler/framework/plugins/dynamicresources/holds.go",
+      "pkg/scheduler/framework/plugins/dynamicresources/holds_test.go",
+      "pkg/scheduler/framework/plugins/dynamicresources/nodeallocatabledynamicresources.go",
+      "pkg/scheduler/framework/plugins/dynamicresources/nominationextensions.go",
+      "pkg/scheduler/framework/plugins/dynamicresources/nominationextensions_test.go",
+      "pkg/scheduler/framework/plugins/dynamicresources/preemption.go",
+      "pkg/scheduler/framework/plugins/dynamicresources/preemption_test.go",
+      "pkg/scheduler/framework/plugins/dynamicresources/preemption_tracker.go",
+      "pkg/scheduler/framework/plugins/dynamicresources/preemption_tracker_test.go",
+      "pkg/scheduler/framework/plugins/dynamicresources/victimextensions.go",
+      "pkg/scheduler/framework/plugins/dynamicresources/victimextensions_test.go",
+      "test/e2e/dra/preemption.go",
+      "test/integration/dra/dra.go",
+      "test/integration/dra/preemption.go",
+      "test/integration/dra/preemption/main_test.go",
+      "test/integration/dra/preemption/preemption_test.go",
+      "test/integration/scheduler_perf/dra/preemption/performance-config.yaml",
+      "test/integration/scheduler_perf/dra/preemption/preemption_test.go",
+      "test/integration/scheduler_perf/dra/preemption/templates/pod-with-claim-template-high-priority.yaml",
+      "test/integration/scheduler_perf/dra/preemption/templates/pod-with-claim-template-low-priority.yaml",
+      "test/integration/scheduler_perf/dra/preemption/templates/resourceslice-partitionable-devices.yaml"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 139277,
+    "created_at": "2026-05-25T12:34:49Z",
+    "merged_at": "2026-11-20T18:22:32Z",
+    "additions": 2605,
+    "deletions": 26,
+    "changed_files_count": 34,
+    "commit_count": 1,
+    "author": "BhargaviGudi",
+    "files": [
+      "pkg/api/pod/util_test.go",
+      "pkg/api/v1/resource/helpers.go",
+      "pkg/apis/core/helper/helpers.go",
+      "pkg/apis/core/helper/helpers_test.go",
+      "pkg/apis/core/types.go",
+      "pkg/apis/core/v1/defaults_test.go",
+      "pkg/apis/core/v1/helper/qos/qos_test.go",
+      "pkg/apis/core/validation/pod_validation_options.go",
+      "pkg/apis/core/validation/pod_validation_options_test.go",
+      "pkg/apis/core/validation/validation.go",
+      "pkg/apis/core/validation/validation_test.go",
+      "pkg/features/kube_features.go",
+      "pkg/kubelet/cm/container_manager_linux.go",
+      "pkg/kubelet/cm/pod_container_manager_linux.go",
+      "pkg/kubelet/cm/pod_container_manager_linux_test.go",
+      "pkg/kubelet/config/common_test.go",
+      "pkg/kubelet/events/event.go",
+      "pkg/kubelet/eviction/eviction_manager_test.go",
+      "pkg/kubelet/lifecycle/features_linux.go",
+      "pkg/kubelet/lifecycle/features_linux_test.go",
+      "pkg/kubelet/lifecycle/features_unsupported.go",
+      "pkg/kubelet/lifecycle/features_windows.go",
+      "pkg/kubelet/lifecycle/features_windows_test.go",
+      "pkg/kubelet/lifecycle/handlers.go",
+      "pkg/quota/v1/evaluator/core/pods_test.go",
+      "staging/src/k8s.io/api/core/v1/types.go",
+      "staging/src/k8s.io/component-helpers/nodedeclaredfeatures/features/perpodpidlimit/feature.go",
+      "staging/src/k8s.io/component-helpers/nodedeclaredfeatures/features/perpodpidlimit/feature_test.go",
+      "staging/src/k8s.io/component-helpers/nodedeclaredfeatures/features/registry.go",
+      "staging/src/k8s.io/component-helpers/resource/helpers.go",
+      "staging/src/k8s.io/component-helpers/resource/helpers_test.go",
+      "test/compatibility_lifecycle/reference/feature_list.md",
+      "test/compatibility_lifecycle/reference/versioned_feature_list.yaml",
+      "test/e2e_node/pids_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 140629,
+    "created_at": "2026-07-16T07:23:12Z",
+    "merged_at": "2026-11-20T23:28:13Z",
+    "additions": 11468,
+    "deletions": 172,
+    "changed_files_count": 25,
+    "commit_count": 8,
+    "author": "esotsal",
+    "files": [
+      "pkg/kubelet/allocation/allocation_manager_test.go",
+      "pkg/kubelet/allocation/handlers.go",
+      "pkg/kubelet/cm/cpumanager/admit_transaction.go",
+      "pkg/kubelet/cm/cpumanager/admit_transaction_test.go",
+      "pkg/kubelet/cm/cpumanager/cpu_assignment_resize.go",
+      "pkg/kubelet/cm/cpumanager/cpu_assignment_resize_test.go",
+      "pkg/kubelet/cm/cpumanager/cpu_assignment_test.go",
+      "pkg/kubelet/cm/cpumanager/cpu_manager_test.go",
+      "pkg/kubelet/cm/cpumanager/policy.go",
+      "pkg/kubelet/cm/cpumanager/policy_none.go",
+      "pkg/kubelet/cm/cpumanager/policy_static.go",
+      "pkg/kubelet/cm/cpumanager/policy_static_metrics_test.go",
+      "pkg/kubelet/cm/cpumanager/policy_static_resize_test.go",
+      "pkg/kubelet/cm/cpumanager/policy_static_test.go",
+      "pkg/kubelet/cm/cpumanager/topology/topology.go",
+      "pkg/kubelet/cm/cpumanager/topology_hints_test.go",
+      "pkg/kubelet/cm/topologymanager/fake_topology_manager.go",
+      "pkg/kubelet/cm/topologymanager/scope_container.go",
+      "pkg/kubelet/cm/topologymanager/scope_pod.go",
+      "pkg/kubelet/cm/topologymanager/topology_manager.go",
+      "pkg/kubelet/cm/topologymanager/topology_manager_test.go",
+      "test/e2e/common/node/framework/podresize/resize.go",
+      "test/e2e/feature/feature.go",
+      "test/e2e_node/cpu_manager_resize_test.go",
+      "test/e2e_node/cpu_manager_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143709,
+    "created_at": "2026-11-02T16:44:28Z",
+    "merged_at": "2026-11-20T23:28:24Z",
+    "additions": 9108,
+    "deletions": 399,
+    "changed_files_count": 90,
+    "commit_count": 16,
+    "author": "natasha41575",
+    "files": [
+      "api/openapi-spec/swagger.json",
+      "api/openapi-spec/v3/api__v1_openapi.json",
+      "pkg/api/pod/util.go",
+      "pkg/api/pod/util_allocs_test.go",
+      "pkg/api/pod/util_test.go",
+      "pkg/api/v1/pod/util.go",
+      "pkg/api/v1/pod/util_allocs_test.go",
+      "pkg/api/v1/pod/util_test.go",
+      "pkg/apis/core/types.go",
+      "pkg/apis/core/v1/zz_generated.validations.go",
+      "pkg/apis/core/validation/pod_validation_options.go",
+      "pkg/apis/core/validation/validation.go",
+      "pkg/apis/core/validation/validation_test.go",
+      "pkg/features/kube_features.go",
+      "pkg/generated/openapi/zz_generated.openapi.go",
+      "pkg/kubelet/allocation/allocation_manager.go",
+      "pkg/kubelet/allocation/allocation_manager_test.go",
+      "pkg/kubelet/allocation/handlers.go",
+      "pkg/kubelet/container/helpers.go",
+      "pkg/kubelet/container/runtime.go",
+      "pkg/kubelet/container/runtime_test.go",
+      "pkg/kubelet/container/testing/fake_runtime.go",
+      "pkg/kubelet/container/testing/fake_runtime_helper.go",
+      "pkg/kubelet/container/testing/mocks.go",
+      "pkg/kubelet/kubelet.go",
+      "pkg/kubelet/kubelet_pods.go",
+      "pkg/kubelet/kubelet_pods_test.go",
+      "pkg/kubelet/kubelet_test.go",
+      "pkg/kubelet/kuberuntime/kuberuntime_actuated_test.go",
+      "pkg/kubelet/kuberuntime/kuberuntime_container.go",
+      "pkg/kubelet/kuberuntime/kuberuntime_manager.go",
+      "pkg/kubelet/kuberuntime/kuberuntime_manager_test.go",
+      "pkg/kubelet/kuberuntime/kuberuntime_swap_resize_test.go",
+      "pkg/kubelet/podcertificate/podcertificatemanager.go",
+      "pkg/kubelet/podcertificate/podcertificatemanager_test.go",
+      "pkg/kubelet/server/server_test.go",
+      "pkg/kubelet/server/stats/fs_resource_analyzer.go",
+      "pkg/kubelet/server/stats/resource_analyzer.go",
+      "pkg/kubelet/server/stats/volume_stat_calculator.go",
+      "pkg/kubelet/server/stats/volume_stat_calculator_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144232,
+    "created_at": "2026-11-17T06:07:23Z",
+    "merged_at": "2026-11-21T00:48:15Z",
+    "additions": 536,
+    "deletions": 197,
+    "changed_files_count": 9,
+    "commit_count": 1,
+    "author": "ndixita",
+    "files": [
+      "hack/tools/instrumentation/documentation/documentation-list.yaml",
+      "pkg/kubelet/allocation/allocation_manager.go",
+      "pkg/kubelet/allocation/allocation_manager_test.go",
+      "pkg/kubelet/allocation/handlers.go",
+      "pkg/kubelet/kubelet.go",
+      "pkg/kubelet/kubelet_test.go",
+      "pkg/kubelet/kuberuntime/kuberuntime_manager.go",
+      "pkg/kubelet/kuberuntime/kuberuntime_manager_test.go",
+      "pkg/kubelet/metrics/metrics.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 142854,
+    "created_at": "2026-10-08T22:03:17Z",
+    "merged_at": "2026-11-21T01:54:13Z",
+    "additions": 877,
+    "deletions": 135,
+    "changed_files_count": 20,
+    "commit_count": 1,
+    "author": "QiWang19",
+    "files": [
+      "hack/tools/instrumentation/documentation/documentation-list.yaml",
+      "pkg/features/kube_features.go",
+      "pkg/generated/openapi/zz_generated.openapi.go",
+      "pkg/kubelet/apis/config/helpers.go",
+      "pkg/kubelet/apis/config/helpers_test.go",
+      "pkg/kubelet/apis/config/types.go",
+      "pkg/kubelet/apis/config/validation/validation.go",
+      "pkg/kubelet/apis/config/validation/validation_test.go",
+      "pkg/kubelet/cm/helpers_linux.go",
+      "pkg/kubelet/cm/helpers_linux_test.go",
+      "pkg/kubelet/cm/qos_container_manager_linux.go",
+      "pkg/kubelet/cm/qos_container_manager_linux_test.go",
+      "pkg/kubelet/kuberuntime/fake_kuberuntime_manager.go",
+      "pkg/kubelet/kuberuntime/kuberuntime_container_linux.go",
+      "pkg/kubelet/kuberuntime/kuberuntime_container_linux_test.go",
+      "pkg/kubelet/metrics/metrics.go",
+      "staging/src/k8s.io/kubelet/config/v1beta1/types.go",
+      "test/compatibility_lifecycle/reference/feature_list.md",
+      "test/compatibility_lifecycle/reference/versioned_feature_list.yaml",
+      "test/e2e_node/memory_qos_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143999,
+    "created_at": "2026-11-10T00:29:42Z",
+    "merged_at": "2026-11-21T03:02:15Z",
+    "additions": 83,
+    "deletions": 28,
+    "changed_files_count": 11,
+    "commit_count": 2,
+    "author": "ndixita",
+    "files": [
+      "pkg/api/pod/util_test.go",
+      "pkg/features/kube_features.go",
+      "pkg/kubelet/allocation/allocation_manager_test.go",
+      "pkg/kubelet/allocation/handlers_test.go",
+      "pkg/kubelet/kubelet_pods_test.go",
+      "pkg/kubelet/kuberuntime/kuberuntime_manager_test.go",
+      "pkg/kubelet/kuberuntime/kuberuntime_swap_resize_test.go",
+      "test/compatibility_lifecycle/reference/feature_list.md",
+      "test/compatibility_lifecycle/reference/versioned_feature_list.yaml",
+      "test/e2e/common/node/pod_level_resources_resize.go",
+      "test/e2e/common/node/pod_resize.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144379,
+    "created_at": "2026-11-20T16:21:53Z",
+    "merged_at": "2026-11-21T06:04:15Z",
+    "additions": 12,
+    "deletions": 10,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "dims",
+    "files": [
+      "test/e2e_node/node_container_manager_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144378,
+    "created_at": "2026-11-20T15:00:11Z",
+    "merged_at": "2026-11-21T07:56:14Z",
+    "additions": 7,
+    "deletions": 1,
+    "changed_files_count": 3,
+    "commit_count": 3,
+    "author": "dims",
+    "files": [
+      "test/e2e/common/node/pod_level_resources.go",
+      "test/e2e_node/device_plugin_test.go",
+      "test/e2e_node/node_container_manager_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144133,
+    "created_at": "2026-11-13T17:57:01Z",
+    "merged_at": "2026-11-21T23:08:19Z",
+    "additions": 84,
+    "deletions": 2,
+    "changed_files_count": 6,
+    "commit_count": 1,
+    "author": "nami-ant",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cache_watcher.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/cacher.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/resync_metrics_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/cacher/watcher_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/etcd3/watcher_test.go",
+      "staging/src/k8s.io/apiserver/pkg/storage/testing/watcher_tests.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144205,
+    "created_at": "2026-11-16T14:20:12Z",
+    "merged_at": "2026-11-23T21:16:25Z",
+    "additions": 151,
+    "deletions": 7,
+    "changed_files_count": 2,
+    "commit_count": 1,
+    "author": "vshkrabkov",
+    "files": [
+      "pkg/scheduler/eventhandlers.go",
+      "pkg/scheduler/eventhandlers_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144313,
+    "created_at": "2026-11-18T19:19:43Z",
+    "merged_at": "2026-11-23T21:16:35Z",
+    "additions": 33,
+    "deletions": 2,
+    "changed_files_count": 2,
+    "commit_count": 1,
+    "author": "gnufied",
+    "files": [
+      "staging/src/k8s.io/csi-translation-lib/plugins/vsphere_volume.go",
+      "staging/src/k8s.io/csi-translation-lib/plugins/vsphere_volume_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144345,
+    "created_at": "2026-11-19T13:47:24Z",
+    "merged_at": "2026-11-23T21:16:45Z",
+    "additions": 6,
+    "deletions": 1,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "tico88612",
+    "files": [
+      "test/integration/events/events_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143626,
+    "created_at": "2026-10-30T16:08:09Z",
+    "merged_at": "2026-11-23T21:30:24Z",
+    "additions": 8,
+    "deletions": 3,
+    "changed_files_count": 2,
+    "commit_count": 1,
+    "author": "devreddy1015",
+    "files": [
+      "cmd/kubeadm/app/phases/kubeconfig/kubeconfig.go",
+      "cmd/kubeadm/app/phases/kubeconfig/kubeconfig_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143742,
+    "created_at": "2026-11-03T09:32:11Z",
+    "merged_at": "2026-11-23T21:30:34Z",
+    "additions": 48,
+    "deletions": 0,
+    "changed_files_count": 2,
+    "commit_count": 1,
+    "author": "devreddy1015",
+    "files": [
+      "cmd/kubeadm/app/phases/upgrade/compute.go",
+      "cmd/kubeadm/app/phases/upgrade/compute_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144314,
+    "created_at": "2026-11-18T19:19:58Z",
+    "merged_at": "2026-11-23T21:30:43Z",
+    "additions": 33,
+    "deletions": 2,
+    "changed_files_count": 2,
+    "commit_count": 1,
+    "author": "gnufied",
+    "files": [
+      "staging/src/k8s.io/csi-translation-lib/plugins/vsphere_volume.go",
+      "staging/src/k8s.io/csi-translation-lib/plugins/vsphere_volume_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144346,
+    "created_at": "2026-11-19T13:47:28Z",
+    "merged_at": "2026-11-23T21:30:52Z",
+    "additions": 6,
+    "deletions": 1,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "tico88612",
+    "files": [
+      "test/integration/events/events_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144204,
+    "created_at": "2026-11-16T14:12:32Z",
+    "merged_at": "2026-11-23T21:38:25Z",
+    "additions": 100,
+    "deletions": 0,
+    "changed_files_count": 2,
+    "commit_count": 1,
+    "author": "vshkrabkov",
+    "files": [
+      "pkg/scheduler/eventhandlers.go",
+      "pkg/scheduler/eventhandlers_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144312,
+    "created_at": "2026-11-18T19:19:18Z",
+    "merged_at": "2026-11-23T21:38:34Z",
+    "additions": 33,
+    "deletions": 2,
+    "changed_files_count": 2,
+    "commit_count": 1,
+    "author": "gnufied",
+    "files": [
+      "staging/src/k8s.io/csi-translation-lib/plugins/vsphere_volume.go",
+      "staging/src/k8s.io/csi-translation-lib/plugins/vsphere_volume_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144344,
+    "created_at": "2026-11-19T13:47:20Z",
+    "merged_at": "2026-11-23T21:38:43Z",
+    "additions": 6,
+    "deletions": 1,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "tico88612",
+    "files": [
+      "test/integration/events/events_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143433,
+    "created_at": "2026-10-26T17:52:30Z",
+    "merged_at": "2026-11-23T22:34:24Z",
+    "additions": 227,
+    "deletions": 64,
+    "changed_files_count": 6,
+    "commit_count": 1,
+    "author": "SEPURI-SAI-KRISHNA",
+    "files": [
+      "cmd/kubeadm/app/phases/upgrade/staticpods.go",
+      "cmd/kubeadm/app/phases/upgrade/staticpods_test.go",
+      "cmd/kubeadm/app/util/copy.go",
+      "cmd/kubeadm/app/util/copy_test.go",
+      "cmd/kubeadm/app/util/copy_unix.go",
+      "cmd/kubeadm/app/util/copy_windows.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143627,
+    "created_at": "2026-10-30T16:08:12Z",
+    "merged_at": "2026-11-23T22:34:33Z",
+    "additions": 8,
+    "deletions": 3,
+    "changed_files_count": 2,
+    "commit_count": 1,
+    "author": "devreddy1015",
+    "files": [
+      "cmd/kubeadm/app/phases/kubeconfig/kubeconfig.go",
+      "cmd/kubeadm/app/phases/kubeconfig/kubeconfig_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143741,
+    "created_at": "2026-11-03T09:32:08Z",
+    "merged_at": "2026-11-23T22:34:42Z",
+    "additions": 48,
+    "deletions": 0,
+    "changed_files_count": 2,
+    "commit_count": 1,
+    "author": "devreddy1015",
+    "files": [
+      "cmd/kubeadm/app/phases/upgrade/compute.go",
+      "cmd/kubeadm/app/phases/upgrade/compute_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143772,
+    "created_at": "2026-11-03T21:56:36Z",
+    "merged_at": "2026-11-23T22:34:52Z",
+    "additions": 163,
+    "deletions": 16,
+    "changed_files_count": 2,
+    "commit_count": 1,
+    "author": "hime",
+    "files": [
+      "pkg/volume/csi/nodeinfomanager/nodeinfomanager.go",
+      "pkg/volume/csi/nodeinfomanager/nodeinfomanager_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143563,
+    "created_at": "2026-10-29T12:08:09Z",
+    "merged_at": "2026-11-23T23:04:23Z",
+    "additions": 3,
+    "deletions": 0,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "thc1006",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/storagebackend/factory/factory_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143774,
+    "created_at": "2026-11-03T22:18:40Z",
+    "merged_at": "2026-11-23T23:04:32Z",
+    "additions": 163,
+    "deletions": 16,
+    "changed_files_count": 2,
+    "commit_count": 1,
+    "author": "hime",
+    "files": [
+      "pkg/volume/csi/nodeinfomanager/nodeinfomanager.go",
+      "pkg/volume/csi/nodeinfomanager/nodeinfomanager_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143813,
+    "created_at": "2026-11-04T22:46:13Z",
+    "merged_at": "2026-11-23T23:04:44Z",
+    "additions": 51,
+    "deletions": 22,
+    "changed_files_count": 3,
+    "commit_count": 2,
+    "author": "aojea",
+    "files": [
+      "cmd/kube-proxy/app/server.go",
+      "pkg/proxy/config/config.go",
+      "pkg/proxy/config/config_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143561,
+    "created_at": "2026-10-29T12:06:39Z",
+    "merged_at": "2026-11-23T23:22:22Z",
+    "additions": 3,
+    "deletions": 0,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "thc1006",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/storagebackend/factory/factory_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143740,
+    "created_at": "2026-11-03T09:32:05Z",
+    "merged_at": "2026-11-23T23:22:32Z",
+    "additions": 48,
+    "deletions": 0,
+    "changed_files_count": 2,
+    "commit_count": 1,
+    "author": "devreddy1015",
+    "files": [
+      "cmd/kubeadm/app/phases/upgrade/compute.go",
+      "cmd/kubeadm/app/phases/upgrade/compute_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143771,
+    "created_at": "2026-11-03T20:47:22Z",
+    "merged_at": "2026-11-23T23:22:40Z",
+    "additions": 174,
+    "deletions": 17,
+    "changed_files_count": 2,
+    "commit_count": 1,
+    "author": "hime",
+    "files": [
+      "pkg/volume/csi/nodeinfomanager/nodeinfomanager.go",
+      "pkg/volume/csi/nodeinfomanager/nodeinfomanager_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143811,
+    "created_at": "2026-11-04T22:41:56Z",
+    "merged_at": "2026-11-23T23:22:50Z",
+    "additions": 51,
+    "deletions": 22,
+    "changed_files_count": 3,
+    "commit_count": 2,
+    "author": "aojea",
+    "files": [
+      "cmd/kube-proxy/app/server.go",
+      "pkg/proxy/config/config.go",
+      "pkg/proxy/config/config_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144156,
+    "created_at": "2026-11-14T20:53:39Z",
+    "merged_at": "2026-11-23T23:23:00Z",
+    "additions": 62,
+    "deletions": 8,
+    "changed_files_count": 3,
+    "commit_count": 1,
+    "author": "dashpole",
+    "files": [
+      "staging/src/k8s.io/component-base/metrics/histogram_test.go",
+      "staging/src/k8s.io/component-base/metrics/opts.go",
+      "staging/src/k8s.io/component-base/metrics/opts_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144247,
+    "created_at": "2026-11-17T12:15:04Z",
+    "merged_at": "2026-11-23T23:23:10Z",
+    "additions": 25,
+    "deletions": 4,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "neolit123",
+    "files": [
+      "pkg/apis/certificates/validation/validation_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144250,
+    "created_at": "2026-11-17T12:24:43Z",
+    "merged_at": "2026-11-23T23:23:19Z",
+    "additions": 2,
+    "deletions": 12,
+    "changed_files_count": 2,
+    "commit_count": 1,
+    "author": "neolit123",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/endpoints/filters/authentication_test.go",
+      "staging/src/k8s.io/apiserver/pkg/server/filters/goaway_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143562,
+    "created_at": "2026-10-29T12:07:22Z",
+    "merged_at": "2026-11-23T23:30:20Z",
+    "additions": 3,
+    "deletions": 0,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "thc1006",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/storage/storagebackend/factory/factory_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143606,
+    "created_at": "2026-10-30T13:09:40Z",
+    "merged_at": "2026-11-23T23:30:29Z",
+    "additions": 71,
+    "deletions": 12,
+    "changed_files_count": 2,
+    "commit_count": 2,
+    "author": "RomanBednar",
+    "files": [
+      "pkg/volume/util/subpath/subpath_linux.go",
+      "pkg/volume/util/subpath/subpath_linux_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143812,
+    "created_at": "2026-11-04T22:42:15Z",
+    "merged_at": "2026-11-23T23:30:38Z",
+    "additions": 51,
+    "deletions": 22,
+    "changed_files_count": 3,
+    "commit_count": 2,
+    "author": "aojea",
+    "files": [
+      "cmd/kube-proxy/app/server.go",
+      "pkg/proxy/config/config.go",
+      "pkg/proxy/config/config_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144216,
+    "created_at": "2026-11-16T17:01:56Z",
+    "merged_at": "2026-11-23T23:30:47Z",
+    "additions": 147,
+    "deletions": 2,
+    "changed_files_count": 4,
+    "commit_count": 1,
+    "author": "liggitt",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/util/webhook/authentication.go",
+      "staging/src/k8s.io/apiserver/pkg/util/webhook/authentication_test.go",
+      "staging/src/k8s.io/apiserver/pkg/util/webhook/client.go",
+      "staging/src/k8s.io/apiserver/pkg/util/webhook/client_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144248,
+    "created_at": "2026-11-17T12:15:29Z",
+    "merged_at": "2026-11-23T23:30:57Z",
+    "additions": 25,
+    "deletions": 4,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "neolit123",
+    "files": [
+      "pkg/apis/certificates/validation/validation_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144249,
+    "created_at": "2026-11-17T12:24:17Z",
+    "merged_at": "2026-11-23T23:31:07Z",
+    "additions": 2,
+    "deletions": 12,
+    "changed_files_count": 2,
+    "commit_count": 1,
+    "author": "neolit123",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/endpoints/filters/authentication_test.go",
+      "staging/src/k8s.io/apiserver/pkg/server/filters/goaway_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144217,
+    "created_at": "2026-11-16T17:02:21Z",
+    "merged_at": "2026-11-24T00:14:22Z",
+    "additions": 147,
+    "deletions": 2,
+    "changed_files_count": 4,
+    "commit_count": 1,
+    "author": "liggitt",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/util/webhook/authentication.go",
+      "staging/src/k8s.io/apiserver/pkg/util/webhook/authentication_test.go",
+      "staging/src/k8s.io/apiserver/pkg/util/webhook/client.go",
+      "staging/src/k8s.io/apiserver/pkg/util/webhook/client_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144206,
+    "created_at": "2026-11-16T14:20:17Z",
+    "merged_at": "2026-11-24T01:06:23Z",
+    "additions": 152,
+    "deletions": 6,
+    "changed_files_count": 2,
+    "commit_count": 1,
+    "author": "vshkrabkov",
+    "files": [
+      "pkg/scheduler/eventhandlers.go",
+      "pkg/scheduler/eventhandlers_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 143621,
+    "created_at": "2026-10-30T15:58:40Z",
+    "merged_at": "2026-11-24T01:30:23Z",
+    "additions": 8,
+    "deletions": 3,
+    "changed_files_count": 2,
+    "commit_count": 1,
+    "author": "devreddy1015",
+    "files": [
+      "cmd/kubeadm/app/phases/kubeconfig/kubeconfig.go",
+      "cmd/kubeadm/app/phases/kubeconfig/kubeconfig_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144215,
+    "created_at": "2026-11-16T17:01:18Z",
+    "merged_at": "2026-11-24T02:58:23Z",
+    "additions": 147,
+    "deletions": 2,
+    "changed_files_count": 4,
+    "commit_count": 1,
+    "author": "liggitt",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/util/webhook/authentication.go",
+      "staging/src/k8s.io/apiserver/pkg/util/webhook/authentication_test.go",
+      "staging/src/k8s.io/apiserver/pkg/util/webhook/client.go",
+      "staging/src/k8s.io/apiserver/pkg/util/webhook/client_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144437,
+    "created_at": "2026-11-24T08:35:40Z",
+    "merged_at": "2026-11-24T11:24:31Z",
+    "additions": 13,
+    "deletions": 6,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "pacoxu",
+    "files": [
+      "staging/src/k8s.io/cluster-bootstrap/SECURITY_CONTACTS"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144427,
+    "created_at": "2026-11-23T16:58:31Z",
+    "merged_at": "2026-11-24T21:24:28Z",
+    "additions": 270,
+    "deletions": 50,
+    "changed_files_count": 10,
+    "commit_count": 1,
+    "author": "natasha41575",
+    "files": [
+      "test/e2e/common/node/framework/cgroups/cgroups.go",
+      "test/e2e/common/node/framework/cgroups/cgroups_test.go",
+      "test/e2e/common/node/framework/podexec/exec.go",
+      "test/e2e/common/node/framework/podexec/exec_test.go",
+      "test/e2e/common/node/framework/podresize/resize.go",
+      "test/e2e/common/node/pod_level_resources.go",
+      "test/e2e/common/node/pod_level_resources_resize.go",
+      "test/e2e/common/node/pod_resize.go",
+      "test/e2e/dra/dra_node_allocatable_resources.go",
+      "test/e2e/node/pod_resize.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144449,
+    "created_at": "2026-11-24T20:29:17Z",
+    "merged_at": "2026-11-25T02:44:24Z",
+    "additions": 3,
+    "deletions": 1,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "natasha41575",
+    "files": [
+      "test/e2e/common/node/dynamic_volumes.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144434,
+    "created_at": "2026-11-23T21:17:43Z",
+    "merged_at": "2026-11-25T03:42:28Z",
+    "additions": 131,
+    "deletions": 343,
+    "changed_files_count": 3,
+    "commit_count": 5,
+    "author": "danwinship",
+    "files": [
+      "pkg/proxy/metrics/metrics.go",
+      "pkg/proxy/nftables/proxier.go",
+      "pkg/proxy/nftables/proxier_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144387,
+    "created_at": "2026-11-21T03:41:57Z",
+    "merged_at": "2026-11-25T09:20:44Z",
+    "additions": 15,
+    "deletions": 0,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "dims",
+    "files": [
+      "hack/unwanted-dependencies.json"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144381,
+    "created_at": "2026-11-20T18:41:40Z",
+    "merged_at": "2026-11-25T17:01:15Z",
+    "additions": 30,
+    "deletions": 30,
+    "changed_files_count": 14,
+    "commit_count": 2,
+    "author": "everettraven",
+    "files": [
+      "build/dependencies.yaml",
+      "hack/testdata/pod-with-large-name.yaml",
+      "test/e2e/dra/test-driver/deploy/example/pod-external-toleration.yaml",
+      "test/e2e/dra/test-driver/deploy/example/pod-external.yaml",
+      "test/e2e/dra/test-driver/deploy/example/pod-inline.yaml",
+      "test/e2e/testing-manifests/kubectl/agnhost-primary-pod.yaml",
+      "test/e2e/testing-manifests/serviceloadbalancer/netexecrc.yaml",
+      "test/fixtures/doc-yaml/user-guide/multi-pod.yaml",
+      "test/fixtures/pkg/kubectl/cmd/auth/rbac-resource-plus.yaml",
+      "test/images/kitten/BASEIMAGE",
+      "test/images/kitten/VERSION",
+      "test/images/nautilus/BASEIMAGE",
+      "test/images/nautilus/VERSION",
+      "test/utils/image/manifest.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144448,
+    "created_at": "2026-11-24T18:57:09Z",
+    "merged_at": "2026-11-25T17:01:25Z",
+    "additions": 29,
+    "deletions": 36,
+    "changed_files_count": 2,
+    "commit_count": 1,
+    "author": "dims",
+    "files": [
+      "staging/src/k8s.io/apiserver/pkg/endpoints/filters/authentication_test.go",
+      "staging/src/k8s.io/apiserver/pkg/server/filters/goaway_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144453,
+    "created_at": "2026-11-25T02:17:05Z",
+    "merged_at": "2026-11-25T17:01:35Z",
+    "additions": 6,
+    "deletions": 6,
+    "changed_files_count": 1,
+    "commit_count": 1,
+    "author": "dims",
+    "files": [
+      "test/integration/job/job_test.go"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144423,
+    "created_at": "2026-11-23T14:43:24Z",
+    "merged_at": "2026-11-26T12:30:53Z",
+    "additions": 45,
+    "deletions": 46,
+    "changed_files_count": 9,
+    "commit_count": 2,
+    "author": "pohly",
+    "files": [
+      "test/integration/scheduler_perf/affinity/performance-config.yaml",
+      "test/integration/scheduler_perf/dra/compatibilitygroups/performance-config.yaml",
+      "test/integration/scheduler_perf/dra/consumablecapacity/performance-config.yaml",
+      "test/integration/scheduler_perf/dra/extendedresource/performance-config.yaml",
+      "test/integration/scheduler_perf/dra/extendedresource/scoring/performance-config.yaml",
+      "test/integration/scheduler_perf/dra/partitionabledevices/performance-config.yaml",
+      "test/integration/scheduler_perf/dra/performance-config.yaml",
+      "test/integration/scheduler_perf/dra/workloadresourceclaims/performance-config.yaml",
+      "test/integration/scheduler_perf/podgroup/tas/performance-config.yaml"
+    ]
+  },
+  {
+    "repo": "kubernetes/kubernetes",
+    "number": 144476,
+    "created_at": "2026-11-25T19:39:11Z",
+    "merged_at": "2026-11-26T21:22:49Z",
+    "additions": 5,
+    "deletions": 4,
+    "changed_files_count": 2,
+    "commit_count": 2,
+    "author": "dims",
+    "files": [
+      "hack/tools/publishing-verifier/publishing-verifier.go",
+      "staging/publishing/rules.yaml"
+    ]
+  }
+]

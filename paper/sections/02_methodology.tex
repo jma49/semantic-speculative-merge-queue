@@ -1,0 +1,34 @@
+\section{SSMQ Architecture and Methodology}
+\label{sec:methodology}
+
+SSMQ sits between PR approval and mainline branch protection, scheduling incoming PRs across $W$ parallel CI workers while guaranteeing a strict \emph{mainline safety invariant}: no PR containing an individual regression and no pair of PRs exhibiting a semantic merge conflict may be committed to mainline without passing CI verification on the exact merged tree.
+
+\subsection{Historical Dependency Graph and Risk Stratification}
+To avoid any future data leakage, SSMQ constructs a dependency graph $G=(V,E)$ solely from historical merged PRs in a chronological warm-up prefix (first $25\%$ of trace history). For every changed file $f \in F(p)$, $G$ records: (i) historical co-change cliques linking files frequently edited in the same commit, and (ii) two-level directory/module proximity sets $\mu(f)$. The \emph{semantic impact cone} of an incoming PR $p$ is defined as:
+\begin{equation}
+C(p) = F(p) \cup \bigcup_{f \in F(p)} \big( \mathcal{N}_{\text{cochange}}(f) \cup \mathcal{N}_{\text{mod}}(\mu(f)) \big).
+\end{equation}
+Two PRs $p_a, p_b$ are \emph{semantically disjoint} when $C(p_a) \cap C(p_b) = \emptyset$. We further compute a normalized risk score $r(p) \in [0, 1]$ combining log-scaled LOC churn ($0.45$), changed-file count ($0.30$), and maximum file hotspot centrality in $G$ ($0.25$), normalized by the 90th-percentile warm-up scale.
+
+\subsection{Graph-Disjoint Multi-Lane Batching}
+When a CI worker becomes available and ready PRs exist in the queue, SSMQ inspects the head PR $p_h$ to prevent starvation:
+\begin{itemize}
+    \item \textbf{Protected Lane}: If $r(p_h) \ge \tau_{\text{risk}}$ ($\tau_{\text{risk}} = 0.55$) or $p_h$ was previously flagged due to an impact-cone collision with an earlier batch, $p_h$ is dispatched in a small protected batch (capped at size $2$) containing only mutually disjoint protected PRs.
+    \item \textbf{Fast Lane}: Otherwise, SSMQ greedily scans the ready queue up to $K_{\max}=8$, adding each low-risk candidate $p_j$ whose impact cone is strictly disjoint from the union cone of the current batch ($C(p_j) \cap \bigcup_{u \in B} C(u) = \emptyset$). Any skipped candidate that overlaps with the current batch is marked to prevent repeated conflict bundling.
+\end{itemize}
+By construction, every fast-lane batch eliminates intra-batch pairwise conflict edges ($\prod_{i<j}(1-P(c_{ij})) \to 1$ in Eq.~\ref{eq:survival}), directly suppressing the quadratic conflict term without requiring expensive dynamic analysis before dispatch.
+
+\subsection{Beta-Binomial Flaky-Tolerant Selective Speculation}
+Unconditional flaky reruns (as in fixed retry policies~\cite{henderson2023flake}) double CI burn on genuine defects, whereas ignoring flakiness triggers unnecessary batch teardown. SSMQ maintains an online conjugate $\mathrm{Beta}(\alpha, \beta)$ posterior (initialized weakly at $\alpha=1, \beta=19$) updated strictly from observable outcomes (passing verifications increment $\beta$; failures later confirmed transient by a passing rerun increment $\alpha$). Upon a batch failure after $m$ consecutive failed attempts, SSMQ compares the prior defect risk $\hat{q}(B)$ against the Beta-Binomial predictive probability of $m$ transient failures $P_{\text{flake}}(m \mid \alpha, \beta)$:
+\begin{equation}
+P(\text{transient} \mid \text{fail}_m) = \frac{(1 - \hat{q}(B))\, P_{\text{flake}}(m \mid \alpha, \beta)}{\hat{q}(B) + (1 - \hat{q}(B))\, P_{\text{flake}}(m \mid \alpha, \beta)}.
+\end{equation}
+SSMQ selectively re-verifies the batch (at most twice) only if $P(\text{transient} \mid \text{fail}_m) \ge \tau_{\text{flake}}$ ($\tau_{\text{flake}} = 0.25$); otherwise it proceeds immediately to fault attribution.
+
+\subsection{Fail-Safe 1-Step Causal Blame Attribution}
+When a batch $B$ of size $|B| > 1$ experiences a deterministic failure, traditional queues perform blind binary bisection requiring $\lceil \log_2 |B| \rceil$ sequential CI rounds~\cite{fallahzadeh2023accelerating}. SSMQ invokes a lightweight causal attribution step (incurring $\Delta_{\text{blame}} = 0.5$~min analysis latency, consistent with LLM/stack-trace fault localizers~\cite{jambigi2025fault,ziftci2017broke}) that ranks batch members by causal suspicion and emits Top-1 and Top-2 suspects $(s_1, s_2)$. SSMQ immediately dispatches two parallel verification jobs:
+\begin{enumerate}
+    \item $B \setminus \{s_1\}$ (the innocent remainder, expected to pass in \textbf{1 round} whenever $s_1$ is the true culprit), and
+    \item $\{s_1\}$ in isolation (confirming rejection if defective, or allowing safe isolated merge if $s_1$ merely suffered a pairwise conflict).
+\end{enumerate}
+Crucially, SSMQ is \emph{fail-safe}: if $s_1$ was misattributed and $B \setminus \{s_1\}$ fails, SSMQ falls back deterministically to binary bisection (ordering the half containing $s_2$ first), guaranteeing exact culprit isolation with zero escaped defects at any attribution accuracy.

@@ -1,0 +1,18 @@
+% AUTO-GENERATED FROM exp3_ablation_v1 — DO NOT EDIT
+\begin{table}[t]
+\centering
+\caption{Ablation Study of SSMQ Components ($5\times$ Velocity, $\phi=5\%$, 20 Seeds $\times$ 3 Repos).}
+\label{tab:ablation}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Variant} & \textbf{Tput} & \textbf{P95} & \textbf{CI Cost} & \textbf{Blame} \\
+ & (PR/h) & (min) & (m/PR) & (rnds) \\
+\midrule
+\textbf{SSMQ} & \textbf{23.81} & \textbf{49.7} & \textbf{11.35} & \textbf{0.72} \\
+SSMQ-NoGraph & 21.74 & 85.9 & 12.77 & 2.17 \\
+SSMQ-NoFlaky & 23.86 & 46.7 & 11.06 & 0.42 \\
+SSMQ-NoBlame & 23.74 & 50.6 & 11.44 & 0.79 \\
+StaticBatchBisect & 22.08 & 78.4 & 12.56 & 1.80 \\
+\bottomrule
+\end{tabular}
+\end{table}

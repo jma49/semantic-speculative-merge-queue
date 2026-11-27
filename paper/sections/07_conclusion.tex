@@ -1,0 +1,4 @@
+\section{Conclusion}
+\label{sec:conclusion}
+
+High-velocity AI-accelerated software development exposes the fragility of semantics-blind FIFO merge queues. We presented \textbf{SSMQ (Semantic Speculative Merge Queue)}, which combines historical dependency-graph disjoint batching, online Beta-Binomial flaky gating, and fail-safe 1-step causal blame attribution. Across \TotalSealedRecords{} sealed simulations over 600 real open-source PRs with \TotalEscapedDefects{} escaped defects, SSMQ outperforms static batching, linear speculative trains, risk-gated submit queues, and fixed flaky-rerun batching in throughput, tail latency, and CI compute efficiency, while scaling smoothly to $10\times$ arrival surges. All simulation code, traces, sealed manifests, and deterministic audit scripts are openly structured for full reproducibility.

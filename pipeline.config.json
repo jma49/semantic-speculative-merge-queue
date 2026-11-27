@@ -1,0 +1,172 @@
+{
+  "$schema": "./schemas/pipeline.config.schema.json",
+  "version": "1.0.0",
+  "name": "research-paper-factory",
+  "description": "Deterministic-envelope multi-agent academic research paper pipeline (IEEE/ACM SE & Systems)",
+  "principles": {
+    "handoff_mechanism": "filesystem_artifacts_only",
+    "number_lineage": "runs/<run_id>/manifest.json -> results/results.json -> generated/numbers.tex -> paper/main.tex",
+    "zero_hand_typed_numbers": true,
+    "zero_memory_citations": true,
+    "sealed_final_evaluation": true,
+    "cross_model_peer_review": true,
+    "no_auto_experiment_during_revision": true,
+    "human_gates": ["G1_PLAN_FREEZE", "G2_RESULTS_AUDIT", "G3_REVIEW_DECISION", "G4_SUBMISSION_COMPLIANCE"]
+  },
+  "providers": {
+    "claudeAgent": {
+      "displayName": "Claude",
+      "defaultModel": "claude-opus-5-5",
+      "fastModel": "claude-sonnet-5-5",
+      "options": { "effort": "high" },
+      "quotaWindow": {
+        "status": "exhausted_until_reset",
+        "availableAfter": "2026-11-28T15:00:00-08:00",
+        "resetNote": "Claude quota resets Saturday afternoon PST (2026-11-28 15:00 PST). Automatically enabled after reset; falls back to codex/cursor/antigravity before reset."
+      }
+    },
+    "codex": {
+      "displayName": "Codex",
+      "defaultModel": "gpt-6.2-sol",
+      "fastModel": "gpt-6.2-astra",
+      "options": { "reasoningEffort": "high" },
+      "quotaWindow": {
+        "status": "available",
+        "availableAfter": null
+      }
+    },
+    "cursor": {
+      "displayName": "Cursor",
+      "defaultModel": "grok-4.7",
+      "fastModel": "composer-2.5",
+      "options": { "reasoning_effort": "high" },
+      "quotaWindow": {
+        "status": "available",
+        "availableAfter": null
+      }
+    },
+    "antigravity": {
+      "displayName": "Antigravity",
+      "defaultModel": "gemini-4-neon",
+      "fastModel": "gemini-3.8-flash",
+      "options": { "thought_level": "high" },
+      "quotaWindow": {
+        "status": "available",
+        "availableAfter": null
+      }
+    }
+  },
+  "roles": {
+    "coordinator": {
+      "title": "研究总控官 (Coordinator)",
+      "primary": { "provider": "antigravity", "model": "gemini-4-neon" },
+      "fallbacks": [
+        { "provider": "claudeAgent", "model": "claude-opus-5-5" },
+        { "provider": "codex", "model": "gpt-6.2-sol" }
+      ],
+      "outputs": ["plan.md", "state/pipeline_state.json"],
+      "redlines": ["Enforce 4 human gates; never bypass auditor or verifier failures."]
+    },
+    "scout": {
+      "title": "文献官 (Scout)",
+      "primary": { "provider": "antigravity", "model": "gemini-4-neon" },
+      "fallbacks": [
+        { "provider": "cursor", "model": "grok-4.7" },
+        { "provider": "claudeAgent", "model": "claude-sonnet-5-5" }
+      ],
+      "tools": ["OpenAlex API", "Crossref API", "Semantic Scholar API", "arXiv API", "DBLP"],
+      "outputs": ["literature/refs.bib", "literature/evidence.md", "literature/survey_matrix.json"],
+      "redlines": [
+        "Every BibTeX entry MUST come from an API response with DOI/arXiv/URL.",
+        "Never write BibTeX from LLM memory.",
+        "Prefer peer-reviewed venue editions over preprints when both exist."
+      ]
+    },
+    "architect": {
+      "title": "系统实现官 (Implementation Engineer)",
+      "primary": { "provider": "codex", "model": "gpt-6.2-sol" },
+      "fallbacks": [
+        { "provider": "cursor", "model": "composer-2.5" },
+        { "provider": "claudeAgent", "model": "claude-opus-5-5" }
+      ],
+      "outputs": ["src/", "tests/", "eval/harness.py"],
+      "redlines": [
+        "Harness and metric definitions freeze after Gate 1.",
+        "Deterministic seed control and SHA-256 dataset/code provenance required."
+      ]
+    },
+    "runner": {
+      "title": "实验官 (Runner)",
+      "primary": { "provider": "codex", "model": "gpt-6.2-astra" },
+      "fallbacks": [
+        { "provider": "cursor", "model": "grok-4.7" },
+        { "provider": "claudeAgent", "model": "claude-sonnet-5-5" }
+      ],
+      "outputs": ["runs/<run_id>/manifest.json", "runs/<run_id>/metrics.jsonl", "runs/<run_id>/stdout.log"],
+      "redlines": [
+        "Cannot modify eval harness or metric definitions.",
+        "Cannot invent ad-hoc runs outside plan.md without human approval.",
+        "Every run writes immutable manifest.json (git_commit, harness_sha256, dataset_sha256, seed, command)."
+      ]
+    },
+    "auditor": {
+      "title": "对账官 (Deterministic Auditor)",
+      "primary": { "provider": "deterministic_python", "model": "none" },
+      "fallbacks": [],
+      "outputs": ["results/results.json", "paper/generated/numbers.tex", "paper/generated/tables/", "reports/audit_report.md"],
+      "redlines": [
+        "Zero LLM involvement in number computation or rounding.",
+        "Every LaTeX macro MUST trace to a sealed run_id and manifest checksum.",
+        "Block pipeline on any mismatch, missing seed, or unverified run."
+      ]
+    },
+    "writer": {
+      "title": "写作官 (Writer)",
+      "primary": { "provider": "claudeAgent", "model": "claude-opus-5-5" },
+      "fallbacks": [
+        { "provider": "antigravity", "model": "gemini-4-neon" },
+        { "provider": "codex", "model": "gpt-6.2-sol" }
+      ],
+      "writingOrder": ["Results", "Methodology", "Evaluation Setup", "Related Work", "Introduction", "Discussion & Threats", "Conclusion", "Abstract"],
+      "outputs": ["paper/main.tex", "paper/sections/"],
+      "redlines": [
+        "Zero hand-typed experimental numbers; reference generated/numbers.tex macros exclusively.",
+        "Cite only verified keys present in literature/refs.bib.",
+        "Never fabricate or promise unexecuted experiments."
+      ]
+    },
+    "verifier": {
+      "title": "引用与一致性核验官 (Citation & Claim Verifier)",
+      "primary": { "provider": "deterministic_python", "model": "none" },
+      "secondary": { "provider": "cursor", "model": "grok-4.7" },
+      "outputs": ["reports/citation_report.md", "reports/claim_trace_report.md"],
+      "redlines": [
+        "100% existence verification via Crossref/OpenAlex/arXiv.",
+        "Flag preprint ratio > 25% (IEEE integrity guardrail).",
+        "Block review stage if any undefined citation or unbacked numerical claim exists."
+      ]
+    },
+    "reviewer": {
+      "title": "跨模型审稿官 (Cross-Model Reviewer)",
+      "primary": { "provider": "codex", "model": "gpt-6.2-sol" },
+      "secondary": { "provider": "cursor", "model": "grok-4.7" },
+      "postResetSlot": { "provider": "claudeAgent", "model": "claude-opus-5-5" },
+      "rubric": "ACM SIGSOFT Empirical Standards + IEEE SEIP/ICSE Review Criteria",
+      "outputs": ["reports/review_<provider>.md"],
+      "redlines": [
+        "Reviewer model family MUST differ from Writer model family.",
+        "Review suggestions may NOT auto-trigger experiment fabrication; new runs require Gate 3 human approval.",
+        "Maximum 3 text-only revision rounds."
+      ]
+    },
+    "typesetter": {
+      "title": "排版与合规官 (Typesetter)",
+      "primary": { "provider": "deterministic_python", "model": "none" },
+      "outputs": ["paper/build/main.pdf", "paper/sections/ai_disclosure.tex", "reports/compliance_checklist.md"],
+      "redlines": [
+        "AI disclosure paragraph MUST be generated strictly from AI_USAGE.md.",
+        "Zero undefined citations or LaTeX errors; respect venue page limits."
+      ]
+    }
+  }
+}

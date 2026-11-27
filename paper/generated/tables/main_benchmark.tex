@@ -1,0 +1,19 @@
+% AUTO-GENERATED FROM exp1_main_bench_v1 — DO NOT EDIT
+\begin{table*}[t]
+\centering
+\caption{Main Benchmark Across 3 Real OSS Repositories (450 Evaluation PRs after 150-PR Warm-up, $5\times$ Arrival Velocity, $\phi=5\%$ Flaky Rate, 20 Seeds $\times$ 3 Repos; Mean Values, 95\% Bootstrap CIs Archived in \texttt{results/results.json}).}
+\label{tab:main_benchmark}
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Strategy} & \textbf{Throughput} & \textbf{P50 Lat.} & \textbf{P95 Lat.} & \textbf{CI Cost} & \textbf{Invalid.} & \textbf{Blame} \\
+ & (PR/hr) $\uparrow$ & (min) $\downarrow$ & (min) $\downarrow$ & (min/PR) $\downarrow$ & (\%) $\downarrow$ & (rounds) $\downarrow$ \\
+\midrule
+SerialQueue & 4.37 & 680.5 & 1426.4 & 13.74 & 0.0\% & 0.00 \\
+StaticBatchBisect & 22.08 & 34.3 & 78.4 & 12.56 & 0.0\% & 1.80 \\
+SpeculativeLinear & 7.57 & 343.1 & 746.5 & 21.36 & 31.6\% & 0.89 \\
+UberSubmitQueue & 6.27 & 474.2 & 984.0 & 12.59 & 0.1\% & 0.72 \\
+FlakeAwareBatch & 18.55 & 53.5 & 137.8 & 16.90 & 2.3\% & 4.24 \\
+\textbf{SSMQ} & \textbf{23.81} & \textbf{22.0} & \textbf{49.7} & \textbf{11.35} & \textbf{1.0\%} & \textbf{0.72} \\
+\bottomrule
+\end{tabular}
+\end{table*}

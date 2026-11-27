@@ -1,0 +1,3000 @@
+{
+  "audit_passed": true,
+  "verified_run_count": 6,
+  "total_sealed_records": 3480,
+  "total_escaped_defects": 0,
+  "run_manifests": {
+    "exp0_aa_noise": "exp0_aa_noise_v1",
+    "exp1_main_bench": "exp1_main_bench_v1",
+    "exp2_velocity_sweep": "exp2_velocity_sweep_v1",
+    "exp3_ablation": "exp3_ablation_v1",
+    "exp4a_flaky_sweep": "exp4a_flaky_sweep_v1",
+    "exp4b_blame_accuracy": "exp4b_blame_accuracy_v1"
+  },
+  "exp0_aa_noise": {
+    "throughput_prs_per_hr": {
+      "block_A": {
+        "mean": 23.8059,
+        "ci_lo": 23.3799,
+        "ci_hi": 24.2389,
+        "n": 60
+      },
+      "block_B": {
+        "mean": 23.7819,
+        "ci_lo": 23.3607,
+        "ci_hi": 24.1987,
+        "n": 60
+      },
+      "rel_diff_pct": 0.1,
+      "cliffs_delta": -0.0156
+    },
+    "p50_latency_min": {
+      "block_A": {
+        "mean": 22.0481,
+        "ci_lo": 20.6952,
+        "ci_hi": 23.3801,
+        "n": 60
+      },
+      "block_B": {
+        "mean": 22.4311,
+        "ci_lo": 21.1241,
+        "ci_hi": 23.7993,
+        "n": 60
+      },
+      "rel_diff_pct": 1.74,
+      "cliffs_delta": -0.0372
+    },
+    "p95_latency_min": {
+      "block_A": {
+        "mean": 49.7431,
+        "ci_lo": 45.3445,
+        "ci_hi": 54.4716,
+        "n": 60
+      },
+      "block_B": {
+        "mean": 51.0538,
+        "ci_lo": 46.5738,
+        "ci_hi": 55.7689,
+        "n": 60
+      },
+      "rel_diff_pct": 2.63,
+      "cliffs_delta": -0.0878
+    },
+    "ci_minutes_per_merged_pr": {
+      "block_A": {
+        "mean": 11.3457,
+        "ci_lo": 10.904,
+        "ci_hi": 11.7884,
+        "n": 60
+      },
+      "block_B": {
+        "mean": 11.4771,
+        "ci_lo": 11.0445,
+        "ci_hi": 11.9092,
+        "n": 60
+      },
+      "rel_diff_pct": 1.16,
+      "cliffs_delta": -0.0556
+    },
+    "invalidation_rate": {
+      "block_A": {
+        "mean": 0.0097,
+        "ci_lo": 0.0058,
+        "ci_hi": 0.014,
+        "n": 60
+      },
+      "block_B": {
+        "mean": 0.0134,
+        "ci_lo": 0.0087,
+        "ci_hi": 0.0188,
+        "n": 60
+      },
+      "rel_diff_pct": 38.14,
+      "cliffs_delta": -0.1219
+    },
+    "mean_blame_rounds": {
+      "block_A": {
+        "mean": 0.7242,
+        "ci_lo": 0.6325,
+        "ci_hi": 0.8234,
+        "n": 60
+      },
+      "block_B": {
+        "mean": 0.8344,
+        "ci_lo": 0.7227,
+        "ci_hi": 0.9499,
+        "n": 60
+      },
+      "rel_diff_pct": 15.22,
+      "cliffs_delta": -0.1269
+    }
+  },
+  "exp1_main_overall": {
+    "SerialQueue": {
+      "throughput_prs_per_hr": {
+        "mean": 4.3698,
+        "ci_lo": 4.3344,
+        "ci_hi": 4.4028,
+        "n": 60
+      },
+      "p50_latency_min": {
+        "mean": 680.5385,
+        "ci_lo": 672.2239,
+        "ci_hi": 689.4042,
+        "n": 60
+      },
+      "p95_latency_min": {
+        "mean": 1426.4441,
+        "ci_lo": 1420.6506,
+        "ci_hi": 1432.1764,
+        "n": 60
+      },
+      "ci_minutes_per_merged_pr": {
+        "mean": 13.7442,
+        "ci_lo": 13.6406,
+        "ci_hi": 13.8557,
+        "n": 60
+      },
+      "invalidation_rate": {
+        "mean": 0.0,
+        "ci_lo": 0.0,
+        "ci_hi": 0.0,
+        "n": 60
+      },
+      "mean_blame_rounds": {
+        "mean": 0.0,
+        "ci_lo": 0.0,
+        "ci_hi": 0.0,
+        "n": 60
+      }
+    },
+    "StaticBatchBisect": {
+      "throughput_prs_per_hr": {
+        "mean": 22.0778,
+        "ci_lo": 21.6159,
+        "ci_hi": 22.5468,
+        "n": 60
+      },
+      "p50_latency_min": {
+        "mean": 34.2862,
+        "ci_lo": 30.8023,
+        "ci_hi": 37.789,
+        "n": 60
+      },
+      "p95_latency_min": {
+        "mean": 78.4204,
+        "ci_lo": 71.7828,
+        "ci_hi": 85.4033,
+        "n": 60
+      },
+      "ci_minutes_per_merged_pr": {
+        "mean": 12.5606,
+        "ci_lo": 12.1386,
+        "ci_hi": 13.0039,
+        "n": 60
+      },
+      "invalidation_rate": {
+        "mean": 0.0,
+        "ci_lo": 0.0,
+        "ci_hi": 0.0,
+        "n": 60
+      },
+      "mean_blame_rounds": {
+        "mean": 1.8018,
+        "ci_lo": 1.6817,
+        "ci_hi": 1.9171,
+        "n": 60
+      }
+    },
+    "SpeculativeLinear": {
+      "throughput_prs_per_hr": {
+        "mean": 7.5737,
+        "ci_lo": 7.3519,
+        "ci_hi": 7.794,
+        "n": 60
+      },
+      "p50_latency_min": {
+        "mean": 343.1475,
+        "ci_lo": 326.7219,
+        "ci_hi": 359.3165,
+        "n": 60
+      },
+      "p95_latency_min": {
+        "mean": 746.4647,
+        "ci_lo": 718.4956,
+        "ci_hi": 773.6944,
+        "n": 60
+      },
+      "ci_minutes_per_merged_pr": {
+        "mean": 21.36,
+        "ci_lo": 20.9089,
+        "ci_hi": 21.8321,
+        "n": 60
+      },
+      "invalidation_rate": {
+        "mean": 0.3159,
+        "ci_lo": 0.3073,
+        "ci_hi": 0.3243,
+        "n": 60
+      },
+      "mean_blame_rounds": {
+        "mean": 0.8855,
+        "ci_lo": 0.8719,
+        "ci_hi": 0.8992,
+        "n": 60
+      }
+    },
+    "UberSubmitQueue": {
+      "throughput_prs_per_hr": {
+        "mean": 6.266,
+        "ci_lo": 5.9945,
+        "ci_hi": 6.5208,
+        "n": 60
+      },
+      "p50_latency_min": {
+        "mean": 474.2107,
+        "ci_lo": 445.4715,
+        "ci_hi": 502.4438,
+        "n": 60
+      },
+      "p95_latency_min": {
+        "mean": 983.9945,
+        "ci_lo": 934.2485,
+        "ci_hi": 1037.0197,
+        "n": 60
+      },
+      "ci_minutes_per_merged_pr": {
+        "mean": 12.5851,
+        "ci_lo": 12.3315,
+        "ci_hi": 12.8405,
+        "n": 60
+      },
+      "invalidation_rate": {
+        "mean": 0.0006,
+        "ci_lo": 0.0001,
+        "ci_hi": 0.0012,
+        "n": 60
+      },
+      "mean_blame_rounds": {
+        "mean": 0.7219,
+        "ci_lo": 0.6283,
+        "ci_hi": 0.8103,
+        "n": 60
+      }
+    },
+    "FlakeAwareBatch": {
+      "throughput_prs_per_hr": {
+        "mean": 18.5533,
+        "ci_lo": 18.0326,
+        "ci_hi": 19.0783,
+        "n": 60
+      },
+      "p50_latency_min": {
+        "mean": 53.4642,
+        "ci_lo": 46.5093,
+        "ci_hi": 60.2726,
+        "n": 60
+      },
+      "p95_latency_min": {
+        "mean": 137.7597,
+        "ci_lo": 125.8366,
+        "ci_hi": 149.4482,
+        "n": 60
+      },
+      "ci_minutes_per_merged_pr": {
+        "mean": 16.8951,
+        "ci_lo": 16.2296,
+        "ci_hi": 17.5762,
+        "n": 60
+      },
+      "invalidation_rate": {
+        "mean": 0.0226,
+        "ci_lo": 0.0197,
+        "ci_hi": 0.0257,
+        "n": 60
+      },
+      "mean_blame_rounds": {
+        "mean": 4.238,
+        "ci_lo": 4.0418,
+        "ci_hi": 4.4414,
+        "n": 60
+      }
+    },
+    "SSMQ": {
+      "throughput_prs_per_hr": {
+        "mean": 23.8059,
+        "ci_lo": 23.3799,
+        "ci_hi": 24.2389,
+        "n": 60
+      },
+      "p50_latency_min": {
+        "mean": 22.0481,
+        "ci_lo": 20.6952,
+        "ci_hi": 23.3801,
+        "n": 60
+      },
+      "p95_latency_min": {
+        "mean": 49.7431,
+        "ci_lo": 45.3445,
+        "ci_hi": 54.4716,
+        "n": 60
+      },
+      "ci_minutes_per_merged_pr": {
+        "mean": 11.3457,
+        "ci_lo": 10.904,
+        "ci_hi": 11.7884,
+        "n": 60
+      },
+      "invalidation_rate": {
+        "mean": 0.0097,
+        "ci_lo": 0.0058,
+        "ci_hi": 0.014,
+        "n": 60
+      },
+      "mean_blame_rounds": {
+        "mean": 0.7242,
+        "ci_lo": 0.6325,
+        "ci_hi": 0.8234,
+        "n": 60
+      }
+    }
+  },
+  "exp1_main_per_repo": {
+    "kubernetes": {
+      "SerialQueue": {
+        "throughput_prs_per_hr": {
+          "mean": 4.3609,
+          "ci_lo": 4.2969,
+          "ci_hi": 4.426,
+          "n": 20
+        },
+        "p50_latency_min": {
+          "mean": 697.536,
+          "ci_lo": 681.3465,
+          "ci_hi": 712.1244,
+          "n": 20
+        },
+        "p95_latency_min": {
+          "mean": 1433.9345,
+          "ci_lo": 1423.4773,
+          "ci_hi": 1443.5573,
+          "n": 20
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 13.7753,
+          "ci_lo": 13.5734,
+          "ci_hi": 13.976,
+          "n": 20
+        },
+        "invalidation_rate": {
+          "mean": 0.0,
+          "ci_lo": 0.0,
+          "ci_hi": 0.0,
+          "n": 20
+        },
+        "mean_blame_rounds": {
+          "mean": 0.0,
+          "ci_lo": 0.0,
+          "ci_hi": 0.0,
+          "n": 20
+        }
+      },
+      "StaticBatchBisect": {
+        "throughput_prs_per_hr": {
+          "mean": 23.8463,
+          "ci_lo": 23.3245,
+          "ci_hi": 24.4118,
+          "n": 20
+        },
+        "p50_latency_min": {
+          "mean": 19.7642,
+          "ci_lo": 17.2531,
+          "ci_hi": 22.4282,
+          "n": 20
+        },
+        "p95_latency_min": {
+          "mean": 54.4334,
+          "ci_lo": 49.8098,
+          "ci_hi": 58.7456,
+          "n": 20
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 11.4791,
+          "ci_lo": 11.085,
+          "ci_hi": 11.8587,
+          "n": 20
+        },
+        "invalidation_rate": {
+          "mean": 0.0,
+          "ci_lo": 0.0,
+          "ci_hi": 0.0,
+          "n": 20
+        },
+        "mean_blame_rounds": {
+          "mean": 1.2859,
+          "ci_lo": 1.15,
+          "ci_hi": 1.4237,
+          "n": 20
+        }
+      },
+      "SpeculativeLinear": {
+        "throughput_prs_per_hr": {
+          "mean": 7.8738,
+          "ci_lo": 7.6384,
+          "ci_hi": 8.1296,
+          "n": 20
+        },
+        "p50_latency_min": {
+          "mean": 365.4483,
+          "ci_lo": 341.4169,
+          "ci_hi": 386.771,
+          "n": 20
+        },
+        "p95_latency_min": {
+          "mean": 718.4946,
+          "ci_lo": 691.2679,
+          "ci_hi": 746.3648,
+          "n": 20
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 20.8604,
+          "ci_lo": 20.3064,
+          "ci_hi": 21.3858,
+          "n": 20
+        },
+        "invalidation_rate": {
+          "mean": 0.3149,
+          "ci_lo": 0.3019,
+          "ci_hi": 0.3267,
+          "n": 20
+        },
+        "mean_blame_rounds": {
+          "mean": 0.8646,
+          "ci_lo": 0.8432,
+          "ci_hi": 0.8853,
+          "n": 20
+        }
+      },
+      "UberSubmitQueue": {
+        "throughput_prs_per_hr": {
+          "mean": 6.7133,
+          "ci_lo": 6.5788,
+          "ci_hi": 6.8613,
+          "n": 20
+        },
+        "p50_latency_min": {
+          "mean": 527.6648,
+          "ci_lo": 512.3916,
+          "ci_hi": 542.4188,
+          "n": 20
+        },
+        "p95_latency_min": {
+          "mean": 893.0806,
+          "ci_lo": 876.4581,
+          "ci_hi": 910.6562,
+          "n": 20
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 12.121,
+          "ci_lo": 11.8415,
+          "ci_hi": 12.401,
+          "n": 20
+        },
+        "invalidation_rate": {
+          "mean": 0.0011,
+          "ci_lo": 0.0,
+          "ci_hi": 0.0022,
+          "n": 20
+        },
+        "mean_blame_rounds": {
+          "mean": 0.8472,
+          "ci_lo": 0.7498,
+          "ci_hi": 0.9432,
+          "n": 20
+        }
+      },
+      "FlakeAwareBatch": {
+        "throughput_prs_per_hr": {
+          "mean": 20.3259,
+          "ci_lo": 19.679,
+          "ci_hi": 20.9982,
+          "n": 20
+        },
+        "p50_latency_min": {
+          "mean": 27.2344,
+          "ci_lo": 21.7146,
+          "ci_hi": 33.3236,
+          "n": 20
+        },
+        "p95_latency_min": {
+          "mean": 96.4896,
+          "ci_lo": 87.6673,
+          "ci_hi": 104.4944,
+          "n": 20
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 14.5835,
+          "ci_lo": 13.8654,
+          "ci_hi": 15.2855,
+          "n": 20
+        },
+        "invalidation_rate": {
+          "mean": 0.0244,
+          "ci_lo": 0.0188,
+          "ci_hi": 0.03,
+          "n": 20
+        },
+        "mean_blame_rounds": {
+          "mean": 3.3579,
+          "ci_lo": 3.1264,
+          "ci_hi": 3.6175,
+          "n": 20
+        }
+      },
+      "SSMQ": {
+        "throughput_prs_per_hr": {
+          "mean": 25.2425,
+          "ci_lo": 24.6634,
+          "ci_hi": 25.7927,
+          "n": 20
+        },
+        "p50_latency_min": {
+          "mean": 16.1332,
+          "ci_lo": 15.5826,
+          "ci_hi": 16.722,
+          "n": 20
+        },
+        "p95_latency_min": {
+          "mean": 34.7257,
+          "ci_lo": 33.2924,
+          "ci_hi": 36.1867,
+          "n": 20
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 10.8179,
+          "ci_lo": 10.566,
+          "ci_hi": 11.0575,
+          "n": 20
+        },
+        "invalidation_rate": {
+          "mean": 0.006,
+          "ci_lo": 0.002,
+          "ci_hi": 0.01,
+          "n": 20
+        },
+        "mean_blame_rounds": {
+          "mean": 0.7442,
+          "ci_lo": 0.6203,
+          "ci_hi": 0.8711,
+          "n": 20
+        }
+      }
+    },
+    "typescript": {
+      "SerialQueue": {
+        "throughput_prs_per_hr": {
+          "mean": 4.3739,
+          "ci_lo": 4.3159,
+          "ci_hi": 4.4315,
+          "n": 20
+        },
+        "p50_latency_min": {
+          "mean": 678.9783,
+          "ci_lo": 668.4564,
+          "ci_hi": 691.5135,
+          "n": 20
+        },
+        "p95_latency_min": {
+          "mean": 1425.6301,
+          "ci_lo": 1415.9931,
+          "ci_hi": 1434.7693,
+          "n": 20
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 13.7303,
+          "ci_lo": 13.5487,
+          "ci_hi": 13.9147,
+          "n": 20
+        },
+        "invalidation_rate": {
+          "mean": 0.0,
+          "ci_lo": 0.0,
+          "ci_hi": 0.0,
+          "n": 20
+        },
+        "mean_blame_rounds": {
+          "mean": 0.0,
+          "ci_lo": 0.0,
+          "ci_hi": 0.0,
+          "n": 20
+        }
+      },
+      "StaticBatchBisect": {
+        "throughput_prs_per_hr": {
+          "mean": 20.3539,
+          "ci_lo": 19.9804,
+          "ci_hi": 20.7246,
+          "n": 20
+        },
+        "p50_latency_min": {
+          "mean": 48.5615,
+          "ci_lo": 45.0767,
+          "ci_hi": 51.9108,
+          "n": 20
+        },
+        "p95_latency_min": {
+          "mean": 110.3317,
+          "ci_lo": 103.7432,
+          "ci_hi": 116.5394,
+          "n": 20
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 14.5267,
+          "ci_lo": 14.1581,
+          "ci_hi": 14.9003,
+          "n": 20
+        },
+        "invalidation_rate": {
+          "mean": 0.0,
+          "ci_lo": 0.0,
+          "ci_hi": 0.0,
+          "n": 20
+        },
+        "mean_blame_rounds": {
+          "mean": 2.2212,
+          "ci_lo": 2.1366,
+          "ci_hi": 2.3035,
+          "n": 20
+        }
+      },
+      "SpeculativeLinear": {
+        "throughput_prs_per_hr": {
+          "mean": 6.6379,
+          "ci_lo": 6.4532,
+          "ci_hi": 6.8052,
+          "n": 20
+        },
+        "p50_latency_min": {
+          "mean": 386.6132,
+          "ci_lo": 367.8286,
+          "ci_hi": 406.1336,
+          "n": 20
+        },
+        "p95_latency_min": {
+          "mean": 867.3128,
+          "ci_lo": 845.0052,
+          "ci_hi": 892.1902,
+          "n": 20
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 22.9495,
+          "ci_lo": 22.2725,
+          "ci_hi": 23.6122,
+          "n": 20
+        },
+        "invalidation_rate": {
+          "mean": 0.3373,
+          "ci_lo": 0.3255,
+          "ci_hi": 0.3493,
+          "n": 20
+        },
+        "mean_blame_rounds": {
+          "mean": 0.9134,
+          "ci_lo": 0.8931,
+          "ci_hi": 0.9334,
+          "n": 20
+        }
+      },
+      "UberSubmitQueue": {
+        "throughput_prs_per_hr": {
+          "mean": 4.8872,
+          "ci_lo": 4.8182,
+          "ci_hi": 4.9572,
+          "n": 20
+        },
+        "p50_latency_min": {
+          "mean": 574.4195,
+          "ci_lo": 562.0317,
+          "ci_hi": 587.3632,
+          "n": 20
+        },
+        "p95_latency_min": {
+          "mean": 1267.461,
+          "ci_lo": 1253.7587,
+          "ci_hi": 1281.3475,
+          "n": 20
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 13.677,
+          "ci_lo": 13.4701,
+          "ci_hi": 13.8763,
+          "n": 20
+        },
+        "invalidation_rate": {
+          "mean": 0.0,
+          "ci_lo": 0.0,
+          "ci_hi": 0.0,
+          "n": 20
+        },
+        "mean_blame_rounds": {
+          "mean": 0.3022,
+          "ci_lo": 0.2589,
+          "ci_hi": 0.343,
+          "n": 20
+        }
+      },
+      "FlakeAwareBatch": {
+        "throughput_prs_per_hr": {
+          "mean": 16.4263,
+          "ci_lo": 16.061,
+          "ci_hi": 16.8184,
+          "n": 20
+        },
+        "p50_latency_min": {
+          "mean": 84.7616,
+          "ci_lo": 78.0501,
+          "ci_hi": 90.9036,
+          "n": 20
+        },
+        "p95_latency_min": {
+          "mean": 196.8553,
+          "ci_lo": 188.0933,
+          "ci_hi": 205.2075,
+          "n": 20
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 20.0104,
+          "ci_lo": 19.5298,
+          "ci_hi": 20.5943,
+          "n": 20
+        },
+        "invalidation_rate": {
+          "mean": 0.0205,
+          "ci_lo": 0.0175,
+          "ci_hi": 0.0239,
+          "n": 20
+        },
+        "mean_blame_rounds": {
+          "mean": 4.9435,
+          "ci_lo": 4.778,
+          "ci_hi": 5.1135,
+          "n": 20
+        }
+      },
+      "SSMQ": {
+        "throughput_prs_per_hr": {
+          "mean": 22.232,
+          "ci_lo": 21.9628,
+          "ci_hi": 22.515,
+          "n": 20
+        },
+        "p50_latency_min": {
+          "mean": 27.5336,
+          "ci_lo": 26.3432,
+          "ci_hi": 28.6562,
+          "n": 20
+        },
+        "p95_latency_min": {
+          "mean": 73.0319,
+          "ci_lo": 69.6342,
+          "ci_hi": 76.5307,
+          "n": 20
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 13.4889,
+          "ci_lo": 13.2428,
+          "ci_hi": 13.7474,
+          "n": 20
+        },
+        "invalidation_rate": {
+          "mean": 0.0176,
+          "ci_lo": 0.0097,
+          "ci_hi": 0.0269,
+          "n": 20
+        },
+        "mean_blame_rounds": {
+          "mean": 0.4884,
+          "ci_lo": 0.3491,
+          "ci_hi": 0.6379,
+          "n": 20
+        }
+      }
+    },
+    "nextjs": {
+      "SerialQueue": {
+        "throughput_prs_per_hr": {
+          "mean": 4.3747,
+          "ci_lo": 4.3186,
+          "ci_hi": 4.431,
+          "n": 20
+        },
+        "p50_latency_min": {
+          "mean": 665.1013,
+          "ci_lo": 650.1717,
+          "ci_hi": 680.1888,
+          "n": 20
+        },
+        "p95_latency_min": {
+          "mean": 1419.7675,
+          "ci_lo": 1409.5952,
+          "ci_hi": 1429.6617,
+          "n": 20
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 13.727,
+          "ci_lo": 13.548,
+          "ci_hi": 13.908,
+          "n": 20
+        },
+        "invalidation_rate": {
+          "mean": 0.0,
+          "ci_lo": 0.0,
+          "ci_hi": 0.0,
+          "n": 20
+        },
+        "mean_blame_rounds": {
+          "mean": 0.0,
+          "ci_lo": 0.0,
+          "ci_hi": 0.0,
+          "n": 20
+        }
+      },
+      "StaticBatchBisect": {
+        "throughput_prs_per_hr": {
+          "mean": 22.0331,
+          "ci_lo": 21.5351,
+          "ci_hi": 22.5427,
+          "n": 20
+        },
+        "p50_latency_min": {
+          "mean": 34.5328,
+          "ci_lo": 32.6302,
+          "ci_hi": 36.6312,
+          "n": 20
+        },
+        "p95_latency_min": {
+          "mean": 70.4961,
+          "ci_lo": 65.3449,
+          "ci_hi": 75.7018,
+          "n": 20
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 11.676,
+          "ci_lo": 11.1815,
+          "ci_hi": 12.2299,
+          "n": 20
+        },
+        "invalidation_rate": {
+          "mean": 0.0,
+          "ci_lo": 0.0,
+          "ci_hi": 0.0,
+          "n": 20
+        },
+        "mean_blame_rounds": {
+          "mean": 1.8982,
+          "ci_lo": 1.7983,
+          "ci_hi": 1.9969,
+          "n": 20
+        }
+      },
+      "SpeculativeLinear": {
+        "throughput_prs_per_hr": {
+          "mean": 8.2094,
+          "ci_lo": 7.8996,
+          "ci_hi": 8.5021,
+          "n": 20
+        },
+        "p50_latency_min": {
+          "mean": 277.3811,
+          "ci_lo": 258.1932,
+          "ci_hi": 297.1507,
+          "n": 20
+        },
+        "p95_latency_min": {
+          "mean": 653.5867,
+          "ci_lo": 623.9542,
+          "ci_hi": 684.0888,
+          "n": 20
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 20.27,
+          "ci_lo": 19.6333,
+          "ci_hi": 20.9335,
+          "n": 20
+        },
+        "invalidation_rate": {
+          "mean": 0.2956,
+          "ci_lo": 0.2823,
+          "ci_hi": 0.3094,
+          "n": 20
+        },
+        "mean_blame_rounds": {
+          "mean": 0.8784,
+          "ci_lo": 0.8542,
+          "ci_hi": 0.9027,
+          "n": 20
+        }
+      },
+      "UberSubmitQueue": {
+        "throughput_prs_per_hr": {
+          "mean": 7.1974,
+          "ci_lo": 7.0194,
+          "ci_hi": 7.3829,
+          "n": 20
+        },
+        "p50_latency_min": {
+          "mean": 320.5477,
+          "ci_lo": 302.1837,
+          "ci_hi": 339.19,
+          "n": 20
+        },
+        "p95_latency_min": {
+          "mean": 791.4418,
+          "ci_lo": 768.8677,
+          "ci_hi": 813.0602,
+          "n": 20
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 11.9571,
+          "ci_lo": 11.6324,
+          "ci_hi": 12.2865,
+          "n": 20
+        },
+        "invalidation_rate": {
+          "mean": 0.0007,
+          "ci_lo": 0.0,
+          "ci_hi": 0.0018,
+          "n": 20
+        },
+        "mean_blame_rounds": {
+          "mean": 1.0162,
+          "ci_lo": 0.9072,
+          "ci_hi": 1.1089,
+          "n": 20
+        }
+      },
+      "FlakeAwareBatch": {
+        "throughput_prs_per_hr": {
+          "mean": 18.9075,
+          "ci_lo": 18.2754,
+          "ci_hi": 19.529,
+          "n": 20
+        },
+        "p50_latency_min": {
+          "mean": 48.3965,
+          "ci_lo": 45.6092,
+          "ci_hi": 51.1993,
+          "n": 20
+        },
+        "p95_latency_min": {
+          "mean": 119.9342,
+          "ci_lo": 110.5971,
+          "ci_hi": 129.3165,
+          "n": 20
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 16.0914,
+          "ci_lo": 15.3191,
+          "ci_hi": 16.9987,
+          "n": 20
+        },
+        "invalidation_rate": {
+          "mean": 0.0229,
+          "ci_lo": 0.0171,
+          "ci_hi": 0.0293,
+          "n": 20
+        },
+        "mean_blame_rounds": {
+          "mean": 4.4125,
+          "ci_lo": 4.2112,
+          "ci_hi": 4.6246,
+          "n": 20
+        }
+      },
+      "SSMQ": {
+        "throughput_prs_per_hr": {
+          "mean": 23.9432,
+          "ci_lo": 23.3219,
+          "ci_hi": 24.5528,
+          "n": 20
+        },
+        "p50_latency_min": {
+          "mean": 22.4775,
+          "ci_lo": 21.1584,
+          "ci_hi": 23.9896,
+          "n": 20
+        },
+        "p95_latency_min": {
+          "mean": 41.4718,
+          "ci_lo": 37.9495,
+          "ci_hi": 45.3743,
+          "n": 20
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 9.7303,
+          "ci_lo": 9.2992,
+          "ci_hi": 10.2274,
+          "n": 20
+        },
+        "invalidation_rate": {
+          "mean": 0.0055,
+          "ci_lo": 0.0005,
+          "ci_hi": 0.0122,
+          "n": 20
+        },
+        "mean_blame_rounds": {
+          "mean": 0.9399,
+          "ci_lo": 0.7852,
+          "ci_hi": 1.1206,
+          "n": 20
+        }
+      }
+    }
+  },
+  "exp1_effect_sizes_vs_ssmq": {
+    "SerialQueue": {
+      "throughput_prs_per_hr": 1.0,
+      "p50_latency_min": -1.0,
+      "p95_latency_min": -1.0,
+      "ci_minutes_per_merged_pr": -0.7628,
+      "invalidation_rate": 0.3667,
+      "mean_blame_rounds": 1.0
+    },
+    "StaticBatchBisect": {
+      "throughput_prs_per_hr": 0.5017,
+      "p50_latency_min": -0.5439,
+      "p95_latency_min": -0.6061,
+      "ci_minutes_per_merged_pr": -0.3672,
+      "invalidation_rate": 0.3667,
+      "mean_blame_rounds": -0.9075
+    },
+    "SpeculativeLinear": {
+      "throughput_prs_per_hr": 1.0,
+      "p50_latency_min": -1.0,
+      "p95_latency_min": -1.0,
+      "ci_minutes_per_merged_pr": -1.0,
+      "invalidation_rate": -1.0,
+      "mean_blame_rounds": -0.3464
+    },
+    "UberSubmitQueue": {
+      "throughput_prs_per_hr": 1.0,
+      "p50_latency_min": -1.0,
+      "p95_latency_min": -1.0,
+      "ci_minutes_per_merged_pr": -0.4333,
+      "invalidation_rate": 0.3097,
+      "mean_blame_rounds": -0.0267
+    },
+    "FlakeAwareBatch": {
+      "throughput_prs_per_hr": 0.9528,
+      "p50_latency_min": -0.7111,
+      "p95_latency_min": -0.9756,
+      "ci_minutes_per_merged_pr": -0.9206,
+      "invalidation_rate": -0.5875,
+      "mean_blame_rounds": -1.0
+    }
+  },
+  "exp2_velocity_sweep": {
+    "1.0": {
+      "StaticBatchBisect": {
+        "throughput_prs_per_hr": {
+          "mean": 5.2966,
+          "ci_lo": 5.2574,
+          "ci_hi": 5.3321,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 12.6482,
+          "ci_lo": 12.5346,
+          "ci_hi": 12.7743,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 35.8329,
+          "ci_lo": 32.9007,
+          "ci_hi": 38.7249,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 13.2609,
+          "ci_lo": 13.0659,
+          "ci_hi": 13.4593,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0,
+          "ci_lo": 0.0,
+          "ci_hi": 0.0,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.6521,
+          "ci_lo": 0.5601,
+          "ci_hi": 0.7515,
+          "n": 60
+        }
+      },
+      "SpeculativeLinear": {
+        "throughput_prs_per_hr": {
+          "mean": 4.6099,
+          "ci_lo": 4.5344,
+          "ci_hi": 4.6917,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 115.715,
+          "ci_lo": 106.6043,
+          "ci_hi": 124.3568,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 293.4291,
+          "ci_lo": 271.2677,
+          "ci_hi": 314.5202,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 20.5573,
+          "ci_lo": 20.0584,
+          "ci_hi": 21.0409,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.2893,
+          "ci_lo": 0.2778,
+          "ci_hi": 0.2997,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.8682,
+          "ci_lo": 0.8525,
+          "ci_hi": 0.8836,
+          "n": 60
+        }
+      },
+      "UberSubmitQueue": {
+        "throughput_prs_per_hr": {
+          "mean": 4.2792,
+          "ci_lo": 4.1475,
+          "ci_hi": 4.4198,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 160.524,
+          "ci_lo": 144.9331,
+          "ci_hi": 176.2786,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 430.2511,
+          "ci_lo": 383.9266,
+          "ci_hi": 476.6418,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 12.6579,
+          "ci_lo": 12.4099,
+          "ci_hi": 12.9018,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0031,
+          "ci_lo": 0.0017,
+          "ci_hi": 0.0046,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.6938,
+          "ci_lo": 0.6008,
+          "ci_hi": 0.7817,
+          "n": 60
+        }
+      },
+      "FlakeAwareBatch": {
+        "throughput_prs_per_hr": {
+          "mean": 5.5059,
+          "ci_lo": 5.4758,
+          "ci_hi": 5.5348,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 12.8937,
+          "ci_lo": 12.76,
+          "ci_hi": 13.0372,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 57.4301,
+          "ci_lo": 52.0717,
+          "ci_hi": 62.6396,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 15.2421,
+          "ci_lo": 14.8742,
+          "ci_hi": 15.6179,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0328,
+          "ci_lo": 0.0298,
+          "ci_hi": 0.0359,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 2.2007,
+          "ci_lo": 2.0206,
+          "ci_hi": 2.3797,
+          "n": 60
+        }
+      },
+      "SSMQ": {
+        "throughput_prs_per_hr": {
+          "mean": 5.3568,
+          "ci_lo": 5.3162,
+          "ci_hi": 5.3974,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 12.6408,
+          "ci_lo": 12.5574,
+          "ci_hi": 12.724,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 22.9611,
+          "ci_lo": 21.7153,
+          "ci_hi": 24.2063,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 13.5111,
+          "ci_lo": 13.3213,
+          "ci_hi": 13.6999,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0139,
+          "ci_lo": 0.0098,
+          "ci_hi": 0.0184,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.4036,
+          "ci_lo": 0.324,
+          "ci_hi": 0.4857,
+          "n": 60
+        }
+      }
+    },
+    "3.0": {
+      "StaticBatchBisect": {
+        "throughput_prs_per_hr": {
+          "mean": 15.299,
+          "ci_lo": 15.1416,
+          "ci_hi": 15.4488,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 18.7506,
+          "ci_lo": 17.108,
+          "ci_hi": 20.6206,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 54.0131,
+          "ci_lo": 50.8184,
+          "ci_hi": 57.8037,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 12.5343,
+          "ci_lo": 12.2072,
+          "ci_hi": 12.8716,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0,
+          "ci_lo": 0.0,
+          "ci_hi": 0.0,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 1.3181,
+          "ci_lo": 1.2203,
+          "ci_hi": 1.4277,
+          "n": 60
+        }
+      },
+      "SpeculativeLinear": {
+        "throughput_prs_per_hr": {
+          "mean": 7.3136,
+          "ci_lo": 7.0665,
+          "ci_hi": 7.5489,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 253.669,
+          "ci_lo": 235.5143,
+          "ci_hi": 270.9623,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 598.6703,
+          "ci_lo": 565.135,
+          "ci_hi": 635.1282,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 21.2896,
+          "ci_lo": 20.8324,
+          "ci_hi": 21.7624,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.3129,
+          "ci_lo": 0.3039,
+          "ci_hi": 0.322,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.8848,
+          "ci_lo": 0.8717,
+          "ci_hi": 0.8978,
+          "n": 60
+        }
+      },
+      "UberSubmitQueue": {
+        "throughput_prs_per_hr": {
+          "mean": 6.2041,
+          "ci_lo": 5.9327,
+          "ci_hi": 6.454,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 358.8331,
+          "ci_lo": 334.4171,
+          "ci_hi": 382.6414,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 807.7625,
+          "ci_lo": 754.8637,
+          "ci_hi": 863.5944,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 12.6069,
+          "ci_lo": 12.3505,
+          "ci_hi": 12.8632,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0017,
+          "ci_lo": 0.0008,
+          "ci_hi": 0.0026,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.7145,
+          "ci_lo": 0.6178,
+          "ci_hi": 0.8038,
+          "n": 60
+        }
+      },
+      "FlakeAwareBatch": {
+        "throughput_prs_per_hr": {
+          "mean": 14.0936,
+          "ci_lo": 13.8533,
+          "ci_hi": 14.3406,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 31.7932,
+          "ci_lo": 27.3177,
+          "ci_hi": 36.3512,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 98.3693,
+          "ci_lo": 90.3275,
+          "ci_hi": 106.8427,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 16.2532,
+          "ci_lo": 15.5594,
+          "ci_hi": 16.9621,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0262,
+          "ci_lo": 0.023,
+          "ci_hi": 0.0299,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 3.5886,
+          "ci_lo": 3.3796,
+          "ci_hi": 3.7987,
+          "n": 60
+        }
+      },
+      "SSMQ": {
+        "throughput_prs_per_hr": {
+          "mean": 15.7824,
+          "ci_lo": 15.6552,
+          "ci_hi": 15.8984,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 15.4177,
+          "ci_lo": 14.9407,
+          "ci_hi": 15.9467,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 34.725,
+          "ci_lo": 32.4485,
+          "ci_hi": 36.8924,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 12.2144,
+          "ci_lo": 11.8903,
+          "ci_hi": 12.5485,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0118,
+          "ci_lo": 0.0078,
+          "ci_hi": 0.016,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.6132,
+          "ci_lo": 0.5183,
+          "ci_hi": 0.7166,
+          "n": 60
+        }
+      }
+    },
+    "5.0": {
+      "StaticBatchBisect": {
+        "throughput_prs_per_hr": {
+          "mean": 22.0778,
+          "ci_lo": 21.6159,
+          "ci_hi": 22.5468,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 34.2862,
+          "ci_lo": 30.8023,
+          "ci_hi": 37.789,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 78.4204,
+          "ci_lo": 71.7828,
+          "ci_hi": 85.4033,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 12.5606,
+          "ci_lo": 12.1386,
+          "ci_hi": 13.0039,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0,
+          "ci_lo": 0.0,
+          "ci_hi": 0.0,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 1.8018,
+          "ci_lo": 1.6817,
+          "ci_hi": 1.9171,
+          "n": 60
+        }
+      },
+      "SpeculativeLinear": {
+        "throughput_prs_per_hr": {
+          "mean": 7.5737,
+          "ci_lo": 7.3519,
+          "ci_hi": 7.794,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 343.1475,
+          "ci_lo": 326.7219,
+          "ci_hi": 359.3165,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 746.4647,
+          "ci_lo": 718.4956,
+          "ci_hi": 773.6944,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 21.36,
+          "ci_lo": 20.9089,
+          "ci_hi": 21.8321,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.3159,
+          "ci_lo": 0.3073,
+          "ci_hi": 0.3243,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.8855,
+          "ci_lo": 0.8719,
+          "ci_hi": 0.8992,
+          "n": 60
+        }
+      },
+      "UberSubmitQueue": {
+        "throughput_prs_per_hr": {
+          "mean": 6.266,
+          "ci_lo": 5.9945,
+          "ci_hi": 6.5208,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 474.2107,
+          "ci_lo": 445.4715,
+          "ci_hi": 502.4438,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 983.9945,
+          "ci_lo": 934.2485,
+          "ci_hi": 1037.0197,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 12.5851,
+          "ci_lo": 12.3315,
+          "ci_hi": 12.8405,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0006,
+          "ci_lo": 0.0001,
+          "ci_hi": 0.0012,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.7219,
+          "ci_lo": 0.6283,
+          "ci_hi": 0.8103,
+          "n": 60
+        }
+      },
+      "FlakeAwareBatch": {
+        "throughput_prs_per_hr": {
+          "mean": 18.5533,
+          "ci_lo": 18.0326,
+          "ci_hi": 19.0783,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 53.4642,
+          "ci_lo": 46.5093,
+          "ci_hi": 60.2726,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 137.7597,
+          "ci_lo": 125.8366,
+          "ci_hi": 149.4482,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 16.8951,
+          "ci_lo": 16.2296,
+          "ci_hi": 17.5762,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0226,
+          "ci_lo": 0.0197,
+          "ci_hi": 0.0257,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 4.238,
+          "ci_lo": 4.0418,
+          "ci_hi": 4.4414,
+          "n": 60
+        }
+      },
+      "SSMQ": {
+        "throughput_prs_per_hr": {
+          "mean": 23.8059,
+          "ci_lo": 23.3799,
+          "ci_hi": 24.2389,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 22.0481,
+          "ci_lo": 20.6952,
+          "ci_hi": 23.3801,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 49.7431,
+          "ci_lo": 45.3445,
+          "ci_hi": 54.4716,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 11.3457,
+          "ci_lo": 10.904,
+          "ci_hi": 11.7884,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0097,
+          "ci_lo": 0.0058,
+          "ci_hi": 0.014,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.7242,
+          "ci_lo": 0.6325,
+          "ci_hi": 0.8234,
+          "n": 60
+        }
+      }
+    },
+    "10.0": {
+      "StaticBatchBisect": {
+        "throughput_prs_per_hr": {
+          "mean": 31.2536,
+          "ci_lo": 30.2134,
+          "ci_hi": 32.374,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 49.1975,
+          "ci_lo": 44.9289,
+          "ci_hi": 53.8312,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 110.2143,
+          "ci_lo": 101.1513,
+          "ci_hi": 119.0763,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 12.5022,
+          "ci_lo": 12.0503,
+          "ci_hi": 12.9372,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0,
+          "ci_lo": 0.0,
+          "ci_hi": 0.0,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 2.0154,
+          "ci_lo": 1.9257,
+          "ci_hi": 2.1082,
+          "n": 60
+        }
+      },
+      "SpeculativeLinear": {
+        "throughput_prs_per_hr": {
+          "mean": 7.5931,
+          "ci_lo": 7.3757,
+          "ci_hi": 7.8113,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 448.2105,
+          "ci_lo": 430.9846,
+          "ci_hi": 465.4713,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 886.0308,
+          "ci_lo": 858.9694,
+          "ci_hi": 912.9701,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 21.4171,
+          "ci_lo": 20.9557,
+          "ci_hi": 21.8989,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.3175,
+          "ci_lo": 0.3088,
+          "ci_hi": 0.326,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.886,
+          "ci_lo": 0.8724,
+          "ci_hi": 0.8994,
+          "n": 60
+        }
+      },
+      "UberSubmitQueue": {
+        "throughput_prs_per_hr": {
+          "mean": 6.2665,
+          "ci_lo": 5.9949,
+          "ci_hi": 6.5213,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 585.2096,
+          "ci_lo": 556.7273,
+          "ci_hi": 613.3844,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 1126.9912,
+          "ci_lo": 1077.3042,
+          "ci_hi": 1180.1064,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 12.5852,
+          "ci_lo": 12.3316,
+          "ci_hi": 12.8405,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0006,
+          "ci_lo": 0.0001,
+          "ci_hi": 0.0012,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.7219,
+          "ci_lo": 0.6283,
+          "ci_hi": 0.8103,
+          "n": 60
+        }
+      },
+      "FlakeAwareBatch": {
+        "throughput_prs_per_hr": {
+          "mean": 23.6101,
+          "ci_lo": 22.6938,
+          "ci_hi": 24.515,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 75.8637,
+          "ci_lo": 69.0433,
+          "ci_hi": 82.8602,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 182.4328,
+          "ci_lo": 168.6166,
+          "ci_hi": 196.6425,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 17.3837,
+          "ci_lo": 16.6525,
+          "ci_hi": 18.0922,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0199,
+          "ci_lo": 0.0175,
+          "ci_hi": 0.0223,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 4.6813,
+          "ci_lo": 4.4994,
+          "ci_hi": 4.8578,
+          "n": 60
+        }
+      },
+      "SSMQ": {
+        "throughput_prs_per_hr": {
+          "mean": 34.4492,
+          "ci_lo": 33.2422,
+          "ci_hi": 35.5637,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 37.421,
+          "ci_lo": 34.3289,
+          "ci_hi": 40.6485,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 84.393,
+          "ci_lo": 77.0087,
+          "ci_hi": 92.5635,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 11.1078,
+          "ci_lo": 10.6137,
+          "ci_hi": 11.5985,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0096,
+          "ci_lo": 0.0056,
+          "ci_hi": 0.014,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.8156,
+          "ci_lo": 0.705,
+          "ci_hi": 0.9408,
+          "n": 60
+        }
+      }
+    }
+  },
+  "exp3_ablation": {
+    "SSMQ": {
+      "throughput_prs_per_hr": {
+        "mean": 23.8059,
+        "ci_lo": 23.3799,
+        "ci_hi": 24.2389,
+        "n": 60
+      },
+      "p50_latency_min": {
+        "mean": 22.0481,
+        "ci_lo": 20.6952,
+        "ci_hi": 23.3801,
+        "n": 60
+      },
+      "p95_latency_min": {
+        "mean": 49.7431,
+        "ci_lo": 45.3445,
+        "ci_hi": 54.4716,
+        "n": 60
+      },
+      "ci_minutes_per_merged_pr": {
+        "mean": 11.3457,
+        "ci_lo": 10.904,
+        "ci_hi": 11.7884,
+        "n": 60
+      },
+      "invalidation_rate": {
+        "mean": 0.0097,
+        "ci_lo": 0.0058,
+        "ci_hi": 0.014,
+        "n": 60
+      },
+      "mean_blame_rounds": {
+        "mean": 0.7242,
+        "ci_lo": 0.6325,
+        "ci_hi": 0.8234,
+        "n": 60
+      }
+    },
+    "SSMQ-NoGraph": {
+      "throughput_prs_per_hr": {
+        "mean": 21.7378,
+        "ci_lo": 21.2094,
+        "ci_hi": 22.2632,
+        "n": 60
+      },
+      "p50_latency_min": {
+        "mean": 36.501,
+        "ci_lo": 32.133,
+        "ci_hi": 40.7408,
+        "n": 60
+      },
+      "p95_latency_min": {
+        "mean": 85.889,
+        "ci_lo": 78.5224,
+        "ci_hi": 93.8571,
+        "n": 60
+      },
+      "ci_minutes_per_merged_pr": {
+        "mean": 12.7726,
+        "ci_lo": 12.2754,
+        "ci_hi": 13.2762,
+        "n": 60
+      },
+      "invalidation_rate": {
+        "mean": 0.0066,
+        "ci_lo": 0.004,
+        "ci_hi": 0.0096,
+        "n": 60
+      },
+      "mean_blame_rounds": {
+        "mean": 2.1729,
+        "ci_lo": 2.0192,
+        "ci_hi": 2.3297,
+        "n": 60
+      }
+    },
+    "SSMQ-NoFlaky": {
+      "throughput_prs_per_hr": {
+        "mean": 23.8613,
+        "ci_lo": 23.4515,
+        "ci_hi": 24.2858,
+        "n": 60
+      },
+      "p50_latency_min": {
+        "mean": 20.9342,
+        "ci_lo": 19.8353,
+        "ci_hi": 21.9739,
+        "n": 60
+      },
+      "p95_latency_min": {
+        "mean": 46.675,
+        "ci_lo": 43.041,
+        "ci_hi": 50.3907,
+        "n": 60
+      },
+      "ci_minutes_per_merged_pr": {
+        "mean": 11.0564,
+        "ci_lo": 10.6391,
+        "ci_hi": 11.4603,
+        "n": 60
+      },
+      "invalidation_rate": {
+        "mean": 0.0,
+        "ci_lo": 0.0,
+        "ci_hi": 0.0,
+        "n": 60
+      },
+      "mean_blame_rounds": {
+        "mean": 0.4191,
+        "ci_lo": 0.3412,
+        "ci_hi": 0.4998,
+        "n": 60
+      }
+    },
+    "SSMQ-NoBlame": {
+      "throughput_prs_per_hr": {
+        "mean": 23.7351,
+        "ci_lo": 23.3037,
+        "ci_hi": 24.1515,
+        "n": 60
+      },
+      "p50_latency_min": {
+        "mean": 22.0921,
+        "ci_lo": 20.7142,
+        "ci_hi": 23.4206,
+        "n": 60
+      },
+      "p95_latency_min": {
+        "mean": 50.5733,
+        "ci_lo": 46.1202,
+        "ci_hi": 55.1931,
+        "n": 60
+      },
+      "ci_minutes_per_merged_pr": {
+        "mean": 11.4434,
+        "ci_lo": 11.0145,
+        "ci_hi": 11.8728,
+        "n": 60
+      },
+      "invalidation_rate": {
+        "mean": 0.0101,
+        "ci_lo": 0.0061,
+        "ci_hi": 0.0147,
+        "n": 60
+      },
+      "mean_blame_rounds": {
+        "mean": 0.792,
+        "ci_lo": 0.6862,
+        "ci_hi": 0.9105,
+        "n": 60
+      }
+    },
+    "StaticBatchBisect": {
+      "throughput_prs_per_hr": {
+        "mean": 22.0778,
+        "ci_lo": 21.6159,
+        "ci_hi": 22.5468,
+        "n": 60
+      },
+      "p50_latency_min": {
+        "mean": 34.2862,
+        "ci_lo": 30.8023,
+        "ci_hi": 37.789,
+        "n": 60
+      },
+      "p95_latency_min": {
+        "mean": 78.4204,
+        "ci_lo": 71.7828,
+        "ci_hi": 85.4033,
+        "n": 60
+      },
+      "ci_minutes_per_merged_pr": {
+        "mean": 12.5606,
+        "ci_lo": 12.1386,
+        "ci_hi": 13.0039,
+        "n": 60
+      },
+      "invalidation_rate": {
+        "mean": 0.0,
+        "ci_lo": 0.0,
+        "ci_hi": 0.0,
+        "n": 60
+      },
+      "mean_blame_rounds": {
+        "mean": 1.8018,
+        "ci_lo": 1.6817,
+        "ci_hi": 1.9171,
+        "n": 60
+      }
+    }
+  },
+  "exp4a_flaky_sweep": {
+    "0.0": {
+      "StaticBatchBisect": {
+        "throughput_prs_per_hr": {
+          "mean": 22.8423,
+          "ci_lo": 22.396,
+          "ci_hi": 23.3322,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 32.6202,
+          "ci_lo": 29.2158,
+          "ci_hi": 36.0286,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 74.5002,
+          "ci_lo": 68.233,
+          "ci_hi": 81.0784,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 11.9915,
+          "ci_lo": 11.5951,
+          "ci_hi": 12.4165,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0,
+          "ci_lo": 0.0,
+          "ci_hi": 0.0,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 1.7569,
+          "ci_lo": 1.6386,
+          "ci_hi": 1.872,
+          "n": 60
+        }
+      },
+      "SpeculativeLinear": {
+        "throughput_prs_per_hr": {
+          "mean": 8.2162,
+          "ci_lo": 7.9694,
+          "ci_hi": 8.4553,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 317.9391,
+          "ci_lo": 302.1657,
+          "ci_hi": 333.5968,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 688.7169,
+          "ci_lo": 660.9607,
+          "ci_hi": 718.2406,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 19.793,
+          "ci_lo": 19.4159,
+          "ci_hi": 20.1959,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.2879,
+          "ci_lo": 0.2797,
+          "ci_hi": 0.2963,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.9009,
+          "ci_lo": 0.8883,
+          "ci_hi": 0.9126,
+          "n": 60
+        }
+      },
+      "UberSubmitQueue": {
+        "throughput_prs_per_hr": {
+          "mean": 6.5232,
+          "ci_lo": 6.2469,
+          "ci_hi": 6.7826,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 466.4736,
+          "ci_lo": 437.7717,
+          "ci_hi": 494.7372,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 966.2036,
+          "ci_lo": 913.4545,
+          "ci_hi": 1020.477,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 12.0902,
+          "ci_lo": 11.8569,
+          "ci_hi": 12.3322,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0004,
+          "ci_lo": 0.0,
+          "ci_hi": 0.0008,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.7191,
+          "ci_lo": 0.6264,
+          "ci_hi": 0.8072,
+          "n": 60
+        }
+      },
+      "FlakeAwareBatch": {
+        "throughput_prs_per_hr": {
+          "mean": 18.8964,
+          "ci_lo": 18.3617,
+          "ci_hi": 19.4344,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 50.7886,
+          "ci_lo": 43.8858,
+          "ci_hi": 57.4811,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 133.1666,
+          "ci_lo": 120.7275,
+          "ci_hi": 145.5027,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 16.4317,
+          "ci_lo": 15.7194,
+          "ci_hi": 17.1662,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0,
+          "ci_lo": 0.0,
+          "ci_hi": 0.0,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 4.1628,
+          "ci_lo": 3.9503,
+          "ci_hi": 4.3784,
+          "n": 60
+        }
+      },
+      "SSMQ": {
+        "throughput_prs_per_hr": {
+          "mean": 24.7157,
+          "ci_lo": 24.3505,
+          "ci_hi": 25.1001,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 20.5174,
+          "ci_lo": 19.4346,
+          "ci_hi": 21.5953,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 44.898,
+          "ci_lo": 41.1219,
+          "ci_hi": 48.7986,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 10.6325,
+          "ci_lo": 10.2406,
+          "ci_hi": 11.0257,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0,
+          "ci_lo": 0.0,
+          "ci_hi": 0.0,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.5186,
+          "ci_lo": 0.4425,
+          "ci_hi": 0.6032,
+          "n": 60
+        }
+      }
+    },
+    "0.02": {
+      "StaticBatchBisect": {
+        "throughput_prs_per_hr": {
+          "mean": 22.5462,
+          "ci_lo": 22.1246,
+          "ci_hi": 22.9916,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 33.4359,
+          "ci_lo": 30.0247,
+          "ci_hi": 36.8505,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 75.6693,
+          "ci_lo": 69.3955,
+          "ci_hi": 82.1634,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 12.1974,
+          "ci_lo": 11.7937,
+          "ci_hi": 12.614,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0,
+          "ci_lo": 0.0,
+          "ci_hi": 0.0,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 1.7785,
+          "ci_lo": 1.6607,
+          "ci_hi": 1.8953,
+          "n": 60
+        }
+      },
+      "SpeculativeLinear": {
+        "throughput_prs_per_hr": {
+          "mean": 7.9669,
+          "ci_lo": 7.7397,
+          "ci_hi": 8.1826,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 327.9611,
+          "ci_lo": 312.9587,
+          "ci_hi": 342.8585,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 709.1019,
+          "ci_lo": 682.411,
+          "ci_hi": 736.8463,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 20.3667,
+          "ci_lo": 19.9732,
+          "ci_hi": 20.7523,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.2983,
+          "ci_lo": 0.29,
+          "ci_hi": 0.3063,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.8935,
+          "ci_lo": 0.881,
+          "ci_hi": 0.9056,
+          "n": 60
+        }
+      },
+      "UberSubmitQueue": {
+        "throughput_prs_per_hr": {
+          "mean": 6.4325,
+          "ci_lo": 6.1523,
+          "ci_hi": 6.689,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 468.4742,
+          "ci_lo": 439.4402,
+          "ci_hi": 496.5771,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 972.2916,
+          "ci_lo": 920.9611,
+          "ci_hi": 1026.1032,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 12.2691,
+          "ci_lo": 12.032,
+          "ci_hi": 12.5143,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0004,
+          "ci_lo": 0.0,
+          "ci_hi": 0.0008,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.7191,
+          "ci_lo": 0.6264,
+          "ci_hi": 0.8072,
+          "n": 60
+        }
+      },
+      "FlakeAwareBatch": {
+        "throughput_prs_per_hr": {
+          "mean": 18.7992,
+          "ci_lo": 18.2957,
+          "ci_hi": 19.3131,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 51.7842,
+          "ci_lo": 44.8764,
+          "ci_hi": 58.4205,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 135.473,
+          "ci_lo": 123.1896,
+          "ci_hi": 147.5672,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 16.6425,
+          "ci_lo": 15.9371,
+          "ci_hi": 17.3591,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0095,
+          "ci_lo": 0.008,
+          "ci_hi": 0.011,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 4.2195,
+          "ci_lo": 4.0157,
+          "ci_hi": 4.4263,
+          "n": 60
+        }
+      },
+      "SSMQ": {
+        "throughput_prs_per_hr": {
+          "mean": 24.371,
+          "ci_lo": 23.9832,
+          "ci_hi": 24.775,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 20.9335,
+          "ci_lo": 19.7262,
+          "ci_hi": 22.067,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 46.4405,
+          "ci_lo": 42.4818,
+          "ci_hi": 50.6639,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 10.8784,
+          "ci_lo": 10.4655,
+          "ci_hi": 11.281,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0016,
+          "ci_lo": 0.0005,
+          "ci_hi": 0.0028,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.5738,
+          "ci_lo": 0.4921,
+          "ci_hi": 0.6617,
+          "n": 60
+        }
+      }
+    },
+    "0.05": {
+      "StaticBatchBisect": {
+        "throughput_prs_per_hr": {
+          "mean": 22.0778,
+          "ci_lo": 21.6159,
+          "ci_hi": 22.5468,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 34.2862,
+          "ci_lo": 30.8023,
+          "ci_hi": 37.789,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 78.4204,
+          "ci_lo": 71.7828,
+          "ci_hi": 85.4033,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 12.5606,
+          "ci_lo": 12.1386,
+          "ci_hi": 13.0039,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0,
+          "ci_lo": 0.0,
+          "ci_hi": 0.0,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 1.8018,
+          "ci_lo": 1.6817,
+          "ci_hi": 1.9171,
+          "n": 60
+        }
+      },
+      "SpeculativeLinear": {
+        "throughput_prs_per_hr": {
+          "mean": 7.5737,
+          "ci_lo": 7.3519,
+          "ci_hi": 7.794,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 343.1475,
+          "ci_lo": 326.7219,
+          "ci_hi": 359.3165,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 746.4647,
+          "ci_lo": 718.4956,
+          "ci_hi": 773.6944,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 21.36,
+          "ci_lo": 20.9089,
+          "ci_hi": 21.8321,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.3159,
+          "ci_lo": 0.3073,
+          "ci_hi": 0.3243,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.8855,
+          "ci_lo": 0.8719,
+          "ci_hi": 0.8992,
+          "n": 60
+        }
+      },
+      "UberSubmitQueue": {
+        "throughput_prs_per_hr": {
+          "mean": 6.266,
+          "ci_lo": 5.9945,
+          "ci_hi": 6.5208,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 474.2107,
+          "ci_lo": 445.4715,
+          "ci_hi": 502.4438,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 983.9945,
+          "ci_lo": 934.2485,
+          "ci_hi": 1037.0197,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 12.5851,
+          "ci_lo": 12.3315,
+          "ci_hi": 12.8405,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0006,
+          "ci_lo": 0.0001,
+          "ci_hi": 0.0012,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.7219,
+          "ci_lo": 0.6283,
+          "ci_hi": 0.8103,
+          "n": 60
+        }
+      },
+      "FlakeAwareBatch": {
+        "throughput_prs_per_hr": {
+          "mean": 18.5533,
+          "ci_lo": 18.0326,
+          "ci_hi": 19.0783,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 53.4642,
+          "ci_lo": 46.5093,
+          "ci_hi": 60.2726,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 137.7597,
+          "ci_lo": 125.8366,
+          "ci_hi": 149.4482,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 16.8951,
+          "ci_lo": 16.2296,
+          "ci_hi": 17.5762,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0226,
+          "ci_lo": 0.0197,
+          "ci_hi": 0.0257,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 4.238,
+          "ci_lo": 4.0418,
+          "ci_hi": 4.4414,
+          "n": 60
+        }
+      },
+      "SSMQ": {
+        "throughput_prs_per_hr": {
+          "mean": 23.8059,
+          "ci_lo": 23.3799,
+          "ci_hi": 24.2389,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 22.0481,
+          "ci_lo": 20.6952,
+          "ci_hi": 23.3801,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 49.7431,
+          "ci_lo": 45.3445,
+          "ci_hi": 54.4716,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 11.3457,
+          "ci_lo": 10.904,
+          "ci_hi": 11.7884,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0097,
+          "ci_lo": 0.0058,
+          "ci_hi": 0.014,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.7242,
+          "ci_lo": 0.6325,
+          "ci_hi": 0.8234,
+          "n": 60
+        }
+      }
+    },
+    "0.1": {
+      "StaticBatchBisect": {
+        "throughput_prs_per_hr": {
+          "mean": 21.3461,
+          "ci_lo": 20.884,
+          "ci_hi": 21.8165,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 35.8747,
+          "ci_lo": 32.3327,
+          "ci_hi": 39.5898,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 82.16,
+          "ci_lo": 75.1548,
+          "ci_hi": 89.7656,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 13.1798,
+          "ci_lo": 12.7138,
+          "ci_hi": 13.6642,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0,
+          "ci_lo": 0.0,
+          "ci_hi": 0.0,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 1.8264,
+          "ci_lo": 1.7094,
+          "ci_hi": 1.9419,
+          "n": 60
+        }
+      },
+      "SpeculativeLinear": {
+        "throughput_prs_per_hr": {
+          "mean": 6.9409,
+          "ci_lo": 6.7491,
+          "ci_hi": 7.1379,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 372.3183,
+          "ci_lo": 357.3213,
+          "ci_hi": 388.3067,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 803.3817,
+          "ci_lo": 778.3977,
+          "ci_hi": 829.0617,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 23.2525,
+          "ci_lo": 22.6927,
+          "ci_hi": 23.7954,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.344,
+          "ci_lo": 0.3359,
+          "ci_hi": 0.3516,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.8721,
+          "ci_lo": 0.8566,
+          "ci_hi": 0.889,
+          "n": 60
+        }
+      },
+      "UberSubmitQueue": {
+        "throughput_prs_per_hr": {
+          "mean": 6.0057,
+          "ci_lo": 5.7386,
+          "ci_hi": 6.2558,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 480.7085,
+          "ci_lo": 453.0644,
+          "ci_hi": 507.9946,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 998.2376,
+          "ci_lo": 949.5965,
+          "ci_hi": 1049.5518,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 13.1451,
+          "ci_lo": 12.8573,
+          "ci_hi": 13.4303,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0008,
+          "ci_lo": 0.0002,
+          "ci_hi": 0.0014,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.7232,
+          "ci_lo": 0.6294,
+          "ci_hi": 0.8107,
+          "n": 60
+        }
+      },
+      "FlakeAwareBatch": {
+        "throughput_prs_per_hr": {
+          "mean": 18.3262,
+          "ci_lo": 17.7827,
+          "ci_hi": 18.8489,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 55.8013,
+          "ci_lo": 49.0289,
+          "ci_hi": 62.5685,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 141.875,
+          "ci_lo": 129.6353,
+          "ci_hi": 154.093,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 17.3969,
+          "ci_lo": 16.6898,
+          "ci_hi": 18.1075,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0398,
+          "ci_lo": 0.0365,
+          "ci_hi": 0.0431,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 4.2898,
+          "ci_lo": 4.0987,
+          "ci_hi": 4.4879,
+          "n": 60
+        }
+      },
+      "SSMQ": {
+        "throughput_prs_per_hr": {
+          "mean": 22.8375,
+          "ci_lo": 22.4172,
+          "ci_hi": 23.2585,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 24.4106,
+          "ci_lo": 22.6573,
+          "ci_hi": 26.1197,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 57.3328,
+          "ci_lo": 51.8104,
+          "ci_hi": 63.1008,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 12.1713,
+          "ci_lo": 11.6618,
+          "ci_hi": 12.6636,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0319,
+          "ci_lo": 0.0239,
+          "ci_hi": 0.04,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 1.0264,
+          "ci_lo": 0.8902,
+          "ci_hi": 1.1736,
+          "n": 60
+        }
+      }
+    }
+  },
+  "exp4b_blame_accuracy": {
+    "0.5": {
+      "throughput_prs_per_hr": {
+        "mean": 23.6897,
+        "ci_lo": 23.3023,
+        "ci_hi": 24.0845,
+        "n": 60
+      },
+      "p50_latency_min": {
+        "mean": 22.1414,
+        "ci_lo": 20.7736,
+        "ci_hi": 23.5138,
+        "n": 60
+      },
+      "p95_latency_min": {
+        "mean": 50.6201,
+        "ci_lo": 46.2575,
+        "ci_hi": 55.2735,
+        "n": 60
+      },
+      "ci_minutes_per_merged_pr": {
+        "mean": 11.4541,
+        "ci_lo": 11.0336,
+        "ci_hi": 11.8719,
+        "n": 60
+      },
+      "invalidation_rate": {
+        "mean": 0.0098,
+        "ci_lo": 0.006,
+        "ci_hi": 0.0141,
+        "n": 60
+      },
+      "mean_blame_rounds": {
+        "mean": 0.7808,
+        "ci_lo": 0.6819,
+        "ci_hi": 0.8898,
+        "n": 60
+      }
+    },
+    "0.65": {
+      "throughput_prs_per_hr": {
+        "mean": 23.7423,
+        "ci_lo": 23.3435,
+        "ci_hi": 24.143,
+        "n": 60
+      },
+      "p50_latency_min": {
+        "mean": 22.1127,
+        "ci_lo": 20.7834,
+        "ci_hi": 23.4687,
+        "n": 60
+      },
+      "p95_latency_min": {
+        "mean": 50.2147,
+        "ci_lo": 45.7521,
+        "ci_hi": 55.0073,
+        "n": 60
+      },
+      "ci_minutes_per_merged_pr": {
+        "mean": 11.4058,
+        "ci_lo": 10.9785,
+        "ci_hi": 11.8402,
+        "n": 60
+      },
+      "invalidation_rate": {
+        "mean": 0.0098,
+        "ci_lo": 0.006,
+        "ci_hi": 0.0141,
+        "n": 60
+      },
+      "mean_blame_rounds": {
+        "mean": 0.7601,
+        "ci_lo": 0.6637,
+        "ci_hi": 0.8627,
+        "n": 60
+      }
+    },
+    "0.75": {
+      "throughput_prs_per_hr": {
+        "mean": 23.7507,
+        "ci_lo": 23.3477,
+        "ci_hi": 24.1667,
+        "n": 60
+      },
+      "p50_latency_min": {
+        "mean": 22.1155,
+        "ci_lo": 20.7631,
+        "ci_hi": 23.453,
+        "n": 60
+      },
+      "p95_latency_min": {
+        "mean": 49.989,
+        "ci_lo": 45.5156,
+        "ci_hi": 54.7792,
+        "n": 60
+      },
+      "ci_minutes_per_merged_pr": {
+        "mean": 11.3794,
+        "ci_lo": 10.9459,
+        "ci_hi": 11.816,
+        "n": 60
+      },
+      "invalidation_rate": {
+        "mean": 0.0097,
+        "ci_lo": 0.0058,
+        "ci_hi": 0.014,
+        "n": 60
+      },
+      "mean_blame_rounds": {
+        "mean": 0.7412,
+        "ci_lo": 0.6439,
+        "ci_hi": 0.8426,
+        "n": 60
+      }
+    },
+    "0.85": {
+      "throughput_prs_per_hr": {
+        "mean": 23.8059,
+        "ci_lo": 23.3799,
+        "ci_hi": 24.2389,
+        "n": 60
+      },
+      "p50_latency_min": {
+        "mean": 22.0481,
+        "ci_lo": 20.6952,
+        "ci_hi": 23.3801,
+        "n": 60
+      },
+      "p95_latency_min": {
+        "mean": 49.7431,
+        "ci_lo": 45.3445,
+        "ci_hi": 54.4716,
+        "n": 60
+      },
+      "ci_minutes_per_merged_pr": {
+        "mean": 11.3457,
+        "ci_lo": 10.904,
+        "ci_hi": 11.7884,
+        "n": 60
+      },
+      "invalidation_rate": {
+        "mean": 0.0097,
+        "ci_lo": 0.0058,
+        "ci_hi": 0.014,
+        "n": 60
+      },
+      "mean_blame_rounds": {
+        "mean": 0.7242,
+        "ci_lo": 0.6325,
+        "ci_hi": 0.8234,
+        "n": 60
+      }
+    },
+    "0.95": {
+      "throughput_prs_per_hr": {
+        "mean": 23.858,
+        "ci_lo": 23.4401,
+        "ci_hi": 24.2722,
+        "n": 60
+      },
+      "p50_latency_min": {
+        "mean": 22.0365,
+        "ci_lo": 20.6879,
+        "ci_hi": 23.3695,
+        "n": 60
+      },
+      "p95_latency_min": {
+        "mean": 49.5334,
+        "ci_lo": 45.0729,
+        "ci_hi": 54.2617,
+        "n": 60
+      },
+      "ci_minutes_per_merged_pr": {
+        "mean": 11.318,
+        "ci_lo": 10.8814,
+        "ci_hi": 11.7632,
+        "n": 60
+      },
+      "invalidation_rate": {
+        "mean": 0.0097,
+        "ci_lo": 0.0058,
+        "ci_hi": 0.014,
+        "n": 60
+      },
+      "mean_blame_rounds": {
+        "mean": 0.7128,
+        "ci_lo": 0.619,
+        "ci_hi": 0.8107,
+        "n": 60
+      }
+    }
+  }
+}

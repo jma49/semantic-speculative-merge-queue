@@ -1,0 +1,32 @@
+[
+  {
+    "repo": "kubernetes/kubernetes",
+    "prs": 200,
+    "unique_files": 620,
+    "avg_files_per_pr": 5.82,
+    "time_span": [
+      "2023-10-31T18:16:38Z",
+      "2026-11-26T21:22:49Z"
+    ]
+  },
+  {
+    "repo": "microsoft/TypeScript",
+    "prs": 200,
+    "unique_files": 1007,
+    "avg_files_per_pr": 8.48,
+    "time_span": [
+      "2019-04-25T20:40:24Z",
+      "2026-11-26T20:54:51Z"
+    ]
+  },
+  {
+    "repo": "vercel/next.js",
+    "prs": 200,
+    "unique_files": 1460,
+    "avg_files_per_pr": 9.59,
+    "time_span": [
+      "2026-11-06T13:33:38Z",
+      "2026-11-26T22:14:10Z"
+    ]
+  }
+]

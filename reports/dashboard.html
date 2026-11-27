@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Research Paper Factory & SSMQ Audited Results</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+    color: var(--foreground);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .stack { display: flex; flex-direction: column; gap: 14px; }
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .kpi {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius, 10px);
+    padding: 12px 14px;
+  }
+  .kpi-label { font-size: 11px; color: var(--muted-foreground); margin-bottom: 4px; }
+  .kpi-val { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
+  .kpi-sub { font-size: 11px; color: var(--muted-foreground); margin-top: 2px; }
+  .box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius, 10px);
+    padding: 16px;
+  }
+  .box-title { font-size: 13px; font-weight: 600; margin: 0 0 4px 0; }
+  .box-sub { font-size: 11px; color: var(--muted-foreground); margin: 0 0 12px 0; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .bar-list { display: flex; flex-direction: column; gap: 8px; }
+  .bar-row { display: grid; grid-template-columns: 126px 1fr 56px; align-items: center; gap: 8px; }
+  .bar-name { font-size: 11.5px; text-align: right; color: var(--muted-foreground); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .bar-name.hl { color: var(--foreground); font-weight: 600; }
+  .bar-track { height: 18px; background: var(--secondary); border-radius: 4px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 4px; background: var(--chart-2, #64748b); }
+  .bar-fill.hl { background: var(--chart-1, #2563eb); }
+  .bar-val { font-size: 11.5px; font-variant-numeric: tabular-nums; text-align: right; color: var(--muted-foreground); }
+  .bar-val.hl { color: var(--foreground); font-weight: 700; }
+  .pill-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 500;
+    border: 1px solid var(--border); background: var(--secondary);
+  }
+  .dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+  .dot.ok { background: var(--success, #10b981); }
+  .dot.wait { background: var(--warning, #f59e0b); }
+  .chart-svg { width: 100%; height: 190px; display: block; }
+  table { width: 100%; border-collapse: collapse; font-size: 11.5px; }
+  th, td { padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: right; font-variant-numeric: tabular-nums; }
+  th:first-child, td:first-child { text-align: left; }
+  th { color: var(--muted-foreground); font-weight: 600; font-size: 11px; }
+  tr.hl td { font-weight: 700; color: var(--foreground); }
+  @media (max-width: 560px) {
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .two-col { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="stack">
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="kpi-label">P95 Merge Latency (5×)</div>
+      <div class="kpi-val" style="color: var(--chart-1, #2563eb);">49.7 m</div>
+      <div class="kpi-sub">-36.6% vs Static Batch (78.4 m)</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">CI Compute Cost</div>
+      <div class="kpi-val" style="color: var(--success, #10b981);">11.35 m/PR</div>
+      <div class="kpi-sub">-46.9% vs Linear, -32.8% vs Flake</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Peak 10× Throughput</div>
+      <div class="kpi-val">34.45 PR/h</div>
+      <div class="kpi-sub">vs 31.25 Static / 6.27 Risk-Gated</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Sealed Audit &amp; Refs</div>
+      <div class="kpi-val">3,480 / 27</div>
+      <div class="kpi-sub">0 escapes · 0% preprints · 0.10% A/A</div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="box">
+      <h3 class="box-title">P95 Merge Latency at 5× Velocity (min ↓)</h3>
+      <p class="box-sub">Mean across 3 real OSS repos (kubernetes, TypeScript, next.js), 20 seeds</p>
+      <div class="bar-list">
+        <div class="bar-row"><div class="bar-name hl">SSMQ (Ours)</div><div class="bar-track"><div class="bar-fill hl" style="width: 3.5%;"></div></div><div class="bar-val hl">49.7</div></div>
+        <div class="bar-row"><div class="bar-name">StaticBatchBisect</div><div class="bar-track"><div class="bar-fill" style="width: 5.5%;"></div></div><div class="bar-val">78.4</div></div>
+        <div class="bar-row"><div class="bar-name">FlakeAwareBatch</div><div class="bar-track"><div class="bar-fill" style="width: 9.7%;"></div></div><div class="bar-val">137.8</div></div>
+        <div class="bar-row"><div class="bar-name">SpeculativeLinear</div><div class="bar-track"><div class="bar-fill" style="width: 52.3%; background: var(--destructive, #ef4444);"></div></div><div class="bar-val">746.5</div></div>
+        <div class="bar-row"><div class="bar-name">UberSubmitProxy</div><div class="bar-track"><div class="bar-fill" style="width: 69.0%; background: var(--warning, #f59e0b);"></div></div><div class="bar-val">984.0</div></div>
+        <div class="bar-row"><div class="bar-name">SerialQueue</div><div class="bar-track"><div class="bar-fill" style="width: 100%;"></div></div><div class="bar-val">1426.4</div></div>
+      </div>
+    </div>
+
+    <div class="box">
+      <h3 class="box-title">CI Compute Cost per Merged PR (min/PR ↓)</h3>
+      <p class="box-sub">Includes partial runner time on aborted speculative builds</p>
+      <div class="bar-list">
+        <div class="bar-row"><div class="bar-name hl">SSMQ (Ours)</div><div class="bar-track"><div class="bar-fill hl" style="width: 53.1%;"></div></div><div class="bar-val hl">11.35</div></div>
+        <div class="bar-row"><div class="bar-name">StaticBatchBisect</div><div class="bar-track"><div class="bar-fill" style="width: 58.8%;"></div></div><div class="bar-val">12.56</div></div>
+        <div class="bar-row"><div class="bar-name">UberSubmitProxy</div><div class="bar-track"><div class="bar-fill" style="width: 58.9%;"></div></div><div class="bar-val">12.59</div></div>
+        <div class="bar-row"><div class="bar-name">SerialQueue</div><div class="bar-track"><div class="bar-fill" style="width: 64.3%;"></div></div><div class="bar-val">13.74</div></div>
+        <div class="bar-row"><div class="bar-name">FlakeAwareBatch</div><div class="bar-track"><div class="bar-fill" style="width: 79.1%; background: var(--warning, #f59e0b);"></div></div><div class="bar-val">16.90</div></div>
+        <div class="bar-row"><div class="bar-name">SpeculativeLinear</div><div class="bar-track"><div class="bar-fill" style="width: 100%; background: var(--destructive, #ef4444);"></div></div><div class="bar-val">21.36</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="box">
+    <h3 class="box-title">Throughput Scaling Under AI-Agent PR Velocity Surge (1× → 10×)</h3>
+    <p class="box-sub">Effective merged PRs/hour across 600 real OSS PR traces (exp2_velocity_sweep_v1)</p>
+    <svg class="chart-svg" viewBox="0 0 660 190" preserveAspectRatio="xMidYMid meet">
+      <g stroke="var(--border)" stroke-width="1">
+        <line x1="48" y1="18" x2="520" y2="18"/>
+        <line x1="48" y1="54" x2="520" y2="54"/>
+        <line x1="48" y1="90" x2="520" y2="90"/>
+        <line x1="48" y1="126" x2="520" y2="126"/>
+        <line x1="48" y1="162" x2="520" y2="162"/>
+      </g>
+      <g fill="var(--muted-foreground)" font-size="10" text-anchor="end">
+        <text x="42" y="21">40</text>
+        <text x="42" y="57">30</text>
+        <text x="42" y="93">20</text>
+        <text x="42" y="129">10</text>
+        <text x="42" y="165">0</text>
+      </g>
+      <g fill="var(--muted-foreground)" font-size="11" text-anchor="middle">
+        <text x="68" y="180">1× (6/h)</text>
+        <text x="212" y="180">3× (18/h)</text>
+        <text x="356" y="180">5× (30/h)</text>
+        <text x="500" y="180">10× (60/h)</text>
+      </g>
+      <!-- y = 162 - (val / 40) * 144 -->
+      <!-- SSMQ: 5.36, 15.78, 23.81, 34.45 -->
+      <polyline fill="none" stroke="var(--chart-1, #2563eb)" stroke-width="3" points="68,142.7 212,105.2 356,76.3 500,38.0"/>
+      <g fill="var(--chart-1, #2563eb)">
+        <circle cx="68" cy="142.7" r="4"/><circle cx="212" cy="105.2" r="4"/><circle cx="356" cy="76.3" r="4"/><circle cx="500" cy="38.0" r="4.5"/>
+      </g>
+      <!-- StaticBatchBisect: 5.30, 15.30, 22.08, 31.25 -->
+      <polyline fill="none" stroke="var(--chart-2, #10b981)" stroke-width="2" points="68,142.9 212,106.9 356,82.5 500,49.5"/>
+      <!-- FlakeAwareBatch: 5.51, 14.09, 18.55, 23.61 -->
+      <polyline fill="none" stroke="var(--chart-3, #f59e0b)" stroke-width="2" stroke-dasharray="4 3" points="68,142.2 212,111.3 356,95.2 500,77.0"/>
+      <!-- SpeculativeLinear: 4.61, 7.31, 7.57, 7.59 -->
+      <polyline fill="none" stroke="var(--destructive, #ef4444)" stroke-width="2" points="68,145.4 212,135.7 356,134.7 500,134.7"/>
+      <!-- UberSubmitProxy: 4.28, 6.20, 6.27, 6.27 -->
+      <polyline fill="none" stroke="var(--muted-foreground)" stroke-width="1.8" stroke-dasharray="2 2" points="68,146.6 212,139.7 356,139.4 500,139.4"/>
+
+      <!-- Legend -->
+      <g font-size="11" fill="var(--foreground)">
+        <line x1="534" y1="36" x2="552" y2="36" stroke="var(--chart-1, #2563eb)" stroke-width="3"/><text x="558" y="40" font-weight="700">SSMQ (34.45)</text>
+        <line x1="534" y1="58" x2="552" y2="58" stroke="var(--chart-2, #10b981)" stroke-width="2"/><text x="558" y="62">Static (31.25)</text>
+        <line x1="534" y1="80" x2="552" y2="80" stroke="var(--chart-3, #f59e0b)" stroke-width="2" stroke-dasharray="4 3"/><text x="558" y="84">FlakeBatch (23.6)</text>
+        <line x1="534" y1="102" x2="552" y2="102" stroke="var(--destructive, #ef4444)" stroke-width="2"/><text x="558" y="106">SpecLinear (7.6)</text>
+        <line x1="534" y1="124" x2="552" y2="124" stroke="var(--muted-foreground)" stroke-width="1.8" stroke-dasharray="2 2"/><text x="558" y="128">UberProxy (6.3)</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="box">
+    <h3 class="box-title">Multi-Model Pipeline Orchestration &amp; Gate Status</h3>
+    <div class="pill-row">
+      <span class="pill"><span class="dot ok"></span>Antigravity · Gemini 4 Neon (Coordinator / Scout / Writer Fallback)</span>
+      <span class="pill"><span class="dot ok"></span>Codex · GPT-6.2 Sol (Architect + PC Reviewer: 3/10 Strict Audit)</span>
+      <span class="pill"><span class="dot ok"></span>Deterministic Python Auditor (Zero LLM · 61 LaTeX Macros)</span>
+      <span class="pill"><span class="dot wait"></span>Claude · Opus 5.5 (Queued for Sat PM PST Reset: 2026-11-28 15:00)</span>
+    </div>
+    <table style="margin-top: 12px;">
+      <thead>
+        <tr><th>Variant / Ablation (5×, 5% Flaky)</th><th>Throughput</th><th>P95 Lat.</th><th>CI Cost</th><th>Blame Rnds</th></tr>
+      </thead>
+      <tbody>
+        <tr class="hl"><td>SSMQ (Full)</td><td>23.81 PR/h</td><td>49.7 min</td><td>11.35 m/PR</td><td>0.72</td></tr>
+        <tr><td>SSMQ-NoGraph (FIFO batching)</td><td>21.74 PR/h</td><td>85.9 min</td><td>12.77 m/PR</td><td>2.17</td></tr>
+        <tr><td>SSMQ-NoBlame (binary bisect)</td><td>23.74 PR/h</td><td>50.6 min</td><td>11.44 m/PR</td><td>0.79</td></tr>
+        <tr><td>SSMQ-NoFlaky (no retries · rejects clean PRs)</td><td>23.86 PR/h</td><td>46.7 min</td><td>11.06 m/PR</td><td>0.42</td></tr>
+        <tr><td>StaticBatchBisect (baseline)</td><td>22.08 PR/h</td><td>78.4 min</td><td>12.56 m/PR</td><td>1.80</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</body>
+</html>
