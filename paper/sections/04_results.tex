@@ -23,7 +23,7 @@ Table~\ref{tab:main_benchmark} reports aggregate performance across all three re
 \input{generated/tables/per_repo.tex}
 
 \subsection{RQ3: Non-Circularity Proof Under Off-Graph Latent Conflicts}
-Table~\ref{tab:graph_recall} directly tests whether SSMQ's gains survive when the scheduler's dependency graph misses real conflicts (\texttt{v2\_exp5\_graph\_recall}). Even when \textbf{$60\%$ of all semantic conflicts are latent off-graph edges} ($40\%$ graph recall), SSMQ still reduces P95 latency to \RecallFortySSMQP95{}~min vs.\ \RecallFortyStaticP95{}~min for static batching (and to \RecallSixtySSMQP95{} vs.\ \RecallSixtyStaticP95{}~min at $60\%$ recall). In the \emph{No-Conflict Control} ($P_c=0$), static batching achieves slightly lower P95 latency (\NoConfStaticP95{} vs.\ \NoConfSSMQP95{}~min) because SSMQ's protected lanes and pre-rejection flake guards add small overhead when conflicts do not exist---cleanly validating non-circularity and delineating the conflict regime where semantic scheduling pays off.
+Table~\ref{tab:graph_recall} directly tests whether SSMQ's gains survive when the scheduler's dependency graph misses real conflicts (\texttt{v2\_exp5\_graph\_recall}). Even when \textbf{$60\%$ of all semantic conflicts are latent off-graph edges} ($40\%$ graph recall), SSMQ still reduces P95 latency to \RecallFortySSMQPNinetyFive{}~min vs.\ \RecallFortyStaticPNinetyFive{}~min for static batching (and to \RecallSixtySSMQPNinetyFive{} vs.\ \RecallSixtyStaticPNinetyFive{}~min at $60\%$ recall). In the \emph{No-Conflict Control} ($P_c=0$), static batching achieves slightly lower P95 latency (\NoConfStaticPNinetyFive{} vs.\ \NoConfSSMQPNinetyFive{}~min) because SSMQ's protected lanes and pre-rejection flake guards add small overhead when conflicts do not exist---cleanly validating non-circularity and delineating the conflict regime where semantic scheduling pays off.
 
 \input{generated/tables/graph_recall.tex}
 
@@ -31,7 +31,7 @@ Table~\ref{tab:graph_recall} directly tests whether SSMQ's gains survive when th
 Table~\ref{tab:ablation} isolates each SSMQ mechanism (\texttt{v2\_exp4\_ablation}):
 \begin{enumerate}
     \item Removing graph-disjoint risk lanes (\texttt{SSMQ-NoGraph}) degrades P95 latency from \SSMQPNinetyFiveLat{} to \AblNoGraphLat{}~min and CI cost from \SSMQCICost{} to \AblNoGraphCost{}~min/PR, confirming graph-disjoint scheduling as the dominant lever.
-    \item Disabling 1-step causal blame (\texttt{SSMQ-NoBlame}) nudges P95 latency up from \SSMQPNinetyFiveLat{} to \AblNoBlameLat{}~min, with graceful fallback across the $50\%$--$91.7\%$ accuracy sweep (\texttt{v2\_exp7\_blame\_sweep}).
+    \item Disabling 1-step causal blame (\texttt{SSMQ-NoBlame}) nudges P95 latency up from \SSMQPNinetyFiveLat{} to \AblNoBlameLat{}~min, with graceful fallback across the $50\%$--\BenchASTTopOnePct{}\% accuracy sweep (\texttt{v2\_exp7\_blame\_sweep}).
     \item Disabling flaky gating (\texttt{SSMQ-NoFlaky}) lowers survivor latency (\AblNoFlakyLat{}~min) and compute (\AblNoFlakyCost{}~min/PR) \emph{only by falsely rejecting \AblNoFlakyFRPct{}\% of clean PRs} (vs.\ \SSMQFalseRejPct{}\% for SSMQ). At $10\%$ flakiness (\texttt{v2\_exp6\_flaky\_sweep}), \texttt{SSMQ-NoFlaky} falsely rejects \FlakyTenNoFlakyFRPct{}\% of clean PRs and static batching rejects \FlakyTenStaticFRPct{}\%, whereas SSMQ cuts false rejections to \FlakyTenSSMQFRPct{}\% at \FlakyTenSSMQCost{}~min/PR (vs.\ \FlakyTenFlakeBatchCost{}~min/PR for fixed-retry batching).
 \end{enumerate}
 

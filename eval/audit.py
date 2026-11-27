@@ -456,13 +456,13 @@ def main() -> None:
         "AblNoFlakyCost": (_fmt(abl_summary["SSMQ-NoFlaky"]["ci_minutes_per_merged_pr"]["mean"], 2), "v2_exp4_ablation"),
         "AblNoFlakyFRPct": (_fmt(abl_summary["SSMQ-NoFlaky"]["false_rejection_rate"]["mean"] * 100.0, 2), "v2_exp4_ablation"),
         "AblNoBlameLat": (_fmt(abl_summary["SSMQ-NoBlame"]["p95_latency_min"]["mean"], 1), "v2_exp4_ablation"),
-        # Graph recall non-circularity
-        "RecallFortySSMQP95": (_fmt(rec_summary["recall_0.40"]["SSMQ"]["p95_latency_min"]["mean"], 1), "v2_exp5_graph_recall"),
-        "RecallFortyStaticP95": (_fmt(rec_summary["recall_0.40"]["StaticBatchBisect"]["p95_latency_min"]["mean"], 1), "v2_exp5_graph_recall"),
-        "RecallSixtySSMQP95": (_fmt(rec_summary["recall_0.60"]["SSMQ"]["p95_latency_min"]["mean"], 1), "v2_exp5_graph_recall"),
-        "RecallSixtyStaticP95": (_fmt(rec_summary["recall_0.60"]["StaticBatchBisect"]["p95_latency_min"]["mean"], 1), "v2_exp5_graph_recall"),
-        "NoConfSSMQP95": (_fmt(rec_summary["no_conflict"]["SSMQ"]["p95_latency_min"]["mean"], 1), "v2_exp5_graph_recall"),
-        "NoConfStaticP95": (_fmt(rec_summary["no_conflict"]["StaticBatchBisect"]["p95_latency_min"]["mean"], 1), "v2_exp5_graph_recall"),
+        # Graph recall non-circularity (pure-letter LaTeX macro names!)
+        "RecallFortySSMQPNinetyFive": (_fmt(rec_summary["recall_0.40"]["SSMQ"]["p95_latency_min"]["mean"], 1), "v2_exp5_graph_recall"),
+        "RecallFortyStaticPNinetyFive": (_fmt(rec_summary["recall_0.40"]["StaticBatchBisect"]["p95_latency_min"]["mean"], 1), "v2_exp5_graph_recall"),
+        "RecallSixtySSMQPNinetyFive": (_fmt(rec_summary["recall_0.60"]["SSMQ"]["p95_latency_min"]["mean"], 1), "v2_exp5_graph_recall"),
+        "RecallSixtyStaticPNinetyFive": (_fmt(rec_summary["recall_0.60"]["StaticBatchBisect"]["p95_latency_min"]["mean"], 1), "v2_exp5_graph_recall"),
+        "NoConfSSMQPNinetyFive": (_fmt(rec_summary["no_conflict"]["SSMQ"]["p95_latency_min"]["mean"], 1), "v2_exp5_graph_recall"),
+        "NoConfStaticPNinetyFive": (_fmt(rec_summary["no_conflict"]["StaticBatchBisect"]["p95_latency_min"]["mean"], 1), "v2_exp5_graph_recall"),
         # 10% flaky Pareto
         "FlakyTenSSMQFRPct": (_fmt(flk_summary["0.1"]["SSMQ"]["false_rejection_rate"]["mean"] * 100.0, 2), "v2_exp6_flaky_sweep"),
         "FlakyTenNoFlakyFRPct": (_fmt(flk_summary["0.1"]["SSMQ-NoFlaky"]["false_rejection_rate"]["mean"] * 100.0, 2), "v2_exp6_flaky_sweep"),
