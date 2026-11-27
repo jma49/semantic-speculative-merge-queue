@@ -2,13 +2,17 @@
 
 from collections import defaultdict
 from math import ceil, log1p
-from typing import Iterable, Set, Tuple
+from typing import FrozenSet, Iterable, Set, Tuple
 
 from .models import PRRecord
 
 
 def _module(path: str) -> Tuple[str, ...]:
     return tuple(path.split("/")[:-1][:2])
+
+
+def _repository_roots(files: Iterable[str]) -> FrozenSet[str]:
+    return frozenset(path.partition("/")[0] for path in files if "/" in path)
 
 
 def _scale(values: Iterable[float]) -> float:

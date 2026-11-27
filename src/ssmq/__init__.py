@@ -5,6 +5,8 @@ from .loader import load_trace
 from .models import PRRecord, RunMetrics, SimConfig
 from .simulator import ALL_STRATEGIES, GroundTruth, build_ground_truth, simulate_queue
 
+__version__ = "2.0.0"
+
 __all__ = [
     "ALL_STRATEGIES",
     "DependencyGraph",

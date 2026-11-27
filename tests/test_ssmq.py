@@ -28,6 +28,7 @@ CONFIG = SimConfig(
     flaky_rate=0,
 )
 GRAPH = DependencyGraph()
+KUBERNETES_TRACE = Path(__file__).resolve().parents[1] / "data/traces/kubernetes_kubernetes.json"
 
 
 def make_pr(number, *, path=None, risk=0.1, arrival=0.0):
@@ -106,7 +107,10 @@ class SimulatorTests(unittest.TestCase):
         truth = build_ground_truth(GRAPH, prs, config, seed=71)
         self.assertTrue(truth.defective_prs)
         self.assertTrue(truth.conflicting_pairs)
-        self.assertTrue(all(a < b and a % 3 == b % 3 for a, b in truth.conflicting_pairs))
+        self.assertTrue(all(a < b for a, b in truth.conflicting_pairs))
+        self.assertTrue(all(a % 3 == b % 3 for a, b in truth.on_graph_pairs))
+        self.assertTrue(all(a % 3 != b % 3 for a, b in truth.off_graph_pairs))
+        self.assertTrue(truth.persistent_pairs <= truth.conflicting_pairs)
         self.assertNotEqual(truth, build_ground_truth(GRAPH, prs, config, seed=72))
         self.assertEqual(
             truth, build_ground_truth(GRAPH, reversed(prs), replace(config, velocity_multiplier=10), 71)
@@ -130,9 +134,31 @@ class SimulatorTests(unittest.TestCase):
                     self.assertEqual(first.merged_prs + first.rejected_prs, len(prs))
         self.assertEqual(observed, [truth] * (2 * len(ALL_STRATEGIES)))
 
+    def test_graph_recall_calibrates_latent_conflicts_and_preserves_controls(self):
+        graph, prs = load_trace(KUBERNETES_TRACE)
+        config = SimConfig()
+        visible = build_ground_truth(graph, prs, replace(config, graph_recall=1), 42)
+        self.assertTrue(visible.conflicting_pairs)
+        self.assertEqual(visible.off_graph_pairs, frozenset())
+        for recall in (0.8, 0.5):
+            with self.subTest(recall=recall):
+                truth = build_ground_truth(graph, prs, replace(config, graph_recall=recall), 42)
+                self.assertEqual(truth.on_graph_pairs, visible.conflicting_pairs)
+                realized_share = len(truth.off_graph_pairs) / len(truth.conflicting_pairs)
+                self.assertAlmostEqual(realized_share, 1 - recall, delta=0.03)
+                metrics = simulate_queue(graph, prs, "SSMQ", replace(config, graph_recall=recall), 42)
+                self.assertEqual(metrics.off_graph_conflicts_total, len(truth.off_graph_pairs))
+                self.assertEqual(metrics.on_graph_conflicts_total, len(truth.on_graph_pairs))
+        empty = build_ground_truth(graph, prs, replace(config, semantic_conflict_prob=0), 42)
+        self.assertEqual(empty.conflicting_pairs, frozenset())
+        self.assertEqual(empty.off_graph_pairs, frozenset())
+        latent_only = build_ground_truth(graph, prs, replace(config, graph_recall=0), 42)
+        self.assertTrue(latent_only.off_graph_pairs)
+        self.assertEqual(latent_only.on_graph_pairs, frozenset())
+
     def test_conflicts_are_reverified_in_isolation_and_do_not_reject_clean_prs(self):
         prs = [make_pr(number, path="src/app/shared.py") for number in range(1, 9)]
-        config = replace(CONFIG, semantic_conflict_prob=1.0)
+        config = replace(CONFIG, semantic_conflict_prob=1.0, persistent_conflict_share=0)
         for strategy in ALL_STRATEGIES:
             with self.subTest(strategy=strategy):
                 result = simulate_queue(GRAPH, prs, strategy, config, 0)
@@ -143,6 +169,42 @@ class SimulatorTests(unittest.TestCase):
                     self.assertEqual(result.total_ci_runs, 2 * len(prs) - 1)
                 if strategy == "SpeculativeLinear":
                     self.assertGreater(result.invalidation_rate, 0)
+
+    def test_off_graph_conflict_fails_a_graph_disjoint_batch(self):
+        prs = [make_pr(1), make_pr(2)]
+        pair = frozenset({(1, 2)})
+        truth = GroundTruth(frozenset(), pair, off_graph_pairs=pair)
+        self.assertEqual(GRAPH.overlap_score(*prs), 0)
+        with patch.object(simulator, "build_ground_truth", return_value=truth):
+            result = simulate_queue(GRAPH, prs, "SSMQ-NoFlaky", CONFIG, 0)
+        self.assertEqual((result.merged_prs, result.rejected_prs, result.escaped_defects), (2, 0, 0))
+        self.assertEqual(result.total_ci_runs, 3)
+
+    def test_persistent_conflict_is_rejected_against_cumulative_mainline(self):
+        # The unrelated middle PR ensures that checking only the last merge would miss the pair.
+        prs = [make_pr(number, arrival=(number - 1) * 20) for number in range(1, 4)]
+        pair = frozenset({(1, 3)})
+        truth = GroundTruth(frozenset(), pair, persistent_pairs=pair, off_graph_pairs=pair)
+        for strategy in ALL_STRATEGIES:
+            with self.subTest(strategy=strategy):
+                with patch.object(simulator, "build_ground_truth", return_value=truth):
+                    result = simulate_queue(GRAPH, prs, strategy, CONFIG, 0)
+                self.assertEqual((result.merged_prs, result.rejected_prs, result.escaped_defects), (2, 1, 0))
+                self.assertEqual((result.clean_prs_total, result.clean_prs_merged), (3, 2))
+                self.assertEqual(result.false_rejection_rate, 0)
+
+    def test_concurrent_passing_job_reverifies_after_a_persistent_conflict(self):
+        prs = [make_pr(1), make_pr(2)]
+        pair = frozenset({(1, 2)})
+        truth = GroundTruth(frozenset(), pair, persistent_pairs=pair, off_graph_pairs=pair)
+        config = replace(CONFIG, workers=2, max_batch_size=1)
+        with patch.object(simulator, "build_ground_truth", return_value=truth):
+            result = simulate_queue(GRAPH, prs, "SSMQ-NoFlaky", config, 0)
+        self.assertEqual((result.merged_prs, result.rejected_prs, result.escaped_defects), (1, 1, 0))
+        self.assertEqual(result.total_ci_runs, 3)
+        self.assertEqual(result.wasted_ci_runs, 1)
+        self.assertEqual(result.ci_minutes_per_merged_pr, 30)
+        self.assertEqual(result.runner_utilization, 0.75)
 
     def test_graph_lanes_keep_cones_disjoint_and_protect_high_risk_prs(self):
         prs = [
@@ -219,13 +281,55 @@ class SimulatorTests(unittest.TestCase):
             simulator, "build_ground_truth", return_value=GroundTruth(frozenset({4}), frozenset())
         ):
             result = simulate_queue(GRAPH, prs, "UberSubmitQueue", config, 0)
-        self.assertEqual((result.merged_prs, result.rejected_prs, result.total_ci_runs), (3, 1, 5))
-        self.assertEqual(result.wasted_ci_runs, 0)
+        self.assertEqual((result.merged_prs, result.rejected_prs, result.total_ci_runs), (3, 1, 6))
+        self.assertEqual(result.wasted_ci_runs, 1)
+        self.assertAlmostEqual(result.sim_duration_hr * 60, 20)
         self.assertEqual(result.escaped_defects, 0)
+
+    def test_uber_tree_tries_both_outcomes_and_charges_canceled_branch(self):
+        prs = [make_pr(1), make_pr(2, arrival=1)]
+        config = replace(CONFIG, base_defect_rate=0.10, workers=3)
+        pair = frozenset({(1, 2)})
+        cases = (
+            GroundTruth(frozenset({1}), frozenset()),
+            GroundTruth(frozenset(), pair, persistent_pairs=pair),
+        )
+        for truth in cases:
+            with self.subTest(truth=truth):
+                with patch.object(simulator, "build_ground_truth", return_value=truth):
+                    result = simulate_queue(GRAPH, prs, "UberSubmitQueue", config, 0)
+                self.assertEqual((result.merged_prs, result.rejected_prs, result.escaped_defects), (1, 1, 0))
+                self.assertEqual(result.total_ci_runs, 3)
+                self.assertEqual(result.wasted_ci_runs, 1)
+                self.assertEqual(result.ci_minutes_per_merged_pr, 29)
+                self.assertAlmostEqual(result.sim_duration_hr * 60, 11)
+
+    def test_uber_tree_beats_linear_on_kubernetes_at_five_times_velocity(self):
+        graph, prs = load_trace(KUBERNETES_TRACE)
+        config = SimConfig(velocity_multiplier=5)
+        for seed in (42, 1001, 1002):
+            with self.subTest(seed=seed):
+                linear = simulate_queue(graph, prs, "SpeculativeLinear", config, seed)
+                uber = simulate_queue(graph, prs, "UberSubmitQueue", config, seed)
+                self.assertGreater(uber.throughput_prs_per_hr, linear.throughput_prs_per_hr)
+                self.assertLess(uber.p50_latency_min, linear.p50_latency_min)
+                self.assertLess(uber.p95_latency_min, linear.p95_latency_min)
+                self.assertEqual(uber.escaped_defects, 0)
+
+    def test_adaptive_reruns_lower_false_rejections_at_ten_percent_flakiness(self):
+        graph, prs = load_trace(KUBERNETES_TRACE)
+        config = SimConfig(flaky_rate=0.10)
+        for seed in (42, 1001, 1002):
+            with self.subTest(seed=seed):
+                full = simulate_queue(graph, prs, "SSMQ", config, seed)
+                disabled = simulate_queue(graph, prs, "SSMQ-NoFlaky", config, seed)
+                self.assertEqual(full.clean_prs_total, disabled.clean_prs_total)
+                self.assertLess(full.false_rejection_rate, disabled.false_rejection_rate)
 
     def test_empty_stream_and_velocity_scaling(self):
         empty = simulate_queue(GRAPH, [], "SerialQueue", CONFIG, 0)
         self.assertEqual((empty.total_ci_runs, empty.sim_duration_hr), (0, 0.0))
+        self.assertEqual((empty.mean_batch_size, empty.runner_utilization, empty.false_rejection_rate), (0, 0, 0))
         prs = [make_pr(1, arrival=0), make_pr(2, arrival=60)]
         baseline = simulate_queue(GRAPH, prs, "SerialQueue", CONFIG, 0)
         fast = simulate_queue(GRAPH, prs, "SerialQueue", replace(CONFIG, velocity_multiplier=5), 0)
@@ -234,8 +338,7 @@ class SimulatorTests(unittest.TestCase):
         self.assertEqual(fast.p95_latency_min, 10)
 
     def test_kubernetes_trace_smoke_all_strategies(self):
-        path = Path(__file__).resolve().parents[1] / "data/traces/kubernetes_kubernetes.json"
-        graph, prs = load_trace(path, warmup_fraction=SimConfig.warmup_fraction)
+        graph, prs = load_trace(KUBERNETES_TRACE, warmup_fraction=SimConfig.warmup_fraction)
         self.assertEqual(len(prs), 150)
         self.assertAlmostEqual((prs[-1].arrival_min - prs[0].arrival_min) / (len(prs) - 1), 10)
         for strategy in ALL_STRATEGIES:
@@ -247,6 +350,11 @@ class SimulatorTests(unittest.TestCase):
                 self.assertGreater(metrics.throughput_prs_per_hr, 0)
                 self.assertGreaterEqual(metrics.p95_latency_min, metrics.p50_latency_min)
                 self.assertLessEqual(metrics.wasted_ci_runs, metrics.total_ci_runs)
+                self.assertEqual(metrics.merged_prs, metrics.clean_prs_merged)
+                self.assertLessEqual(metrics.clean_prs_merged, metrics.clean_prs_total)
+                self.assertGreaterEqual(metrics.mean_batch_size, 1)
+                self.assertGreater(metrics.runner_utilization, 0)
+                self.assertLessEqual(metrics.runner_utilization, 1 + 1e-12)
 
 
 if __name__ == "__main__":

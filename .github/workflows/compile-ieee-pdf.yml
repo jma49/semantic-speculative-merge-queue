@@ -1,0 +1,26 @@
+name: Compile IEEEtran PDF Artifact
+
+on:
+  push:
+    paths:
+      - "paper/**"
+      - "literature/refs.bib"
+  workflow_dispatch:
+
+jobs:
+  build-pdf:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile IEEEtran LaTeX PDF
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: paper/main.tex
+          working_directory: .
+          latexmk_use_xelatex: false
+          args: -pdf -interaction=nonstopmode -halt-on-error -outdir=build
+      - name: Upload compiled IEEEtran PDF
+        uses: actions/upload-artifact@v4
+        with:
+          name: ssmq-ieeetran-pdf
+          path: paper/build/main.pdf

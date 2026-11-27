@@ -36,6 +36,8 @@ class SimConfig:
     blame_top2_acc: float = 0.95
     blame_overhead_min: float = 0.5
     warmup_fraction: float = 0.25
+    graph_recall: float = 0.80
+    persistent_conflict_share: float = 0.25
 
 
 @dataclass(frozen=True)
@@ -54,6 +56,13 @@ class RunMetrics:
     total_ci_runs: int
     wasted_ci_runs: int
     sim_duration_hr: float
+    clean_prs_total: int = 0
+    clean_prs_merged: int = 0
+    false_rejection_rate: float = 0.0
+    mean_batch_size: float = 0.0
+    runner_utilization: float = 0.0
+    off_graph_conflicts_total: int = 0
+    on_graph_conflicts_total: int = 0
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)

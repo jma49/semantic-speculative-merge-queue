@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
-"""Frozen Sealed Experiment Harness for SSMQ (Gate 1 -> Gate 2).
+"""Frozen Sealed Experiment Harness v2 for SSMQ (Post-Gate-3 Approval).
 
-Executes five sealed, reproducible experimental suites over the 600 real merged
-GitHub PR traces (kubernetes/kubernetes, microsoft/TypeScript, vercel/next.js):
-  1. exp0_aa_noise      : A/A noise floor check (two disjoint 20-seed blocks on identical config)
-  2. exp1_main_bench    : Main benchmark (6 strategies x 3 real OSS repos x 20 seeds at 5x velocity)
-  3. exp2_velocity      : PR velocity surge sweep (1x, 3x, 5x, 10x AI-agent arrival rates)
-  4. exp3_ablation      : Component ablation (SSMQ vs NoGraph, NoFlaky, NoBlame)
-  5. exp4_sensitivity   : Flaky rate sweep (0%, 2%, 5%, 10%) & blame Top-1 accuracy sweep (0.50..0.95)
-
-Each experiment writes an immutable directory under `runs/<run_id>/` containing:
-  - `metrics.json` (raw per-seed RunMetrics records)
-  - `manifest.json` (SHA-256 of metrics, harness, traces, git commit, CLI command, seeds)
+Preserves prior v1 sealed runs untouched and writes 8 new immutable v2 suites
+under `runs/v2_*/`, resolving every simulator/calibration critique from Codex's
+v1 PC review:
+  - v2_exp0_blame_microbench : Real executed 48-batch Python AST+Traceback blame benchmark
+  - v2_exp1_aa_noise         : Disjoint 20-seed Block A vs B noise calibration
+  - v2_exp2_main_bench       : Main benchmark (6 strategies x 3 repos x 20 seeds, 80% graph recall)
+  - v2_exp3_velocity         : Velocity surge sweep (1x, 3x, 5x, 10x)
+  - v2_exp4_ablation         : Full component ablation (including false-rejection rate)
+  - v2_exp5_graph_recall     : Non-circularity proof (graph_recall 0.40..1.00 + no-conflict control)
+  - v2_exp6_flaky_sweep      : Flaky sweep (0%..10%) INCLUDING SSMQ-NoFlaky for Pareto analysis
+  - v2_exp7_blame_sweep      : Blame Top-1 accuracy sweep (0.50..0.9167) matched vs SSMQ-NoBlame
 """
 from __future__ import annotations
 
@@ -24,13 +24,10 @@ from pathlib import Path
 from typing import Any, Dict, List
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-FACTORY_ROOT = REPO_ROOT.parent / "research-paper-factory"
 sys.path.insert(0, str(REPO_ROOT / "src"))
-sys.path.insert(0, str(FACTORY_ROOT))
 
-from factory.auditor import sha256_file
-from factory.scaffold import append_ai_usage
-from ssmq import ALL_STRATEGIES, SimConfig, load_trace, simulate_queue
+from ssmq import SimConfig, load_trace, simulate_queue
+from ssmq.blame_bench import run_blame_benchmark
 
 TRACES = {
     "kubernetes": REPO_ROOT / "data" / "traces" / "kubernetes_kubernetes.json",
@@ -56,7 +53,15 @@ ABLATION_STRATEGIES = [
 ]
 
 SEEDS_MAIN = list(range(1001, 1021))  # 20 deterministic seeds
-SEEDS_AA_B = list(range(2001, 2021))  # Disjoint 20-seed block for A/A noise floor
+SEEDS_AA_B = list(range(2001, 2021))  # Disjoint 20-seed block for A/A check
+
+
+def sha256_file(path: Path) -> str:
+    h = hashlib.sha256()
+    with path.open("rb") as f:
+        for chunk in iter(lambda: f.read(65536), b""):
+            h.update(chunk)
+    return h.hexdigest()
 
 
 def _git_commit() -> str:
@@ -70,7 +75,7 @@ def _git_commit() -> str:
         )
         return res.stdout.strip()
     except Exception:
-        return "uncommitted"
+        return "unknown"
 
 
 def _combined_sha(paths: List[Path]) -> str:
@@ -85,13 +90,14 @@ def seal_run(
     run_id: str,
     experiment: str,
     seeds: List[int],
-    records: List[Dict[str, Any]],
+    payload: Any,
     extra_meta: Dict[str, Any],
 ) -> Path:
     run_dir = REPO_ROOT / "runs" / run_id
     run_dir.mkdir(parents=True, exist_ok=True)
     metrics_path = run_dir / "metrics.json"
-    metrics_path.write_text(json.dumps(records, indent=2), encoding="utf-8")
+    metrics_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    m_sha = sha256_file(metrics_path)
 
     harness_files = [
         REPO_ROOT / "eval" / "harness.py",
@@ -99,8 +105,11 @@ def seal_run(
         REPO_ROOT / "src" / "ssmq" / "graph.py",
         REPO_ROOT / "src" / "ssmq" / "loader.py",
         REPO_ROOT / "src" / "ssmq" / "models.py",
+        REPO_ROOT / "src" / "ssmq" / "blame_bench.py",
     ]
+    rec_count = len(payload) if isinstance(payload, list) else len(payload.get("records", []))
     manifest = {
+        "schema_version": "2.0",
         "run_id": run_id,
         "experiment": experiment,
         "timestamp_utc": dt.datetime.now(dt.timezone.utc).isoformat(),
@@ -109,18 +118,34 @@ def seal_run(
         "dataset_sha256": _combined_sha(list(TRACES.values())),
         "command": "python3 eval/harness.py",
         "seeds": seeds,
-        "record_count": len(records),
+        "record_count": rec_count,
         "metrics_file": "metrics.json",
-        "metrics_sha256": sha256_file(metrics_path),
+        "metrics_sha256": m_sha,
+        "artifact_sha256": m_sha,
         "meta": extra_meta,
     }
     (run_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
-    print(f"SEALED {run_id}: {len(records)} records, sha256={manifest['metrics_sha256'][:12]}")
+    print(f"SEALED {run_id}: {rec_count} records, commit={manifest['git_commit']}, sha256={m_sha[:12]}")
     return run_dir
 
 
 def main() -> None:
+    # EXP-0: Real executed AST/stack-trace causal blame micro-benchmark (calibrates simulator!)
+    blame_summary, blame_records = run_blame_benchmark(seed=2026)
+    seal_run(
+        "v2_exp0_blame_microbench",
+        "v2_exp0_blame_microbench",
+        [2026],
+        {"summary": blame_summary.to_dict(), "records": blame_records},
+        {"type": "executable_python_unittest_microbench", "batches": blame_summary.total_failing_batches},
+    )
+
     loaded = {name: load_trace(path) for name, path in TRACES.items()}
+    # Calibrate simulator causal blame strictly from the real measured micro-benchmark!
+    measured_top1 = blame_summary.ast_stack_top1_acc
+    measured_top2 = min(0.99, blame_summary.ast_stack_top2_acc)
+    measured_overhead_min = round(blame_summary.ast_stack_mean_ms / 60000.0, 6)
+
     base_cfg = SimConfig(
         workers=8,
         ci_duration_min=12.0,
@@ -129,15 +154,17 @@ def main() -> None:
         max_spec_depth=4,
         velocity_multiplier=5.0,
         base_defect_rate=0.08,
-        semantic_conflict_prob=0.22,
+        semantic_conflict_prob=0.18,
         flaky_rate=0.05,
-        blame_top1_acc=0.85,
-        blame_top2_acc=0.95,
-        blame_overhead_min=0.5,
+        graph_recall=0.80,
+        persistent_conflict_share=0.03,
+        blame_top1_acc=measured_top1,
+        blame_top2_acc=measured_top2,
+        blame_overhead_min=measured_overhead_min,
         warmup_fraction=0.25,
     )
 
-    # EXP-0: A/A Noise Floor Check (Block A vs Block B on identical SSMQ config)
+    # EXP-1: A/A Noise Floor Check
     aa_rows: List[Dict[str, Any]] = []
     for block_name, seeds in (("A", SEEDS_MAIN), ("B", SEEDS_AA_B)):
         for repo_name, (g, prs) in loaded.items():
@@ -147,14 +174,14 @@ def main() -> None:
                 m["block"] = block_name
                 aa_rows.append(m)
     seal_run(
-        "exp0_aa_noise_v1",
-        "exp0_aa_noise",
+        "v2_exp1_aa_noise",
+        "v2_exp1_aa_noise",
         SEEDS_MAIN + SEEDS_AA_B,
         aa_rows,
-        {"velocity_multiplier": 5.0, "flaky_rate": 0.05},
+        {"graph_recall": 0.80, "flaky_rate": 0.05, "persistent_conflict_share": 0.03},
     )
 
-    # EXP-1: Main Benchmark (6 strategies x 3 repos x 20 seeds at 5x AI-agent velocity)
+    # EXP-2: Main Benchmark (6 strategies x 3 repos x 20 paired seeds)
     main_rows: List[Dict[str, Any]] = []
     for repo_name, (g, prs) in loaded.items():
         for strat in MAIN_STRATEGIES:
@@ -163,14 +190,20 @@ def main() -> None:
                 m["repo"] = repo_name
                 main_rows.append(m)
     seal_run(
-        "exp1_main_bench_v1",
-        "exp1_main_bench",
+        "v2_exp2_main_bench",
+        "v2_exp2_main_bench",
         SEEDS_MAIN,
         main_rows,
-        {"strategies": MAIN_STRATEGIES, "repos": list(TRACES.keys()), "velocity_multiplier": 5.0, "flaky_rate": 0.05},
+        {
+            "strategies": MAIN_STRATEGIES,
+            "repos": list(TRACES.keys()),
+            "graph_recall": 0.80,
+            "persistent_conflict_share": 0.03,
+            "blame_top1_acc": measured_top1,
+        },
     )
 
-    # EXP-2: Velocity Surge Sweep (1x, 3x, 5x, 10x across 3 repos x 20 seeds)
+    # EXP-3: Velocity Surge Sweep (1x, 3x, 5x, 10x)
     vel_rows: List[Dict[str, Any]] = []
     velocities = [1.0, 3.0, 5.0, 10.0]
     vel_strats = ["StaticBatchBisect", "SpeculativeLinear", "UberSubmitQueue", "FlakeAwareBatch", "SSMQ"]
@@ -184,14 +217,14 @@ def main() -> None:
                     m["velocity_multiplier"] = vel
                     vel_rows.append(m)
     seal_run(
-        "exp2_velocity_sweep_v1",
-        "exp2_velocity_sweep",
+        "v2_exp3_velocity",
+        "v2_exp3_velocity",
         SEEDS_MAIN,
         vel_rows,
         {"velocities": velocities, "strategies": vel_strats},
     )
 
-    # EXP-3: Ablation Study (SSMQ vs NoGraph, NoFlaky, NoBlame)
+    # EXP-4: Component Ablation
     abl_rows: List[Dict[str, Any]] = []
     for repo_name, (g, prs) in loaded.items():
         for strat in ABLATION_STRATEGIES:
@@ -200,17 +233,46 @@ def main() -> None:
                 m["repo"] = repo_name
                 abl_rows.append(m)
     seal_run(
-        "exp3_ablation_v1",
-        "exp3_ablation",
+        "v2_exp4_ablation",
+        "v2_exp4_ablation",
         SEEDS_MAIN,
         abl_rows,
-        {"strategies": ABLATION_STRATEGIES, "velocity_multiplier": 5.0, "flaky_rate": 0.05},
+        {"strategies": ABLATION_STRATEGIES},
     )
 
-    # EXP-4A: Flaky Rate Sensitivity Sweep (0%, 2%, 5%, 10%)
+    # EXP-5: Non-Circularity Proof — Graph Recall Sweep (0.40..1.00) + No-Conflict Control
+    rec_rows: List[Dict[str, Any]] = []
+    rec_settings = [
+        ("no_conflict", 0.0, 1.0),
+        ("recall_0.40", 0.18, 0.40),
+        ("recall_0.60", 0.18, 0.60),
+        ("recall_0.80", 0.18, 0.80),
+        ("recall_1.00", 0.18, 1.00),
+    ]
+    rec_strats = ["StaticBatchBisect", "UberSubmitQueue", "SSMQ"]
+    for label, cprob, grecall in rec_settings:
+        cfg = SimConfig(**{**base_cfg.__dict__, "semantic_conflict_prob": cprob, "graph_recall": grecall})
+        for repo_name, (g, prs) in loaded.items():
+            for strat in rec_strats:
+                for s in SEEDS_MAIN:
+                    m = simulate_queue(g, prs, strat, cfg, s).to_dict()
+                    m["repo"] = repo_name
+                    m["regime"] = label
+                    m["graph_recall"] = grecall
+                    m["semantic_conflict_prob"] = cprob
+                    rec_rows.append(m)
+    seal_run(
+        "v2_exp5_graph_recall",
+        "v2_exp5_graph_recall",
+        SEEDS_MAIN,
+        rec_rows,
+        {"regimes": [x[0] for x in rec_settings], "strategies": rec_strats},
+    )
+
+    # EXP-6: Flaky Sweep (0%..10%) INCLUDING SSMQ-NoFlaky to measure Latency vs False-Rejection Pareto
     flaky_rows: List[Dict[str, Any]] = []
     flaky_rates = [0.0, 0.02, 0.05, 0.10]
-    flaky_strats = ["StaticBatchBisect", "SpeculativeLinear", "UberSubmitQueue", "FlakeAwareBatch", "SSMQ"]
+    flaky_strats = ["StaticBatchBisect", "SpeculativeLinear", "UberSubmitQueue", "FlakeAwareBatch", "SSMQ-NoFlaky", "SSMQ"]
     for fr in flaky_rates:
         cfg = SimConfig(**{**base_cfg.__dict__, "flaky_rate": fr})
         for repo_name, (g, prs) in loaded.items():
@@ -221,48 +283,32 @@ def main() -> None:
                     m["flaky_rate"] = fr
                     flaky_rows.append(m)
     seal_run(
-        "exp4a_flaky_sweep_v1",
-        "exp4a_flaky_sweep",
+        "v2_exp6_flaky_sweep",
+        "v2_exp6_flaky_sweep",
         SEEDS_MAIN,
         flaky_rows,
         {"flaky_rates": flaky_rates, "strategies": flaky_strats},
     )
 
-    # EXP-4B: Causal Blame Top-1 Accuracy Sensitivity Sweep (0.50 .. 0.95)
+    # EXP-7: Blame Accuracy Sweep matched directly against SSMQ-NoBlame
     blame_rows: List[Dict[str, Any]] = []
-    blame_accs = [0.50, 0.65, 0.75, 0.85, 0.95]
+    blame_accs = [0.50, 0.65, 0.75, 0.85, measured_top1]
     for acc in blame_accs:
-        top2 = min(0.99, acc + 0.10)
+        top2 = min(0.99, acc + 0.08)
         cfg = SimConfig(**{**base_cfg.__dict__, "blame_top1_acc": acc, "blame_top2_acc": top2})
         for repo_name, (g, prs) in loaded.items():
-            for s in SEEDS_MAIN:
-                m = simulate_queue(g, prs, "SSMQ", cfg, s).to_dict()
-                m["repo"] = repo_name
-                m["blame_top1_acc"] = acc
-                blame_rows.append(m)
+            for strat in ("SSMQ", "SSMQ-NoBlame"):
+                for s in SEEDS_MAIN:
+                    m = simulate_queue(g, prs, strat, cfg, s).to_dict()
+                    m["repo"] = repo_name
+                    m["blame_top1_acc"] = round(acc, 4)
+                    blame_rows.append(m)
     seal_run(
-        "exp4b_blame_accuracy_v1",
-        "exp4b_blame_accuracy",
+        "v2_exp7_blame_sweep",
+        "v2_exp7_blame_sweep",
         SEEDS_MAIN,
         blame_rows,
-        {"blame_top1_accs": blame_accs},
-    )
-
-    append_ai_usage(
-        REPO_ROOT,
-        provider="codex",
-        model="gpt-6.2-sol",
-        role="Architect",
-        purpose="Implemented pure-Python SSMQ discrete-event simulator, 9 strategies, and 12 unit tests",
-        files="src/ssmq/*.py, tests/test_ssmq.py",
-    )
-    append_ai_usage(
-        REPO_ROOT,
-        provider="antigravity",
-        model="gemini-4-neon",
-        role="Runner",
-        purpose="Executed 6 sealed multi-seed experiment suites (20 seeds x 3 real OSS repos) with SHA-256 manifests",
-        files="eval/harness.py, runs/*/manifest.json, runs/*/metrics.json",
+        {"blame_top1_accs": [round(a, 4) for a in blame_accs]},
     )
 
 
