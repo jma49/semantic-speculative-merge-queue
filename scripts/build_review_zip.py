@@ -99,7 +99,7 @@ def populate(stage):
                   "eval/sim_displays_v7.py", "eval/export_v7.py"})
     for pattern in ("data/traces/*.json", "src/ssmq/*.py", "tests/test_*.py"):
         names.update(p.relative_to(ROOT).as_posix() for p in ROOT.glob(pattern))
-    names.update({"eval/verify_submission.py", "eval/__init__.py"})
+    names.update({"eval/export_v8_displays.py", "results/v8_paper.json", "eval/verify_submission.py", "eval/__init__.py"})
     for directory in ("eval/historical_ci", "eval/queue_events_v8", "eval/baselines_v8",
                       "data/historical_ci", "data/queue_events_v8"):
         names.update(p.relative_to(ROOT).as_posix() for p in (ROOT / directory).rglob("*")

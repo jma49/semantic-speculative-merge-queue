@@ -1,0 +1,837 @@
+{
+  "batchstop4_vs_static_bisect": {
+    "directory_proxy": {
+      "ci": {
+        "by_repo": {
+          "kubernetes": 10.518226496488465,
+          "nextjs": 6.634667961696313,
+          "typescript": 10.114393747158632
+        },
+        "ci95": [
+          7.75177567222959,
+          10.419194604019925
+        ],
+        "difference": 9.089096068447803,
+        "left": "Beheshtian-BatchStop4",
+        "metric": "ci_minutes_per_merged_pr",
+        "right": "StaticBatchBisect",
+        "sign_test_p": 1.9073486328125e-06
+      },
+      "frr": {
+        "by_repo": {
+          "kubernetes": 0.06057962700629468,
+          "nextjs": 0.06306557240671157,
+          "typescript": 0.07561711199280878
+        },
+        "ci95": [
+          0.06029032864345609,
+          0.0719921263188827
+        ],
+        "difference": 0.06642077046860502,
+        "left": "Beheshtian-BatchStop4",
+        "metric": "false_rejection_rate",
+        "right": "StaticBatchBisect",
+        "sign_test_p": 1.9073486328125e-06
+      },
+      "p95": {
+        "by_repo": {
+          "kubernetes": 97.15305693431864,
+          "nextjs": 44.8542701123303,
+          "typescript": 54.645863758128556
+        },
+        "ci95": [
+          47.12715568536812,
+          84.45978380330261
+        ],
+        "difference": 65.5510636015925,
+        "left": "Beheshtian-BatchStop4",
+        "metric": "p95_latency_min",
+        "right": "StaticBatchBisect",
+        "sign_test_p": 0.0004024505615234375
+      }
+    },
+    "nominal": {
+      "ci": {
+        "by_repo": {
+          "kubernetes": 14.549689782343794,
+          "nextjs": 16.53747779526754,
+          "typescript": 14.839915722697054
+        },
+        "ci95": [
+          14.156370461452571,
+          16.454143804548597
+        ],
+        "difference": 15.309027766769464,
+        "left": "Beheshtian-BatchStop4",
+        "metric": "ci_minutes_per_merged_pr",
+        "right": "StaticBatchBisect",
+        "sign_test_p": 1.9073486328125e-06
+      },
+      "frr": {
+        "by_repo": {
+          "kubernetes": 0.07453150352275603,
+          "nextjs": 0.07757349234856228,
+          "typescript": 0.07005924870784594
+        },
+        "ci95": [
+          0.06726789271951723,
+          0.08147160460388361
+        ],
+        "difference": 0.07405474819305476,
+        "left": "Beheshtian-BatchStop4",
+        "metric": "false_rejection_rate",
+        "right": "StaticBatchBisect",
+        "sign_test_p": 1.9073486328125e-06
+      },
+      "p95": {
+        "by_repo": {
+          "kubernetes": 88.1989730370463,
+          "nextjs": 126.73501715513001,
+          "typescript": 90.74912324790094
+        },
+        "ci95": [
+          89.18117519053999,
+          114.06650847425949
+        ],
+        "difference": 101.89437114669242,
+        "left": "Beheshtian-BatchStop4",
+        "metric": "p95_latency_min",
+        "right": "StaticBatchBisect",
+        "sign_test_p": 1.9073486328125e-06
+      }
+    },
+    "null_uniform": {
+      "ci": {
+        "by_repo": {
+          "kubernetes": 17.459197441946962,
+          "nextjs": 14.097384913268456,
+          "typescript": 14.05195158320792
+        },
+        "ci95": [
+          14.244939094679253,
+          16.091316970292215
+        ],
+        "difference": 15.202844646141113,
+        "left": "Beheshtian-BatchStop4",
+        "metric": "ci_minutes_per_merged_pr",
+        "right": "StaticBatchBisect",
+        "sign_test_p": 1.9073486328125e-06
+      },
+      "frr": {
+        "by_repo": {
+          "kubernetes": 0.08423146356149794,
+          "nextjs": 0.0791266115462845,
+          "typescript": 0.07540261417195926
+        },
+        "ci95": [
+          0.07409874062894559,
+          0.0849147366740115
+        ],
+        "difference": 0.07958689642658057,
+        "left": "Beheshtian-BatchStop4",
+        "metric": "false_rejection_rate",
+        "right": "StaticBatchBisect",
+        "sign_test_p": 1.9073486328125e-06
+      },
+      "p95": {
+        "by_repo": {
+          "kubernetes": 98.02447710802203,
+          "nextjs": 68.96169044093574,
+          "typescript": 61.50304896967384
+        },
+        "ci95": [
+          66.68358124751218,
+          85.25005993158149
+        ],
+        "difference": 76.16307217287721,
+        "left": "Beheshtian-BatchStop4",
+        "metric": "p95_latency_min",
+        "right": "StaticBatchBisect",
+        "sign_test_p": 1.9073486328125e-06
+      }
+    },
+    "saturated": {
+      "ci": {
+        "by_repo": {
+          "kubernetes": 14.02453824327201,
+          "nextjs": 16.297711562109146,
+          "typescript": 15.436477784867865
+        },
+        "ci95": [
+          13.87148471717598,
+          16.55176187879575
+        ],
+        "difference": 15.252909196749673,
+        "left": "Beheshtian-BatchStop4",
+        "metric": "ci_minutes_per_merged_pr",
+        "right": "StaticBatchBisect",
+        "sign_test_p": 1.9073486328125e-06
+      },
+      "frr": {
+        "by_repo": {
+          "kubernetes": 0.08465654465988745,
+          "nextjs": 0.07797546957013488,
+          "typescript": 0.08871698288396167
+        },
+        "ci95": [
+          0.07770085198549785,
+          0.09017695920518251
+        ],
+        "difference": 0.08378299903799466,
+        "left": "Beheshtian-BatchStop4",
+        "metric": "false_rejection_rate",
+        "right": "StaticBatchBisect",
+        "sign_test_p": 1.9073486328125e-06
+      },
+      "p95": {
+        "by_repo": {
+          "kubernetes": 84.74950473968177,
+          "nextjs": 120.40250995288606,
+          "typescript": 88.75947322703388
+        },
+        "ci95": [
+          81.90753200675101,
+          113.86847207111086
+        ],
+        "difference": 97.97049597320057,
+        "left": "Beheshtian-BatchStop4",
+        "metric": "p95_latency_min",
+        "right": "StaticBatchBisect",
+        "sign_test_p": 1.9073486328125e-06
+      }
+    }
+  },
+  "bootstrap_draws": 10000,
+  "bootstrap_seed": 11629,
+  "filtered_cone_vs_nocone": {
+    "directory_proxy": {
+      "acc": {
+        "by_repo": {
+          "kubernetes": 0.65,
+          "nextjs": -0.45,
+          "typescript": 0.5
+        },
+        "ci95": [
+          -0.5333333333333333,
+          0.9833333333333334
+        ],
+        "difference": 0.2333333333333333,
+        "left": "SSMQ-FilteredCone",
+        "metric": "merged_prs",
+        "right": "SSMQ-NoCone",
+        "sign_test_p": 0.6476058959960938
+      },
+      "ci": {
+        "by_repo": {
+          "kubernetes": 2.733301216711679,
+          "nextjs": 4.113761238833133,
+          "typescript": 1.9486683029418022
+        },
+        "ci95": [
+          2.147219097289942,
+          3.683423063506172
+        ],
+        "difference": 2.9319102528288714,
+        "left": "SSMQ-FilteredCone",
+        "metric": "ci_minutes_per_merged_pr",
+        "right": "SSMQ-NoCone",
+        "sign_test_p": 0.0004024505615234375
+      },
+      "frr": {
+        "by_repo": {
+          "kubernetes": -0.005378477119308335,
+          "nextjs": 0.0009450454650636868,
+          "typescript": -0.005747562167767031
+        },
+        "ci95": [
+          -0.008810953070927576,
+          0.002206135438488918
+        ],
+        "difference": -0.003393664607337226,
+        "left": "SSMQ-FilteredCone",
+        "metric": "false_rejection_rate",
+        "right": "SSMQ-NoCone",
+        "sign_test_p": 0.5034446716308594
+      },
+      "p95": {
+        "by_repo": {
+          "kubernetes": 35.32140235082919,
+          "nextjs": 59.07647630897259,
+          "typescript": 21.07753917576176
+        },
+        "ci95": [
+          24.42518903041259,
+          52.548728450187355
+        ],
+        "difference": 38.49180594518785,
+        "left": "SSMQ-FilteredCone",
+        "metric": "p95_latency_min",
+        "right": "SSMQ-NoCone",
+        "sign_test_p": 0.0025768280029296875
+      },
+      "ssmq_minus_fc_p95": {
+        "by_repo": {
+          "kubernetes": 256.96243814812306,
+          "nextjs": 171.23562366409686,
+          "typescript": 379.677138554186
+        },
+        "ci95": [
+          250.55176027701555,
+          287.2239267664491
+        ],
+        "difference": 269.29173345546866,
+        "left": "SSMQ",
+        "metric": "p95_latency_min",
+        "right": "SSMQ-FilteredCone",
+        "sign_test_p": 1.9073486328125e-06
+      },
+      "stale": {
+        "by_repo": {
+          "kubernetes": 26.9,
+          "nextjs": 36.7,
+          "typescript": 23.2
+        },
+        "ci95": [
+          22.7,
+          35.03333333333333
+        ],
+        "difference": 28.93333333333333,
+        "left": "SSMQ-FilteredCone",
+        "metric": "stale_rechecks",
+        "right": "SSMQ-NoCone",
+        "sign_test_p": 1.9073486328125e-06
+      },
+      "unfiltered_p95": {
+        "by_repo": {
+          "kubernetes": 292.28384049895226,
+          "nextjs": 230.31209997306942,
+          "typescript": 400.7546777299478
+        },
+        "ci95": [
+          288.9584402257296,
+          327.0761274516229
+        ],
+        "difference": 307.7835394006565,
+        "left": "SSMQ",
+        "metric": "p95_latency_min",
+        "right": "SSMQ-NoCone",
+        "sign_test_p": 1.9073486328125e-06
+      }
+    },
+    "nominal": {
+      "acc": {
+        "by_repo": {
+          "kubernetes": -1.5,
+          "nextjs": -0.55,
+          "typescript": -0.8
+        },
+        "ci95": [
+          -1.6666666666666667,
+          -0.25
+        ],
+        "difference": -0.95,
+        "left": "SSMQ-FilteredCone",
+        "metric": "merged_prs",
+        "right": "SSMQ-NoCone",
+        "sign_test_p": 0.0192108154296875
+      },
+      "ci": {
+        "by_repo": {
+          "kubernetes": 0.14651673015903768,
+          "nextjs": -0.3399328114122714,
+          "typescript": -0.8115878123070097
+        },
+        "ci95": [
+          -1.3681662943431259,
+          0.7037514945871696
+        ],
+        "difference": -0.3350012978534144,
+        "left": "SSMQ-FilteredCone",
+        "metric": "ci_minutes_per_merged_pr",
+        "right": "SSMQ-NoCone",
+        "sign_test_p": 0.8238029479980469
+      },
+      "frr": {
+        "by_repo": {
+          "kubernetes": 0.014249107566556795,
+          "nextjs": 0.0029689930679815076,
+          "typescript": 0.007248316800923154
+        },
+        "ci95": [
+          0.0028903662563663536,
+          0.014195328458027942
+        ],
+        "difference": 0.008155472478487153,
+        "left": "SSMQ-FilteredCone",
+        "metric": "false_rejection_rate",
+        "right": "SSMQ-NoCone",
+        "sign_test_p": 0.11531829833984375
+      },
+      "p95": {
+        "by_repo": {
+          "kubernetes": -16.683887014223867,
+          "nextjs": -12.654132911310592,
+          "typescript": -17.41080356995834
+        },
+        "ci95": [
+          -30.54698011295207,
+          -0.48967178727408056
+        ],
+        "difference": -15.582941165164266,
+        "left": "SSMQ-FilteredCone",
+        "metric": "p95_latency_min",
+        "right": "SSMQ-NoCone",
+        "sign_test_p": 0.11531829833984375
+      },
+      "ssmq_minus_fc_p95": {
+        "by_repo": {
+          "kubernetes": 145.34184864665423,
+          "nextjs": 45.73524875612077,
+          "typescript": 171.3177928075239
+        },
+        "ci95": [
+          100.7990212321163,
+          139.88888833469255
+        ],
+        "difference": 120.79829673676629,
+        "left": "SSMQ",
+        "metric": "p95_latency_min",
+        "right": "SSMQ-FilteredCone",
+        "sign_test_p": 1.9073486328125e-06
+      },
+      "stale": {
+        "by_repo": {
+          "kubernetes": 4.7,
+          "nextjs": 1.55,
+          "typescript": -0.5
+        },
+        "ci95": [
+          -4.75,
+          8.966666666666665
+        ],
+        "difference": 1.9166666666666665,
+        "left": "SSMQ-FilteredCone",
+        "metric": "stale_rechecks",
+        "right": "SSMQ-NoCone",
+        "sign_test_p": 0.8238029479980469
+      },
+      "unfiltered_p95": {
+        "by_repo": {
+          "kubernetes": 128.65796163243039,
+          "nextjs": 33.08111584481018,
+          "typescript": 153.90698923756554
+        },
+        "ci95": [
+          89.70420764738502,
+          121.07798110998621
+        ],
+        "difference": 105.21535557160203,
+        "left": "SSMQ",
+        "metric": "p95_latency_min",
+        "right": "SSMQ-NoCone",
+        "sign_test_p": 1.9073486328125e-06
+      }
+    },
+    "null_uniform": {
+      "acc": {
+        "by_repo": {
+          "kubernetes": 0.55,
+          "nextjs": -0.5,
+          "typescript": 0.5
+        },
+        "ci95": [
+          -0.6333333333333334,
+          1.0166666666666666
+        ],
+        "difference": 0.18333333333333332,
+        "left": "SSMQ-FilteredCone",
+        "metric": "merged_prs",
+        "right": "SSMQ-NoCone",
+        "sign_test_p": 1.0
+      },
+      "ci": {
+        "by_repo": {
+          "kubernetes": 1.2474039115596418,
+          "nextjs": 1.1890572081397188,
+          "typescript": 0.2516622650626239
+        },
+        "ci95": [
+          -0.23261356895346713,
+          2.100587239088963
+        ],
+        "difference": 0.896041128253995,
+        "left": "SSMQ-FilteredCone",
+        "metric": "ci_minutes_per_merged_pr",
+        "right": "SSMQ-NoCone",
+        "sign_test_p": 0.26317596435546875
+      },
+      "frr": {
+        "by_repo": {
+          "kubernetes": -0.007729067232271636,
+          "nextjs": 0.003317592348450612,
+          "typescript": -0.0018865569450345055
+        },
+        "ci95": [
+          -0.007963261552843373,
+          0.0036649317448478208
+        ],
+        "difference": -0.0020993439429518434,
+        "left": "SSMQ-FilteredCone",
+        "metric": "false_rejection_rate",
+        "right": "SSMQ-NoCone",
+        "sign_test_p": 0.8238029479980469
+      },
+      "p95": {
+        "by_repo": {
+          "kubernetes": 16.89693356920909,
+          "nextjs": 9.406805995902738,
+          "typescript": 3.6922511604682855
+        },
+        "ci95": [
+          -3.7404109108869834,
+          24.928200522251213
+        ],
+        "difference": 9.998663575193373,
+        "left": "SSMQ-FilteredCone",
+        "metric": "p95_latency_min",
+        "right": "SSMQ-NoCone",
+        "sign_test_p": 0.8238029479980469
+      },
+      "ssmq_minus_fc_p95": {
+        "by_repo": {
+          "kubernetes": 72.9951642451869,
+          "nextjs": 11.47273933385745,
+          "typescript": 140.35711305861489
+        },
+        "ci95": [
+          60.198768091388544,
+          89.34799361162955
+        ],
+        "difference": 74.94167221255307,
+        "left": "SSMQ",
+        "metric": "p95_latency_min",
+        "right": "SSMQ-FilteredCone",
+        "sign_test_p": 1.9073486328125e-06
+      },
+      "stale": {
+        "by_repo": {
+          "kubernetes": 16.35,
+          "nextjs": 10.6,
+          "typescript": 12.35
+        },
+        "ci95": [
+          6.783333333333333,
+          20.033333333333335
+        ],
+        "difference": 13.1,
+        "left": "SSMQ-FilteredCone",
+        "metric": "stale_rechecks",
+        "right": "SSMQ-NoCone",
+        "sign_test_p": 0.0004024505615234375
+      },
+      "unfiltered_p95": {
+        "by_repo": {
+          "kubernetes": 89.892097814396,
+          "nextjs": 20.879545329760187,
+          "typescript": 144.0493642190832
+        },
+        "ci95": [
+          72.20361086622164,
+          98.86170811708936
+        ],
+        "difference": 84.94033578774645,
+        "left": "SSMQ",
+        "metric": "p95_latency_min",
+        "right": "SSMQ-NoCone",
+        "sign_test_p": 1.9073486328125e-06
+      }
+    },
+    "saturated": {
+      "acc": {
+        "by_repo": {
+          "kubernetes": 0.7,
+          "nextjs": -0.2,
+          "typescript": -0.45
+        },
+        "ci95": [
+          -0.6333333333333333,
+          0.7
+        ],
+        "difference": 0.016666666666666666,
+        "left": "SSMQ-FilteredCone",
+        "metric": "merged_prs",
+        "right": "SSMQ-NoCone",
+        "sign_test_p": 1.0
+      },
+      "ci": {
+        "by_repo": {
+          "kubernetes": -0.020364870694140436,
+          "nextjs": 0.8528350710400009,
+          "typescript": 0.4759629638673097
+        },
+        "ci95": [
+          -0.470755956512433,
+          1.3443711337796258
+        ],
+        "difference": 0.4361443880710567,
+        "left": "SSMQ-FilteredCone",
+        "metric": "ci_minutes_per_merged_pr",
+        "right": "SSMQ-NoCone",
+        "sign_test_p": 0.5034446716308594
+      },
+      "frr": {
+        "by_repo": {
+          "kubernetes": -0.008008034307242168,
+          "nextjs": 0.001872159399671285,
+          "typescript": 0.008317987215933633
+        },
+        "ci95": [
+          -0.00484452627668395,
+          0.005948022089320807
+        ],
+        "difference": 0.0007273707694542499,
+        "left": "SSMQ-FilteredCone",
+        "metric": "false_rejection_rate",
+        "right": "SSMQ-NoCone",
+        "sign_test_p": 1.0
+      },
+      "p95": {
+        "by_repo": {
+          "kubernetes": 4.4343936499603105,
+          "nextjs": 8.024247933833488,
+          "typescript": -0.08575589362491769
+        },
+        "ci95": [
+          -9.904435019516237,
+          18.126438635109302
+        ],
+        "difference": 4.124295230056293,
+        "left": "SSMQ-FilteredCone",
+        "metric": "p95_latency_min",
+        "right": "SSMQ-NoCone",
+        "sign_test_p": 0.8238029479980469
+      },
+      "ssmq_minus_fc_p95": {
+        "by_repo": {
+          "kubernetes": 89.10058002673107,
+          "nextjs": 61.742104026931884,
+          "typescript": 167.4391446176764
+        },
+        "ci95": [
+          91.00657656887552,
+          120.08341748354772
+        ],
+        "difference": 106.09394289044644,
+        "left": "SSMQ",
+        "metric": "p95_latency_min",
+        "right": "SSMQ-FilteredCone",
+        "sign_test_p": 1.9073486328125e-06
+      },
+      "stale": {
+        "by_repo": {
+          "kubernetes": 10.8,
+          "nextjs": 12.85,
+          "typescript": 12.5
+        },
+        "ci95": [
+          5.8,
+          18.266666666666666
+        ],
+        "difference": 12.05,
+        "left": "SSMQ-FilteredCone",
+        "metric": "stale_rechecks",
+        "right": "SSMQ-NoCone",
+        "sign_test_p": 0.11531829833984375
+      },
+      "unfiltered_p95": {
+        "by_repo": {
+          "kubernetes": 93.53497367669138,
+          "nextjs": 69.76635196076538,
+          "typescript": 167.35338872405148
+        },
+        "ci95": [
+          95.37371771394896,
+          124.41338724937741
+        ],
+        "difference": 110.21823812050275,
+        "left": "SSMQ",
+        "metric": "p95_latency_min",
+        "right": "SSMQ-NoCone",
+        "sign_test_p": 1.9073486328125e-06
+      }
+    }
+  },
+  "macros": {
+    "AviNomFrr": "5.32",
+    "AviNomP": "487.9",
+    "AviNomStale": "26.4",
+    "BorsNomCi": "22.3",
+    "BorsNomFrr": "1.43",
+    "BorsNomP": "1995.8",
+    "BorsNomWidth": "7.50",
+    "BsNomDeltaFrr": "+7.41",
+    "BsNomDeltaP": "+101.9",
+    "BsNomDeltaPHi": "+114.1",
+    "BsNomDeltaPLo": "+89.2",
+    "BsNomFrr": "16.88",
+    "BsNomP": "626.3",
+    "BsNomStale": "408.1",
+    "BsSatDeltaFrr": "+8.38",
+    "BsSatDeltaP": "+98.0",
+    "DirTargetDensity": "46.7",
+    "FcDensity": "10.8",
+    "FcDirDeltaFrr": "-0.34",
+    "FcDirDeltaP": "+38.5",
+    "FcDirDeltaPHi": "+52.5",
+    "FcDirDeltaPLo": "+24.4",
+    "FcDirP": "539.6",
+    "FcDirRec": "0.54",
+    "FcDirSignP": "0.0026",
+    "FcNomAcc": "105.0",
+    "FcNomCi": "66.6",
+    "FcNomDeltaAcc": "-0.95",
+    "FcNomDeltaFrr": "+0.82",
+    "FcNomDeltaFrrHi": "+1.42",
+    "FcNomDeltaFrrLo": "+0.29",
+    "FcNomDeltaP": "-15.6",
+    "FcNomDeltaPHi": "-0.5",
+    "FcNomDeltaPLo": "-30.5",
+    "FcNomFrr": "4.82",
+    "FcNomGainVsUnf": "120.8",
+    "FcNomP": "607.7",
+    "FcNomRec": "0.11",
+    "FcNomSignP": "0.115",
+    "FcNomStale": "368.2",
+    "FcNomWidth": "1.89",
+    "FcNullDeltaP": "+10.0",
+    "FcNullDeltaPHi": "+24.9",
+    "FcNullDeltaPLo": "-3.7",
+    "FcNullP": "631.7",
+    "FcNullSignP": "0.824",
+    "FcSatDeltaFrr": "+0.07",
+    "FcSatDeltaP": "+4.1",
+    "FcSatDeltaPHi": "+18.1",
+    "FcSatDeltaPLo": "-9.9",
+    "FcSatFrr": "3.89",
+    "FcSatP": "770.5",
+    "FcSatSignP": "0.824",
+    "GhmqNomCi": "26.7",
+    "GhmqNomFrr": "4.38",
+    "GhmqNomP": "456.9",
+    "LinNomP": "960.6",
+    "NoConeNomStale": "366.3",
+    "ObsAdmissions": "100",
+    "ObsCargoAdmissions": "56",
+    "ObsCargoConflicts": "2",
+    "ObsCargoDiscordant": "114",
+    "ObsCargoDrafts": "11",
+    "ObsCargoEnum": "243",
+    "ObsCargoEvictions": "16",
+    "ObsCargoFailedChecks": "13",
+    "ObsCargoFetched": "161",
+    "ObsCargoMultiPrs": "11",
+    "ObsCargoNotFound": "71",
+    "ObsCargoPrs": "40",
+    "ObsCargoSojournP": "34.2",
+    "ObsCargoSojournPnf": "39.2",
+    "ObsCargoTimeouts": "1",
+    "ObsDays": "8",
+    "ObsDistinctPrs": "83",
+    "ObsEvictions": "17",
+    "ObsMultiPrs": "12",
+    "ObsTsAdmissions": "44",
+    "ObsTsDrafts": "21",
+    "ObsTsEnum": "431",
+    "ObsTsFailedChecks": "1",
+    "ObsTsFetched": "246",
+    "ObsTsNotFound": "164",
+    "ObsTsPrs": "43",
+    "ObsTsSojournP": "17.1",
+    "ObsTsSojournPnf": "21.3",
+    "ObsTsWfCaveats": "8",
+    "ObsTsWfDiscordant": "45",
+    "ObsTsWfMean": "16.1",
+    "ObsTsWfP": "16.0",
+    "ObsTsWfPnf": "18.8",
+    "ObsTsWfScanned": "690",
+    "ObsTsWfSelected": "45",
+    "PbNomFrr": "3.00",
+    "PbNomP": "716.6",
+    "PbNomWidth": "2.23",
+    "SsmqNomStale": "457.0",
+    "StaticNomStale": "311.5",
+    "UnfDensity": "73.3"
+  },
+  "observed_queue": {
+    "calendar_days_inclusive": 8,
+    "combined_admissions": 100,
+    "combined_distinct_prs": 83,
+    "combined_multi_enqueue_prs": 12,
+    "combined_non_merge_evictions": 17,
+    "repositories": {
+      "cargo": {
+        "admissions": 56,
+        "attribution_eligible": 0,
+        "censored_episodes": 0,
+        "checks_timed_out": 1,
+        "discordant_heads": 114,
+        "distinct_prs_enqueued": 40,
+        "draft_excluded": 11,
+        "enumerated_ids": 243,
+        "failed_checks": 13,
+        "max_admissions_per_pr": 3,
+        "merge_conflict": 2,
+        "merged_removals": 40,
+        "multi_enqueue_prs": 11,
+        "non_merge_evictions": 16,
+        "not_found": 71,
+        "prs_fetched": 161,
+        "sojourn_mean_min": 33.5,
+        "sojourn_n": 56,
+        "sojourn_p50_min": 34.15833333333333,
+        "sojourn_p95_min": 39.2375,
+        "transport_failures": 0
+      },
+      "typescript": {
+        "admissions": 44,
+        "attribution_eligible": 0,
+        "censored_episodes": 0,
+        "checks_timed_out": 0,
+        "discordant_heads": 45,
+        "distinct_prs_enqueued": 43,
+        "draft_excluded": 21,
+        "enumerated_ids": 431,
+        "failed_checks": 1,
+        "max_admissions_per_pr": 2,
+        "merge_conflict": 0,
+        "merged_removals": 43,
+        "multi_enqueue_prs": 1,
+        "non_merge_evictions": 1,
+        "not_found": 164,
+        "prs_fetched": 246,
+        "sojourn_mean_min": 17.13143939393939,
+        "sojourn_n": 44,
+        "sojourn_p50_min": 17.141666666666666,
+        "sojourn_p95_min": 21.28,
+        "transport_failures": 0
+      }
+    },
+    "schema_version": "8.2",
+    "summary_schema_version": "1.2",
+    "ts_workflow_runs": {
+      "api_scanned": 690,
+      "discordant_heads": 45,
+      "duration_mean_min": 16.084444444444447,
+      "duration_n": 45,
+      "duration_p50_min": 16.033333333333335,
+      "duration_p95_min": 18.776666666666664,
+      "excluded_pr_outside_window": 8,
+      "failure": 1,
+      "selected": 45,
+      "success": 44
+    },
+    "window_end": "2026-11-17T23:59:59Z",
+    "window_start": "2026-11-10T00:00:00Z"
+  },
+  "schema_version": "8.2"
+}
