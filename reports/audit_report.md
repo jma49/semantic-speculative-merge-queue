@@ -1,22 +1,43 @@
-# Deterministic Audit & Paired Inference Report v3 (`reports/audit_report.md`)
+# Deterministic Audit & Paired Inference Report v4 (`reports/audit_report.md`)
 
-- **Audit Verdict**: **PASS (0 Blocking Errors, Full Harness+Dataset+Artifact SHA-256 Verified)**
-- **Verified Sealed v3 Runs**: 9 (real git commits recorded on all manifests)
-- **Total Sealed Simulation Records**: 6000 + 64 real executed Python unittest batches
+- **Audit Verdict**: **PASS (0 Blocking Errors, Full Harness+Dataset+Artifact SHA-256 + Non-Drift Verified)**
+- **Verified Sealed v4 Runs**: 9
+- **Total Sealed Simulation Records**: 6660 + 80 real executed Python unittest batches
 - **Cumulative Mainline Escaped Defects**: `0` (0.0%)
-- **Generated LaTeX Macros**: `120` in `paper/generated/numbers.tex`
-- **Generated PGFPlots Vector Figures**: 4 data-driven figures in `paper/generated/figures/` + 2 TikZ architectural/motivating figures in `paper/figures/`
+- **Generated LaTeX Macros**: `124` in `paper/generated/numbers.tex`
 - **Manuscript Hygiene Warnings**: `0`
 
-## Real Executable Blame Micro-Benchmark (`v3_exp0_blame_microbench`, 64 Batches)
-- `ASTStackCausalRanker`: **93.8% Top-1**, **100.0% Top-2**, Co-File Distractor **100.0%**, Semantic Conflict **100.0%**, MRR **0.969**, latency **2.25 ms**.
-- `FileTracebackOverlapRanker` (strong non-AST baseline): **68.8% Top-1**, **100.0% Top-2**, Co-File Distractor **0.0%**, Semantic Conflict **100.0%**, MRR **0.844**.
+## 80-Batch Real Executed Blame Benchmark (`v4_exp0_blame_microbench`)
+- `ASTStackCausalRanker`: **98.8% Top-1**, **93.8% Functional Sibling Top-1**, **98.8% Executed LOO Pass**, MRR **0.994**, mean **2.27 ms** (max 3.12 ms).
+- `FileTriviaFilteredRanker` (strong same-info baseline): **70.0% Top-1**, **18.8% Functional Sibling Top-1**, **70.0% Executed LOO Pass**, MRR **0.815**.
 
-## Blame Failure-Density Regime (`v3_exp8_blame_regime`)
+## Main Benchmark (`v4_exp2_main_bench`)
 
-| Regime | Static P95 | SSMQ-NoBlame P95 | SSMQ P95 | Δ Blame (%) [Wilcoxon p] | Rounds (NB / SSMQ) |
+| Strategy | Tput (PR/h) | P95 (min) | Cost (m/PR) | FR% | Rej (D/P/F) | RootSz |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **SerialQueue** | 3.75 | 1413.9 | 16.11 | 4.36% | 11.8/19.8/6.0 | 1.00 |
+| **StaticBatchBisect** | 16.92 | 113.8 | 18.25 | 2.01% | 11.8/20.2/2.8 | 2.72 |
+| **SpeculativeLinear** | 5.82 | 846.8 | 28.63 | 2.12% | 11.8/20.0/2.9 | 2.75 |
+| **FIFOOutcomeTree** | 11.05 | 319.4 | 39.90 | 1.78% | 11.8/20.0/2.5 | 2.43 |
+| **DepAwareOutcomeTree** | 11.75 | 283.5 | 36.95 | 2.19% | 11.8/20.0/3.0 | 2.03 |
+| **FlakeAwareBatch** | 13.44 | 215.8 | 27.34 | 0.12% | 11.8/20.6/0.2 | 2.74 |
+| **SSMQ** | 18.18 | 81.0 | 16.75 | 1.17% | 11.8/20.2/1.6 | 1.44 |
+
+## Fixed-Density Graph Recall (`v4_exp5_graph_recall`)
+
+| Regime | Realized Recall | Total Conflicts | Static P95 | DepAwareTree P95 | SSMQ P95 |
 | :--- | :---: | :---: | :---: | :---: | :---: |
-| `nominal_8pct_k8` | 121.9 | 80.6 | **79.5** | -1.4% (`p=0.0352`) | 0.85 / **0.84** |
-| `elevated_15pct_k8` | 132.3 | 75.7 | **73.8** | -2.5% (`p=0.0012`) | 0.55 / **0.54** |
-| `highdef_22pct_k12` | 159.7 | 86.0 | **85.6** | -0.5% (`p=0.7488`) | 0.54 / **0.55** |
-| `lowrec_15pct_k12` | 166.6 | 95.2 | **94.0** | -1.3% (`p=0.5100`) | 0.63 / **0.63** |
+| `no_conflict` | 100.0% | 0 | 43.7 | 140.6 | **50.9** |
+| `recall_0.40` | 39.6% | 1079 | 110.6 | 286.2 | **90.1** |
+| `recall_0.60` | 59.8% | 1075 | 114.4 | 289.2 | **87.7** |
+| `recall_0.80` | 80.1% | 1075 | 113.8 | 283.5 | **81.0** |
+| `recall_1.00` | 100.0% | 1075 | 112.1 | 277.7 | **74.7** |
+
+## 2x2 Factorial Blame Regime (`v4_exp8_blame_regime`, Holm-Adjusted)
+
+| Cell | Static P95 | NoBlame P95 | SSMQ P95 | Δ% [Holm p] | FailRootSz | Multi-Culprit % |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| `def8_k8` | 113.8 | 81.8 | **81.0** | -1.1% (`p=0.2242`) | 1.62 | 5.4% |
+| `def16_k8` | 126.0 | 74.1 | **73.1** | -1.3% (`p=0.1184`) | 1.59 | 6.7% |
+| `def8_k12` | 123.6 | 82.1 | **81.2** | -1.1% (`p=0.2242`) | 1.62 | 5.5% |
+| `def16_k12` | 136.2 | 74.1 | **73.3** | -1.1% (`p=0.1210`) | 1.59 | 6.7% |

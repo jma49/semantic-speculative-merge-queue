@@ -1,0 +1,21 @@
+{
+  "schema_version": "4.0",
+  "run_id": "v4_exp0_blame_microbench",
+  "experiment": "v4_exp0_blame_microbench",
+  "timestamp_utc": "2026-11-27T03:52:03.243895+00:00",
+  "git_commit": "4f7d9b2",
+  "harness_sha256": "9a202b82a766c67e8f9df1e30765467fb93b93b41d8de78c8a74a011c0d5c6a0",
+  "dataset_sha256": "de2f9c96f819ddce1952cfcfdc79016e8d89863740fc9236f036eb9d0df2950a",
+  "command": "python3 eval/harness.py",
+  "seeds": [
+    2026
+  ],
+  "record_count": 80,
+  "metrics_file": "metrics.json",
+  "metrics_sha256": "e72ca89b7b49b45e8bbda080fcb23a5b3b49c732d1e036c5b4319023eedb0ee3",
+  "artifact_sha256": "e72ca89b7b49b45e8bbda080fcb23a5b3b49c732d1e036c5b4319023eedb0ee3",
+  "meta": {
+    "type": "executable_python_unittest_microbench",
+    "batches": 80
+  }
+}

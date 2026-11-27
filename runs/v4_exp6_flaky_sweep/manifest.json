@@ -1,0 +1,53 @@
+{
+  "schema_version": "4.0",
+  "run_id": "v4_exp6_flaky_sweep",
+  "experiment": "v4_exp6_flaky_sweep",
+  "timestamp_utc": "2026-11-27T04:00:24.842772+00:00",
+  "git_commit": "4f7d9b2",
+  "harness_sha256": "9a202b82a766c67e8f9df1e30765467fb93b93b41d8de78c8a74a011c0d5c6a0",
+  "dataset_sha256": "de2f9c96f819ddce1952cfcfdc79016e8d89863740fc9236f036eb9d0df2950a",
+  "command": "python3 eval/harness.py",
+  "seeds": [
+    1001,
+    1002,
+    1003,
+    1004,
+    1005,
+    1006,
+    1007,
+    1008,
+    1009,
+    1010,
+    1011,
+    1012,
+    1013,
+    1014,
+    1015,
+    1016,
+    1017,
+    1018,
+    1019,
+    1020
+  ],
+  "record_count": 1800,
+  "metrics_file": "metrics.json",
+  "metrics_sha256": "05f61865e19297eb7b3c06b0281fe2f4113fd91f1472d818989adc3337009985",
+  "artifact_sha256": "05f61865e19297eb7b3c06b0281fe2f4113fd91f1472d818989adc3337009985",
+  "meta": {
+    "flaky_rates": [
+      0.0,
+      0.02,
+      0.05,
+      0.1,
+      0.15
+    ],
+    "strategies": [
+      "StaticBatchBisect",
+      "FlakeAwareBatch",
+      "DepAwareOutcomeTree",
+      "SSMQ-NoFlaky",
+      "SSMQ-FixedRetry",
+      "SSMQ"
+    ]
+  }
+}

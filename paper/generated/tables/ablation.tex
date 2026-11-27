@@ -1,19 +1,22 @@
-% AUTO-GENERATED FROM v3_exp4_ablation — DO NOT EDIT
+% AUTO-GENERATED FROM v4_exp4_ablation — DO NOT EDIT
 \begin{table}[t]
 \centering
 \footnotesize
-\setlength{\tabcolsep}{4pt}
-\caption{Component Ablation ($5\times$ Velocity, $\phi=5\%$, $80\%$ Graph Recall, 20 Seeds $\times$ 3 Repos).}
+\setlength{\tabcolsep}{3.0pt}
+\caption{Deconfounded Component Ablation ($5\times$, $\phi=5\%$, $\rho=80\%$, 20 Seeds $\times$ 3 Repos; RootSz = Mean Root Batch Size).}
 \label{tab:ablation}
-\begin{tabular}{lcccc}
+\begin{tabular}{lccccc}
 \toprule
-\textbf{Variant} & \textbf{Tput} & \textbf{P95} & \textbf{Cost} & \textbf{FR\%} \\
+\textbf{Variant} & \textbf{Tput} & \textbf{P95} & \textbf{Cost} & \textbf{FR\%} & \textbf{RootSz} \\
 \midrule
-\textbf{SSMQ} & \textbf{17.78} & \textbf{79.5} & \textbf{17.05} & \textbf{1.64\%} \\
-SSMQ-NoGraph & 15.60 & 135.8 & 20.81 & 1.32\% \\
-SSMQ-NoFlaky & 18.23 & 68.2 & 15.84 & 2.56\% \\
-SSMQ-NoBlame & 17.66 & 80.6 & 17.17 & 1.72\% \\
-StaticBatchBisect & 16.05 & 121.9 & 19.78 & 1.96\% \\
+\textbf{SSMQ} & \textbf{18.18} & \textbf{81.0} & \textbf{16.75} & \textbf{1.17\%} & \textbf{1.44} \\
+SSMQ-NoCone & 17.15 & 102.2 & 17.98 & 0.92\% & 2.09 \\
+SSMQ-NoRisk & 18.09 & 82.3 & 16.80 & 1.11\% & 1.45 \\
+SSMQ-NoGraph & 16.41 & 125.7 & 19.47 & 0.79\% & 2.80 \\
+SSMQ-NoFlaky & 18.99 & 65.4 & 15.06 & 2.63\% & 1.43 \\
+SSMQ-FixedRetry & 16.38 & 113.8 & 19.76 & 0.13\% & 1.45 \\
+SSMQ-NoBlame & 18.09 & 81.8 & 16.81 & 1.21\% & 1.44 \\
+StaticBatch & 16.92 & 113.8 & 18.25 & 2.01\% & 2.72 \\
 \bottomrule
 \end{tabular}
 \end{table}

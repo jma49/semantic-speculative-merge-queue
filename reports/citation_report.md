@@ -1,9 +1,9 @@
-# Citation Verification Report
+# Citation Verification Report (v4)
 
-- **Total BibTeX Entries**: 27
-- **API-Verified Entries**: 27/27
+- **Total BibTeX Entries**: 33
+- **API-Verified Entries**: 33/33
 - **Unverified Entries**: 0
-- **Preprint Count / Ratio**: 0/27 (0.0%) — Threshold: <= 25%
+- **Preprint Count / Ratio**: 0/33 (0.0%) — Threshold: <= 25%
 - **Gate Verdict**: PASS
 
 | Key | Type | Status | Preprint | DOI / URL |
@@ -35,3 +35,9 @@
 | `bavand2021mining` | `inproceedings` | `VERIFIED_CROSSREF` | No | 10.1109/icsme52107.2021.00026 |
 | `luo2014empirical` | `inproceedings` | `VERIFIED_CROSSREF` | No | 10.1145/2635868.2635920 |
 | `henderson2023flake` | `inproceedings` | `VERIFIED_CROSSREF` | No | 10.1109/icst57152.2023.00041 |
+| `hilton2016usage` | `inproceedings` | `VERIFIED_CROSSREF` | No | 10.1145/2970276.2970358 |
+| `memon2017taming` | `inproceedings` | `VERIFIED_CROSSREF` | No | 10.1109/icse-seip.2017.16 |
+| `machalica2019predictive` | `inproceedings` | `VERIFIED_CROSSREF` | No | 10.1109/icse-seip.2019.00018 |
+| `najafi2019bisecting` | `inproceedings` | `VERIFIED_CROSSREF` | No | 10.1145/3338906.3338944 |
+| `jones2005empirical` | `inproceedings` | `VERIFIED_CROSSREF` | No | 10.1145/1101908.1101949 |
+| `abreu2009practical` | `article` | `VERIFIED_CROSSREF` | No | 10.1016/j.jss.2009.06.035 |

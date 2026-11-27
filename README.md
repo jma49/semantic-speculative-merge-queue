@@ -1,32 +1,36 @@
-# Semantic Speculative Merge Queues (SSMQ) — v2 Artifact
+# Semantic Speculative Merge Queues (SSMQ) — v4 Artifact
 
-> **Research Topic #1** instantiated by [`jma49/research-paper-factory`](https://github.com/jma49/research-paper-factory)  
 > *Semantic Speculative Merge Queues: Graph-Disjoint Batching and Causal Fault Attribution for High-Velocity CI*
 
-## What Changed in v2 (Addressing 100% of Codex v1 PC Review Critiques)
+## What Is Included in the v4 Artifact
 
-1. **Non-Circular Off-Graph Conflict Oracle** (`src/ssmq/simulator.py`, `runs/v2_exp5_graph_recall`): Decoupled oracle conflict graph $G^*$ from scheduler warm-up graph $\hat{G}$ via `graph_recall` $\in [0.40, 1.00]$ plus a Zero-Conflict Control ($P_c=0$). Even when **60% of true semantic conflicts are latent off-graph edges**, SSMQ still cuts P95 latency by **25.2%** vs. static batching (`111.2` vs `148.6 min`).
-2. **Real Executable Python AST + Traceback Causal Blame Micro-Benchmark** (`src/ssmq/blame_bench.py`, `runs/v2_exp0_blame_microbench`): Executed **48 real failing Python multi-PR batches** (24 functional regressions + 24 true pairwise semantic conflicts verified to pass individually and fail combined) -> **`ASTStackCausalRanker` achieves 91.7% Top-1 / 100.0% Top-2 / 0.958 MRR in 2.29 ms** (vs 29.2% Random / 2.1% Churn), directly calibrating the macro simulator.
-3. **Cumulative Mainline Safety + Faithful EuroSys '19 Outcome-Tree `UberSubmitQueue`**: Tracks cumulative mainline merges with persistent cross-PR conflicts (**0 escaped defects across 4,920 sealed v2 records**) and implements parallel pass/fail outcome-tree speculation ranked by expected merges per CI minute.
-4. **Matched Paired Wilcoxon + Holm-Bonferroni Inference & Clean-PR False-Rejection Pareto** (`eval/audit.py`, `runs/v2_exp6_flaky_sweep`): Full `[95% CI]` tables, per-repository breakdown, Holm-adjusted $p$-values (`p < 0.0001`), and explicit clean-PR false-rejection accounting.
-5. **Automated IEEEtran PDF Compilation**: GitHub Actions (`.github/workflows/compile-ieee-pdf.yml`) compiles `paper/main.tex` into downloadable `ssmq-ieeetran-pdf` on every push.
+1. **Executable 80-Batch Python Blame Micro-Benchmark** (`src/ssmq/blame_bench.py`, `runs/v4_exp0_blame_microbench`): Executes **80 real failing Python `unittest` batches** across four strata (24 disjoint regressions, 16 comment co-file distractors, **16 functional sibling-function co-file distractors** with balanced churn and counterbalanced PR IDs, and 24 verified pairwise semantic conflicts) with zero silent patch skips and **real executed leave-one-out (`B \ {s_1}`) recovery verification**. Evaluates 5 live-timed deterministic rankers including a same-information `FileTriviaFilteredRanker` baseline vs. `ASTStackCausalRanker` (**98.8% Top-1 / 100.0% Top-2 / 0.994 MRR / 98.8% Executed LOO Recovery** in **2.27 ms mean**, **93.8% vs. 18.8%** on functional sibling-function co-file distractors).
+2. **Fixed-Density Off-Graph Conflict Oracle & Leak-Free Warm-Up Priors** (`src/ssmq/graph.py`, `src/ssmq/simulator.py`, `runs/v4_exp5_graph_recall`): Decouples the ground-truth conflict oracle $G^*$ from the scheduler's warm-up graph $\hat{G}$ across $\rho \in [0.40, 1.00]$ while holding total conflict count constant (1,075--1,079 across 60 runs), alongside a Zero-Conflict Control ($P_c=0$). Scheduler priors scale strictly from warm-up mean risk (`warmup_mean_risk`) with zero evaluation-population leakage.
+3. **13 Evaluated Schedulers & Deconfounded Ablations**: Includes `SerialQueue`, `StaticBatchBisect`, `SpeculativeLinear`, `FIFOOutcomeTree`, **`DepAwareOutcomeTree`** (EuroSys '19 conflict-graph speculation with independent commits for disjoint cones), `FlakeAwareBatch`, `SSMQ`, and six deconfounded ablations (`SSMQ-NoCone`, `SSMQ-NoRisk`, `SSMQ-NoGraph`, `SSMQ-NoFlaky`, `SSMQ-FixedRetry`, `SSMQ-NoBlame`).
+4. **Instrumented $2\times 2$ Factorial Blame Analysis & Zero Cumulative Escapes** (`runs/v4_exp8_blame_regime`): Tracks realized root batch size, failed-root batch size, multi-culprit share, and exact Defective/Persistent/Flaky rejection counts across **9 SHA-256-sealed v4 suites (6,660 simulation records + 80 executed Python batches, 0 within-model cumulative escapes)**.
+5. **ICSE `10+2` Double-Anonymous IEEEtran Manuscript & Automated Verification**: `eval/audit.py --verify-only` verifies manifest digests, record counts, zero escapes, manuscript hygiene, and exact byte-for-byte non-drift of `results/results.json` and `paper/generated/numbers.tex` (124 pure-letter macros, 33/33 Crossref-verified peer-reviewed citations).
 
-## Headline Audited v2 Results (5× Velocity, 5% Flaky, 80% Graph Recall, 20 Paired Seeds × 3 Real OSS Repos)
+## Headline Audited v4 Results (5× Velocity, 5% Flaky, 80% Graph Recall, 20 Paired Seeds × 3 Real OSS Repos)
 
-| Strategy | Throughput (PR/h) | P95 Lat (min) | CI Cost (m/PR) | Invalid. (%) | False Rej. (%) | Cumulative Escapes |
-| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| `SerialQueue` | 3.63 | 1408.8 | 16.65 | 0.0% | 4.22% | 0 |
-| `StaticBatchBisect` | 16.05 | 121.9 | 19.78 | 0.9% | 1.96% | 0 |
-| `SpeculativeLinear` | 5.37 | 899.8 | 30.98 | 40.3% | 2.13% | 0 |
-| `UberSubmitQueue` (EuroSys '19 Tree) | 10.27 | 342.7 | 43.42 | 75.2% | 1.73% | 0 |
-| `FlakeAwareBatch` | 12.57 | 235.5 | 29.92 | 1.9% | 0.12% | 0 |
-| **`SSMQ` (Ours)** | **17.77** | **79.5** | **17.06** | **1.5%** | **1.64%** | **0** |
+| Strategy | Throughput (PR/h) | P95 Lat (min) | CI Cost (m/PR) | Invalid. (%) | False Rej. (%) | Rej. (D/P/F) | Escapes |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| `SerialQueue` ($W=1$) | 3.75 | 1413.9 | 16.11 | 0.0% | 4.36% | 11.8/19.8/6.0 | 0 |
+| `StaticBatchBisect` | 16.92 | 113.8 | 18.25 | 0.9% | 2.01% | 11.8/20.2/2.8 | 0 |
+| `SpeculativeLinear` | 5.82 | 846.8 | 28.63 | 38.3% | 2.12% | 11.8/20.0/2.9 | 0 |
+| `FIFOOutcomeTree` | 11.05 | 319.4 | 39.90 | 75.2% | 1.78% | 11.8/20.0/2.5 | 0 |
+| `DepAwareOutcomeTree` | 11.75 | 283.5 | 36.95 | 71.5% | 2.19% | 11.8/20.0/3.0 | 0 |
+| `FlakeAwareBatch` | 13.44 | 215.8 | 27.34 | 1.9% | 0.12% | 11.8/20.6/0.2 | 0 |
+| **`SSMQ` (Ours)** | **18.18** | **81.0** | **16.75** | **2.0%** | **1.17%** | **11.8/20.2/1.6** | **0** |
 
-## Reproducing All v2 Results
+## Verifying and Reproducing All v4 Results
 
 ```bash
+# 1. Run all 20 unit tests (strict warnings-as-errors)
 python3 -W error -m unittest discover -s tests -p "test_*.py" -v
-python3 eval/harness.py
-python3 eval/audit.py
+
+# 2. Verify all 9 sealed v4 manifests, zero escapes, hygiene, and zero output drift
 python3 eval/audit.py --verify-only
+
+# 3. Re-execute all 9 suites into a fresh non-overwriting output directory (or pass --force)
+python3 eval/harness.py --runs-dir runs_repro_check
 ```

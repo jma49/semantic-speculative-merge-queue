@@ -1,18 +1,19 @@
-% AUTO-GENERATED FROM v3_exp0_blame_microbench — DO NOT EDIT
-\begin{table}[t]
+% AUTO-GENERATED FROM v4_exp0_blame_microbench — DO NOT EDIT
+\begin{table*}[t]
 \centering
 \footnotesize
-\setlength{\tabcolsep}{2.8pt}
-\caption{Real Executed Python Blame Micro-Benchmark (64 Failing Batches: 24 Disjoint + 16 Co-File Distractor + 24 Semantic Conflicts).}
+\setlength{\tabcolsep}{5pt}
+\caption{80-Batch Real Executed Python Blame Micro-Benchmark (24 Disjoint + 16 Comment Co-File + 16 Functional Sibling Co-File + 24 Semantic Conflicts; All Latencies Measured Live on Preloaded Fixtures; LOO = Real Executed Leave-One-Out 1-Step Recovery Pass Rate).}
 \label{tab:blame_microbench}
-\begin{tabular}{lccccc}
+\begin{tabular}{lccccccc}
 \toprule
-\textbf{Ranker} & \textbf{Top-1} & \textbf{Top-2} & \textbf{CoFile} & \textbf{Sem.} & \textbf{Time} \\
+\textbf{Ranker} & \textbf{Overall Top-1} & \textbf{Top-2} & \textbf{MRR} & \textbf{Comment Top-1} & \textbf{Func.\ Sibling Top-1} & \textbf{Exec.\ LOO} & \textbf{Mean Time} \\
 \midrule
-RandomRanker & 26.6\% & 48.4\% & -- & -- & $<0.1$ms \\
-ChurnRiskRanker & 0.0\% & 9.4\% & -- & -- & $<0.1$ms \\
-FileOverlapRanker & 68.8\% & 100.0\% & 0.0\% & 100.0\% & 0.01ms \\
-\textbf{ASTStackCausal} & \textbf{93.8\%} & \textbf{100.0\%} & \textbf{100.0\%} & \textbf{100.0\%} & \textbf{2.25ms} \\
+RandomRanker & 27.5\% & 52.5\% & -- & -- & -- & -- & 0.006~ms \\
+ChurnRiskRanker & 1.2\% & 10.0\% & -- & -- & -- & -- & 0.002~ms \\
+FileRawOverlapRanker & 63.7\% & 87.5\% & 0.783 & 62.5\% & 18.8\% & -- & 0.82~ms \\
+FileTriviaFilteredRanker & 70.0\% & 87.5\% & 0.815 & 93.8\% & 18.8\% & 70.0\% & 2.06~ms \\
+\textbf{ASTStackCausalRanker (Ours)} & \textbf{98.8\%} & \textbf{100.0\%} & \textbf{0.994} & \textbf{100.0\%} & \textbf{93.8\%} & \textbf{98.8\%} & \textbf{2.27~ms} \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{table*}

@@ -1,0 +1,50 @@
+{
+  "schema_version": "4.0",
+  "run_id": "v4_exp8_blame_regime",
+  "experiment": "v4_exp8_blame_regime",
+  "timestamp_utc": "2026-11-27T04:00:41.003813+00:00",
+  "git_commit": "4f7d9b2",
+  "harness_sha256": "9a202b82a766c67e8f9df1e30765467fb93b93b41d8de78c8a74a011c0d5c6a0",
+  "dataset_sha256": "de2f9c96f819ddce1952cfcfdc79016e8d89863740fc9236f036eb9d0df2950a",
+  "command": "python3 eval/harness.py",
+  "seeds": [
+    1001,
+    1002,
+    1003,
+    1004,
+    1005,
+    1006,
+    1007,
+    1008,
+    1009,
+    1010,
+    1011,
+    1012,
+    1013,
+    1014,
+    1015,
+    1016,
+    1017,
+    1018,
+    1019,
+    1020
+  ],
+  "record_count": 720,
+  "metrics_file": "metrics.json",
+  "metrics_sha256": "8d29009c17e3393e89f019a4c8eb894cf6551832ada9eaaaa7990d276ca1ecf4",
+  "artifact_sha256": "8d29009c17e3393e89f019a4c8eb894cf6551832ada9eaaaa7990d276ca1ecf4",
+  "meta": {
+    "regimes": [
+      "def8_k8",
+      "def16_k8",
+      "def8_k12",
+      "def16_k12"
+    ],
+    "strategies": [
+      "StaticBatchBisect",
+      "SSMQ-NoBlame",
+      "SSMQ"
+    ],
+    "graph_recall": 0.8
+  }
+}

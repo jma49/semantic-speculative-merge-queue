@@ -1,0 +1,55 @@
+{
+  "schema_version": "4.0",
+  "run_id": "v4_exp2_main_bench",
+  "experiment": "v4_exp2_main_bench",
+  "timestamp_utc": "2026-11-27T03:52:46.865764+00:00",
+  "git_commit": "4f7d9b2",
+  "harness_sha256": "9a202b82a766c67e8f9df1e30765467fb93b93b41d8de78c8a74a011c0d5c6a0",
+  "dataset_sha256": "de2f9c96f819ddce1952cfcfdc79016e8d89863740fc9236f036eb9d0df2950a",
+  "command": "python3 eval/harness.py",
+  "seeds": [
+    1001,
+    1002,
+    1003,
+    1004,
+    1005,
+    1006,
+    1007,
+    1008,
+    1009,
+    1010,
+    1011,
+    1012,
+    1013,
+    1014,
+    1015,
+    1016,
+    1017,
+    1018,
+    1019,
+    1020
+  ],
+  "record_count": 420,
+  "metrics_file": "metrics.json",
+  "metrics_sha256": "410a89937ddb522d099e3927e5b4d99a92c064ed15caaab106391dbd4f2281bf",
+  "artifact_sha256": "410a89937ddb522d099e3927e5b4d99a92c064ed15caaab106391dbd4f2281bf",
+  "meta": {
+    "strategies": [
+      "SerialQueue",
+      "StaticBatchBisect",
+      "SpeculativeLinear",
+      "FIFOOutcomeTree",
+      "DepAwareOutcomeTree",
+      "FlakeAwareBatch",
+      "SSMQ"
+    ],
+    "repos": [
+      "kubernetes",
+      "typescript",
+      "nextjs"
+    ],
+    "graph_recall": 0.8,
+    "persistent_conflict_share": 0.03,
+    "blame_top1_acc": 0.9875
+  }
+}
