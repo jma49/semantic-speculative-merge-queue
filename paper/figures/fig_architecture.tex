@@ -1,0 +1,54 @@
+% SSMQ End-to-End System Architecture (TikZ Vector Diagram)
+\begin{figure*}[t]
+\centering
+\begin{tikzpicture}[
+  font=\scriptsize,
+  box/.style={rectangle, rounded corners=2.5pt, draw=#1!75!black, fill=#1!10, thick, minimum height=1.05cm, text width=2.45cm, align=center, inner sep=3pt},
+  smallbox/.style={rectangle, rounded corners=2pt, draw=#1!75!black, fill=#1!12, thick, minimum height=0.72cm, text width=2.25cm, align=center, inner sep=2.5pt},
+  dec/.style={diamond, aspect=2.1, draw=ssmqPurple!80!black, fill=ssmqPurple!10, thick, align=center, inner sep=1pt, font=\scriptsize\bfseries},
+  arr/.style={-{Stealth[length=2mm]}, thick, draw=black!75},
+  lbl/.style={font=\scriptsize\bfseries, fill=white, inner sep=1pt}
+]
+
+% Stage 1: Warm-up Graph & Risk
+\node[box=ssmqTeal] (graph) at (0, 1.2) {\textbf{1. Warm-Up Graph $\hat{G}$}\\ Co-change cliques \&\\ 2-level module cones\\ (earliest 25\% PRs)};
+
+% Stage 2: Incoming Queue & Risk Scorer
+\node[box=ssmqBlue] (queue) at (3.25, 1.2) {\textbf{2. Risk \& Disjoint}\\ \textbf{Multi-Lane Packer}\\ $r(p)\in[0,1]$, Fast ($K{\le}8$)\\ vs.\ Protected ($K{\le}2$)};
+
+% Stage 3: Parallel CI Workers & Mainline Guard
+\node[box=ssmqBlue] (ci) at (6.65, 1.2) {\textbf{3. $W$ Parallel CI}\\ \textbf{Workers + Mainline}\\ Snapshot check \&\\ persistent-conflict rebase};
+
+% Decision: Pass or Fail
+\node[dec] (pass) at (9.75, 1.2) {CI Pass?};
+
+% Green Merge
+\node[smallbox=ssmqTeal] (merge) at (12.85, 1.95) {\textbf{Commit to Mainline}\\ Update $\mathrm{Beta}(\alpha,\beta)$\\ (0 Cumulative Escapes)};
+
+% Stage 4: Two-Regime Flaky Gate
+\node[box=ssmqPurple] (flaky) at (9.75, -0.75) {\textbf{4. Two-Regime}\\ \textbf{Beta-Binomial Gate}\\ $|B|{=}1$: $\tau{=}0.25$\\ $|B|{>}1$: $\tau{=}0.50$};
+
+% Stage 5: 1-Step AST/Traceback Blame
+\node[box=ssmqOrange] (blame) at (5.3, -0.75) {\textbf{5. 1-Step AST/Stack}\\ \textbf{Causal Blame Ranker}\\ Evict $s_1 \to$ run $B{\setminus}\{s_1\}$\\ \& $\{s_1\}$ in parallel};
+
+% Fallback Bisection / Reject
+\node[smallbox=ssmqRed] (bisect) at (0.8, -0.75) {\textbf{Bisection Fallback /}\\ \textbf{Isolated Reject}\\ Priority split on $s_2$\\ or reject failing $\{s_1\}$};
+
+% Arrows
+\draw[arr] (graph) -- (queue);
+\draw[arr] (queue) -- (ci);
+\draw[arr] (ci) -- (pass);
+\draw[arr] (pass.north east) |- node[lbl, pos=0.65, above] {Pass \& Clean Mainline} (merge.west);
+\draw[arr] (pass.south) -- node[lbl, right] {Fail} (flaky.north);
+\draw[arr] (flaky.west) -- node[lbl, above] {Deterministic} (blame.east);
+\draw[arr] (blame.west) -- node[lbl, above] {Miss / $|B|{=}1$} (bisect.east);
+
+% Feedback loops
+\draw[arr, dashed, draw=ssmqPurple!80!black] (flaky.north west) -- node[lbl, pos=0.5, left, text=ssmqPurple!80!black] {Transient Retry} (ci.south east);
+\draw[arr, dashed, draw=ssmqOrange!85!black] (blame.north) -- node[lbl, right, text=ssmqOrange!85!black] {Re-dispatch $B{\setminus}\{s_1\}, \{s_1\}$} (ci.south west);
+\draw[arr, dotted, draw=ssmqRed!80!black] (bisect.north) -- ++(0,0.45) -| node[lbl, pos=0.25, above, text=ssmqRed!80!black] {Sub-batches} (queue.south);
+
+\end{tikzpicture}
+\caption{End-to-end architecture of \textbf{SSMQ (Semantic Speculative Merge Queue)}. Historical warm-up traces construct a leak-free dependency graph $\hat{G}$ that guides risk-stratified disjoint batching. On CI failure, SSMQ applies a two-regime Beta-Binomial flaky gate before dispatching deterministic AST/traceback 1-step causal blame (evicting suspect $s_1$ while concurrently verifying $B\setminus\{s_1\}$ and $\{s_1\}$), with guaranteed fallback to binary bisection and cumulative mainline verification.}
+\label{fig:architecture}
+\end{figure*}

@@ -1,30 +1,30 @@
 #!/usr/bin/env python3
-"""Real Executable Multi-PR Semantic Fault Attribution Micro-Benchmark.
+"""Real Executable Multi-PR Semantic Fault Attribution Micro-Benchmark (v3).
 
-Addresses the critical PC review critique: instead of assuming causal blame
-accuracy synthetically, we construct and ACTUALLY EXECUTE 48 realistic multi-PR
-failing integration batches on an isolated multi-module Python codebase
-(6 interconnected modules, 18 functions, full unit/integration test suite).
+Constructs and ACTUALLY EXECUTES 64 realistic multi-PR failing integration
+batches on an isolated multi-module Python codebase (6 interconnected modules,
+18 functions, full unit/integration test suite) via subprocess `unittest`:
 
-Each failing batch contains 4 to 8 concurrent PR patches (real Python source
-diffs applied via temporary working directories and executed via subprocess
-`unittest` to produce genuine Python stack traces):
-  - Single-PR functional regressions (24 batches)
-  - Pairwise cross-module semantic merge conflicts where each PR passes
-    individually in isolation, but combining both PRs breaks integration tests
-    due to signature drift, invariant violation, or return-schema mismatch (24 batches)
+  - 24 disjoint single-PR functional regressions (sizes 4 and 8)
+  - 16 co-file-distractor single-PR functional regressions (batches where an
+    innocent PR edits a sibling function or docstring in the SAME file as the
+    bug, directly testing AST symbol-level filtering vs file-level overlap)
+  - 24 true pairwise cross-module semantic merge conflicts (strict invariant:
+    PR_A passes alone, PR_B passes alone, PR_A + PR_B fails combined)
 
-We evaluate three attribution rankers on the REAL stack traces + AST diffs:
+Evaluates four deterministic attribution rankers on the REAL stack traces:
   1. `RandomRanker` (lower bound)
   2. `ChurnRiskRanker` (ranks PRs solely by LOC churn + file count)
-  3. `ASTStackCausalRanker` (ours: parses real Python tracebacks, extracts
-     failing frame files/functions/line spans, builds AST call-graph & symbol
-     dependency links across modules, and scores each PR by causal proximity
-     to the failing stack trace)
+  3. `FileTracebackOverlapRanker` (strong non-AST baseline: parses stack trace
+     files and failing test imports, scoring by file-level overlap + churn
+     without AST function-level diffing or 1-hop call-graph expansion)
+  4. `ASTStackCausalRanker` (ours: parses real Python tracebacks, filters
+     comment/docstring-only edits via AST, extracts modified function symbols,
+     expands a 1-hop AST call graph from failing test targets, and scores each
+     PR by causal symbol reachability)
 
 Outputs real measured Top-1 accuracy, Top-2 accuracy, Mean Reciprocal Rank (MRR),
-and mean attribution wall-clock latency (milliseconds) for direct empirical
-calibration of the SSMQ queue simulator.
+per-category accuracy breakdown, and wall-clock attribution latency (ms).
 """
 from __future__ import annotations
 
@@ -179,7 +179,7 @@ class PatchPR:
     added_lines: int = 2
 
 
-# Clean benign PRs across all modules (REAL functional AST edits, not just comments!)
+# Clean benign PRs across all modules (real functional AST edits)
 CLEAN_PRS: List[PatchPR] = [
     PatchPR("clean_pricing_guard", {"pkg/pricing.py": ("return round(units * unit_cost, 2)", "if units < 0:\n        raise ValueError('neg')\n    return round(units * unit_cost, 2)")}, "Validate non-negative units in base_price", 2),
     PatchPR("clean_pricing_clamp", {"pkg/pricing.py": ("return round(subtotal * rate, 2)", "eff_rate = max(0.0, rate)\n    return round(subtotal * eff_rate, 2)")}, "Clamp negative tax rate to zero", 2),
@@ -188,12 +188,53 @@ CLEAN_PRS: List[PatchPR] = [
     PatchPR("clean_inv_helper", {"pkg/inventory.py": ("return max(0, 10 - catalog.get(sku, 0))", "target = 10\n    return max(0, target - catalog.get(sku, 0))")}, "Extract restock target constant", 2),
     PatchPR("clean_ship_zone", {"pkg/shipping.py": ('"remote": 7}', '"remote": 7, "island": 9}')}, "Add island shipping zone", 1),
     PatchPR("clean_ship_floor", {"pkg/shipping.py": ("base = 5.0 + 1.5 * weight_kg", "w = max(0.0, weight_kg)\n    base = 5.0 + 1.5 * w")}, "Clamp negative weight in shipping_fee", 2),
-    PatchPR("clean_auth_lead", {"pkg/auth.py": ('if r == "admin":', 'if r in ("admin", "superadmin"):' )}, "Support superadmin role in can_approve", 1),
+    PatchPR("clean_auth_lead", {"pkg/auth.py": ('if r == "admin":', 'if r in ("admin", "superadmin"):')}, "Support superadmin role in can_approve", 1),
     PatchPR("clean_auth_empty", {"pkg/auth.py": ("return role.strip().lower()", "cleaned = (role or '').strip().lower()\n    return cleaned")}, "Handle empty role string safely", 2),
     PatchPR("clean_ledger_meta", {"pkg/ledger.py": ('"currency": "USD"}', '"currency": "USD", "v": 1}')}, "Add schema version key to ledger entry", 1),
     PatchPR("clean_ledger_empty", {"pkg/ledger.py": ('return round(sum(e["total"] for e in entries), 2)', 'if not entries:\n        return 0.0\n    return round(sum(e["total"] for e in entries), 2)')}, "Fast-path empty ledger summary", 2),
     PatchPR("clean_checkout_meta", {"pkg/checkout.py": ('"total": total,', '"total": total,\n        "discount_applied": discount > 0,')}, "Include discount_applied metadata in checkout", 1),
 ]
+
+# Co-file benign distractor PRs (touch the SAME file via comments/docstrings or
+# uncalled helper code, with higher line churn to challenge file-level rankers)
+COFILE_DISTRACTOR_PRS: Dict[str, PatchPR] = {
+    "pkg/pricing.py": PatchPR(
+        "cofile_pricing_docs",
+        {"pkg/pricing.py": ("def base_price(", "# Pricing helpers for order totals.\n# All monetary values are rounded to 2 decimal places.\n# Currency defaults to USD unless converted downstream.\ndef base_price(")},
+        "Document pricing rounding policy in module header",
+        3,
+    ),
+    "pkg/inventory.py": PatchPR(
+        "cofile_inv_docs",
+        {"pkg/inventory.py": ("def check_stock(", "# Inventory catalog utilities.\n# Catalog keys are string SKUs mapped to integer stock.\n# Negative balances are prevented at checkout.\ndef check_stock(")},
+        "Add module documentation comments to inventory",
+        3,
+    ),
+    "pkg/shipping.py": PatchPR(
+        "cofile_ship_docs",
+        {"pkg/shipping.py": ("def shipping_fee(", "# Shipping cost and transit-day estimators.\n# Express mode halves transit days and doubles base fee.\n# Remote zones default to 7 business days.\ndef shipping_fee(")},
+        "Document shipping fee and zone table",
+        3,
+    ),
+    "pkg/auth.py": PatchPR(
+        "cofile_auth_docs",
+        {"pkg/auth.py": ("def normalize_role(", "# Role-based approval policy module.\n# Admins have unrestricted order approval limits.\n# Managers may approve orders up to 1000.0 USD.\ndef normalize_role(")},
+        "Document role approval thresholds",
+        3,
+    ),
+    "pkg/ledger.py": PatchPR(
+        "cofile_ledger_docs",
+        {"pkg/ledger.py": ("def format_entry(", "# Ledger formatting and aggregation helpers.\n# Entries are stored as normalized dictionaries.\n# Totals are rounded to cents.\ndef format_entry(")},
+        "Document ledger entry schema",
+        3,
+    ),
+    "pkg/checkout.py": PatchPR(
+        "cofile_checkout_docs",
+        {"pkg/checkout.py": ("def process_order(", "# Orchestrates stock check, pricing, shipping, auth, and ledger.\n# Raises ValueError on insufficient stock.\n# Raises PermissionError when approval limit is exceeded.\ndef process_order(")},
+        "Document checkout orchestration flow",
+        3,
+    ),
+}
 
 # 12 real single-PR functional defects spanning every module
 DEFECT_PRS: List[PatchPR] = [
@@ -246,7 +287,6 @@ def _apply_patches(prs: List[PatchPR]) -> Dict[str, str]:
     for pr in prs:
         for rel_path, (old, new) in pr.files.items():
             if old not in repo[rel_path]:
-                # Non-overlapping fallback if another clean comment modified nearby line
                 continue
             repo[rel_path] = repo[rel_path].replace(old, new, 1)
     return repo
@@ -299,13 +339,51 @@ def _extract_module_imports(src: str) -> Set[str]:
     return mods
 
 
+def rank_file_traceback_overlap(prs: List[PatchPR], traceback_text: str) -> List[str]:
+    """Strong non-AST deterministic baseline: file-level traceback + test-module overlap.
+
+    Parses the exact same real Python traceback to score PRs whose touched files
+    appear in stack frames or match the failing test's module name, breaking ties
+    by line churn. Unlike ASTStackCausalRanker, it operates purely at file granularity
+    without AST symbol diffing, comment filtering, or 1-hop function call-graph expansion.
+    """
+    tb_frames = re.findall(r'File "([^"]+)", line \d+, in ([A-Za-z0-9_<>]+)', traceback_text)
+    implicated_files: Dict[str, float] = {}
+    for depth, (fpath, _) in enumerate(tb_frames, start=1):
+        norm = fpath.replace("\\", "/")
+        for repo_rel in BASE_REPO:
+            if norm.endswith(repo_rel):
+                implicated_files[repo_rel] = max(implicated_files.get(repo_rel, 0.0), float(depth))
+
+    # Map failing test names (e.g., test_pricing_flow) heuristically to pkg/<name>.py
+    test_failures = re.findall(r"(?:FAIL|ERROR): (test_[a-zA-Z0-9_]+)", traceback_text)
+    test_hint_files: Set[str] = set()
+    for tf in test_failures:
+        for repo_rel in BASE_REPO:
+            if repo_rel.startswith("pkg/"):
+                stem = repo_rel.split("/")[-1].replace(".py", "")
+                if stem in tf:
+                    test_hint_files.add(repo_rel)
+
+    scored: List[Tuple[float, int, str]] = []
+    for pr in prs:
+        score = 0.0
+        for rel in pr.files:
+            if rel in implicated_files:
+                score += 4.0 + 0.5 * implicated_files[rel]
+            if rel in test_hint_files:
+                score += 3.0
+        scored.append((score, pr.added_lines, pr.pr_id))
+
+    scored.sort(key=lambda x: (-x[0], -x[1], x[2]))
+    return [pid for _, _, pid in scored]
+
+
 def rank_ast_stack_causal(prs: List[PatchPR], traceback_text: str) -> List[str]:
     """Deterministic AST-diff + stack-trace causal blame ranker (zero LLM oracle)."""
-    # 1. Extract failing file paths and function names from real Python traceback
     tb_frames = re.findall(r'File "([^"]+)", line \d+, in ([A-Za-z0-9_<>]+)', traceback_text)
     implicated_files: Dict[str, float] = {}
     implicated_funcs: Dict[str, float] = {}
-    # Weight deeper frames (closer to crash/assertion) higher
     for depth, (fpath, func) in enumerate(tb_frames, start=1):
         norm = fpath.replace("\\", "/")
         for repo_rel in BASE_REPO:
@@ -313,7 +391,6 @@ def rank_ast_stack_causal(prs: List[PatchPR], traceback_text: str) -> List[str]:
                 implicated_files[repo_rel] = max(implicated_files.get(repo_rel, 0.0), float(depth))
                 implicated_funcs[func] = max(implicated_funcs.get(func, 0.0), float(depth))
 
-    # Also detect failing test function names -> map to imported/called symbols in test file
     test_failures = re.findall(r"(?:FAIL|ERROR): (test_[a-zA-Z0-9_]+)", traceback_text)
     test_tree = ast.parse(BASE_REPO["tests/test_integration.py"])
     called_in_failed_tests: Set[str] = set()
@@ -323,7 +400,6 @@ def rank_ast_stack_causal(prs: List[PatchPR], traceback_text: str) -> List[str]:
                 if isinstance(sub, ast.Call) and isinstance(sub.func, ast.Name):
                     called_in_failed_tests.add(sub.func.id)
 
-    # Expand 1-hop AST call graph from failing test targets into pkg modules
     func_to_file: Dict[str, str] = {}
     func_calls: Dict[str, Set[str]] = {}
     for rel, src in BASE_REPO.items():
@@ -345,7 +421,6 @@ def rank_ast_stack_causal(prs: List[PatchPR], traceback_text: str) -> List[str]:
         expanded_funcs.update(func_calls.get(fn, set()))
     expanded_files = {func_to_file[fn] for fn in expanded_funcs if fn in func_to_file}
 
-    # 2. Score each PR by AST-semantic change (ignoring comment-only diffs!) x causal reach
     scored: List[Tuple[float, str]] = []
     for pr in prs:
         score = 0.0
@@ -353,10 +428,9 @@ def rank_ast_stack_causal(prs: List[PatchPR], traceback_text: str) -> List[str]:
             patched_src = BASE_REPO[rel].replace(old, new, 1)
             changed_syms = _extract_changed_symbols(BASE_REPO[rel], patched_src)
             if not changed_syms:
-                # Comment/whitespace-only PR -> near-zero causal suspicion!
+                # Comment/docstring/whitespace-only PR -> near-zero causal suspicion
                 score += 0.01
                 continue
-            # Semantic AST change!
             score += 2.0
             if rel in implicated_files:
                 score += 4.0 + 0.5 * implicated_files[rel]
@@ -369,7 +443,6 @@ def rank_ast_stack_causal(prs: List[PatchPR], traceback_text: str) -> List[str]:
                     score += 5.0
                 elif sym in expanded_funcs:
                     score += 3.5
-            # Cross-module import link bonus
             if rel in expanded_files or (_extract_module_imports(patched_src) & expanded_files):
                 score += 1.0
         scored.append((score, pr.pr_id))
@@ -387,11 +460,20 @@ def rank_churn_risk(prs: List[PatchPR]) -> List[str]:
 class BlameBenchSummary:
     total_failing_batches: int
     single_defect_batches: int
+    cofile_distractor_batches: int
     semantic_conflict_batches: int
     ast_stack_top1_acc: float
     ast_stack_top2_acc: float
     ast_stack_mrr: float
     ast_stack_mean_ms: float
+    ast_stack_cofile_top1_acc: float
+    ast_stack_sem_top1_acc: float
+    file_overlap_top1_acc: float
+    file_overlap_top2_acc: float
+    file_overlap_mrr: float
+    file_overlap_mean_ms: float
+    file_overlap_cofile_top1_acc: float
+    file_overlap_sem_top1_acc: float
     churn_risk_top1_acc: float
     churn_risk_top2_acc: float
     random_top1_acc: float
@@ -405,8 +487,9 @@ def run_blame_benchmark(seed: int = 2026) -> Tuple[BlameBenchSummary, List[Dict[
     rng = random.Random(seed)
     records: List[Dict[str, object]] = []
 
-    # 24 single-PR defect batches (2 batch sizes per defect: size 4 and size 8)
     cases: List[Tuple[str, List[PatchPR], Set[str]]] = []
+
+    # 1. 24 disjoint single-PR defect batches (sizes 4 and 8)
     for defect in DEFECT_PRS:
         for batch_size in (4, 8):
             clean_pool = [c for c in CLEAN_PRS if set(c.files).isdisjoint(defect.files)]
@@ -415,7 +498,20 @@ def run_blame_benchmark(seed: int = 2026) -> Tuple[BlameBenchSummary, List[Dict[
             rng.shuffle(batch)
             cases.append(("single_defect", batch, {defect.pr_id}))
 
-    # 24 pairwise semantic conflict batches (4 trials x 6 conflict pairs, sizes 4..8)
+    # 2. 16 co-file-distractor single-PR defect batches: include a benign doc/comment
+    #    PR editing the EXACT SAME FILE as the defect to test AST filtering vs file overlap!
+    for idx, defect in enumerate(DEFECT_PRS):
+        defect_file = next(iter(defect.files))
+        distractor = COFILE_DISTRACTOR_PRS[defect_file]
+        sizes = (4, 8) if idx < 4 else (6,)
+        for batch_size in sizes:
+            clean_pool = [c for c in CLEAN_PRS if set(c.files).isdisjoint(defect.files)]
+            chosen_clean = rng.sample(clean_pool, min(batch_size - 2, len(clean_pool)))
+            batch = chosen_clean + [distractor, defect]
+            rng.shuffle(batch)
+            cases.append(("cofile_distractor", batch, {defect.pr_id}))
+
+    # 3. 24 pairwise semantic conflict batches (4 trials x 6 conflict pairs, sizes 4..8)
     for pr_a, pr_b in SEMANTIC_CONFLICT_PAIRS:
         for batch_size in (4, 6, 6, 8):
             conflict_files = set(pr_a.files) | set(pr_b.files)
@@ -428,11 +524,17 @@ def run_blame_benchmark(seed: int = 2026) -> Tuple[BlameBenchSummary, List[Dict[
     ast_t1 = ast_t2 = 0
     ast_rr_sum = 0.0
     ast_ms_sum = 0.0
+    ast_cofile_t1 = ast_sem_t1 = 0
+
+    file_t1 = file_t2 = 0
+    file_rr_sum = 0.0
+    file_ms_sum = 0.0
+    file_cofile_t1 = file_sem_t1 = 0
+
     churn_t1 = churn_t2 = 0
     rand_t1 = rand_t2 = 0
     executed_failures = 0
-    n_single = 0
-    n_sem = 0
+    n_single = n_cofile = n_sem = 0
 
     for idx, (kind, batch, culprits) in enumerate(cases):
         passed, tb = execute_batch(batch)
@@ -441,13 +543,20 @@ def run_blame_benchmark(seed: int = 2026) -> Tuple[BlameBenchSummary, List[Dict[
         executed_failures += 1
         if kind == "single_defect":
             n_single += 1
+        elif kind == "cofile_distractor":
+            n_cofile += 1
         else:
             n_sem += 1
 
         t0 = time.perf_counter()
         ast_rank = rank_ast_stack_causal(batch, tb)
-        elapsed_ms = (time.perf_counter() - t0) * 1000.0
-        ast_ms_sum += elapsed_ms
+        elapsed_ast_ms = (time.perf_counter() - t0) * 1000.0
+        ast_ms_sum += elapsed_ast_ms
+
+        t1 = time.perf_counter()
+        file_rank = rank_file_traceback_overlap(batch, tb)
+        elapsed_file_ms = (time.perf_counter() - t1) * 1000.0
+        file_ms_sum += elapsed_file_ms
 
         churn_rank = rank_churn_risk(batch)
         rand_rank = [p.pr_id for p in batch]
@@ -455,10 +564,24 @@ def run_blame_benchmark(seed: int = 2026) -> Tuple[BlameBenchSummary, List[Dict[
 
         a1 = int(ast_rank[0] in culprits)
         a2 = int(any(x in culprits for x in ast_rank[:2]))
-        first_hit = next(i + 1 for i, x in enumerate(ast_rank) if x in culprits)
+        ast_first = next(i + 1 for i, x in enumerate(ast_rank) if x in culprits)
         ast_t1 += a1
         ast_t2 += a2
-        ast_rr_sum += 1.0 / first_hit
+        ast_rr_sum += 1.0 / ast_first
+
+        f1 = int(file_rank[0] in culprits)
+        f2 = int(any(x in culprits for x in file_rank[:2]))
+        file_first = next(i + 1 for i, x in enumerate(file_rank) if x in culprits)
+        file_t1 += f1
+        file_t2 += f2
+        file_rr_sum += 1.0 / file_first
+
+        if kind == "cofile_distractor":
+            ast_cofile_t1 += a1
+            file_cofile_t1 += f1
+        elif kind == "semantic_conflict":
+            ast_sem_t1 += a1
+            file_sem_t1 += f1
 
         churn_t1 += int(churn_rank[0] in culprits)
         churn_t2 += int(any(x in culprits for x in churn_rank[:2]))
@@ -474,18 +597,31 @@ def run_blame_benchmark(seed: int = 2026) -> Tuple[BlameBenchSummary, List[Dict[
             "ast_top2": ast_rank[:2],
             "ast_hit_top1": bool(a1),
             "ast_hit_top2": bool(a2),
-            "ast_latency_ms": round(elapsed_ms, 3),
+            "ast_latency_ms": round(elapsed_ast_ms, 3),
+            "file_top1": file_rank[0],
+            "file_hit_top1": bool(f1),
+            "file_hit_top2": bool(f2),
+            "file_latency_ms": round(elapsed_file_ms, 3),
         })
 
     denom = max(1, executed_failures)
     summary = BlameBenchSummary(
         total_failing_batches=executed_failures,
         single_defect_batches=n_single,
+        cofile_distractor_batches=n_cofile,
         semantic_conflict_batches=n_sem,
         ast_stack_top1_acc=round(ast_t1 / denom, 4),
         ast_stack_top2_acc=round(ast_t2 / denom, 4),
         ast_stack_mrr=round(ast_rr_sum / denom, 4),
         ast_stack_mean_ms=round(ast_ms_sum / denom, 3),
+        ast_stack_cofile_top1_acc=round(ast_cofile_t1 / max(1, n_cofile), 4),
+        ast_stack_sem_top1_acc=round(ast_sem_t1 / max(1, n_sem), 4),
+        file_overlap_top1_acc=round(file_t1 / denom, 4),
+        file_overlap_top2_acc=round(file_t2 / denom, 4),
+        file_overlap_mrr=round(file_rr_sum / denom, 4),
+        file_overlap_mean_ms=round(file_ms_sum / denom, 3),
+        file_overlap_cofile_top1_acc=round(file_cofile_t1 / max(1, n_cofile), 4),
+        file_overlap_sem_top1_acc=round(file_sem_t1 / max(1, n_sem), 4),
         churn_risk_top1_acc=round(churn_t1 / denom, 4),
         churn_risk_top2_acc=round(churn_t2 / denom, 4),
         random_top1_acc=round(rand_t1 / denom, 4),

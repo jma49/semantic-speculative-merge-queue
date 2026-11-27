@@ -1,17 +1,21 @@
 #!/usr/bin/env python3
-"""Frozen Sealed Experiment Harness v2 for SSMQ (Post-Gate-3 Approval).
+"""Frozen Sealed Experiment Harness v3 for SSMQ (ICSE / FSE / EuroSys Camera-Ready Polish).
 
-Preserves prior v1 sealed runs untouched and writes 8 new immutable v2 suites
-under `runs/v2_*/`, resolving every simulator/calibration critique from Codex's
-v1 PC review:
-  - v2_exp0_blame_microbench : Real executed 48-batch Python AST+Traceback blame benchmark
-  - v2_exp1_aa_noise         : Disjoint 20-seed Block A vs B noise calibration
-  - v2_exp2_main_bench       : Main benchmark (6 strategies x 3 repos x 20 seeds, 80% graph recall)
-  - v2_exp3_velocity         : Velocity surge sweep (1x, 3x, 5x, 10x)
-  - v2_exp4_ablation         : Full component ablation (including false-rejection rate)
-  - v2_exp5_graph_recall     : Non-circularity proof (graph_recall 0.40..1.00 + no-conflict control)
-  - v2_exp6_flaky_sweep      : Flaky sweep (0%..10%) INCLUDING SSMQ-NoFlaky for Pareto analysis
-  - v2_exp7_blame_sweep      : Blame Top-1 accuracy sweep (0.50..0.9167) matched vs SSMQ-NoBlame
+Preserves prior v1/v2 sealed runs untouched and writes 9 immutable v3 suites
+under `runs/v3_*/`:
+  - v3_exp0_blame_microbench : 64 real executed Python unittest batches
+                               (24 disjoint regressions + 16 co-file distractors
+                               + 24 true pairwise semantic conflicts) evaluating
+                               Random, ChurnRisk, FileTracebackOverlap, and ASTStackCausal
+  - v3_exp1_aa_noise         : Disjoint 20-seed Block A vs B noise calibration
+  - v3_exp2_main_bench       : Main benchmark (6 strategies x 3 repos x 20 seeds, 80% graph recall)
+  - v3_exp3_velocity         : Velocity surge sweep (1x, 3x, 5x, 10x)
+  - v3_exp4_ablation         : Full component ablation (including false-rejection rate)
+  - v3_exp5_graph_recall     : Non-circularity proof (graph_recall 0.40..1.00 + no-conflict control)
+  - v3_exp6_flaky_sweep      : Flaky Pareto sweep (0%, 2%, 5%, 10%, 15%) incl. SSMQ-NoFlaky
+  - v3_exp7_blame_sweep      : Blame Top-1 accuracy sweep (0.50..measured_top1) vs SSMQ-NoBlame
+  - v3_exp8_blame_regime     : Failure-density & large-batch regime sweep characterizing when
+                               1-step causal blame yields substantial vs marginal end-to-end gains
 """
 from __future__ import annotations
 
@@ -109,7 +113,7 @@ def seal_run(
     ]
     rec_count = len(payload) if isinstance(payload, list) else len(payload.get("records", []))
     manifest = {
-        "schema_version": "2.0",
+        "schema_version": "3.0",
         "run_id": run_id,
         "experiment": experiment,
         "timestamp_utc": dt.datetime.now(dt.timezone.utc).isoformat(),
@@ -130,18 +134,17 @@ def seal_run(
 
 
 def main() -> None:
-    # EXP-0: Real executed AST/stack-trace causal blame micro-benchmark (calibrates simulator!)
+    # EXP-0: 64-batch real executed AST/stack-trace causal blame micro-benchmark
     blame_summary, blame_records = run_blame_benchmark(seed=2026)
     seal_run(
-        "v2_exp0_blame_microbench",
-        "v2_exp0_blame_microbench",
+        "v3_exp0_blame_microbench",
+        "v3_exp0_blame_microbench",
         [2026],
         {"summary": blame_summary.to_dict(), "records": blame_records},
         {"type": "executable_python_unittest_microbench", "batches": blame_summary.total_failing_batches},
     )
 
     loaded = {name: load_trace(path) for name, path in TRACES.items()}
-    # Calibrate simulator causal blame strictly from the real measured micro-benchmark!
     measured_top1 = blame_summary.ast_stack_top1_acc
     measured_top2 = min(0.99, blame_summary.ast_stack_top2_acc)
     measured_overhead_min = round(blame_summary.ast_stack_mean_ms / 60000.0, 6)
@@ -174,8 +177,8 @@ def main() -> None:
                 m["block"] = block_name
                 aa_rows.append(m)
     seal_run(
-        "v2_exp1_aa_noise",
-        "v2_exp1_aa_noise",
+        "v3_exp1_aa_noise",
+        "v3_exp1_aa_noise",
         SEEDS_MAIN + SEEDS_AA_B,
         aa_rows,
         {"graph_recall": 0.80, "flaky_rate": 0.05, "persistent_conflict_share": 0.03},
@@ -190,8 +193,8 @@ def main() -> None:
                 m["repo"] = repo_name
                 main_rows.append(m)
     seal_run(
-        "v2_exp2_main_bench",
-        "v2_exp2_main_bench",
+        "v3_exp2_main_bench",
+        "v3_exp2_main_bench",
         SEEDS_MAIN,
         main_rows,
         {
@@ -217,8 +220,8 @@ def main() -> None:
                     m["velocity_multiplier"] = vel
                     vel_rows.append(m)
     seal_run(
-        "v2_exp3_velocity",
-        "v2_exp3_velocity",
+        "v3_exp3_velocity",
+        "v3_exp3_velocity",
         SEEDS_MAIN,
         vel_rows,
         {"velocities": velocities, "strategies": vel_strats},
@@ -233,8 +236,8 @@ def main() -> None:
                 m["repo"] = repo_name
                 abl_rows.append(m)
     seal_run(
-        "v2_exp4_ablation",
-        "v2_exp4_ablation",
+        "v3_exp4_ablation",
+        "v3_exp4_ablation",
         SEEDS_MAIN,
         abl_rows,
         {"strategies": ABLATION_STRATEGIES},
@@ -262,16 +265,16 @@ def main() -> None:
                     m["semantic_conflict_prob"] = cprob
                     rec_rows.append(m)
     seal_run(
-        "v2_exp5_graph_recall",
-        "v2_exp5_graph_recall",
+        "v3_exp5_graph_recall",
+        "v3_exp5_graph_recall",
         SEEDS_MAIN,
         rec_rows,
         {"regimes": [x[0] for x in rec_settings], "strategies": rec_strats},
     )
 
-    # EXP-6: Flaky Sweep (0%..10%) INCLUDING SSMQ-NoFlaky to measure Latency vs False-Rejection Pareto
+    # EXP-6: Flaky Pareto Sweep (0%, 2%, 5%, 10%, 15%) incl. SSMQ-NoFlaky
     flaky_rows: List[Dict[str, Any]] = []
-    flaky_rates = [0.0, 0.02, 0.05, 0.10]
+    flaky_rates = [0.0, 0.02, 0.05, 0.10, 0.15]
     flaky_strats = ["StaticBatchBisect", "SpeculativeLinear", "UberSubmitQueue", "FlakeAwareBatch", "SSMQ-NoFlaky", "SSMQ"]
     for fr in flaky_rates:
         cfg = SimConfig(**{**base_cfg.__dict__, "flaky_rate": fr})
@@ -283,8 +286,8 @@ def main() -> None:
                     m["flaky_rate"] = fr
                     flaky_rows.append(m)
     seal_run(
-        "v2_exp6_flaky_sweep",
-        "v2_exp6_flaky_sweep",
+        "v3_exp6_flaky_sweep",
+        "v3_exp6_flaky_sweep",
         SEEDS_MAIN,
         flaky_rows,
         {"flaky_rates": flaky_rates, "strategies": flaky_strats},
@@ -294,7 +297,7 @@ def main() -> None:
     blame_rows: List[Dict[str, Any]] = []
     blame_accs = [0.50, 0.65, 0.75, 0.85, measured_top1]
     for acc in blame_accs:
-        top2 = min(0.99, acc + 0.08)
+        top2 = min(0.99, acc + 0.06)
         cfg = SimConfig(**{**base_cfg.__dict__, "blame_top1_acc": acc, "blame_top2_acc": top2})
         for repo_name, (g, prs) in loaded.items():
             for strat in ("SSMQ", "SSMQ-NoBlame"):
@@ -304,11 +307,45 @@ def main() -> None:
                     m["blame_top1_acc"] = round(acc, 4)
                     blame_rows.append(m)
     seal_run(
-        "v2_exp7_blame_sweep",
-        "v2_exp7_blame_sweep",
+        "v3_exp7_blame_sweep",
+        "v3_exp7_blame_sweep",
         SEEDS_MAIN,
         blame_rows,
         {"blame_top1_accs": [round(a, 4) for a in blame_accs]},
+    )
+
+    # EXP-8: Failure-Density & Large-Batch Regime Sweep (characterizing where 1-step blame dominates)
+    regime_rows: List[Dict[str, Any]] = []
+    regimes = [
+        ("nominal_8pct_k8", 0.08, 8, 0.80),
+        ("elevated_15pct_k8", 0.15, 8, 0.80),
+        ("highdef_22pct_k12", 0.22, 12, 0.60),
+        ("lowrec_15pct_k12", 0.15, 12, 0.40),
+    ]
+    regime_strats = ["StaticBatchBisect", "SSMQ-NoBlame", "SSMQ"]
+    for label, drate, kmax, grecall in regimes:
+        cfg = SimConfig(**{
+            **base_cfg.__dict__,
+            "base_defect_rate": drate,
+            "max_batch_size": kmax,
+            "graph_recall": grecall,
+        })
+        for repo_name, (g, prs) in loaded.items():
+            for strat in regime_strats:
+                for s in SEEDS_MAIN:
+                    m = simulate_queue(g, prs, strat, cfg, s).to_dict()
+                    m["repo"] = repo_name
+                    m["regime"] = label
+                    m["base_defect_rate"] = drate
+                    m["max_batch_size"] = kmax
+                    m["graph_recall"] = grecall
+                    regime_rows.append(m)
+    seal_run(
+        "v3_exp8_blame_regime",
+        "v3_exp8_blame_regime",
+        SEEDS_MAIN,
+        regime_rows,
+        {"regimes": [r[0] for r in regimes], "strategies": regime_strats},
     )
 
 
