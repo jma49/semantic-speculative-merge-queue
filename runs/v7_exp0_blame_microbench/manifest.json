@@ -1,0 +1,25 @@
+{
+  "schema_version": "7.0",
+  "run_id": "v7_exp0_blame_microbench",
+  "experiment": "v7_exp0_blame_microbench",
+  "timestamp_utc": "2026-11-27T11:17:21.437032+00:00",
+  "git_commit": "d35c3af44d03d052291b3118babbc7bff95c06ea",
+  "harness_sha256": "64eba7fda54239c416c9069f43c96db6f575c6123f9efc2d7210ba1f76f43dd1",
+  "dataset_sha256": "98e29bc9172b3bfee8219cc5955250037b0c2b23ccdec561f82330ce1f1ea8ea",
+  "input_sha256": {
+    "eval/git_v7.py": "214bd106507db502ae517040e95b8eb929ca2370c07dc64776d7ab2e2d389751",
+    "src/ssmq/blame_bench.py": "98e29bc9172b3bfee8219cc5955250037b0c2b23ccdec561f82330ce1f1ea8ea",
+    "src/ssmq/git_replay.py": "41f7510d0dfe529f7674dd995bcd7d481b3bca65317b29dce19f112974d53037"
+  },
+  "command": "python3 eval/git_v7.py blame",
+  "seeds": [
+    2026
+  ],
+  "record_count": 86,
+  "metrics_file": "metrics.json",
+  "metrics_sha256": "d288cfafbf5db3168f0d5b42bda60c43a2f5bab585e7d04db5c8f9f38941e618",
+  "artifact_sha256": "d288cfafbf5db3168f0d5b42bda60c43a2f5bab585e7d04db5c8f9f38941e618",
+  "python_version": "3.9.6",
+  "platform": "macOS-27.2.1-arm64-arm-64bit",
+  "git_version": "git version 2.56.1"
+}

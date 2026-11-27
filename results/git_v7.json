@@ -1,0 +1,221 @@
+{
+  "git_factorial": {
+    "FIFO+Bisect": {
+      "candidate_unittest_runs": 246,
+      "total_unittest_runs": 266,
+      "total_decompositions": 96,
+      "blame_invocations": 0,
+      "blame_one_step_hits": 0,
+      "total_git_merges": 512,
+      "git_merge_conflicts": 6,
+      "merged_prs": 180,
+      "real_escaped_defects": 0,
+      "by_polarity": {
+        "asc": {
+          "total_unittest_runs": 133,
+          "total_decompositions": 48,
+          "blame_one_step_hits": 0,
+          "blame_invocations": 0
+        },
+        "desc": {
+          "total_unittest_runs": 133,
+          "total_decompositions": 48,
+          "blame_one_step_hits": 0,
+          "blame_invocations": 0
+        }
+      }
+    },
+    "FIFO+FileTrivia": {
+      "candidate_unittest_runs": 216,
+      "total_unittest_runs": 236,
+      "total_decompositions": 81,
+      "blame_invocations": 38,
+      "blame_one_step_hits": 19,
+      "total_git_merges": 501,
+      "git_merge_conflicts": 6,
+      "merged_prs": 180,
+      "real_escaped_defects": 0,
+      "by_polarity": {
+        "asc": {
+          "total_unittest_runs": 111,
+          "total_decompositions": 37,
+          "blame_one_step_hits": 11,
+          "blame_invocations": 19
+        },
+        "desc": {
+          "total_unittest_runs": 125,
+          "total_decompositions": 44,
+          "blame_one_step_hits": 8,
+          "blame_invocations": 19
+        }
+      }
+    },
+    "FIFO+ASTStack": {
+      "candidate_unittest_runs": 208,
+      "total_unittest_runs": 228,
+      "total_decompositions": 77,
+      "blame_invocations": 38,
+      "blame_one_step_hits": 22,
+      "total_git_merges": 490,
+      "git_merge_conflicts": 6,
+      "merged_prs": 180,
+      "real_escaped_defects": 0,
+      "by_polarity": {
+        "asc": {
+          "total_unittest_runs": 109,
+          "total_decompositions": 36,
+          "blame_one_step_hits": 12,
+          "blame_invocations": 19
+        },
+        "desc": {
+          "total_unittest_runs": 119,
+          "total_decompositions": 41,
+          "blame_one_step_hits": 10,
+          "blame_invocations": 19
+        }
+      }
+    },
+    "Disjoint+Bisect": {
+      "candidate_unittest_runs": 240,
+      "total_unittest_runs": 260,
+      "total_decompositions": 82,
+      "blame_invocations": 0,
+      "blame_one_step_hits": 0,
+      "total_git_merges": 472,
+      "git_merge_conflicts": 0,
+      "merged_prs": 180,
+      "real_escaped_defects": 0,
+      "by_polarity": {
+        "asc": {
+          "total_unittest_runs": 130,
+          "total_decompositions": 41,
+          "blame_one_step_hits": 0,
+          "blame_invocations": 0
+        },
+        "desc": {
+          "total_unittest_runs": 130,
+          "total_decompositions": 41,
+          "blame_one_step_hits": 0,
+          "blame_invocations": 0
+        }
+      }
+    },
+    "Disjoint+FileTrivia": {
+      "candidate_unittest_runs": 202,
+      "total_unittest_runs": 222,
+      "total_decompositions": 63,
+      "blame_invocations": 40,
+      "blame_one_step_hits": 24,
+      "total_git_merges": 444,
+      "git_merge_conflicts": 0,
+      "merged_prs": 180,
+      "real_escaped_defects": 0,
+      "by_polarity": {
+        "asc": {
+          "total_unittest_runs": 110,
+          "total_decompositions": 31,
+          "blame_one_step_hits": 12,
+          "blame_invocations": 20
+        },
+        "desc": {
+          "total_unittest_runs": 112,
+          "total_decompositions": 32,
+          "blame_one_step_hits": 12,
+          "blame_invocations": 20
+        }
+      }
+    },
+    "Disjoint+ASTStack": {
+      "candidate_unittest_runs": 200,
+      "total_unittest_runs": 220,
+      "total_decompositions": 62,
+      "blame_invocations": 40,
+      "blame_one_step_hits": 25,
+      "total_git_merges": 441,
+      "git_merge_conflicts": 0,
+      "merged_prs": 180,
+      "real_escaped_defects": 0,
+      "by_polarity": {
+        "asc": {
+          "total_unittest_runs": 108,
+          "total_decompositions": 30,
+          "blame_one_step_hits": 13,
+          "blame_invocations": 20
+        },
+        "desc": {
+          "total_unittest_runs": 112,
+          "total_decompositions": 32,
+          "blame_one_step_hits": 12,
+          "blame_invocations": 20
+        }
+      }
+    }
+  },
+  "blame_microbench": {
+    "total_failing_batches": 86,
+    "single_defect_batches": 24,
+    "cofile_comment_batches": 16,
+    "cofile_sibling_batches": 22,
+    "semantic_conflict_batches": 24,
+    "ast_stack_top1_acc": 0.9884,
+    "ast_stack_top2_acc": 1.0,
+    "ast_stack_mrr": 0.9942,
+    "ast_stack_mean_ms": 2.347,
+    "ast_stack_max_ms": 2.93,
+    "ast_stack_loo_recovery_rate": 0.9884,
+    "ast_stack_disjoint_top1_acc": 1.0,
+    "ast_stack_comment_top1_acc": 1.0,
+    "ast_stack_sibling_top1_acc": 0.9545,
+    "ast_stack_sem_top1_acc": 1.0,
+    "file_trivia_top1_acc": 0.8721,
+    "file_trivia_top2_acc": 1.0,
+    "file_trivia_mrr": 0.936,
+    "file_trivia_mean_ms": 2.137,
+    "file_trivia_loo_recovery_rate": 0.8721,
+    "file_trivia_disjoint_top1_acc": 1.0,
+    "file_trivia_comment_top1_acc": 1.0,
+    "file_trivia_sibling_top1_acc": 0.5,
+    "file_trivia_sem_top1_acc": 1.0,
+    "file_raw_top1_acc": 0.7791,
+    "file_raw_top2_acc": 1.0,
+    "file_raw_mrr": 0.8895,
+    "file_raw_mean_ms": 0.859,
+    "file_raw_loo_recovery_rate": 0.7791,
+    "file_raw_comment_top1_acc": 0.5,
+    "file_raw_sibling_top1_acc": 0.5,
+    "churn_risk_top1_acc": 0.0,
+    "churn_risk_top2_acc": 0.0814,
+    "churn_risk_mrr": 0.2421,
+    "churn_risk_mean_ms": 0.0022,
+    "churn_risk_loo_recovery_rate": 0.0,
+    "churn_risk_comment_top1_acc": 0.0,
+    "churn_risk_sibling_top1_acc": 0.0,
+    "random_top1_acc": 0.2558,
+    "random_top2_acc": 0.407,
+    "random_mrr": 0.465,
+    "random_mean_ms": 0.0074,
+    "random_loo_recovery_rate": 0.2558,
+    "random_comment_top1_acc": 0.1875,
+    "random_sibling_top1_acc": 0.2273
+  },
+  "quixbugs": {
+    "sibling": {
+      "n": 12,
+      "ast_loo": 12,
+      "file_loo": 6,
+      "blind_loo": 6
+    },
+    "same_function": {
+      "n": 12,
+      "ast_loo": 6,
+      "file_loo": 6,
+      "blind_loo": 6
+    },
+    "two_faults": {
+      "n": 12,
+      "ast_loo": 0,
+      "file_loo": 0,
+      "blind_loo": 0
+    }
+  }
+}

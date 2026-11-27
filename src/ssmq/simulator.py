@@ -1,21 +1,18 @@
-"""Discrete-event CI runner, strategy policies, and paired fault injection (v4).
+"""Discrete-event CI runner, strategy policies, and paired fault injection (v7).
 
-Key v4 upgrades resolving all Codex v3 blind-review blockers:
-  1. Fixed-density `graph_recall` oracle: total conflict count stays invariant
-     across graph_recall in [0.0, 1.0] (partitioning a fixed conflict budget
-     into on-graph vs off-graph latent edges rather than doubling density).
-  2. Zero evaluation-population leakage in scheduler priors: scheduler defect
-     priors scale strictly from `graph.warmup_mean_risk` (chronological warm-up
-     prefix only), never peeking at evaluation-stream statistics.
-  3. Authentic dependency-aware outcome-tree baseline (`DepAwareOutcomeTree`,
-     modeling EuroSys '19 conflict-graph speculation with independent commits
-     for disjoint cones) alongside honestly named `FIFOOutcomeTree`.
-  4. Deconfounded component ablations: separates `SSMQ-NoCone` (risk caps only),
-     `SSMQ-NoRisk` (cone exclusion only), `SSMQ-NoGraph` (neither), and adds
-     matched retry ablation `SSMQ-FixedRetry` inside the same scheduler.
-  5. Full mechanism instrumentation: root batch counts/sizes, failed-root
-     single- vs multi-culprit distributions, 1-step blame hit counts, realized
-     graph recall, and exact rejection-cause decomposition.
+Key v7 upgrades resolving all independent blind-review blockers:
+  1. Strict exact-tree commit authority across every policy (zero commit-time
+     oracle): a passing run may commit iff the exact tree it verified equals
+     `merged_mainline | committed_members`. Unstacked passes on stale mainlines
+     are invalidated and re-queued for fresh verification.
+  2. Completely decoupled scheduler priors: scheduler risk, batch conflict,
+     persistence, and flake-gate priors use fixed generic configuration defaults
+     and online Beta-Binomial updates, never reading ground-truth environment
+     fault rates (`base_defect_rate`, `semantic_conflict_prob`,
+     `persistent_conflict_share`, `flaky_rate`).
+  3. First-class `ParallelSingletonRetry` and `FIFOBatchRetry` comparators,
+     exact stale-recheck instrumentation, fixed intra-batch conflict culprit
+     symmetry (both endpoints), and non-flaky `blame_one_step_hits` accounting.
 """
 
 from collections import Counter, deque
@@ -33,7 +30,9 @@ from .models import PRRecord, RunMetrics, SimConfig
 
 ALL_STRATEGIES = [
     "SerialQueue",
+    "ParallelSingletonRetry",
     "StaticBatchBisect",
+    "FIFOBatchRetry",
     "SpeculativeLinear",
     "FIFOOutcomeTree",
     "DepAwareOutcomeTree",
@@ -89,6 +88,7 @@ class GroundTruth:
         suspects.update(self.persistent_culprits(members, mainline))
         for first, second in combinations(members, 2):
             if (min(first, second), max(first, second)) in self.conflicting_pairs:
+                suspects.add(first)
                 suspects.add(second)
         return tuple(number for number in members if number in suspects)
 
@@ -307,8 +307,9 @@ class _Simulation:
             for pr in prs
         }
         self.truth = build_ground_truth(graph, prs, config, seed)
-        # Leak-free scheduler prior calibrated strictly from warm-up history!
-        self.defect_risk = _warmup_scheduler_priors(graph, prs, config.base_defect_rate)
+        # Leak-free decoupled scheduler prior calibrated strictly from warm-up history
+        # and fixed generic prior rate (never reading ground-truth base_defect_rate).
+        self.defect_risk = _warmup_scheduler_priors(graph, prs, config.scheduler_defect_prior)
         self.arrivals = {
             pr.number: pr.arrival_min / config.velocity_multiplier for pr in prs
         }
@@ -320,7 +321,10 @@ class _Simulation:
         )
         self.use_blame = strategy.startswith("SSMQ") and strategy != "SSMQ-NoBlame"
         self.adaptive_rerun = strategy.startswith("SSMQ") and strategy not in ("SSMQ-NoFlaky", "SSMQ-FixedRetry")
-        self.adaptive_rerun |= strategy in ("DepTreeRetry", "PerPRDAGRetry", "DisjointBatchRetry")
+        self.adaptive_rerun |= strategy in (
+            "DepTreeRetry", "PerPRDAGRetry", "DisjointBatchRetry",
+            "ParallelSingletonRetry", "FIFOBatchRetry",
+        )
         self.fixed_rerun = strategy in ("FlakeAwareBatch", "SSMQ-FixedRetry")
         self.fifo_tree = strategy == "FIFOOutcomeTree"
         self.dep_tree = strategy in ("DepAwareOutcomeTree", "DepTreeRetry")
@@ -338,9 +342,11 @@ class _Simulation:
         self.dag_runs: Dict[int, _Run] = {}
         self.dag_jobs: Dict[int, _Job] = {}
         self.dag_ancestors: Dict[int, Set[int]] = {}
+        self.dag_parents: Dict[int, Set[int]] = {}
         self.bridge_wait = 0.0
         self.bridge_count = 0
         self.canceled_ci = 0.0
+        self.stale_rechecks = 0
         self.suite = _SuitePosterior()
         self.sequence = count()
         self.events = []
@@ -458,21 +464,33 @@ class _Simulation:
             while self.ready and self.running < self.worker_limit:
                 self._start(self._root_job(self._take_batch()))
 
+    def _dag_depth(self, number: int, memo: Dict[int, int]) -> int:
+        if number in memo:
+            return memo[number]
+        parents = self.dag_parents.get(number, ())
+        depth = max((1 + self._dag_depth(parent, memo) for parent in parents), default=0)
+        memo[number] = depth
+        return depth
+
     def _dispatch_dag(self) -> None:
         # Directed edges point from earlier overlapping PRs to later arrivals.
         for number in self.ready:
-            ancestors = set()
+            ancestors: Set[int] = set()
+            parents: Set[int] = set()
             for older, upstream in self.dag_ancestors.items():
                 if not self.cones[number].isdisjoint(self.cones[older]):
+                    parents.add(older)
                     ancestors.add(older)
                     ancestors.update(upstream)
+            self.dag_parents[number] = parents
             self.dag_ancestors[number] = ancestors
             self.dag_jobs[number] = self._root_job((number,))
         self.ready.clear()
+        depth_memo: Dict[int, int] = {}
         for number, ancestors in self.dag_ancestors.items():
             if self.running >= self.worker_limit:
                 break
-            if number in self.dag_runs or len(ancestors) >= self.config.max_spec_depth:
+            if number in self.dag_runs or self._dag_depth(number, depth_memo) >= self.config.max_spec_depth:
                 continue
             prefix = tuple(sorted(ancestors))
             self.dag_runs[number] = self._start(replace(self.dag_jobs[number], prefix=prefix))
@@ -484,8 +502,9 @@ class _Simulation:
                 continue
             job = run.job
             self._record_outcome(run)
-            if run.passes and self.truth.persistent_culprits(job.members, self.merged_mainline - run.mainline):
+            if run.passes and self.merged_mainline != run.mainline:
                 self._discard(run, invalidated=True)
+                self.stale_rechecks += 1
                 del self.dag_runs[number]
                 continue
             if not run.passes and self._should_rerun(job):
@@ -497,16 +516,17 @@ class _Simulation:
                 self._credit_retry(job)
             else:
                 self._reject(number)
-            del self.dag_ancestors[number], self.dag_jobs[number], self.dag_runs[number]
+            del self.dag_ancestors[number], self.dag_parents[number], self.dag_jobs[number], self.dag_runs[number]
             for successor, upstream in self.dag_ancestors.items():
                 upstream.discard(number)
+                self.dag_parents[successor].discard(number)
                 predicted = self.dag_runs.get(successor)
                 if not run.passes and predicted is not None and number in predicted.job.prefix:
                     self._discard(predicted, invalidated=True)
                     del self.dag_runs[successor]
 
     def _take_batch(self) -> _Members:
-        if self.strategy == "SerialQueue":
+        if self.strategy in ("SerialQueue", "ParallelSingletonRetry"):
             return (self.ready.pop(0),)
         if self.strategy == "DisjointBatchRetry":
             members, used, waiting = [], set(), []
@@ -556,7 +576,7 @@ class _Simulation:
             not self.cones[first].isdisjoint(self.cones[second])
             for first, second in combinations(members, 2)
         )
-        return 1 - clean * (1 - self.config.semantic_conflict_prob) ** overlap_count
+        return 1 - clean * (1 - self.config.scheduler_conflict_prior) ** overlap_count
 
     def _dispatch_train(self) -> None:
         if self.barrier:
@@ -599,11 +619,11 @@ class _Simulation:
             not self.cones[number].isdisjoint(self.cones[prior])
             for number in members for prior in base
         )
-        persistent_risk = self.config.semantic_conflict_prob * self.config.persistent_conflict_share
+        p_flake = self.suite.alpha / (self.suite.alpha + self.suite.beta)
         return (
             (1 - self._failure_risk(members))
-            * (1 - persistent_risk) ** cross_edges
-            * (1 - self.config.flaky_rate)
+            * (1 - self.config.scheduler_persistent_prior) ** cross_edges
+            * (1 - p_flake)
         )
 
     def _uber_batch(self, remaining: _Members, prefix: _Members) -> _OutcomeNode:
@@ -649,7 +669,7 @@ class _Simulation:
         run = node.run
         chance = self._uber_pass_probability(node.job.members, node.job.prefix)
         if run is None:
-            yield (reach * chance * len(node.job.members) / self.config.ci_duration_min, node)
+            yield (reach * chance * len(node.job.members), node)
         elif depth < self.config.max_spec_depth:
             outcomes = ((True, chance), (False, 1 - chance))
             if run.completed:
@@ -694,8 +714,9 @@ class _Simulation:
                 break
             self._record_outcome(run)
             if run.passes:
-                if self.truth.persistent_culprits(run.job.members, self.merged_mainline - run.mainline):
+                if self.merged_mainline != run.mainline:
                     self._discard(run, invalidated=True)
+                    self.stale_rechecks += 1
                     self._discard_outcomes(head.on_pass)
                     self._discard_outcomes(head.on_fail)
                     self.outcome_root = _OutcomeNode(replace(run.job, overhead=0.0, prefix=()))
@@ -769,9 +790,10 @@ class _Simulation:
                     break
                 self._record_outcome(run)
                 if run.passes:
-                    # Independent commit subject to cumulative persistent-conflict safety!
-                    if self.truth.persistent_culprits(run.job.members, self.merged_mainline - run.mainline):
+                    # Exact-tree commit authority: recheck if mainline advanced since run started.
+                    if self.merged_mainline != run.mainline:
                         self._discard(run, invalidated=True)
+                        self.stale_rechecks += 1
                         self._discard_outcomes(head.on_pass)
                         self._discard_outcomes(head.on_fail)
                         lane.root = _OutcomeNode(replace(run.job, overhead=0.0, prefix=()))
@@ -780,10 +802,13 @@ class _Simulation:
                     self._credit_retry(run.job)
                     self._discard_outcomes(head.on_fail)
                 elif self._should_rerun(run.job):
-                    self._discard_outcomes(head.on_pass)
+                    # Preserve speculative on_pass subtree across transient retries.
                     self._discard_outcomes(head.on_fail)
-                    lane.root = _OutcomeNode(replace(run.job, failures=run.job.failures + 1,
-                                                     round=run.job.round + 1), head.following)
+                    lane.root = _OutcomeNode(
+                        replace(run.job, failures=run.job.failures + 1, round=run.job.round + 1),
+                        head.following,
+                        on_pass=head.on_pass,
+                    )
                     break
                 else:
                     self._discard_outcomes(head.on_pass)
@@ -838,11 +863,12 @@ class _Simulation:
         job = run.job
         self._record_outcome(run)
         if run.passes:
-            if self.truth.persistent_culprits(job.members, self.merged_mainline - run.mainline):
+            if self.merged_mainline != run.mainline:
                 self._discard(run, invalidated=True)
+                self.stale_rechecks += 1
                 self.pending.appendleft(replace(job, overhead=0.0))
                 return
-            if job.blame_remainder:
+            if job.blame_remainder and job.recovery.faulty:
                 self.blame_one_step_hits += 1
             self._credit_retry(job)
             self._merge(run, job.members)
@@ -914,11 +940,14 @@ class _Simulation:
             self.false_rejections += 1
 
     def _merge(self, run: _Run, members: _Members) -> None:
+        tested_tree = run.mainline | frozenset(run.job.members)
+        target_tree = frozenset(self.merged_mainline) | frozenset(members)
         if (
             not run.completed or not run.passes or not set(members).issubset(run.job.members)
             or not run.mainline.issubset(self.merged_mainline)
+            or tested_tree != target_tree
         ):
-            raise RuntimeError("Merge attempted without a passing CI verification")
+            raise RuntimeError("Merge attempted without exact-tree CI verification")
         self.escaped += len(self.truth.culprits(members, self.merged_mainline))
         for number in members:
             if number in self.merged or number in self.rejected:
@@ -988,6 +1017,7 @@ class _Simulation:
             observed_graph_edge_density=edge_count / pair_count if pair_count else 0,
             bridge_wait_min_total=self.bridge_wait,
             canceled_ci_minutes=self.canceled_ci,
+            stale_rechecks=self.stale_rechecks,
         )
 
 
@@ -1018,7 +1048,8 @@ def _validate(config: SimConfig, prs: List[PRRecord]) -> None:
     for name in (
         "base_defect_rate", "semantic_conflict_prob", "flaky_rate",
         "blame_top1_acc", "blame_top2_acc", "warmup_fraction", "graph_recall",
-        "persistent_conflict_share",
+        "persistent_conflict_share", "scheduler_defect_prior",
+        "scheduler_conflict_prior", "scheduler_persistent_prior",
     ):
         if not 0 <= getattr(config, name) <= 1:
             raise ValueError(f"{name} must be in [0, 1]")

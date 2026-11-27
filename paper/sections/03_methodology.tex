@@ -1,7 +1,7 @@
 \section{SSMQ Architecture, Algorithms, and Formal Analysis}
 \label{sec:methodology}
 
-Figure~\ref{fig:architecture} overviews \textbf{SSMQ}. Warm-up commits populate a historical co-change graph $\hat{G}$ and P90 risk scales. Pending retries, stale-pass rechecks, blame splits, and bisection sub-batches preempt fresh batches across $W$ shared workers. Passing runs clear a cumulative delta check before commit; failing runs traverse a two-regime flaky gate and, once retries are denied or exhausted on multi-PR batches, invoke 1-step AST/traceback ranking or bisection fallback.
+Figure~\ref{fig:architecture} overviews \textbf{SSMQ}. Warm-up commits populate a historical co-change graph $\hat{G}$ and P90 risk scales. Pending retries, exact-tree stale-pass rechecks, blame splits, and bisection sub-batches preempt fresh batches across $W$ shared workers. Passing runs must match the current target branch ($M=M_0$) before commit; failing runs traverse a two-regime flaky gate and, once retries are denied or exhausted on multi-PR batches, invoke 1-step AST/traceback ranking or bisection fallback.
 
 \input{figures/fig_architecture.tex}
 
@@ -17,7 +17,7 @@ SSMQ computes a bounded risk score $r(p) \in [0, 1]$ from three log-transformed 
 r(p) = 0.45\,\tilde{\ell}(p) + 0.30\,\tilde{f}(p) + 0.25\,\tilde{c}(p),
 \label{eq:risk}
 \end{equation}
-where $\tilde{\ell}(p)=\min(1,\log(1+\text{add}+\text{del})/s_\ell)$, $\tilde{f}(p)=\min(1,\log(1+\max(\text{changed\_files},|F(p)|))/s_f)$, and $\tilde{c}(p)=\min(1,\log(1+\max_{f\in F(p)} c_{\text{warm}}(f))/s_c)$, with $c_{\text{warm}}(f)=|C(\{f\})|-1$ for warm-up-indexed paths and $0$ for unseen paths ($s_c$ is the P90 over warm-up-indexed paths). Defect priors calibrate strictly against warm-up mean risk $\bar{r}_{\text{warm}}$ (default $0.5$ on empty history, floored at $10^{-6}$, with direct pass-through for configured rates $0$ or $1$): $\hat{q}_i = \min(1, \max(10^{-6}, r(p_i)) \cdot q_{\text{cfg}} / \max(10^{-6}, \bar{r}_{\text{warm}}))$.
+where $\tilde{\ell}(p)=\min(1,\log(1+\text{add}+\text{del})/s_\ell)$, $\tilde{f}(p)=\min(1,\log(1+\max(\text{changed\_files},|F(p)|))/s_f)$, and $\tilde{c}(p)=\min(1,\log(1+\max_{f\in F(p)} c_{\text{warm}}(f))/s_c)$, with $c_{\text{warm}}(f)=|C(\{f\})|-1$ for warm-up-indexed paths and $0$ for unseen paths ($s_c$ is the P90 over warm-up-indexed paths). Defect priors calibrate strictly against warm-up mean risk $\bar{r}_{\text{warm}}$ (default $0.5$ on empty history, floored at $10^{-6}$) using a fixed generic prior rate $\hat{q}_0=0.10$ decoupled from the environment's true defect rate: $\hat{q}_i = \min(1, \max(10^{-6}, r(p_i)) \cdot \hat{q}_0 / \max(10^{-6}, \bar{r}_{\text{warm}}))$.
 
 \subsection{Graph-Disjoint Risk-Stratified Multi-Lane Packing}
 When a worker is idle and no pending job awaits dispatch, Algorithm~\ref{alg:packing} forms a fresh batch anchored at ready-queue head $p_h = Q[0]$, updating $Q$ and promoted set $\mathcal{P}$. If $p_h \in \mathcal{P}$ or $r(p_h) \ge \theta_{\text{risk}} = 0.55$, SSMQ opens a \textbf{Protected Lane} batch capped at $L=\min(2, K_{\max})$; otherwise it opens a \textbf{Fast Lane} batch capped at $L=K_{\max}$ (nominally $8$). Scanning $Q[1..]$ in FIFO order, Algorithm~\ref{alg:packing} promotes any PR overlapping accumulated cone $U$ into $\mathcal{P}$ (even when full or opposite-lane) and admits $p$ iff $|B|<L$, $U\cap C(p)=\emptyset$, and $p$'s lane matches $p_h$'s. Both lanes enforce cone disjointness within a batch. Simultaneous batches on different workers may overlap; scan cost scales with ready-queue length and cone operations (unmeasured).
@@ -49,27 +49,27 @@ When a worker is idle and no pending job awaits dispatch, Algorithm~\ref{alg:pac
 \end{algorithmic}
 \end{algorithm}
 
-\subsection{Two-Regime Beta-Binomial Flaky Gating and Safety Check}
-SSMQ maintains a plug-in conjugate $\mathrm{Beta}(\alpha,\beta)$ heuristic initialized at $(\alpha_0=1, \beta_0=19)$ (20 pseudocounts, prior mean $5\%$). Confirmed non-stale passes increment $\beta$ by $1$ and add that job's prior failures to $\alpha$; split or rejected runs are censored. On failure $m \in \{1, 2\}$ (at most two retries, i.e., three attempts), the Beta-Binomial predictive probability of $m$ consecutive flakes is:
+\subsection{Exact-Tree Commit Check and Two-Regime Beta-Binomial Gate}
+SSMQ maintains a plug-in conjugate $\mathrm{Beta}(\alpha,\beta)$ heuristic initialized at $(\alpha_0=1, \beta_0=19)$ (20 pseudocounts, prior mean $5\%$). Confirmed non-stale passes increment $\beta$ by $1$ and add that job's prior failures to $\alpha$; split, stale, and rejected runs are censored (a limitation discussed in Section~\ref{sec:threats}). On failure $m \in \{1, 2\}$ (at most two retries, i.e., three attempts), the Beta-Binomial predictive probability of $m$ consecutive flakes is:
 \begin{equation}
 P_{\text{flake}}(m \mid \alpha, \beta) = \prod_{k=0}^{m-1} \frac{\alpha + k}{\alpha + \beta + k}.
 \label{eq:betabinom}
 \end{equation}
-Combining $P_{\text{flake}}$ with on-graph batch risk $\hat{q}(B)=1-\prod_{i\in B}(1-\hat{q}_i)\prod_{(i,j)\in\hat{E}(B)}(1-\hat{p}_c)$ (omitting latent and base-persistent edges) yields the positive-guarded transient score:
+Combining $P_{\text{flake}}$ with on-graph batch risk $\hat{q}(B)=1-\prod_{i\in B}(1-\hat{q}_i)\prod_{(i,j)\in\hat{E}(B)}(1-\hat{p}_c)$ using fixed generic conflict prior $\hat{p}_c=0.10$ (never reading environment fault rates) yields the positive-guarded transient score:
 \begin{equation}
 P(\text{transient} \mid \text{fail}_m) = \frac{(1 - \hat{q}(B))\, P_{\text{flake}}(m \mid \alpha, \beta)}{\hat{q}(B) + (1 - \hat{q}(B))\, P_{\text{flake}}(m \mid \alpha, \beta)}.
 \label{eq:posterior}
 \end{equation}
-Algorithm~\ref{alg:flaky} applies asymmetric cutoffs: \textbf{Singleton Guard} ($\tau_1=0.25$, $|B|=1$) retries low-risk singletons before rejection, whereas \textbf{Batch Guard} ($\tau_B=0.50$, $|B|>1$) suppresses full-batch reruns because splitting preserves clean PRs. Retries increment failure count and recovery round while resetting blame overhead. Before committing any passing job $J$ tested on snapshot $M_0$, Algorithm~\ref{alg:flaky} checks persistent conflicts against concurrent merges $M\setminus M_0$; stale passes prepend to pending keeping retry count and round and re-snapshotting mainline on start.
+Algorithm~\ref{alg:flaky} applies asymmetric cutoffs: \textbf{Singleton Guard} ($\tau_1=0.25$, $|B|=1$) retries low-risk singletons before rejection, whereas \textbf{Batch Guard} ($\tau_B=0.50$, $|B|>1$) suppresses full-batch reruns because splitting preserves clean PRs. Before committing any passing job $J$ tested against snapshot $M_0$, Algorithm~\ref{alg:flaky} enforces \textbf{exact-tree commit authority}: it verifies $M = M_0$ (equivalently, that the verified tree $M_0 \cup J.B$ equals the target tree $M \cup J.B$). No commit-time conflict oracle is consulted. If another worker advanced mainline ($M \neq M_0$), the stale pass is invalidated and prepended to pending for fresh verification atop $M$, keeping retry count and round.
 
 \begin{algorithm}[t]
-\caption{Cumulative Check \& Two-Regime Flaky Gate}
+\caption{Exact-Tree Commit Check \& Two-Regime Flaky Gate}
 \label{alg:flaky}
 \begin{algorithmic}[1]
 \REQUIRE Completed run $R = (J, \text{pass}, M_0, T)$, mainline $M$, state $(\alpha, \beta)$
 \IF{$R.\text{pass}$}
-    \IF{$\text{HasPersistentConflict}(J.B, M \setminus M_0)$}
-        \STATE Prepend stale rerun of $J$ to pending (keeping failures/round)
+    \IF{$M \neq M_0$}
+        \STATE Invalidate stale pass; prepend $J$ to pending (keeping failures/round)
         \RETURN
     \ENDIF
     \STATE $\alpha \leftarrow \alpha + J.\text{failures}$; \quad $\beta \leftarrow \beta + 1$; \quad $M \leftarrow M \cup J.B$
@@ -89,7 +89,7 @@ Algorithm~\ref{alg:flaky} applies asymmetric cutoffs: \textbf{Singleton Guard} (
 \end{algorithm}
 
 \subsection{Fail-Safe 1-Step AST/Traceback Suspect Ranking}
-When retries are denied or exhausted on a multi-PR batch $B$ with \texttt{allow\_blame=True}, \texttt{ASTStackCausalRanker} (Algorithm~\ref{alg:blame}) ranks suspects statically. From traceback $T$, it parses maximum 1-based frame indices $(d_f, d_s)$ and failing test IDs $\mathcal{T}_F$. For each $t \in \mathcal{T}_F$, 1-hop expansion of bare-name AST calls yields direct calls $D(t)$, reachable symbols $S(t)$, and defining files $F(t)$. Inverse-fanout specificity down-weights broad tests while weighting direct callees by $1.5\times$: $\sigma_F(f)=\sum_{t:\, f\in F(t)} 1/|F(t)|$ and $\sigma_S(s)=\sum_{t:\, s\in S(t)} (1.5 \text{ if } s\in D(t) \text{ else } 1.0)/|S(t)|$.
+When retries are denied or exhausted on a multi-PR batch $B$ with \texttt{allow\_blame=True}, \texttt{ASTStackCausalRanker} (Algorithm~\ref{alg:blame}) ranks suspects statically. From traceback $T$, it parses maximum 1-based frame indices $(d_f, d_s)$ and failing test IDs $\mathcal{T}_F$. For each $t \in \mathcal{T}_F$, 1-hop expansion of bare-name AST calls yields direct callees $D(t)$, direct-callee defining files $F_D(t)$, reachable symbols $S(t)$, and reachable files $F(t)$. Inverse-fanout specificity down-weights broad tests while applying an identical $1.5\times$ direct-callee weight to both file and function terms so the file-level ablation isolates granularity alone: $\sigma_F(f)=\sum_{t:\, f\in F(t)} (1.5 \text{ if } f\in F_D(t) \text{ else } 1.0)/|F(t)|$ and $\sigma_S(s)=\sum_{t:\, s\in S(t)} (1.5 \text{ if } s\in D(t) \text{ else } 1.0)/|S(t)|$.
 
 For each modified file $f \in F(p)$, diffing normalized AST dumps of synchronous \texttt{FunctionDef} nodes keyed by bare name yields changed symbols $\Delta_{\text{AST}}(p, f)$ (comments and formatting leave dumps invariant; docstrings alter dumps; syntax errors emit a sentinel; module-level code, \texttt{async} functions, attribute calls, and dynamic dispatch lie outside this subset). AST-invariant files add $0.01$; functionally modified files add base $1.0$, frame bonus $1.0+0.2\,d_f$ if implicated, file specificity $2.0\,\sigma_F(f)$, and per changed symbol $s$: $4.0+0.5\,d_s$ if implicated plus $10.0\,\sigma_S(s)$ (tie-break: PR ID).
 
@@ -101,8 +101,8 @@ SSMQ enqueues remainder $(B\setminus\{s_1\}, \text{allow\_blame}=\text{False}, \
 \begin{algorithmic}[1]
 \REQUIRE Failing batch $B$ ($|B| \ge 2$), traceback $T$, base repository ASTs
 \STATE Parse max 1-based frame indices $(d_f, d_s)$ and failing tests $\mathcal{T}_F$
-\STATE Expand 1-hop bare-name calls from $t \in \mathcal{T}_F$ to get $D(t), S(t), F(t)$
-\STATE $\sigma_F(f)=\sum_{t:\, f\in F(t)}\frac{1}{|F(t)|}$, $\sigma_S(s)=\sum_{t:\, s\in S(t)}\frac{1.5^{\mathbb{I}[s\in D(t)]}}{|S(t)|}$
+\STATE Expand 1-hop bare-name calls from $t \in \mathcal{T}_F$ to get $D(t), F_D(t), S(t), F(t)$
+\STATE $\sigma_F(f)=\sum_{t:\, f\in F(t)}\frac{1.5^{\mathbb{I}[f\in F_D(t)]}}{|F(t)|}$, $\sigma_S(s)=\sum_{t:\, s\in S(t)}\frac{1.5^{\mathbb{I}[s\in D(t)]}}{|S(t)|}$
 \FORALL{$p \in B$}
     \STATE $\text{score}(p) \leftarrow 0$
     \FORALL{$f \in F(p)$}
@@ -121,14 +121,14 @@ SSMQ enqueues remainder $(B\setminus\{s_1\}, \text{allow\_blame}=\text{False}, \
 \end{algorithm}
 
 \subsection{Scoped Formal Properties}
-Three propositions bound SSMQ within our pairwise verification model.
+Three propositions bound SSMQ under exact-tree verification.
 
-\begin{proposition}[Within-Model Cumulative Safety]
+\begin{proposition}[Exact-Tree Commit Safety]
 \label{prop:safety}
-Under an initially clean mainline $M$, fixed unary defects, a deterministic symmetric pairwise persistent-conflict oracle $G^*$, false-failure-only flakes, monotonic mainline growth, and atomic check-and-commit transitions in Algorithm~\ref{alg:flaky}, no defective PR and no PR persistently conflicting with prior merges commits to $M$.
+Under an initially clean mainline $M$, deterministic test verification of any tested tree $T$, false-failure-only flakes, and atomic check-and-commit transitions requiring $M_0 \cup J.B = M \cup B_{\text{commit}}$ (Algorithm~\ref{alg:flaky}, line~2), every committed mainline state $M'$ has directly passed the test suite with zero oracle assumptions.
 \end{proposition}
 \begin{proof}[Proof Sketch]
-Every commit $M\leftarrow M\cup J.B$ requires (i)~$R.\text{pass}=\text{True}$ on snapshot $M_0\subseteq M$, ruling out unary defects and intra-batch or $M_0$-persistent conflicts, and (ii)~$\neg\text{HasPersistentConflict}(J.B, M\setminus M_0)$, ruling out persistent conflicts with concurrent merges. Induction over commits preserves the invariant within the stated oracle model. The Git experiment separately exercises re-merge and testing after a base change.
+Every transition $M \leftarrow M \cup B_{\text{commit}}$ requires $R.\text{pass}=\text{True}$ on exact tree $M_0 \cup J.B = M \cup B_{\text{commit}}$. For unstacked batches ($B_{\text{commit}}=J.B$), this reduces to $M = M_0$; for a single-timeline speculative prefix stack, $M_0$ includes the exact upstream prefixes that committed prior to $J$. Induction over commits preserves tested-tree safety without any conflict-oracle check. Conversely, multi-lane or per-PR DAG policies that omit concurrent commits from other lanes from $M_0$ cannot satisfy $M_0 \cup J.B = M \cup B_{\text{commit}}$ after another lane commits without cross-lane invalidation.
 \end{proof}
 
 \begin{proposition}[Fresh-Batch Dispatch Bound]

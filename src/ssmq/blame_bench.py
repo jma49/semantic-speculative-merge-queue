@@ -460,6 +460,7 @@ def _failing_test_context(
                 for sub in ast.walk(node)
                 if isinstance(sub, ast.Call) and isinstance(sub.func, ast.Name) and sub.func.id in func_to_file
             }
+            direct_files = {func_to_file[fn] for fn in direct}
             reach = set(direct)
             for fn in list(direct):
                 reach.update(c for c in func_calls.get(fn, set()) if c in func_to_file)
@@ -467,7 +468,8 @@ def _failing_test_context(
             if rfiles:
                 fw = 1.0 / len(rfiles)
                 for rf in rfiles:
-                    file_spec[rf] = file_spec.get(rf, 0.0) + fw
+                    bonus = 1.5 if rf in direct_files else 1.0
+                    file_spec[rf] = file_spec.get(rf, 0.0) + bonus * fw
             if reach:
                 sw = 1.0 / len(reach)
                 for fn in reach:

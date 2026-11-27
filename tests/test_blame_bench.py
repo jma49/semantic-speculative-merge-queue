@@ -69,7 +69,13 @@ class BlameBenchTests(unittest.TestCase):
         self.assertGreater(summary.ast_stack_loo_recovery_rate, summary.file_trivia_loo_recovery_rate)
         self.assertEqual(len(records), summary.total_failing_batches)
 
-    def test_real_git_tree_replay_zero_escapes_and_live_blame(self) -> None:
+    def test_real_git_tree_replay_zero_escapes_and_neutral_counterbalanced_ids(self) -> None:
+        from ssmq.git_replay import build_git_replay_stream
+
+        fwd, _, _ = build_git_replay_stream(0, reverse_ids=False)
+        rev, _, _ = build_git_replay_stream(0, reverse_ids=True)
+        self.assertEqual([p.pr_id for p in fwd], [f"pr_{i:02d}" for i in range(len(fwd))])
+        self.assertEqual([p.pr_id for p in rev], [f"pr_{len(rev) - 1 - i:02d}" for i in range(len(rev))])
         for strategy in ("StaticBatchBisect", "SSMQ"):
             m = run_git_queue_replay(strategy, seed=0, max_batch=4)
             self.assertTrue(m.final_main_tests_pass, msg=f"{strategy} broke real git main!")

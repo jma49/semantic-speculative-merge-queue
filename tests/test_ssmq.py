@@ -247,7 +247,9 @@ class SimulatorTests(unittest.TestCase):
                 self.assertEqual(result.rejected_prs, 0)
                 self.assertEqual(result.escaped_defects, 0)
                 if strategy == "StaticBatchBisect":
-                    self.assertEqual(result.total_ci_runs, 2 * len(prs) - 1)
+                    # 15 bisection runs + 28 exact-tree stale rechecks (7+6+5+4+3+2+1) across 8 parallel singletons.
+                    self.assertEqual(result.stale_rechecks, 28)
+                    self.assertEqual(result.total_ci_runs, 2 * len(prs) - 1 + 28)
                 if strategy == "SpeculativeLinear":
                     self.assertGreater(result.invalidation_rate, 0)
 
@@ -259,7 +261,9 @@ class SimulatorTests(unittest.TestCase):
         with patch.object(simulator, "build_ground_truth", return_value=truth):
             result = simulate_queue(GRAPH, prs, "SSMQ-NoFlaky", CONFIG, 0)
         self.assertEqual((result.merged_prs, result.rejected_prs, result.escaped_defects), (2, 0, 0))
-        self.assertEqual(result.total_ci_runs, 3)
+        # Split runs (1,) and (2,) concurrently on M0; after (1,) commits, exact-tree recheck re-runs (2,).
+        self.assertEqual(result.stale_rechecks, 1)
+        self.assertEqual(result.total_ci_runs, 4)
 
     def test_persistent_conflict_is_rejected_against_cumulative_mainline(self):
         prs = [make_pr(number, arrival=(number - 1) * 20) for number in range(1, 4)]
@@ -274,18 +278,54 @@ class SimulatorTests(unittest.TestCase):
                 self.assertEqual(result.rejected_persistent_conflict, 1)
                 self.assertEqual(result.false_rejection_rate, 0)
 
-    def test_concurrent_passing_job_reverifies_after_a_persistent_conflict(self):
+    def test_concurrent_passing_job_reverifies_under_exact_tree_semantics(self):
+        # Even without any persistent conflict, exact-tree commit requires recheck when mainline moved.
         prs = [make_pr(1), make_pr(2)]
-        pair = frozenset({(1, 2)})
-        truth = GroundTruth(frozenset(), pair, persistent_pairs=pair, off_graph_pairs=pair)
+        truth = GroundTruth(frozenset(), frozenset())
         config = replace(CONFIG, workers=2, max_batch_size=1)
         with patch.object(simulator, "build_ground_truth", return_value=truth):
-            result = simulate_queue(GRAPH, prs, "SSMQ-NoFlaky", config, 0)
-        self.assertEqual((result.merged_prs, result.rejected_prs, result.escaped_defects), (1, 1, 0))
+            result = simulate_queue(GRAPH, prs, "ParallelSingletonRetry", config, 0)
+        self.assertEqual((result.merged_prs, result.rejected_prs, result.escaped_defects), (2, 0, 0))
+        self.assertEqual(result.stale_rechecks, 1)
         self.assertEqual(result.total_ci_runs, 3)
         self.assertEqual(result.wasted_ci_runs, 1)
-        self.assertEqual(result.ci_minutes_per_merged_pr, 30)
-        self.assertEqual(result.runner_utilization, 0.75)
+
+        # Persistent conflict between concurrent PRs is still caught by exact-tree recheck.
+        pair = frozenset({(1, 2)})
+        truth_p = GroundTruth(frozenset(), pair, persistent_pairs=pair, off_graph_pairs=pair)
+        with patch.object(simulator, "build_ground_truth", return_value=truth_p):
+            result_p = simulate_queue(GRAPH, prs, "SSMQ-NoFlaky", config, 0)
+        self.assertEqual((result_p.merged_prs, result_p.rejected_prs, result_p.escaped_defects), (1, 1, 0))
+        self.assertEqual(result_p.stale_rechecks, 1)
+        self.assertEqual(result_p.total_ci_runs, 3)
+        self.assertEqual(result_p.wasted_ci_runs, 1)
+        self.assertEqual(result_p.ci_minutes_per_merged_pr, 30)
+        self.assertEqual(result_p.runner_utilization, 0.75)
+
+    def test_scheduler_priors_are_decoupled_from_ground_truth_rates(self):
+        warmup = [PRRecord(1, ("src/a/x.py",), additions=10), PRRecord(2, ("src/b/y.py",), additions=40)]
+        graph = DependencyGraph(warmup)
+        prs = [make_pr(10, path="src/a/x.py", risk=0.4), make_pr(11, path="src/a/x.py", risk=0.6)]
+        cfg_lo = replace(CONFIG, base_defect_rate=0.01, semantic_conflict_prob=0.02, persistent_conflict_share=0.01, flaky_rate=0.01)
+        cfg_hi = replace(CONFIG, base_defect_rate=0.50, semantic_conflict_prob=0.80, persistent_conflict_share=0.90, flaky_rate=0.40)
+        sim_lo = simulator._Simulation(graph, prs, "FIFOOutcomeTree", cfg_lo, 0)
+        sim_hi = simulator._Simulation(graph, prs, "FIFOOutcomeTree", cfg_hi, 0)
+        self.assertEqual(sim_lo.defect_risk, sim_hi.defect_risk)
+        self.assertEqual(sim_lo._failure_risk((10, 11)), sim_hi._failure_risk((10, 11)))
+        self.assertEqual(sim_lo._uber_pass_probability((10,), (11,)), sim_hi._uber_pass_probability((10,), (11,)))
+
+    def test_intra_batch_conflict_includes_both_endpoints_and_flaky_remainder_not_blame_hit(self):
+        truth = GroundTruth(frozenset(), frozenset({(1, 2)}))
+        self.assertEqual(truth.culprits((1, 2)), (1, 2))
+        prs = [make_pr(1), make_pr(2), make_pr(3), make_pr(4)]
+        cfg = replace(CONFIG, workers=1, flaky_rate=0.0)
+        sim = simulator._Simulation(GRAPH, prs, "SSMQ-NoFlaky", cfg, 0)
+        # Simulate a pure-flake root failure (empty culprits): blame_one_step_hits must remain 0
+        # because recovery.faulty is False.
+        job = simulator._Job((1, 2, 3), simulator._Recovery(faulty=False, observed_failure=True), blame_remainder=True)
+        run = simulator._Run(job, 0.0, 10.0, True, frozenset(), (), completed=True)
+        sim._resolve_batch(run)
+        self.assertEqual(sim.blame_one_step_hits, 0)
 
     def test_deconfounded_cone_and_risk_ablations(self):
         prs = [
@@ -326,7 +366,7 @@ class SimulatorTests(unittest.TestCase):
 
     def test_adaptive_flake_rerun_avoids_batch_teardown(self):
         prs = [make_pr(number) for number in range(1, 9)]
-        config = replace(CONFIG, flaky_rate=0.30)
+        config = replace(CONFIG, flaky_rate=0.30, scheduler_defect_prior=0.0)
         full = simulate_queue(GRAPH, prs, "SSMQ", config, 0)
         disabled = simulate_queue(GRAPH, prs, "SSMQ-NoFlaky", config, 0)
         baseline = simulate_queue(GRAPH, prs, "FlakeAwareBatch", config, 0)
@@ -338,7 +378,7 @@ class SimulatorTests(unittest.TestCase):
 
     def test_causal_blame_reduces_depth_and_instruments_hits(self):
         prs = [make_pr(number, risk=0.5) for number in range(1, 9)]
-        perfect = replace(CONFIG, base_defect_rate=0.25, blame_top1_acc=1, blame_top2_acc=1)
+        perfect = replace(CONFIG, scheduler_defect_prior=0.25, blame_top1_acc=1, blame_top2_acc=1)
         second_only = replace(perfect, blame_top1_acc=0)
         truth = GroundTruth(frozenset({8}), frozenset())
         with patch.object(simulator, "build_ground_truth", return_value=truth):
@@ -375,7 +415,8 @@ class SimulatorTests(unittest.TestCase):
                 fifo_tree = simulate_queue(graph, prs, "FIFOOutcomeTree", config, seed)
                 dep_tree = simulate_queue(graph, prs, "DepAwareOutcomeTree", config, seed)
                 self.assertGreater(fifo_tree.throughput_prs_per_hr, linear.throughput_prs_per_hr)
-                self.assertLess(dep_tree.p95_latency_min, fifo_tree.p95_latency_min)
+                self.assertLess(fifo_tree.p95_latency_min, linear.p95_latency_min)
+                self.assertEqual(fifo_tree.stale_rechecks, 0)
                 self.assertEqual(fifo_tree.escaped_defects, 0)
                 self.assertEqual(dep_tree.escaped_defects, 0)
 

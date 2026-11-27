@@ -1,4 +1,4 @@
-"""Records, configuration, and metrics for the merge queue simulation (v6)."""
+"""Records, configuration, and metrics for the merge queue simulation (v7)."""
 
 from dataclasses import asdict, dataclass, field
 from typing import Any, Dict, FrozenSet, Optional, Tuple
@@ -48,6 +48,10 @@ class SimConfig:
     #   maintains EXACT identical total conflict counts across the entire recall sweep [0%, 100%].
     ground_truth_mode: str = "parametric"
     feasible_recall_budget: bool = False
+    # v7 decoupled fixed scheduler priors (never read ground-truth fault rates)
+    scheduler_defect_prior: float = 0.10
+    scheduler_conflict_prior: float = 0.10
+    scheduler_persistent_prior: float = 0.02
 
 
 @dataclass(frozen=True)
@@ -92,6 +96,7 @@ class RunMetrics:
     observed_graph_edge_density: float = 0.0
     bridge_wait_min_total: float = 0.0
     canceled_ci_minutes: float = 0.0
+    stale_rechecks: int = 0
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)

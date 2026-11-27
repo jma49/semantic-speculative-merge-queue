@@ -1,0 +1,63 @@
+\begin{table*}[t]\centering\scriptsize
+\caption{Paired exact-tree simulation ($W{=}8$, decoupled scheduler priors) across nominal ($5\times$, 30~PRs/hr) and saturated ($15\times$, 90~PRs/hr) arrival loads. Every policy enforces identical exact-tree commit verification (zero escapes). $\Delta$ is SSMQ minus row policy (positive means SSMQ is slower), with 95\% paired-seed bootstrap intervals across all three repositories. Width is mean root batch size; FRR is clean false-rejection rate; Acc.\ is mean accepted PRs; CI/m is runner-minutes per merge; Inv.\ is invalidated run share.}\label{tab:v7sim}
+\begin{tabular}{lrrrrrrr}\toprule
+Policy & P95 (min) & $\Delta$ [95\% CI] & Width & FRR (\%) & Acc. & CI/m & Inv. (\%) \\ \midrule
+\multicolumn{8}{l}{\textit{Nominal load ($5\times$, 30 PRs/hr, 20 seeds $\times$ 3 repos)}} \\
+Parallel singleton + retry & 862.1 & -133.6 [-146.7, -121.0] & 1.00 & 7.70 & 101.7 & 89.9 & 74.3 \\
+FIFO batch + bisect & 524.4 & +204.0 [+187.0, +220.7] & 2.97 & 9.48 & 99.8 & 62.5 & 60.2 \\
+FIFO batch + retry & 607.1 & +121.4 [+99.0, +142.9] & 3.11 & 3.76 & 106.1 & 65.6 & 58.2 \\
+FIFO + retry + blame & 625.6 & +102.9 [+80.9, +123.2] & 3.13 & 3.88 & 106.0 & 66.9 & 58.2 \\
+Risk + retry + blame (NoCone) & 623.3 & +105.2 [+89.7, +121.1] & 2.02 & 4.01 & 106.0 & 66.9 & 63.5 \\
+Disjoint batch + retry & 721.9 & +6.6 [-13.1, +26.0] & 1.31 & 6.28 & 103.0 & 76.3 & 70.1 \\
+SSMQ without risk lanes & 724.8 & +3.7 [-8.8, +16.3] & 1.30 & 6.15 & 103.0 & 77.0 & 70.6 \\
+SSMQ without blame & 723.1 & +5.4 [-8.0, +17.0] & 1.33 & 5.99 & 103.3 & 76.4 & 70.7 \\
+SSMQ (full) & 728.5 & --- & 1.32 & 5.62 & 103.9 & 76.6 & 70.9 \\
+FIFO outcome tree (stacked) & 331.1 & +397.4 [+383.4, +411.0] & 1.35 & 2.48 & 107.7 & 45.9 & 77.0 \\
+\midrule
+\multicolumn{8}{l}{\textit{Saturated load ($15\times$, 90 PRs/hr, 20 seeds $\times$ 3 repos)}} \\
+Parallel singleton + retry & 1041.7 & -165.1 [-176.8, -153.5] & 1.00 & 6.83 & 103.0 & 90.0 & 74.5 \\
+FIFO batch + bisect & 692.8 & +183.8 [+162.9, +205.3] & 3.25 & 9.09 & 99.9 & 63.6 & 60.2 \\
+FIFO batch + retry & 777.6 & +99.0 [+80.1, +117.8] & 3.30 & 3.25 & 106.5 & 66.5 & 58.3 \\
+FIFO + retry + blame & 781.3 & +95.3 [+68.2, +120.0] & 3.27 & 4.01 & 105.8 & 67.1 & 57.9 \\
+Risk + retry + blame (NoCone) & 766.4 & +110.2 [+95.4, +124.4] & 2.02 & 3.82 & 105.9 & 66.0 & 62.5 \\
+Disjoint batch + retry & 870.2 & +6.4 [-8.7, +20.8] & 1.29 & 5.99 & 103.3 & 76.2 & 70.1 \\
+SSMQ without risk lanes & 876.2 & +0.4 [-8.3, +10.3] & 1.33 & 5.71 & 103.6 & 76.4 & 70.5 \\
+SSMQ without blame & 878.2 & -1.6 [-9.1, +5.4] & 1.33 & 5.49 & 104.0 & 76.2 & 70.6 \\
+SSMQ (full) & 876.6 & --- & 1.34 & 5.45 & 103.8 & 76.3 & 70.6 \\
+FIFO outcome tree (stacked) & 497.8 & +378.7 [+363.9, +393.5] & 1.35 & 2.50 & 107.6 & 45.9 & 77.0 \\
+\bottomrule\end{tabular}\end{table*}
+\begin{table}[t]\centering\scriptsize
+\caption{Per-repository P95 contrasts (SSMQ minus comparator, minutes) and warm-up cone edge density ($D$) / SSMQ root batch width ($w$). Positive values mean SSMQ is slower.}\label{tab:v7perrepo}
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{lrrr}\toprule
+Regime / Comparator & \texttt{k8s} & \texttt{TS} & \texttt{next.js} \\ \midrule
+Warm-up cone edge density $D$ (\%) & 68.5 & 92.4 & 59.1 \\
+SSMQ nominal root width $w$ & 1.34 & 1.03 & 1.60 \\ \midrule
+Nom.: vs.\ Parallel singleton & -146.4 & -11.1 & -243.4 \\
+Nom.: vs.\ FIFO + bisect & +201.5 & +277.1 & +133.6 \\
+Nom.: vs.\ FIFO + retry & +133.1 & +180.2 & +50.9 \\
+Nom.: vs.\ NoCone & +128.7 & +153.9 & +33.1 \\
+Nom.: vs.\ Disjoint + retry & +13.4 & -9.7 & +16.0 \\
+Nom.: vs.\ Outcome tree & +397.1 & +464.2 & +331.0 \\
+Sat.: vs.\ FIFO + retry & +105.1 & +169.2 & +22.7 \\
+Sat.: vs.\ NoCone & +93.5 & +167.4 & +69.8 \\
+Sat.: vs.\ Outcome tree & +368.6 & +438.8 & +328.8 \\
+Dir.\ proxy: vs.\ NoCone & +292.3 & +400.8 & +230.3 \\
+Dir.\ proxy: vs.\ NoGraph & +366.1 & +471.3 & +378.4 \\
+\bottomrule\end{tabular}\end{table}
+\begin{table}[t]\centering\scriptsize
+\caption{Cone exclusion sensitivity under exact-tree commit. $\Delta$ is SSMQ minus SSMQ-NoCone (same risk, retry, and blame rules; positive means cone exclusion is slower). Width and FRR show SSMQ / NoCone.}\label{tab:v7control}
+\setlength{\tabcolsep}{0.8pt}
+\begin{tabular}{lrrrrr}\toprule
+Condition & Rec. & Prec. & $\Delta$ P95 [95\% CI] & Width & FRR (\%) \\ \midrule
+Budget 0\% & 0.00 & 0.00 & +204.7 [+185.3, +223.5] & 1.26/1.98 & 7.0/4.2 \\
+Budget 40\% & 0.40 & 0.06 & +180.1 [+159.9, +197.3] & 1.28/1.98 & 6.6/4.4 \\
+Budget 60\% & 0.60 & 0.09 & +161.5 [+140.6, +182.3] & 1.30/1.99 & 6.3/4.9 \\
+Budget 80\% & 0.80 & 0.12 & +152.4 [+135.8, +168.6] & 1.33/2.03 & 6.2/4.4 \\
+Budget 100\% & 1.00 & 0.15 & +156.9 [+139.5, +174.2] & 1.36/2.07 & 6.3/4.4 \\
+Directory (nom.) & 0.99 & 0.03 & +307.8 [+289.0, +327.1] & 1.33/2.30 & 7.6/4.7 \\
+Directory (sat.) & 0.99 & 0.03 & +330.0 [+302.5, +356.9] & 1.36/2.22 & 8.2/4.4 \\
+Dir., no flakes & 0.99 & 0.03 & +376.5 [+364.7, +388.7] & 1.34/2.15 & 0.0/0.0 \\
+Dir., transient & 0.99 & 0.03 & +331.0 [+309.0, +354.2] & 1.33/2.31 & 8.2/4.8 \\
+Uniform pairs & 0.73 & 0.18 & +84.9 [+72.2, +98.9] & 1.27/1.98 & 5.4/3.9 \\
+\bottomrule\end{tabular}\end{table}

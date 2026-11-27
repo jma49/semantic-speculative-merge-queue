@@ -13,15 +13,15 @@ from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "eval"))
-from verify_v6 import RUNS, digest, member, read_json, require, verify_exports
+from verify_v7 import RUNS, digest, member, read_json, require, verify_exports
 
-README = """# Semantic Speculative Merge Queues — review supplement
+README = """# Semantic Speculative Merge Queues — review supplement (v7)
 
 Unzip the archive and run the following commands from its root. The verification uses
 Python 3.9+ and its standard library and runs offline.
 
 ```sh
-python3 -B eval/verify_v6.py --verify-only
+python3 -B eval/verify_v7.py --verify-only
 python3 -B -W error -m unittest discover -s tests
 ```
 
@@ -37,11 +37,11 @@ Simulation uses worker processes. Executable replays require Git with support fo
 and `git init -b`. Wall-clock measurements depend on the host.
 
 ```sh
-python3 eval/harness_v6.py --runs-dir ../ssmq-rerun
-python3 eval/git_v6.py blame --runs-dir ../ssmq-rerun
-python3 eval/git_v6.py git --runs-dir ../ssmq-rerun
-python3 eval/git_v6.py stale --runs-dir ../ssmq-rerun
-python3 eval/quixbugs_v6.py --runs-dir ../ssmq-rerun
+python3 eval/harness_v7.py --runs-dir ../ssmq-rerun
+python3 eval/git_v7.py blame --runs-dir ../ssmq-rerun
+python3 eval/git_v7.py git --runs-dir ../ssmq-rerun
+python3 eval/git_v7.py stale --runs-dir ../ssmq-rerun
+python3 eval/quixbugs_v7.py --runs-dir ../ssmq-rerun
 ```
 
 Optional live trace recheck (requires the authenticated GitHub CLI):
@@ -95,8 +95,8 @@ def check_identity(stage):
 def populate(stage):
     names = set(verify_exports(ROOT)) | tex_sources()
     names.update({"paper/refs.bib", "scripts/fetch_traces.py", "scripts/check_trace_windows.py",
-                  "eval/verify_v6.py", "eval/analyze_traces.py", "eval/git_displays_v6.py",
-                  "eval/sim_displays_v6.py", "eval/export_v6.py"})
+                  "eval/verify_v7.py", "eval/analyze_traces.py", "eval/git_displays_v7.py",
+                  "eval/sim_displays_v7.py", "eval/export_v7.py"})
     for pattern in ("data/traces/*.json", "src/ssmq/*.py", "tests/test_*.py"):
         names.update(p.relative_to(ROOT).as_posix() for p in ROOT.glob(pattern))
     for run_id in RUNS:
@@ -142,7 +142,7 @@ def main():
         with ZipFile(archive) as bundle:
             require(bundle.testzip() is None, "corrupted review ZIP")
             bundle.extractall(extracted)
-        subprocess.run([sys.executable, "-B", "eval/verify_v6.py", "--verify-only"], cwd=extracted, check=True)
+        subprocess.run([sys.executable, "-B", "eval/verify_v7.py", "--verify-only"], cwd=extracted, check=True)
         os.replace(archive, output)
     print(f"{digest(output)}  {output}")
 

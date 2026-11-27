@@ -15,11 +15,11 @@
 
 \node[box=ssmqBlue] (queue) at (3.25, 1.40) {\textbf{2. Disjoint Multi-Lane}\\ \textbf{Packer (Alg.~\ref{alg:packing})}\\ Fast ($K{\le}K_{\max}$) vs.\\ Protected ($K{\le}2$)};
 
-\node[box=ssmqBlue] (ci) at (6.75, 1.40) {\textbf{3. Pending Queue \&}\\ \textbf{$W$ Parallel CI Workers}\\ Preempts fresh batches;\\ simulated delta check};
+\node[box=ssmqBlue] (ci) at (6.75, 1.40) {\textbf{3. Pending Queue \&}\\ \textbf{$W$ Parallel CI Workers}\\ Preempts fresh batches;\\ exact-tree check ($M{=}M_0$)};
 
 \node[dec] (pass) at (10.05, 1.40) {CI Pass?};
 
-\node[smallbox=ssmqTeal] (merge) at (13.40, 1.40) {\textbf{Commit to Mainline}\\ Update $\mathrm{Beta}(\alpha,\beta)$\\ after clean delta};
+\node[smallbox=ssmqTeal] (merge) at (13.40, 1.40) {\textbf{Commit to Mainline}\\ Update $\mathrm{Beta}(\alpha,\beta)$\\ when $M = M_0$};
 
 % Row 2: Flaky Gate -> (Singleton Reject OR Multi-PR Blame OR Bisection when allow_blame=False)
 \node[box=ssmqPurple, text width=2.25cm] (flaky) at (9.75, -1.20) {\textbf{4. Two-Regime Flaky}\\ \textbf{Gate (Alg.~\ref{alg:flaky})}\\ $|B|{=}1$: $\tau_1{=}0.25$\\ $|B|{>}1$: $\tau_B{=}0.50$};
@@ -34,7 +34,7 @@
 \draw[arr] (graph) -- (queue);
 \draw[arr] (queue) -- (ci);
 \draw[arr] (ci) -- (pass);
-\draw[arr] (pass.east) -- node[above, yshift=2pt, font=\scriptsize\bfseries, align=center] {Pass \&\\ Clean Delta} (merge.west);
+\draw[arr] (pass.east) -- node[above, yshift=2pt, font=\scriptsize\bfseries, align=center] {Pass \&\\ $M = M_0$} (merge.west);
 \draw[arr] (pass.south) -- (pass.south |- flaky.north) node[lbl, midway, right, xshift=2pt] {Fail};
 \draw[arr] (flaky.east) -- node[lbl, above, yshift=2pt, align=center, font=\tiny\bfseries] {$|B|{=}1$,\\ no retry} (reject.west);
 \draw[arr] (flaky.west) -- node[lbl, above, yshift=2pt, align=center, font=\tiny\bfseries] {$|B|{>}1$, no retry,\\ \texttt{blame=T}} (blame.east);
@@ -42,8 +42,8 @@
 % When a remainder (allow_blame=False) later fails CI & flaky gate, it routes directly from Flaky Gate -> Bisection!
 \draw[arr, draw=ssmqGray!85!black] (flaky.south) -- ++(0,-0.32) -| node[lbl, pos=0.25, below, yshift=-1pt, text=ssmqGray!85!black] {$|B|{>}1$, no retry, \texttt{allow\_blame=False} (incl.\ failed remainders)} (bisect.south);
 
-% Stale pass recheck loop: Pass with persistent conflict against concurrent merges -> Pending Queue
-\draw[arr, dashdotted, draw=ssmqTeal!85!black] (pass.north) -- ++(0,0.34) -| node[lbl, pos=0.25, above, yshift=1pt, text=ssmqTeal!85!black] {Stale Pass (Persistent Delta) $\to$ Pending} ([xshift=0.35cm]ci.north);
+% Stale pass recheck loop: Pass on moved mainline (M != M_0) -> Pending Queue
+\draw[arr, dashdotted, draw=ssmqTeal!85!black] (pass.north) -- ++(0,0.34) -| node[lbl, pos=0.25, above, yshift=1pt, text=ssmqTeal!85!black] {Stale Pass ($M \neq M_0$) $\to$ Pending} ([xshift=0.35cm]ci.north);
 
 % Feedback loops routed strictly to Pending Queue (box 3)
 \draw[arr, dashed, draw=ssmqPurple!80!black] (flaky.north west) |- (8.25, 0.20) -| node[lbl, pos=0.22, above, text=ssmqPurple!80!black] {Transient Retry} ([xshift=0.55cm]ci.south);
@@ -51,6 +51,6 @@
 \draw[arr, dotted, draw=ssmqGray!80!black] (bisect.north) |- (4.20, 0.22) -| node[lbl, pos=0.22, above, text=ssmqGray!80!black] {Sub-batches to Pending} ([xshift=-0.65cm]ci.south);
 
 \end{tikzpicture}
-\caption{End-to-end architecture of \textbf{SSMQ}. Warm-up traces build a leak-free dependency graph $\hat{G}$ and P90 risk scales for Algorithm~\ref{alg:packing}. Pending retries, stale-pass rechecks, blame splits, and bisection sub-batches preempt fresh batches on $W$ parallel workers. When a remainder batch (\texttt{allow\_blame=False}) fails CI and the flaky gate, it bypasses Step~5 and routes directly to bisection (Step~6). The simulator models suspect selection. The Git experiment executes the ranker and tests a new candidate when the base changes.}
+\caption{End-to-end architecture of \textbf{SSMQ} under exact-tree commit authority. Warm-up traces build $\hat{G}$ and P90 risk scales with fixed generic scheduler priors. Pending retries, exact-tree stale rechecks ($M \neq M_0$), blame splits, and bisection sub-batches preempt fresh batches on $W$ parallel workers. When a remainder batch (\texttt{allow\_blame=False}) fails, it bypasses Step~5 and routes directly to bisection (Step~6). The simulator enforces identical exact-tree verification across all policies; the Git experiments execute real merges, test suites, and rankers.}
 \label{fig:architecture}
 \end{figure*}

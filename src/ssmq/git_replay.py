@@ -63,6 +63,7 @@ class GitReplayMetrics:
     events: List[dict]
     final_tree: str
     landed_ids: List[str]
+    polarity: str = "asc"
 
     def to_dict(self) -> Dict[str, object]:
         return asdict(self)
@@ -195,11 +196,15 @@ def _test_candidate_batch_on_main(
     return True, False, out, merges
 
 
-def build_git_replay_stream(seed: int) -> Tuple[List[PatchPR], Set[str], Tuple[str, str]]:
+def build_git_replay_stream(
+    seed: int, reverse_ids: bool = False
+) -> Tuple[List[PatchPR], Set[str], Tuple[str, str]]:
     """Build a deterministic 12-PR real-Git stream containing:
       - 1 real pairwise semantic conflict (2 PRs, passes individually, fails combined)
       - 2 real single-PR defects (on disjoint hunks from the conflict)
       - 8 real clean functional PRs (including sibling co-file PRs)
+    Assigns role-neutral lexical PR IDs (`pr_00`..`pr_11` or reversed `pr_11`..`pr_00`)
+    so tie-breaking cannot encode clean/defect/conflict labels.
     Returns: (stream, defect_ids, semantic_conflict_pair_ids)
     """
     rng = random.Random(seed)
@@ -240,9 +245,20 @@ def build_git_replay_stream(seed: int) -> Tuple[List[PatchPR], Set[str], Tuple[s
             for rel, (old, _) in c.files.items():
                 used_hunks.add((rel, old))
 
-    stream = list(pair) + chosen_defects + chosen_clean
-    rng.shuffle(stream)
-    return stream, {d.pr_id for d in chosen_defects}, (pair[0].pr_id, pair[1].pr_id)
+    raw_stream = list(pair) + chosen_defects + chosen_clean
+    rng.shuffle(raw_stream)
+    n = len(raw_stream)
+    id_map: Dict[str, str] = {}
+    stream: List[PatchPR] = []
+    for idx, pr in enumerate(raw_stream):
+        neutral_id = f"pr_{(n - 1 - idx):02d}" if reverse_ids else f"pr_{idx:02d}"
+        id_map[pr.pr_id] = neutral_id
+        stream.append(PatchPR(neutral_id, pr.files, pr.description, pr.added_lines))
+    return (
+        stream,
+        {id_map[d.pr_id] for d in chosen_defects},
+        (id_map[pair[0].pr_id], id_map[pair[1].pr_id]),
+    )
 
 
 def _pack_disjoint_batch(ready: List[PatchPR], max_batch: int = 4) -> Tuple[List[PatchPR], List[PatchPR]]:
@@ -261,7 +277,9 @@ def _pack_disjoint_batch(ready: List[PatchPR], max_batch: int = 4) -> Tuple[List
     return batch, rest
 
 
-def run_git_queue_replay(strategy: str, seed: int, max_batch: int = 4) -> GitReplayMetrics:
+def run_git_queue_replay(
+    strategy: str, seed: int, max_batch: int = 4, reverse_ids: bool = False
+) -> GitReplayMetrics:
     """Execute one cell of the 2x3 real-Git factorial queue matrix."""
     cell = {"StaticBatchBisect": "FIFO+Bisect", "SSMQ": "Disjoint+ASTStack"}.get(strategy, strategy)
     if cell not in GIT_REPLAY_STRATEGIES:
@@ -269,7 +287,7 @@ def run_git_queue_replay(strategy: str, seed: int, max_batch: int = 4) -> GitRep
     packing, recovery = cell.split("+")
     t_start = time.perf_counter()
 
-    stream, defect_ids, conflict_pair = build_git_replay_stream(seed)
+    stream, defect_ids, conflict_pair = build_git_replay_stream(seed, reverse_ids=reverse_ids)
     with tempfile.TemporaryDirectory() as td:
         repo_dir = Path(td)
         _init_base_git_repo(repo_dir)
@@ -400,6 +418,7 @@ def run_git_queue_replay(strategy: str, seed: int, max_batch: int = 4) -> GitRep
             recovery_rounds_total=recovery_rounds,
             wall_time_ms=wall_ms, events=events, final_tree=_rev(repo_dir, "main^{tree}"),
             landed_ids=sorted(landed),
+            polarity="desc" if reverse_ids else "asc",
         )
 
 
@@ -412,12 +431,20 @@ def run_git_replay_suite(seeds: List[int] = list(range(10))) -> List[Dict[str, o
     ]
 
 
-def run_git_factorial_suite(seeds: List[int] = list(range(10))) -> List[Dict[str, object]]:
-    """Run the complete 2x3 real-Git factorial suite (60 real repository replays)."""
+def run_git_factorial_suite(
+    seeds: List[int] = list(range(10)), counterbalance: bool = True
+) -> List[Dict[str, object]]:
+    """Run the counterbalanced 2x3 real-Git factorial suite (120 real repository replays)."""
+    polarities = (False, True) if counterbalance else (False,)
     rows: List[Dict[str, object]] = []
     for seed in seeds:
-        for strategy in GIT_REPLAY_STRATEGIES:
-            rows.append(run_git_queue_replay(strategy, seed=seed, max_batch=4).to_dict())
+        for reverse_ids in polarities:
+            for strategy in GIT_REPLAY_STRATEGIES:
+                rows.append(
+                    run_git_queue_replay(
+                        strategy, seed=seed, max_batch=4, reverse_ids=reverse_ids
+                    ).to_dict()
+                )
     return rows
 
 

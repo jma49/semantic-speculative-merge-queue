@@ -27,7 +27,7 @@
 
 \newtheorem{proposition}{Proposition}
 
-\input{generated/v6}
+\input{generated/v7}
 
 
 \begin{document}
@@ -39,7 +39,7 @@
 \maketitle
 
 \begin{abstract}
-A merge queue can test several pull requests together, but a failing batch leaves the queue with two decisions: which changes to separate and which results remain valid as the target branch advances. We study these decisions in a head-anchored queue that uses past co-changes to form batches, retries likely transient failures, and uses traceback evidence to choose a change to isolate. We distinguish three sources of evidence. Public merge records from Kubernetes, TypeScript, and Next.js describe opportunities to reorder work. A paired discrete-event experiment measures latency, acceptance, and runner consumption under explicit assumptions about faults. Executable Git experiments vary batch packing and suspect selection independently and force two independently passing candidates to share a stale base. Across \TraceCount{} public changes, directory overlap is common. In the main simulation the queue improves mean survivor P95 by \DisjointAdvantage{} minutes against retry-matched disjoint batching. Under directory-derived conflict labels, cone exclusion instead costs \DirectoryPenalty{} minutes relative to the same policy without exclusion. At fixed disjoint packing the AST ranker requires \GitAstTests{} tests versus \GitFileTests{} for its file-level ablation. A passing test on an earlier commit can admit a failing combination, even when both changes merge cleanly. Rechecking the combined tree prevents this failure in the controlled cases. The results characterize scheduling and recovery trade-offs within the evaluated workloads; deployment requires measurements of actual arrivals, interference, and test coverage.
+Two pull requests can each pass CI on the same base and still fail after both land. A merge queue can separate changes that appear likely to interfere, but a passing result may then become stale when another worker advances the branch. We study this trade-off using \TraceCount{} public merged pull requests, paired queue simulations, and executable Git experiments. The simulator permits a commit only when its resulting set of changes matches the set tested. With eight workers and nominal arrivals of thirty changes per hour, excluding batches that overlap in a historical co-change graph reduces mean initial batch width to \NomSsmqWidth{} changes. Relative to the same policy with exclusion disabled, mean P95 latency among accepted changes increases by \NomVsNoCone{} minutes; clean false rejections rise from \NomNoConeFrr{}\% to \NomSsmqFrr{}\%. The latency penalty persists at the higher offered load. A FIFO outcome tree that tests speculative prefixes has the lowest mean survivor P95 among the evaluated policies. Separately, in paired Git replays, a traceback-guided function ranker uses \GitFifoAstTests{} tests versus \GitFifoFileTests{} for a matched file ranker under FIFO packing. Under file-disjoint packing the totals converge to \GitDisjAstTests{} and \GitDisjFileTests{}. These results identify two limits on structural batching: smaller batches can increase revalidation work, and separating same-file edits removes opportunities for function-level failure discrimination.
 \end{abstract}
 
 \begin{IEEEkeywords}
