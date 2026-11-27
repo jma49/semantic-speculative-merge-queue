@@ -18,7 +18,7 @@ Table~\ref{tab:main_benchmark} reports aggregate performance across all three re
     \item \textbf{Vs.\ Unconditional Flaky Retry}: \texttt{FlakeAwareBatch} nearly eliminates false rejections (\FlakeBatchFalseRejPct{}\%) but inflates P95 latency to \FlakeBatchPNinetyFiveLat{}~min and CI cost to \FlakeBatchCICost{}~min/PR. SSMQ cuts latency by \LatRedVsFlakePct{}\% and compute by \CostSaveVsFlakePct{}\%.
 \end{itemize}
 
-\textbf{Per-Repository Consistency & $10\times$ Velocity Scaling.} Table~\ref{tab:per_repo} confirms SSMQ achieves the lowest P95 latency and CI compute across all three repositories individually---including the dense \texttt{TypeScript} compiler monorepo. Under $10\times$ offered velocity (\texttt{v2\_exp3\_velocity}), SSMQ scales to \SSMQTenXThroughput{}~PR/h (\SSMQTenXPNinetyFiveLat{}~min P95) vs.\ \StaticTenXThroughput{}~PR/h (\StaticTenXPNinetyFiveLat{}~min) for static batching and \UberTenXThroughput{}~PR/h for outcome-tree SubmitQueue.
+\textbf{Per-Repository Consistency \& $10\times$ Velocity Scaling.} Table~\ref{tab:per_repo} confirms SSMQ achieves the lowest P95 latency and CI compute across all three repositories individually---including the dense \texttt{TypeScript} compiler monorepo. Under $10\times$ offered velocity (\texttt{v2\_exp3\_velocity}), SSMQ scales to \SSMQTenXThroughput{}~PR/h (\SSMQTenXPNinetyFiveLat{}~min P95) vs.\ \StaticTenXThroughput{}~PR/h (\StaticTenXPNinetyFiveLat{}~min) for static batching and \UberTenXThroughput{}~PR/h for outcome-tree SubmitQueue.
 
 \input{generated/tables/per_repo.tex}
 
