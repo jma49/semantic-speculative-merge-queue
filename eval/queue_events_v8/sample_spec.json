@@ -1,0 +1,77 @@
+{
+  "schema_version": "1.0",
+  "frozen_at_utc": "2026-11-27T22:15:00Z",
+  "purpose": "Pre-registered contiguous PR-number windows and observation week for v8 queue timeline evidence (GraphQL merge-queue events), independent of merge_group workflow-run success.",
+  "observation_week_utc_inclusive": [
+    "2026-11-10T00:00:00Z",
+    "2026-11-17T23:59:59Z"
+  ],
+  "repositories": [
+    {
+      "key": "typescript",
+      "owner": "microsoft",
+      "name": "TypeScript",
+      "full_name": "microsoft/TypeScript",
+      "default_base_ref": "main",
+      "queue_mechanism": "github_merge_queue",
+      "queue_branch_regex": "^gh-readonly-queue/main/pr-(?P<pr_number>\\d+)-(?P<base_parent_sha>[0-9a-f]{40})$"
+    },
+    {
+      "key": "cargo",
+      "owner": "rust-lang",
+      "name": "cargo",
+      "full_name": "rust-lang/cargo",
+      "default_base_ref": "master",
+      "queue_mechanism": "github_merge_queue",
+      "queue_branch_regex": "^gh-readonly-queue/master/pr-(?P<pr_number>\\d+)-(?P<base_parent_sha>[0-9a-f]{40})$"
+    }
+  ],
+  "pr_universe": {
+    "enumeration_policy": "Every integer pull request number in each closed interval is queried via GraphQL whether or not a merge_group Actions run exists or succeeded.",
+    "per_repository": {
+      "typescript": {
+        "number_inclusive": [65250, 65680],
+        "include_drafts": false,
+        "states_queried": ["OPEN", "CLOSED", "MERGED"]
+      },
+      "cargo": {
+        "number_inclusive": [17518, 17760],
+        "include_drafts": false,
+        "states_queried": ["OPEN", "CLOSED", "MERGED"]
+      }
+    }
+  },
+  "timeline_item_types": [
+    "ADDED_TO_MERGE_QUEUE_EVENT",
+    "REMOVED_FROM_MERGE_QUEUE_EVENT",
+    "CLOSED_EVENT",
+    "REOPENED_EVENT"
+  ],
+  "episode_rules": {
+    "open": "AddedToMergeQueueEvent",
+    "close": "RemovedFromMergeQueueEvent",
+    "outcome_field": "reason",
+    "merged_reason": "merged",
+    "left_censoring": "Added without matching Removed before observation_week end or dataset freeze",
+    "right_censoring": "Removed without prior Added in paginated timeline (data gap flag)"
+  },
+  "head_sha_policy": {
+    "at_fetch_field": "headRefOid from GraphQL at collection time",
+    "not_enqueue_time": "AddedToMergeQueueEvent does not expose per-episode head OID in public GraphQL (see api_gaps.json)",
+    "alignment_with_merge_group": "Optional crosswalk to merge_group head_sha and queue branch parent_sha when workflow runs exist in observation week"
+  },
+  "attribution_guardrails": [
+    "Do not label integration_regression when merge_group head_sha and PR headRefOid at fetch are not comparable for the same episode window",
+    "Retries counted as comparable only when headRefOid at fetch matches across episodes or merge_group head repeats for same pr_number"
+  ],
+  "provenance_requirements": [
+    "Freeze this spec before any API calls",
+    "Log GraphQL page cursors and timeline page counts per PR",
+    "Write raw_records.json before derived summaries",
+    "No upstream repository code execution"
+  ],
+  "cross_reference": {
+    "historical_ci_spec": "eval/historical_ci/sample_spec.json",
+    "historical_ci_run_id": "v8_historical_ci"
+  }
+}

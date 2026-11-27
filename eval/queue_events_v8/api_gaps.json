@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0",
+  "documented_at_utc": "2026-11-27T22:15:00Z",
+  "missing_or_unsupported": [
+    {
+      "id": "added_event_head_oid",
+      "surface": "GraphQL AddedToMergeQueueEvent",
+      "status": "not_exposed",
+      "notes": "Introspection shows fields actor, createdAt, enqueuer, id, mergeQueue, pullRequest only; mergeQueueEntry is not a valid child field."
+    },
+    {
+      "id": "historical_pr_head_at_enqueue",
+      "surface": "GraphQL timeline",
+      "status": "partial",
+      "notes": "Only current pullRequest.headRefOid at fetch time; per-episode enqueue head must be inferred from merge_group branch metadata or commit history."
+    },
+    {
+      "id": "live_merge_queue_snapshot",
+      "surface": "GraphQL mergeQueue.entries",
+      "status": "live_only",
+      "notes": "Reflects current queue, not historical observation week."
+    },
+    {
+      "id": "authoritative_culprit_pr",
+      "surface": "Merge queue internals",
+      "status": "unobservable",
+      "notes": "No public label for which PR caused a multi-PR batch failure."
+    }
+  ],
+  "supported": [
+    "RemovedFromMergeQueueEvent.reason (e.g. merged, failed_checks)",
+    "AddedToMergeQueueEvent.createdAt",
+    "RemovedFromMergeQueueEvent.createdAt",
+    "ClosedEvent / ReopenedEvent interleaved with queue episodes",
+    "REST merge_group workflow runs with parseable queue branch"
+  ]
+}

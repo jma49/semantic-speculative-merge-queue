@@ -1,0 +1,7 @@
+{
+  "caveat_count": 8,
+  "failure_count": 0,
+  "raw_records_sha256": "fb92064f8db428f0a6683316ae86ffee6ec0463c77464e49bb18975a6cf4285e",
+  "spec_path": "eval/historical_ci/sample_spec.json",
+  "spec_sha256": "0924cb1bbdb280d027b7bb1d3f09246aec263e4fede8881a8ee2c26c6ac7b48d"
+}

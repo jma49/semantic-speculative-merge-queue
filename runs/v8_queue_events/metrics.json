@@ -1,0 +1,21 @@
+{
+  "cargo_distinct_prs_enqueue_in_week": 40,
+  "cargo_episodes_overlapping_week": 40,
+  "cargo_prs_fetched": 161,
+  "cargo_queue_admissions_in_week": 56,
+  "combined_distinct_prs_enqueue_in_week": 83,
+  "combined_queue_admissions_in_week": 100,
+  "descriptive_summary_schema_version": "1.1",
+  "discordant_head_cases_historical_ci": 45,
+  "historical_ci_excluded_pr_number_window": 8,
+  "historical_ci_scanned": 690,
+  "historical_ci_selected": 45,
+  "observation_calendar_days_inclusive": 8,
+  "run_id": "v8_queue_events",
+  "schema_version": "8.1",
+  "typescript_discordant_merge_group_heads": 45,
+  "typescript_distinct_prs_enqueue_in_week": 43,
+  "typescript_episodes_overlapping_week": 43,
+  "typescript_prs_fetched": 246,
+  "typescript_queue_admissions_in_week": 44
+}

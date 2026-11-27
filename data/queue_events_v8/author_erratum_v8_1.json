@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0",
+  "corrected_summary_schema": "1.1",
+  "raw_records_preserved": true,
+  "en": [
+    "Schema 1.0 descriptive_summary used incorrect survival censoring names (left/right swapped vs. episode truncation) and marked episodes in-week via point timestamps instead of interval overlap with [2026-11-10, 2026-11-17].",
+    "comparable_hash_retry_episodes inferred retries from a single headRefOid at fetch; merge_group head SHA is a composite test commit and must not be treated as enqueue-head evidence.",
+    "Observer coverage mixed distinct PRs with queue admissions; corrected counts are TypeScript 43 PRs / 44 enqueues and cargo 40 / 56 (83 / 100 combined) over 8 calendar days.",
+    "GraphQL NOT_FOUND outcomes for unissued PR numbers were logged as generic fetch_failures; they are now classified separately from transport errors.",
+    "merge_group run alignment now requires workflow created_at inside the episode interval and flags temporal ambiguity explicitly."
+  ],
+  "zh": [
+    "1.0 版 descriptive_summary 的生存删失标签有误（与队列截断混淆），且用时间点而非与观察周区间的重叠判定“在周内”。",
+    "comparable_hash_retry_episodes 不能从抓取时的单一 headRefOid 推断重试；merge_group 的 head SHA 为复合测试提交，不能当作入队 head 证据。",
+    "观察者覆盖率须区分“去重 PR 数”与“入队次数”；修正后为 TypeScript 43/44、cargo 40/56（合计 83/100），观察历 8 天含首尾。",
+    "未创建 PR 编号的 GraphQL NOT_FOUND 应与传输类失败分开统计。",
+    "merge_group 对齐仅限工作流 created_at 落在 episode 区间内，并显式标注时间歧义。"
+  ]
+}

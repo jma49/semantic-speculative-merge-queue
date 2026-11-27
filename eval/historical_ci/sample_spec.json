@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0",
+  "frozen_at_utc": "2026-11-27T18:05:00Z",
+  "purpose": "Pre-registered inclusion window for v8 historical CI evidence (microsoft/TypeScript GitHub Merge Queue).",
+  "repository": {
+    "owner": "microsoft",
+    "name": "TypeScript",
+    "full_name": "microsoft/TypeScript",
+    "default_base_ref": "main",
+    "queue_mechanism": "github_merge_queue",
+    "queue_branch_prefix": "gh-readonly-queue/main/"
+  },
+  "inclusion": {
+    "merge_group_workflow_runs": {
+      "event": "merge_group",
+      "created_at_utc_inclusive": [
+        "2026-11-10T00:00:00Z",
+        "2026-11-17T23:59:59Z"
+      ]
+    },
+    "pull_requests": {
+      "number_inclusive": [
+        65250,
+        65680
+      ],
+      "states": [
+        "open",
+        "closed"
+      ],
+      "include_merged": true,
+      "include_closed_unmerged": true,
+      "include_drafts": false
+    },
+    "check_runs_per_record": {
+      "max_pages_per_commit": 10,
+      "per_page": 100
+    }
+  },
+  "exclusion": {
+    "merge_group_runs_without_parseable_queue_branch": true,
+    "merge_group_runs_outside_time_window": true,
+    "draft_pull_requests": true,
+    "pull_requests_outside_number_window": true
+  },
+  "parsed_identities": {
+    "merge_group_branch_regex": "^gh-readonly-queue/main/pr-(?P<pr_number>\\d+)-(?P<base_parent_sha>[0-9a-f]{40})$",
+    "notes": "Observed queue branches in this repo encode a single enqueued PR and the exact parent mainline SHA at enqueue time."
+  },
+  "observability_reference": "eval/historical_ci/field_observability.json",
+  "provenance_requirements": [
+    "Record every GitHub REST page index and stop reason.",
+    "Never execute upstream repository code; API metadata only.",
+    "Write raw fetch pages before derived summaries."
+  ]
+}

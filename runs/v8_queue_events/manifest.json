@@ -1,0 +1,31 @@
+{
+  "artifact_sha256": "321aea0f3586ae44c0c3a528d0cd8ca2fd32675372db0a1dbd933c72b2183f48",
+  "command": "python3 eval/queue_events_v8/harness_v8_queue_events.py",
+  "dataset_sha256": "a3a767e71ec236a38d0685e98d8c3bae778034ae1b8fd32ec45e473eafb7e696",
+  "experiment": "v8_queue_events",
+  "git_commit": "a0b108d6d8fcd58a129ecaaa8b923983be1ad698",
+  "harness_sha256": "963f0818795debb90abecd5df6a231010397b76e23db68efcf245bc2ed8152b5",
+  "input_sha256": {
+    "eval/historical_ci/sample_spec.json": "0924cb1bbdb280d027b7bb1d3f09246aec263e4fede8881a8ee2c26c6ac7b48d",
+    "eval/queue_events_v8/sample_spec.json": "e189bca6573100afbb94a8c2332a56e035750113c01e6fe3d6ce04d46374e875"
+  },
+  "meta": {
+    "observation_week": {
+      "end": "2026-11-17T23:59:59Z",
+      "start": "2026-11-10T00:00:00Z"
+    },
+    "repositories": [
+      "microsoft/TypeScript",
+      "rust-lang/cargo"
+    ],
+    "supersedes_schema_8_0_metrics": true
+  },
+  "metrics_file": "metrics.json",
+  "metrics_sha256": "321aea0f3586ae44c0c3a528d0cd8ca2fd32675372db0a1dbd933c72b2183f48",
+  "platform": "macOS-27.2.1-arm64-arm-64bit",
+  "python_version": "3.9.6",
+  "record_count": 100,
+  "run_id": "v8_queue_events",
+  "schema_version": "8.1",
+  "timestamp_utc": "2026-11-27T14:17:40.798750+00:00"
+}

@@ -1,0 +1,112 @@
+{
+  "closed_unmerged_pulls": 0,
+  "counts": {
+    "merge_group_runs_scanned": 690,
+    "merge_group_runs_selected": 45,
+    "pull_requests_stored": 43,
+    "pull_requests_with_queue_run": 43
+  },
+  "failure_attribution_assay": {
+    "cases": [
+      {
+        "independent_label_basis": "success on PR-head check run vs failure on merge-group check run for the same normalized name (different SHAs/commits).",
+        "integration_regression_labels": [
+          {
+            "check_key": "package_feed_proxy",
+            "check_name": "package-feed-proxy",
+            "merge_group_conclusion": "failure",
+            "pr_head_conclusion": "success"
+          },
+          {
+            "check_key": "required",
+            "check_name": "required",
+            "merge_group_conclusion": "failure",
+            "pr_head_conclusion": "success"
+          }
+        ],
+        "merge_group_failures_without_pr_head_analog": [],
+        "merge_group_head_sha": "cb66b62936b30e3b70eae63aca621f12ba1451ac",
+        "pr_head_sha_at_fetch": "cc40e9dd74c1e46cc9875b83fddc6ea574556473",
+        "pr_number": 65499,
+        "queue_base_parent_sha": "21ba970871efd2766ee46813d0bb67253e7878fa",
+        "shared_named_checks": 18,
+        "workflow_run_id": 44175056042
+      }
+    ],
+    "failed_merge_group_runs": 1,
+    "label_histogram": {
+      "integration_regression_at_least_one_check": 1
+    },
+    "limits": [
+      "PR-head checks are sampled at fetch time, not guaranteed to be the pre-queue push.",
+      "No authoritative queue-internal culprit label exists in the public API."
+    ]
+  },
+  "fetch_failure_count": 0,
+  "generated_at_utc": "2026-11-27T14:05:34.858078+00:00",
+  "merge_group_conclusions": {
+    "failure": 1,
+    "success": 44
+  },
+  "merge_group_duration_minutes": {
+    "mean": 16.084444444444447,
+    "n": 45,
+    "p50": 16.033333333333335,
+    "p95": 18.776666666666664
+  },
+  "observability": {
+    "attribution_assay_eligibility": {
+      "ground_truth_culprit_pr": "Not observable; assays use differential check outcomes only",
+      "independent_comparison_available": "Pair push/workflow CI on PR head vs merge_group CI on synthetic head for same normalized check names"
+    },
+    "observed_via_public_github_api": {
+      "check_runs_on_merge_group_head": "Named checks with conclusions and durations",
+      "check_runs_on_pr_head_at_fetch": "Named checks on PR head at fetch time (not necessarily pre-queue)",
+      "merge_group_conclusion": "success|failure|cancelled|...",
+      "merge_group_created_updated_times": "UTC timestamps on the workflow run",
+      "merge_group_head_branch": "gh-readonly-queue/main/pr-<n>-<parent_sha>",
+      "merge_group_head_sha": "Synthetic merge-group commit tested by CI",
+      "merge_group_workflow_run_id": "Actions workflow run id for event=merge_group",
+      "pr_base_ref_at_fetch": "REST pulls/{n}.base.ref",
+      "pr_head_sha_at_fetch": "REST pulls/{n}.head.sha at collection time",
+      "pr_merge_commit_sha": "When merged",
+      "pr_number_from_branch": "Parsed from head_branch when regex matches",
+      "pr_state_merged_closed_at": "state, merged, closed_at, merged_at",
+      "queue_base_parent_sha": "Parsed parent mainline oid embedded in queue branch"
+    },
+    "partially_observable_or_delayed": {
+      "enqueue_position": "MergeQueue GraphQL entries reflect live queue only",
+      "exact_pr_head_at_enqueue": "Unless preserved in branch parent sha + PR metadata",
+      "multi_pr_batch_membership": "Only inferred if branch name lists multiple pr-* segments; often single-PR branches",
+      "runner_minutes_billed": "Not consistently exposed per check"
+    },
+    "schema_version": "1.0",
+    "unobservable_queue_internals": {
+      "flake_retry_policy_parameters": "Org/repo settings not in PR APIs",
+      "per_attempt_blame_or_bisection_labels": "No public authoritative culprit label",
+      "scheduler_batching_decision_log": "Why PRs were or were not co-queued",
+      "speculative_invalidation_dag": "Internal GitHub queue state machine"
+    }
+  },
+  "pull_request_states": {
+    "state=closed merged=True": 43
+  },
+  "queue_identity_coverage": {
+    "runs_with_parseable_branch": 45,
+    "unique_pr_numbers_in_queue_runs": 43
+  },
+  "repository": {
+    "default_base_ref": "main",
+    "full_name": "microsoft/TypeScript",
+    "name": "TypeScript",
+    "owner": "microsoft",
+    "queue_branch_prefix": "gh-readonly-queue/main/",
+    "queue_mechanism": "github_merge_queue"
+  },
+  "schema_version": "1.0",
+  "selection_caveat_count": 8,
+  "window": {
+    "end": "2026-11-17T23:59:59Z",
+    "start": "2026-11-10T00:00:00Z"
+  }
+}

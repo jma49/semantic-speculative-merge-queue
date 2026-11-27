@@ -1,0 +1,27 @@
+{
+  "artifact_sha256": "939f92bb0110702b4b371b45ba55cf4898db25ac08f9e946f6dabaf7f487c579",
+  "command": "python3 eval/historical_ci/harness_v8_historical_ci.py",
+  "dataset_sha256": "1106f7ec8b2462ebf189cce884992835bc3c6ded50990fed49c9b990e16abf1f",
+  "experiment": "v8_historical_ci",
+  "git_commit": "a0b108d6d8fcd58a129ecaaa8b923983be1ad698",
+  "harness_sha256": "e5880f6a726d752e3a0d8d213d3f097762ee105e1a014066b1c428936ec7a7f1",
+  "input_sha256": {
+    "data/historical_ci/raw_records.json": "fb92064f8db428f0a6683316ae86ffee6ec0463c77464e49bb18975a6cf4285e",
+    "eval/historical_ci/sample_spec.json": "0924cb1bbdb280d027b7bb1d3f09246aec263e4fede8881a8ee2c26c6ac7b48d"
+  },
+  "meta": {
+    "inclusion_window": {
+      "end": "2026-11-17T23:59:59Z",
+      "start": "2026-11-10T00:00:00Z"
+    },
+    "repository": "microsoft/TypeScript"
+  },
+  "metrics_file": "metrics.json",
+  "metrics_sha256": "939f92bb0110702b4b371b45ba55cf4898db25ac08f9e946f6dabaf7f487c579",
+  "platform": "macOS-27.2.1-arm64-arm-64bit",
+  "python_version": "3.9.6",
+  "record_count": 45,
+  "run_id": "v8_historical_ci",
+  "schema_version": "8.0",
+  "timestamp_utc": "2026-11-27T14:05:34.867683+00:00"
+}

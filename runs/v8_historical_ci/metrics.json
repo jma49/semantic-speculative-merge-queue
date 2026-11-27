@@ -1,0 +1,12 @@
+{
+  "closed_unmerged_pulls": 0,
+  "fetch_failures": 0,
+  "integration_regression_cases": 1,
+  "merge_group_duration_p50_min": 16.033333333333335,
+  "merge_group_failures": 1,
+  "merge_group_runs_selected": 45,
+  "pull_requests_stored": 43,
+  "run_id": "v8_historical_ci",
+  "schema_version": "8.0",
+  "selection_caveats": 8
+}

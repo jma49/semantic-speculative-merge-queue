@@ -1,0 +1,367 @@
+{
+  "discordant_head_cases": [
+    {
+      "merge_group_head_sha": "b7917e5e4c278f132ed19f777d968b6b1180fc24",
+      "pr_head_sha_at_fetch": "f20c3e4a7dcba6cd0d0d3279ceb0891d2d4829ff",
+      "pr_number": 65319,
+      "queue_base_parent_sha": "bbcbce924a13164ca05f0276f34433925954971c",
+      "workflow_run_id": 42734233149
+    },
+    {
+      "merge_group_head_sha": "df43aada644be309fe8ceee3f1254b6eea25a549",
+      "pr_head_sha_at_fetch": "8a774513cadfdcadce705c0955ddf537eb6c5c2a",
+      "pr_number": 65417,
+      "queue_base_parent_sha": "b7917e5e4c278f132ed19f777d968b6b1180fc24",
+      "workflow_run_id": 42848066471
+    },
+    {
+      "merge_group_head_sha": "08bb5df1d05ab67c6f852b3a174dfd74f1920b2a",
+      "pr_head_sha_at_fetch": "eff47cb7350b3cfeed9ea27e7d7b0daeab981440",
+      "pr_number": 65418,
+      "queue_base_parent_sha": "df43aada644be309fe8ceee3f1254b6eea25a549",
+      "workflow_run_id": 42872295661
+    },
+    {
+      "merge_group_head_sha": "753fc92a62a2ec34a18a88f0d3c337c957207d70",
+      "pr_head_sha_at_fetch": "fa5336a97739b991c7932ea639fc34b3a4fa8d48",
+      "pr_number": 65432,
+      "queue_base_parent_sha": "3195055a3213d894cf7bee40748c8f0cab55c9ae",
+      "workflow_run_id": 42894178085
+    },
+    {
+      "merge_group_head_sha": "1b54f27457a7f8765ff8f5d0d3e2a14ccaae3951",
+      "pr_head_sha_at_fetch": "772a0a375f03d8f821972dddba57a7ebb06fe5f6",
+      "pr_number": 65390,
+      "queue_base_parent_sha": "753fc92a62a2ec34a18a88f0d3c337c957207d70",
+      "workflow_run_id": 42920790242
+    },
+    {
+      "merge_group_head_sha": "330fad80c186cf2b8326c2cc3642fdef71553d53",
+      "pr_head_sha_at_fetch": "2e02f442621e7b53f57788647392b3a0af6fcd27",
+      "pr_number": 65446,
+      "queue_base_parent_sha": "1b54f27457a7f8765ff8f5d0d3e2a14ccaae3951",
+      "workflow_run_id": 43108953605
+    },
+    {
+      "merge_group_head_sha": "056d69edb807d4cd4351059f084a7f191c6aea0f",
+      "pr_head_sha_at_fetch": "4254b94545c7435d3f7788e4957bca108c7f7bf8",
+      "pr_number": 65450,
+      "queue_base_parent_sha": "ad24728023c52ef6a92a278046cdb69621048365",
+      "workflow_run_id": 43259449231
+    },
+    {
+      "merge_group_head_sha": "318d1c6e14ba2337a5caf83752a9060f3af84d1a",
+      "pr_head_sha_at_fetch": "a39b9d3bbdda417dff103fffe950dbf9e82f7e9e",
+      "pr_number": 65463,
+      "queue_base_parent_sha": "056d69edb807d4cd4351059f084a7f191c6aea0f",
+      "workflow_run_id": 43477993959
+    },
+    {
+      "merge_group_head_sha": "c99f21251ba475a65e992e4aede360241283ae5c",
+      "pr_head_sha_at_fetch": "87c6713c55d3db65ae406c97ea4217336f059d18",
+      "pr_number": 65474,
+      "queue_base_parent_sha": "318d1c6e14ba2337a5caf83752a9060f3af84d1a",
+      "workflow_run_id": 43480658030
+    },
+    {
+      "merge_group_head_sha": "d55dd50a4924f50d61bff4183e6b9a696e1a0c9d",
+      "pr_head_sha_at_fetch": "6594ba1a46f93b09a8512a07c8b30f316cabd317",
+      "pr_number": 65477,
+      "queue_base_parent_sha": "c99f21251ba475a65e992e4aede360241283ae5c",
+      "workflow_run_id": 43481752295
+    },
+    {
+      "merge_group_head_sha": "9a658196e45b45065ba423204f46c527eb94aade",
+      "pr_head_sha_at_fetch": "534d1a6590b9ba1ff872100bad05f985ced07d84",
+      "pr_number": 65469,
+      "queue_base_parent_sha": "d55dd50a4924f50d61bff4183e6b9a696e1a0c9d",
+      "workflow_run_id": 43482971540
+    },
+    {
+      "merge_group_head_sha": "745e055078a01c99186a3340e96682ac3f658dba",
+      "pr_head_sha_at_fetch": "c8b80a3f4b463c3e758939f2e3e795a98063f614",
+      "pr_number": 65473,
+      "queue_base_parent_sha": "9a658196e45b45065ba423204f46c527eb94aade",
+      "workflow_run_id": 43482973893
+    },
+    {
+      "merge_group_head_sha": "9dcc3822204e382ee342d97fa77b4acbf10c21b8",
+      "pr_head_sha_at_fetch": "f08eb62478543b5269a1833af43fbdbbc3fbf98e",
+      "pr_number": 65470,
+      "queue_base_parent_sha": "745e055078a01c99186a3340e96682ac3f658dba",
+      "workflow_run_id": 43484222577
+    },
+    {
+      "merge_group_head_sha": "2246758f3625817f2a69baf1c15e71da1c72758c",
+      "pr_head_sha_at_fetch": "7235980fe6ec9462c47ff5485b2f21fc8fd881ab",
+      "pr_number": 65480,
+      "queue_base_parent_sha": "9dcc3822204e382ee342d97fa77b4acbf10c21b8",
+      "workflow_run_id": 43486526001
+    },
+    {
+      "merge_group_head_sha": "f936cf8e6ba729cd9961d7c35e64cf427850d3ea",
+      "pr_head_sha_at_fetch": "460dbc04de4707b436ccd2daf34f50c44f3cb9d6",
+      "pr_number": 65472,
+      "queue_base_parent_sha": "2246758f3625817f2a69baf1c15e71da1c72758c",
+      "workflow_run_id": 43486745663
+    },
+    {
+      "merge_group_head_sha": "43ab5e71163e9792ec37abe1a2f587ae5662730d",
+      "pr_head_sha_at_fetch": "e2bef5fbac4b496bfc5e88a6cb24d0e8590a5f51",
+      "pr_number": 65478,
+      "queue_base_parent_sha": "f936cf8e6ba729cd9961d7c35e64cf427850d3ea",
+      "workflow_run_id": 43486805045
+    },
+    {
+      "merge_group_head_sha": "7d744e3caf0685b4e9bbd118ecb23108114507e8",
+      "pr_head_sha_at_fetch": "24a757cf5158962e85f8bc32df1aeab573d966ed",
+      "pr_number": 65471,
+      "queue_base_parent_sha": "4f1391ecd473340a01f0341840d6bd4ba04ad8f0",
+      "workflow_run_id": 43499810519
+    },
+    {
+      "merge_group_head_sha": "c04e140021f49798f8db9daed5ba347d41f2c355",
+      "pr_head_sha_at_fetch": "e6d792c628e5a96747e24594ed6782ca3d0b63ed",
+      "pr_number": 65288,
+      "queue_base_parent_sha": "7d744e3caf0685b4e9bbd118ecb23108114507e8",
+      "workflow_run_id": 43503521745
+    },
+    {
+      "merge_group_head_sha": "3f953582b84e09f5065db0cb0088c81c9cc6e836",
+      "pr_head_sha_at_fetch": "d10541dbf5da832d18eb1ddbddad34ba36fbcccc",
+      "pr_number": 65481,
+      "queue_base_parent_sha": "006485800f981fd70cfbf56ab92a1e56782b8f7c",
+      "workflow_run_id": 43529593850
+    },
+    {
+      "merge_group_head_sha": "bd5148a891fb61b06ff29f79b68a368cdbb54e8b",
+      "pr_head_sha_at_fetch": "dd12f7bdabdd4ddd6aa7ca37f6e3e5c1394a0978",
+      "pr_number": 65479,
+      "queue_base_parent_sha": "3f953582b84e09f5065db0cb0088c81c9cc6e836",
+      "workflow_run_id": 43529596023
+    },
+    {
+      "merge_group_head_sha": "9f6c5a2aad9f068fbb5ac11523cd2c2c805eecb2",
+      "pr_head_sha_at_fetch": "bd8c3fe61b4f9083817b0679f810603947eb4b8f",
+      "pr_number": 65465,
+      "queue_base_parent_sha": "bd5148a891fb61b06ff29f79b68a368cdbb54e8b",
+      "workflow_run_id": 43529598724
+    },
+    {
+      "merge_group_head_sha": "acd44c388605de5ab0b9aa8138112a60c9f7c49d",
+      "pr_head_sha_at_fetch": "4a4c47ee02b561bed3e78525b8b57f7b4e03968d",
+      "pr_number": 65466,
+      "queue_base_parent_sha": "9f6c5a2aad9f068fbb5ac11523cd2c2c805eecb2",
+      "workflow_run_id": 43529599808
+    },
+    {
+      "merge_group_head_sha": "2244019f63dd796034a86f4024b84685a442736b",
+      "pr_head_sha_at_fetch": "3b9db88f18fae3d9ffdb49457ae2e10f3e81b8a6",
+      "pr_number": 65468,
+      "queue_base_parent_sha": "acd44c388605de5ab0b9aa8138112a60c9f7c49d",
+      "workflow_run_id": 43529635405
+    },
+    {
+      "merge_group_head_sha": "18553021717818e5042f44adbfd706f47d94cab4",
+      "pr_head_sha_at_fetch": "5c673a569cf27880fb0f66f162fd57297817b2d7",
+      "pr_number": 65476,
+      "queue_base_parent_sha": "2244019f63dd796034a86f4024b84685a442736b",
+      "workflow_run_id": 43531196278
+    },
+    {
+      "merge_group_head_sha": "6bdcb54d23f41bc7098c1f3488ac599c75b852ca",
+      "pr_head_sha_at_fetch": "9a3a2107dce10c1ef4acf27a9128aa08bf368e87",
+      "pr_number": 65492,
+      "queue_base_parent_sha": "18553021717818e5042f44adbfd706f47d94cab4",
+      "workflow_run_id": 43534416632
+    },
+    {
+      "merge_group_head_sha": "5e32f3249529c40a56011c583b416ad838ffb682",
+      "pr_head_sha_at_fetch": "498650b0adbffb02b4f3b6fcbd655a569f7fe09b",
+      "pr_number": 65523,
+      "queue_base_parent_sha": "6bdcb54d23f41bc7098c1f3488ac599c75b852ca",
+      "workflow_run_id": 43827890442
+    },
+    {
+      "merge_group_head_sha": "29a3cc977bbd8afce1c4baec08c9495cbad3f802",
+      "pr_head_sha_at_fetch": "60c239086e3cca30fa2b09658549d5f25c74e8f3",
+      "pr_number": 65354,
+      "queue_base_parent_sha": "ef0c06e25aa9265d3e1d69b1282b0c6528426161",
+      "workflow_run_id": 43924040753
+    },
+    {
+      "merge_group_head_sha": "bc541beed160465d6574cb360bef886b357e60bb",
+      "pr_head_sha_at_fetch": "65df522c0978f4c4f8b4ab777ad7819500ebb54d",
+      "pr_number": 65352,
+      "queue_base_parent_sha": "29a3cc977bbd8afce1c4baec08c9495cbad3f802",
+      "workflow_run_id": 43927293484
+    },
+    {
+      "merge_group_head_sha": "3772d1ef3a0224726ffcee38e966119487f5e2a1",
+      "pr_head_sha_at_fetch": "1f9b9e7bd3eb8b17fd1232761b60d4c5480ac8f3",
+      "pr_number": 65467,
+      "queue_base_parent_sha": "bc541beed160465d6574cb360bef886b357e60bb",
+      "workflow_run_id": 43927737570
+    },
+    {
+      "merge_group_head_sha": "68672025cc6f01c845051d9f9b04200b0382942c",
+      "pr_head_sha_at_fetch": "00262615a049d232374a928bd5d4068816ce4275",
+      "pr_number": 65529,
+      "queue_base_parent_sha": "e7e1efd3bc387b38c6dad3c7b36b4d901b45e14d",
+      "workflow_run_id": 43970394222
+    },
+    {
+      "merge_group_head_sha": "87c44d6c7dd13f0a2888c159d45b5d3064917f0d",
+      "pr_head_sha_at_fetch": "f2d7b7226f178c7c00fed067eae8f826e993476e",
+      "pr_number": 65506,
+      "queue_base_parent_sha": "68672025cc6f01c845051d9f9b04200b0382942c",
+      "workflow_run_id": 44128369026
+    },
+    {
+      "merge_group_head_sha": "c73262b74386c46defe294bce1c98d1c4d0c2ba9",
+      "pr_head_sha_at_fetch": "5d163c2259acc312d2fef4862d7a60177b000226",
+      "pr_number": 65495,
+      "queue_base_parent_sha": "87c44d6c7dd13f0a2888c159d45b5d3064917f0d",
+      "workflow_run_id": 44147047291
+    },
+    {
+      "merge_group_head_sha": "6f229dad8e0ddfee11d20d616b79e5faa3997ae1",
+      "pr_head_sha_at_fetch": "f808078f402c3c1d069f68e109bd6fbcb4b30a9b",
+      "pr_number": 65528,
+      "queue_base_parent_sha": "c73262b74386c46defe294bce1c98d1c4d0c2ba9",
+      "workflow_run_id": 44149855989
+    },
+    {
+      "merge_group_head_sha": "64a453062389eccb5b921da56687e95a0c5a6943",
+      "pr_head_sha_at_fetch": "a8759b20a29087b62e52ea04643f5c5cd0cdcfe3",
+      "pr_number": 65551,
+      "queue_base_parent_sha": "6f229dad8e0ddfee11d20d616b79e5faa3997ae1",
+      "workflow_run_id": 44157239853
+    },
+    {
+      "merge_group_head_sha": "c823de7235bc795058ef28ecf11e0a03e0128a69",
+      "pr_head_sha_at_fetch": "aa3ae5fc0a92a4d556751adc6fe75a68d96057dc",
+      "pr_number": 65550,
+      "queue_base_parent_sha": "64a453062389eccb5b921da56687e95a0c5a6943",
+      "workflow_run_id": 44161307086
+    },
+    {
+      "merge_group_head_sha": "be7b4fec65ab12fddc4d3dcf1ff8c6421501b74d",
+      "pr_head_sha_at_fetch": "64b8ed0e4cbc5d49127a780352e55c6844127455",
+      "pr_number": 65500,
+      "queue_base_parent_sha": "c823de7235bc795058ef28ecf11e0a03e0128a69",
+      "workflow_run_id": 44166309896
+    },
+    {
+      "merge_group_head_sha": "cb66b62936b30e3b70eae63aca621f12ba1451ac",
+      "pr_head_sha_at_fetch": "cc40e9dd74c1e46cc9875b83fddc6ea574556473",
+      "pr_number": 65499,
+      "queue_base_parent_sha": "21ba970871efd2766ee46813d0bb67253e7878fa",
+      "workflow_run_id": 44175056042
+    },
+    {
+      "merge_group_head_sha": "e428efe5194d02f84be47006dc8b08cf896ab955",
+      "pr_head_sha_at_fetch": "3ae3f7a2322eb615a1eda2337f2368d32be50135",
+      "pr_number": 65464,
+      "queue_base_parent_sha": "cb66b62936b30e3b70eae63aca621f12ba1451ac",
+      "workflow_run_id": 44177609835
+    },
+    {
+      "merge_group_head_sha": "aaca0a466f8d41e9a6446b60a4bc0cc8354bca79",
+      "pr_head_sha_at_fetch": "3ae3f7a2322eb615a1eda2337f2368d32be50135",
+      "pr_number": 65464,
+      "queue_base_parent_sha": "21ba970871efd2766ee46813d0bb67253e7878fa",
+      "workflow_run_id": 44178255484
+    },
+    {
+      "merge_group_head_sha": "10eae76e2336079679a31f94fca8774334e04e76",
+      "pr_head_sha_at_fetch": "cc40e9dd74c1e46cc9875b83fddc6ea574556473",
+      "pr_number": 65499,
+      "queue_base_parent_sha": "aaca0a466f8d41e9a6446b60a4bc0cc8354bca79",
+      "workflow_run_id": 44178661554
+    },
+    {
+      "merge_group_head_sha": "aacfe85418fb7d9dd76bca79e008f818d64cbe3e",
+      "pr_head_sha_at_fetch": "6703c9ce67aff6b4705d6f1f380f0573b8ef785f",
+      "pr_number": 65489,
+      "queue_base_parent_sha": "10eae76e2336079679a31f94fca8774334e04e76",
+      "workflow_run_id": 44180955233
+    },
+    {
+      "merge_group_head_sha": "3898ae1001a2b3c813158e3a675c8694d7f4d30b",
+      "pr_head_sha_at_fetch": "cea79fb395b3be8625b5d63eb6d1b682df65231d",
+      "pr_number": 65475,
+      "queue_base_parent_sha": "aacfe85418fb7d9dd76bca79e008f818d64cbe3e",
+      "workflow_run_id": 44180958512
+    },
+    {
+      "merge_group_head_sha": "53e665f94d5dad40ce64ab573fb6e28d6a305224",
+      "pr_head_sha_at_fetch": "01aa517119c24846fcf9a8d5d4ec278d2abfb63d",
+      "pr_number": 65490,
+      "queue_base_parent_sha": "3898ae1001a2b3c813158e3a675c8694d7f4d30b",
+      "workflow_run_id": 44181430485
+    },
+    {
+      "merge_group_head_sha": "1188c91a186786ce9e55c9a6710783c2a4125d30",
+      "pr_head_sha_at_fetch": "4f09010ce7d6ba4c2b957eff0d9a1c3ea0d99176",
+      "pr_number": 65491,
+      "queue_base_parent_sha": "53e665f94d5dad40ce64ab573fb6e28d6a305224",
+      "workflow_run_id": 44181873738
+    },
+    {
+      "merge_group_head_sha": "0f7a5378866a644e86ce1a491c3f7533a660c42f",
+      "pr_head_sha_at_fetch": "085e74cf04d68cbcd8e74abc3c229f7cd0c0eb9c",
+      "pr_number": 65537,
+      "queue_base_parent_sha": "1188c91a186786ce9e55c9a6710783c2a4125d30",
+      "workflow_run_id": 44184913515
+    }
+  ],
+  "errata": [
+    "merge_group_runs_scanned=690 counts all REST pages for event=merge_group before client-side time filter; it is not the in-window total.",
+    "merge_group_runs_selected=45 requires created_at in [2026-11-10T00:00:00Z, 2026-11-17T23:59:59Z], parseable queue branch, and PR in [65250, 65680].",
+    "selection_caveats excluded_pr_outside_window=8 are runs inside the time window whose parsed PR number falls outside [65250, 65680] (not calendar out-of-range).",
+    "pr_head_sha_at_fetch in historical_ci is REST pulls/{n}.head.sha at collection time; it may differ from the SHA tested by merge_group for the same episode.",
+    "failure_attribution_assay integration_regression labels require comparable heads; see queue_events_v8 alignment for discordant-head guardrails.",
+    "ERRATUM: all 45 selected merge_group runs have merge_group_head_sha != pr_head_sha_at_fetch; integration_regression_assay cases must not be read as independently attributable semantic regressions without enqueue-time head alignment."
+  ],
+  "historical_ci_run_id": "v8_historical_ci",
+  "historical_ci_spec_path": "eval/historical_ci/sample_spec.json",
+  "ledger": {
+    "caveat_prefix_counts": {
+      "excluded_pr_outside_window": 8
+    },
+    "excluded_pr_outside_number_window": {
+      "count": 8,
+      "pr_numbers": [
+        64385,
+        65026,
+        65030,
+        64085,
+        64396,
+        64396,
+        65047,
+        65022
+      ],
+      "workflow_run_ids": [
+        "44172678383",
+        "43930801753",
+        "43895668318",
+        "43507503747",
+        "43496836555",
+        "43494680011",
+        "43120457437",
+        "42878823141"
+      ]
+    },
+    "in_window_not_in_selected_approximation": "scanned_total_minus_selected_minus_excluded_pr_caveats is dominated by runs outside the calendar window (not logged per-run in raw_records).",
+    "merge_group_runs_scanned_api_total": 690,
+    "merge_group_runs_selected": 45,
+    "selection_caveat_total": 8
+  },
+  "schema_version": "1.0",
+  "seal_preservation": {
+    "data/historical_ci/raw_records.json": "unchanged",
+    "note": "This ledger is additive evidence only.",
+    "runs/v8_historical_ci/manifest.json": "unchanged"
+  }
+}

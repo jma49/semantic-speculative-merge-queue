@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0",
+  "observed_via_public_github_api": {
+    "merge_group_workflow_run_id": "Actions workflow run id for event=merge_group",
+    "merge_group_head_sha": "Synthetic merge-group commit tested by CI",
+    "merge_group_head_branch": "gh-readonly-queue/main/pr-<n>-<parent_sha>",
+    "merge_group_conclusion": "success|failure|cancelled|...",
+    "merge_group_created_updated_times": "UTC timestamps on the workflow run",
+    "pr_number_from_branch": "Parsed from head_branch when regex matches",
+    "queue_base_parent_sha": "Parsed parent mainline oid embedded in queue branch",
+    "pr_head_sha_at_fetch": "REST pulls/{n}.head.sha at collection time",
+    "pr_base_ref_at_fetch": "REST pulls/{n}.base.ref",
+    "pr_merge_commit_sha": "When merged",
+    "pr_state_merged_closed_at": "state, merged, closed_at, merged_at",
+    "check_runs_on_merge_group_head": "Named checks with conclusions and durations",
+    "check_runs_on_pr_head_at_fetch": "Named checks on PR head at fetch time (not necessarily pre-queue)"
+  },
+  "partially_observable_or_delayed": {
+    "multi_pr_batch_membership": "Only inferred if branch name lists multiple pr-* segments; often single-PR branches",
+    "enqueue_position": "MergeQueue GraphQL entries reflect live queue only",
+    "exact_pr_head_at_enqueue": "Unless preserved in branch parent sha + PR metadata",
+    "runner_minutes_billed": "Not consistently exposed per check"
+  },
+  "unobservable_queue_internals": {
+    "scheduler_batching_decision_log": "Why PRs were or were not co-queued",
+    "speculative_invalidation_dag": "Internal GitHub queue state machine",
+    "per_attempt_blame_or_bisection_labels": "No public authoritative culprit label",
+    "flake_retry_policy_parameters": "Org/repo settings not in PR APIs"
+  },
+  "attribution_assay_eligibility": {
+    "independent_comparison_available": "Pair push/workflow CI on PR head vs merge_group CI on synthetic head for same normalized check names",
+    "ground_truth_culprit_pr": "Not observable; assays use differential check outcomes only"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "errata": [
+    "merge_group_runs_scanned=690 counts all REST pages for event=merge_group before client-side time filter; it is not the in-window total.",
+    "merge_group_runs_selected=45 requires created_at in [2026-11-10T00:00:00Z, 2026-11-17T23:59:59Z], parseable queue branch, and PR in [65250, 65680].",
+    "selection_caveats excluded_pr_outside_window=8 are runs inside the time window whose parsed PR number falls outside [65250, 65680] (not calendar out-of-range).",
+    "pr_head_sha_at_fetch in historical_ci is REST pulls/{n}.head.sha at collection time; it may differ from the SHA tested by merge_group for the same episode.",
+    "failure_attribution_assay integration_regression labels require comparable heads; see queue_events_v8 alignment for discordant-head guardrails.",
+    "ERRATUM: all 45 selected merge_group runs have merge_group_head_sha != pr_head_sha_at_fetch; integration_regression_assay cases must not be read as independently attributable semantic regressions without enqueue-time head alignment."
+  ],
+  "discordant_head_count": 45
+}
