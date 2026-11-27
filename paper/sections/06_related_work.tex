@@ -5,8 +5,8 @@ Table~\ref{tab:related_taxonomy} positions SSMQ relative to prior merge-queue an
 
 \begin{table*}[t]
 \centering
-\footnotesize
-\setlength{\tabcolsep}{6pt}
+\scriptsize
+\setlength{\tabcolsep}{4.5pt}
 \caption{Qualitative Comparison of Merge Queue \& CI Verification Paradigms.}
 \label{tab:related_taxonomy}
 \begin{tabular}{lcccc}
@@ -18,7 +18,7 @@ Linear Trains (GitLab Merge Trains) & None (FIFO) & Linear prefix train & None &
 SubmitQueue (Uber~\cite{ananthanarayanan2019keeping}) & Conflict graph + risk model & Dependency-aware outcome tree & Implicit & Outcome-tree branch split \\
 Flake-Aware Bisection~\cite{henderson2023flake} & None (FIFO) & Post-submit culprit search & Bayesian & Noisy binary bisection \\
 Predictive Test Selection~\cite{machalica2019predictive,jin2023hybridcisave} & Test granularity & Single-PR build pruning & Orthogonal & N/A (composable) \\
-\textbf{SSMQ (Ours)} & \textbf{Warm-Up Cone-Disjoint ($\hat{G}$)} & \textbf{Risk-Stratified Multi-Lane} & \textbf{2-Regime Beta-Binomial} & \textbf{1-Step AST/Stack + Fallback} \\
+\textbf{SSMQ (Ours)} & \textbf{Cone-Disjoint ($\hat{G}$)} & \textbf{Risk-Stratified Lanes} & \textbf{2-Regime Beta-Binomial} & \textbf{1-Step AST + Fallback} \\
 \bottomrule
 \end{tabular}
 \end{table*}
