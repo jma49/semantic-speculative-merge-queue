@@ -1,0 +1,40 @@
+% AUTO-GENERATED FROM v3_exp6_flaky_sweep — DO NOT EDIT
+\begin{figure*}[t]
+\centering
+\begin{tikzpicture}
+\begin{groupplot}[
+  group style={group size=2 by 1, horizontal sep=1.5cm},
+  width=0.47\textwidth, height=4.7cm,
+  ymajorgrids=true, xmajorgrids=true, grid style={dashed,gray!30},
+  tick label style={font=\footnotesize},
+  label style={font=\footnotesize},
+  title style={font=\footnotesize\bfseries},
+  every axis plot/.append style={thick, mark size=2.3pt},
+]
+\nextgroupplot[title={(a) Clean-PR False Rejection vs.\ Suite Flakiness},
+  xlabel={Transient Flakiness Rate $\phi$ (\%)}, ylabel={Clean-PR False Rejection (\%) $\downarrow$},
+  xtick={0,2,5,10,15}, xmin=-0.5, xmax=15.8, ymin=0, ymax=10.5,
+  legend to name=legFlaky, legend columns=4, legend style={font=\footnotesize, draw=none, /tikz/every even column/.style={column sep=8pt}}]
+\addplot[color=ssmqBlue, mark=square*] coordinates { (0,0.00) (2,0.77) (5,1.64) (10,2.23) (15,2.73) }; \addlegendentry{SSMQ (Ours)}
+\addplot[color=ssmqRed, mark=triangle*, dashed] coordinates { (0,0.00) (2,0.93) (5,2.56) (10,5.34) (15,8.05) }; \addlegendentry{SSMQ-NoFlaky}
+\addplot[color=ssmqGray, mark=o, dotted] coordinates { (0,0.00) (2,0.76) (5,1.96) (10,4.43) (15,6.78) }; \addlegendentry{StaticBatch}
+\addplot[color=ssmqPurple, mark=diamond*, dashdotted] coordinates { (0,0.00) (2,0.00) (5,0.12) (10,0.43) (15,0.95) }; \addlegendentry{FlakeBatch}
+\nextgroupplot[title={(b) Latency--Acceptance Pareto Frontier ($\phi=10\%$)},
+  xlabel={P95 Merge Latency (min) $\downarrow$}, ylabel={Clean-PR False Rejection (\%) $\downarrow$},
+  xmin=50, xmax=350, ymin=-0.2, ymax=6.8]
+\addplot[color=ssmqBlue!45, dashed, thin, forget plot] coordinates { (70.1,5.34) (96.4,2.23) (238.8,0.43) };
+\addplot[only marks, color=ssmqRed, mark=triangle*, mark size=3.2pt] coordinates { (70.1,5.34) };
+\node[font=\scriptsize\bfseries, anchor=south west, inner sep=3pt, text=ssmqRed!85!black] at (axis cs:70.1,5.34) {NoFlaky};
+\addplot[only marks, color=ssmqBlue, mark=square*, mark size=3.2pt] coordinates { (96.4,2.23) };
+\node[font=\scriptsize\bfseries, anchor=south west, inner sep=3pt, text=ssmqBlue!85!black] at (axis cs:96.4,2.23) {SSMQ};
+\addplot[only marks, color=ssmqGray, mark=o, mark size=3.2pt] coordinates { (122.3,4.43) };
+\node[font=\scriptsize\bfseries, anchor=south, inner sep=3pt, text=ssmqGray!85!black] at (axis cs:122.3,4.43) {Static};
+\addplot[only marks, color=ssmqPurple, mark=diamond*, mark size=3.2pt] coordinates { (238.8,0.43) };
+\node[font=\scriptsize\bfseries, anchor=south east, inner sep=3pt, text=ssmqPurple!85!black] at (axis cs:238.8,0.43) {FlakeBatch};
+\node[font=\scriptsize, anchor=north east, fill=ssmqBlue!8, draw=ssmqBlue!50, inner sep=2.5pt] at (axis cs:342,6.4) {Better: Lower-Left $\swarrow$};
+\end{groupplot}
+\node at ($(group c1r1.north)!0.5!(group c2r1.north)+(0,0.85cm)$) {\pgfplotslegendfromname{legFlaky}};
+\end{tikzpicture}
+\caption{Flakiness sensitivity ($\phi\in[0\%,15\%]$) and latency--acceptance Pareto frontier at $\phi=10\%$. Two-regime Beta-Binomial gating positions SSMQ on the Pareto knee, slashing clean-PR false rejections relative to \texttt{SSMQ-NoFlaky} and \texttt{StaticBatchBisect} while avoiding the tail-latency explosion of unconditional full-batch retries (\texttt{FlakeAwareBatch}).}
+\label{fig:flaky_pareto}
+\end{figure*}

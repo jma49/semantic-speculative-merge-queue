@@ -1,4 +1,0 @@
-\section{Conclusion}
-\label{sec:conclusion}
-
-High-velocity software delivery exposes the fragility of semantics-blind FIFO merge queues. We presented \textbf{SSMQ (Semantic Speculative Merge Queue)}, unifying warm-up dependency-graph disjoint batching, two-regime Beta-Binomial flaky gating, and fail-safe AST/traceback 1-step causal blame attribution. Across \BenchTotalBatches{} real executed Python multi-PR failure batches (\BenchASTTopOnePct{}\% Top-1 in \BenchASTMs{}~ms) and \TotalSealedRecords{} SHA-256-sealed discrete-event replays over 600 real open-source PRs with \TotalEscapedDefects{} cumulative mainline escapes, SSMQ delivers statistically significant reductions in P95 merge latency and CI compute over static batching, linear speculative trains, EuroSys~'19 outcome-tree SubmitQueue, and fixed flaky-retry batching---holding across all three repositories and even when $60\%$ of true semantic conflicts lie outside the scheduler's dependency graph.

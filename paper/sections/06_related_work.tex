@@ -1,0 +1,36 @@
+\section{Related Work}
+\label{sec:related}
+
+We situate SSMQ across four research threads and contrast its architectural capabilities with prior merge-queue paradigms in Table~\ref{tab:related_taxonomy}.
+
+\begin{table}[t]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{2.5pt}
+\caption{Qualitative Comparison of Merge Queue \& CI Verification Paradigms.}
+\label{tab:related_taxonomy}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{System / Paradigm} & \textbf{Dep.-Aware} & \textbf{Spec./Batch} & \textbf{Flaky Gate} & \textbf{Causal Blame} \\
+\midrule
+Static Batch (Bors~\cite{fallahzadeh2023accelerating}) & No (FIFO) & Static $K$ & None & $O(\log K)$ Bisect \\
+Linear Trains (GitLab) & No (FIFO) & Linear Prefix & None & Head Abort \\
+SubmitQueue~\cite{ananthanarayanan2019keeping} & Risk only & Outcome Tree & Implicit & Tree Split \\
+Flake Bisect~\cite{henderson2023flake} & No (FIFO) & Post-submit & Bayesian & Noisy Bisect \\
+PTS / RTS~\cite{machalica2019predictive,jin2023hybridcisave} & Test level & Single PR & Orthogonal & N/A \\
+\textbf{SSMQ (Ours)} & \textbf{Cone-Disjoint} & \textbf{Multi-Lane} & \textbf{2-Regime Beta} & \textbf{1-Step AST} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{CI Merge Queues, Batching, and Prioritization.}
+Large-scale empirical studies document how CI transforms PR velocity and review dynamics while introducing queue congestion and compute overhead~\cite{hilton2016usage,zhao2017impact,bernardo2023impact,wessel2023github}. To scale mainline integration, Google's TAP~\cite{elbaum2014techniques,memon2017taming} introduced regression batching and test throttling, Uber's SubmitQueue~\cite{ananthanarayanan2019keeping} pioneered speculative outcome trees to keep monorepo mainlines green, and Meta~\cite{juloori2025scale} engineered lean merge pipelines. Follow-up studies refined failure-aware dynamic batching~\cite{bavand2021mining}, parallel batch testing with bisection~\cite{fallahzadeh2023accelerating}, commit-risk-guided bisection~\cite{najafi2019bisecting}, and PR prioritization to maximize queue throughput~\cite{jungwirth2025improving}. Complementary test-selection systems reduce per-build cost via transition analysis~\cite{leong2019assessing}, Facebook's Predictive Test Selection~\cite{machalica2019predictive}, reinforcement learning~\cite{spieker2017reinforcement}, hybrid build/test prediction~\cite{jin2023hybridcisave}, and pipeline-aware optimization~\cite{schwendner2025practical}. Unlike per-PR test selection or FIFO batching, SSMQ operates at the \emph{PR batch composition} layer using warm-up dependency-cone disjointness, making it fully orthogonal and composable with regression test selection.
+
+\textbf{Flaky Tests and Noisy Culprit Finding.}
+Longitudinal empirical studies demonstrate that flaky tests are pervasive across unit, integration, and UI suites~\cite{luo2014empirical,lam2020large,romano2021empirical,tahir2023test} and frequently co-occur in systemic bursts~\cite{parry2025systemic}. Detection tools such as DeFlaker~\cite{bell2018laker} and iDFlakies~\cite{lam2019idflakies} identify flaky tests through differential coverage and execution-order perturbation. For post-failure attribution, Ziftci and Reardon~\cite{ziftci2017broke} automated culprit finding at Google scale, and Henderson et al.~\cite{henderson2023flake} introduced flake-aware Bayesian noisy bisection. SSMQ brings conjugate Beta-Binomial flakiness tracking directly into pre-merge queue control with asymmetric singleton vs.\ multi-PR thresholds, explicitly optimizing the latency--false-rejection Pareto frontier.
+
+\textbf{Semantic Merge Conflicts and Change Impact Analysis.}
+Prior research has modeled merge conflict prediction from commit history~\cite{owhadikareshk2019predicting}, leveraged PR-level change impact analysis to prioritize code review~\cite{gmen2025enhanced}, and applied neural transformers and pre-trained language models to resolve textual and semantic merge conflicts after they arise~\cite{zhang2022trained,svyatkovskiy2022program}. Rather than repairing conflicts reactively after CI breaks, SSMQ uses warm-up co-change and module cones proactively to avoid bundling conflicting PRs inside the same batch while safely re-verifying isolated PRs on failure.
+
+\textbf{Fault Localization and Traceback Attribution.}
+Classical spectrum-based fault localization (SBFL) techniques such as Tarantula~\cite{jones2005empirical} and Ochiai~\cite{abreu2009practical} rank suspicious statements from full coverage matrices, while recent approaches fine-tune LLMs on stack traces for fault localization~\cite{jambigi2025fault}. In high-velocity merge queues, collecting per-test coverage matrices or invoking multi-second LLM inference on every CI failure is costly. SSMQ's \texttt{ASTStackCausalRanker} leverages zero-instrumentation Python AST diffs and 1-hop traceback call-graph reachability to localize batch culprits in \BenchASTMs{}~ms with deterministic bisection fallback.

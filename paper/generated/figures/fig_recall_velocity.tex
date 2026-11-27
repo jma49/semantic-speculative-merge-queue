@@ -1,0 +1,37 @@
+% AUTO-GENERATED FROM v3_exp5_graph_recall & v3_exp3_velocity — DO NOT EDIT
+\begin{figure*}[t]
+\centering
+\begin{tikzpicture}
+\begin{groupplot}[
+  group style={group size=2 by 1, horizontal sep=1.5cm},
+  width=0.47\textwidth, height=4.7cm,
+  ymajorgrids=true, xmajorgrids=true, grid style={dashed,gray!30},
+  tick label style={font=\footnotesize},
+  label style={font=\footnotesize},
+  title style={font=\footnotesize\bfseries},
+  every axis plot/.append style={thick, mark size=2.2pt},
+]
+\nextgroupplot[title={(a) Non-Circularity: Off-Graph Latent Conflicts},
+  xlabel={Observed Graph Recall $\rho$ (\%)}, ylabel={P95 Latency (min) $\downarrow$},
+  xtick={40,60,80,100}, xmin=35, xmax=105, ymin=0, ymax=480,
+  legend to name=legRecVel, legend columns=5, legend style={font=\footnotesize, draw=none, /tikz/every even column/.style={column sep=6pt}}]
+\addplot[color=ssmqBlue, mark=square*] coordinates { (40,111.06) (60,93.88) (80,79.47) (100,69.29) }; \addlegendentry{SSMQ (Ours)}
+\addplot[color=ssmqGray, mark=triangle*, dashed] coordinates { (40,148.65) (60,135.19) (80,121.89) (100,112.14) }; \addlegendentry{StaticBatch}
+\addplot[color=ssmqOrange, mark=diamond*, dotted] coordinates { (40,442.26) (60,388.00) (80,342.68) (100,307.32) }; \addlegendentry{UberTree}
+\addplot[color=ssmqTeal, mark=o, dashdotted] coordinates { (40,49.50) (100,49.50) }; \addlegendentry{SSMQ ($P_c=0$)}
+\addplot[color=black!60, mark=none, densely dotted] coordinates { (40,43.73) (100,43.73) }; \addlegendentry{Static ($P_c=0$)}
+\nextgroupplot[title={(b) Arrival Velocity Scaling ($1\times$--$10\times$)},
+  xlabel={Offered Velocity Multiplier ($\times$)}, ylabel={Merge Throughput (PRs/hr) $\uparrow$},
+  xtick={1,3,5,10}, xmin=0.5, xmax=10.5, ymin=0, ymax=28]
+\addplot[color=ssmqBlue, mark=square*] coordinates { (1,4.44) (3,12.57) (5,17.78) (10,24.10) };
+\addplot[color=ssmqGray, mark=triangle*, dashed] coordinates { (1,4.39) (3,11.84) (5,16.05) (10,21.34) };
+\addplot[color=ssmqOrange, mark=diamond*, dotted] coordinates { (1,4.37) (3,8.55) (5,10.27) (10,10.97) };
+\addplot[color=ssmqPurple, mark=pentagon*] coordinates { (1,4.52) (3,10.06) (5,12.57) (10,14.79) };
+\addplot[color=ssmqRed, mark=x, dashdotted] coordinates { (1,3.50) (3,5.26) (5,5.37) (10,5.39) };
+\node[font=\scriptsize, anchor=north west, fill=white, fill opacity=0.85, text opacity=1, draw=gray!40, inner sep=2pt] at (axis cs:0.8,26.8) {Purple: FlakeBatch \quad Red: SpecLinear};
+\end{groupplot}
+\node at ($(group c1r1.north)!0.5!(group c2r1.north)+(0,0.85cm)$) {\pgfplotslegendfromname{legRecVel}};
+\end{tikzpicture}
+\caption{(a) Non-circularity verification under decoupled off-graph latent conflicts ($40\%$--$100\%$ graph recall) and zero-conflict control ($P_c=0$): SSMQ retains substantial latency reductions even when $60\%$ of conflicts lie outside $\hat{G}$. (b) Throughput scaling under $1\times$--$10\times$ PR arrival bursts.}
+\label{fig:recall_velocity}
+\end{figure*}

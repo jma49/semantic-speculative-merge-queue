@@ -1,0 +1,39 @@
+\section{Background, Trace Evidence, and Motivation}
+\label{sec:background}
+
+\subsection{Anatomy of Merge Queue Failures at High Velocity}
+Modern repositories decouple code review from mainline integration through automated merge queues. Once a PR receives human approval and passes pre-submit checks on its branch head, it enters the merge queue to verify that combining the PR with the latest mainline snapshot keeps tests green. Three production paradigms dominate practice:
+\begin{enumerate}
+    \item \textbf{Static FIFO Batching with Bisection} (e.g., Bors, GitHub Merge Queue~\cite{fallahzadeh2023accelerating}): Collects up to $K$ consecutive FIFO PRs into one merge commit; if CI fails, recursively bisects the batch in $O(\log_2 K)$ rounds to isolate the culprit.
+    \item \textbf{Linear Speculative Trains} (e.g., GitLab Merge Trains): Spawns concurrent CI jobs for cumulative prefixes $P_1, P_1 \cup P_2, \dots, P_1 \cup \dots \cup P_D$. When prefix $k$ fails, all speculative descendants $k+1 \dots D$ are aborted and restarted from scratch.
+    \item \textbf{Outcome-Tree Speculation} (e.g., Uber's SubmitQueue~\cite{ananthanarayanan2019keeping}): Models pass/fail probabilities to speculatively execute \emph{both} pass branches and failure-recovery branches across available runners, ranking candidate tree nodes by expected merges per CI minute.
+\end{enumerate}
+
+All three designs treat queued PRs as semantically opaque. However, when two PRs touch coupled modules, they risk \emph{semantic merge conflicts} (clean textual merge followed by behavioral test failure)~\cite{owhadikareshk2019predicting,zhang2022trained}. Unlike single-PR defects, a pairwise conflict between $p_a$ and $p_b$ triggers a deceptive failure pattern: the combined batch fails, yet re-running $p_a$ or $p_b$ alone passes after sequential rebase (unless the conflict represents a persistent contract incompatibility against mainline). Meanwhile, non-deterministic \emph{flaky tests}~\cite{luo2014empirical,lam2020large,parry2025systemic} induce false failures on clean batches. If the queue immediately bisects without flaky awareness, a flaky singleton is falsely rejected, forcing developers to re-enter the queue; conversely, blindly retrying every failing multi-PR batch wastes substantial CI compute on deterministic defects~\cite{henderson2023flake}.
+
+\subsection{Empirical Characterization of 600 Real OSS Pull Requests}
+To ground SSMQ's design in realistic repository topology rather than synthetic Zipfian file draws, we mined 600 chronologically merged PRs via GitHub GraphQL (200 consecutive merged PRs each from \texttt{kubernetes/kubernetes}, \texttt{microsoft/TypeScript}, and \texttt{vercel/next.js}, spanning high-velocity infrastructure, compiler, and full-stack web monorepos). Table~\ref{tab:trace_summary} summarizes the structural properties of each trace.
+
+\input{generated/tables/trace_summary.tex}
+
+Two striking empirical regularities emerge across all three codebases:
+\begin{itemize}
+    \item \textbf{Universal FIFO Module Collisions}: Every consecutive 8-PR FIFO window (\TraceFifoOverlapPct{}\% across all three repositories) contains at least two PRs editing the same two-level directory module. Even in repositories spanning over a thousand unique files (\texttt{next.js}: 1,460 files; \texttt{TypeScript}: 1,007 files), temporal burstiness and hotspot concentration (Gini coefficients $0.21$--$0.39$) cause sequential PRs to collide routinely.
+    \item \textbf{Abundant Non-FIFO Disjointness}: Despite universal FIFO collisions, looking slightly ahead in the queue uncovers mutually disjoint 4-PR batches in \TraceNextDisjPct{}\% of rolling windows on \texttt{next.js} and \TraceKbsDisjPct{}\% on \texttt{kubernetes}, dropping to \TraceTSDisjPct{}\% on the tightly coupled \texttt{TypeScript} compiler core (where most changes converge on \texttt{tsc/internal/checker}). This structural asymmetry proves that \emph{FIFO order creates avoidable collisions} that a dependency-aware packer can eliminate without delaying merges.
+\end{itemize}
+
+\input{figures/fig_motivating_example.tex}
+
+\subsection{Real-Trace Motivating Example}
+Figure~\ref{fig:motivating} illustrates a concrete 5-PR window mined directly from our \texttt{kubernetes/kubernetes} evaluation slice (PRs \#144379, \#144378, \#144133, \#144205, and \#144345). In arrival order, PR \#144379 (\texttt{test/e2e\_node/node\_container\_manager\_test.go}) is immediately followed by PR \#144378 (\texttt{test/e2e\_node/device\_plugin\_test.go} and \texttt{test/e2e/common/node/pod\_level\_resources.go}), creating a direct module collision on \texttt{test/e2e\_node}. Under conventional FIFO batching (Figure~\ref{fig:motivating}(a)), bundling these two colliding PRs with orthogonal PRs \#144133 (\texttt{staging/src/.../cacher.go}) and \#144205 (\texttt{pkg/scheduler/eventhandlers.go}) exposes the entire 4-PR batch to semantic conflict; a single failure blocks innocent PRs \#144133 and \#144205 across multiple bisection rounds and aborts any downstream speculative train. A similar back-to-back hotspot collision occurs in our \texttt{microsoft/TypeScript} trace, where PRs \#65529 and \#65506 both modify \texttt{tsc/internal/checker/checker.go} consecutively right ahead of orthogonal build and documentation PRs (\#65528, \#65551, \#65550).
+
+In contrast, SSMQ (Figure~\ref{fig:motivating}(b)) inspects its warm-up impact graph $\hat{G}$, defers colliding PR \#144378 out of the fast lane, and packs four mutually disjoint PRs (\#144379, \#144133, \#144205, \#144345) into a clean fast-lane batch that merges in a single CI round. Crucially, PR \#144378 is immediately tagged for the \emph{protected lane} ($K \le 2$), guaranteeing bounded wait time without starvation while isolating its potential interaction from innocent fast-lane traffic.
+
+\subsection{Design Requirements}
+Motivated by Eq.~\eqref{eq:survival} and our trace audit, a production-grade semantic merge queue must satisfy four requirements:
+\begin{description}
+    \item[\textbf{R1 (Leak-Free Dependency Awareness)}:] Impact cones must be learned strictly from past merged history without peeking at future commits or assuming $100\%$ recall over hidden cross-module semantic couplings.
+    \item[\textbf{R2 (Cumulative Mainline Safety)}:] No PR or batch may ever land without a passing CI verification against the current cumulative mainline state, including re-verification if a concurrent merge introduces a persistent conflict.
+    \item[\textbf{R3 (Starvation-Free Isolation)}:] Deferring colliding or high-risk PRs out of fast-lane batches must never starve hotspot contributors.
+    \item[\textbf{R4 (Low-Overhead, Flake-Safe Recovery)}:] Failure recovery must protect innocent PRs from flaky false rejections while isolating real culprits faster than blind bisection without incurring multi-second LLM inference stalls on every CI failure.
+\end{description}

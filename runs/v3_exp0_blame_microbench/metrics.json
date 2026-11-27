@@ -1,0 +1,1330 @@
+{
+  "summary": {
+    "total_failing_batches": 64,
+    "single_defect_batches": 24,
+    "cofile_distractor_batches": 16,
+    "semantic_conflict_batches": 24,
+    "ast_stack_top1_acc": 0.9375,
+    "ast_stack_top2_acc": 1.0,
+    "ast_stack_mrr": 0.9688,
+    "ast_stack_mean_ms": 2.247,
+    "ast_stack_cofile_top1_acc": 1.0,
+    "ast_stack_sem_top1_acc": 1.0,
+    "file_overlap_top1_acc": 0.6875,
+    "file_overlap_top2_acc": 1.0,
+    "file_overlap_mrr": 0.8438,
+    "file_overlap_mean_ms": 0.013,
+    "file_overlap_cofile_top1_acc": 0.0,
+    "file_overlap_sem_top1_acc": 1.0,
+    "churn_risk_top1_acc": 0.0,
+    "churn_risk_top2_acc": 0.0938,
+    "random_top1_acc": 0.2656,
+    "random_top2_acc": 0.4844
+  },
+  "records": [
+    {
+      "case_id": 0,
+      "kind": "single_defect",
+      "batch_size": 4,
+      "culprits": [
+        "bug_pricing_mult"
+      ],
+      "ast_top1": "bug_pricing_mult",
+      "ast_top2": [
+        "bug_pricing_mult",
+        "clean_auth_lead"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.006,
+      "file_top1": "bug_pricing_mult",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.015
+    },
+    {
+      "case_id": 1,
+      "kind": "single_defect",
+      "batch_size": 8,
+      "culprits": [
+        "bug_pricing_mult"
+      ],
+      "ast_top1": "bug_pricing_mult",
+      "ast_top2": [
+        "bug_pricing_mult",
+        "clean_checkout_meta"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.722,
+      "file_top1": "bug_pricing_mult",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.015
+    },
+    {
+      "case_id": 2,
+      "kind": "single_defect",
+      "batch_size": 4,
+      "culprits": [
+        "bug_pricing_disc"
+      ],
+      "ast_top1": "bug_pricing_disc",
+      "ast_top2": [
+        "bug_pricing_disc",
+        "clean_ship_floor"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 1.855,
+      "file_top1": "bug_pricing_disc",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.014
+    },
+    {
+      "case_id": 3,
+      "kind": "single_defect",
+      "batch_size": 8,
+      "culprits": [
+        "bug_pricing_disc"
+      ],
+      "ast_top1": "bug_pricing_disc",
+      "ast_top2": [
+        "bug_pricing_disc",
+        "clean_checkout_meta"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.612,
+      "file_top1": "bug_pricing_disc",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.014
+    },
+    {
+      "case_id": 4,
+      "kind": "single_defect",
+      "batch_size": 4,
+      "culprits": [
+        "bug_pricing_tax"
+      ],
+      "ast_top1": "bug_pricing_tax",
+      "ast_top2": [
+        "bug_pricing_tax",
+        "clean_ship_floor"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 1.65,
+      "file_top1": "bug_pricing_tax",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.014
+    },
+    {
+      "case_id": 5,
+      "kind": "single_defect",
+      "batch_size": 8,
+      "culprits": [
+        "bug_pricing_tax"
+      ],
+      "ast_top1": "bug_pricing_tax",
+      "ast_top2": [
+        "bug_pricing_tax",
+        "clean_auth_lead"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.376,
+      "file_top1": "bug_pricing_tax",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.015
+    },
+    {
+      "case_id": 6,
+      "kind": "single_defect",
+      "batch_size": 4,
+      "culprits": [
+        "bug_inv_check"
+      ],
+      "ast_top1": "clean_checkout_meta",
+      "ast_top2": [
+        "clean_checkout_meta",
+        "bug_inv_check"
+      ],
+      "ast_hit_top1": false,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.001,
+      "file_top1": "clean_checkout_meta",
+      "file_hit_top1": false,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.015
+    },
+    {
+      "case_id": 7,
+      "kind": "single_defect",
+      "batch_size": 8,
+      "culprits": [
+        "bug_inv_check"
+      ],
+      "ast_top1": "clean_checkout_meta",
+      "ast_top2": [
+        "clean_checkout_meta",
+        "bug_inv_check"
+      ],
+      "ast_hit_top1": false,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.611,
+      "file_top1": "clean_checkout_meta",
+      "file_hit_top1": false,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.016
+    },
+    {
+      "case_id": 8,
+      "kind": "single_defect",
+      "batch_size": 4,
+      "culprits": [
+        "bug_inv_reserve"
+      ],
+      "ast_top1": "bug_inv_reserve",
+      "ast_top2": [
+        "bug_inv_reserve",
+        "clean_ledger_meta"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 1.675,
+      "file_top1": "bug_inv_reserve",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.013
+    },
+    {
+      "case_id": 9,
+      "kind": "single_defect",
+      "batch_size": 8,
+      "culprits": [
+        "bug_inv_reserve"
+      ],
+      "ast_top1": "bug_inv_reserve",
+      "ast_top2": [
+        "bug_inv_reserve",
+        "clean_checkout_meta"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.638,
+      "file_top1": "bug_inv_reserve",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.015
+    },
+    {
+      "case_id": 10,
+      "kind": "single_defect",
+      "batch_size": 4,
+      "culprits": [
+        "bug_inv_restock"
+      ],
+      "ast_top1": "bug_inv_restock",
+      "ast_top2": [
+        "bug_inv_restock",
+        "clean_auth_empty"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 1.773,
+      "file_top1": "bug_inv_restock",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.011
+    },
+    {
+      "case_id": 11,
+      "kind": "single_defect",
+      "batch_size": 8,
+      "culprits": [
+        "bug_inv_restock"
+      ],
+      "ast_top1": "bug_inv_restock",
+      "ast_top2": [
+        "bug_inv_restock",
+        "clean_checkout_meta"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 3.015,
+      "file_top1": "bug_inv_restock",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.011
+    },
+    {
+      "case_id": 12,
+      "kind": "single_defect",
+      "batch_size": 4,
+      "culprits": [
+        "bug_ship_fee"
+      ],
+      "ast_top1": "bug_ship_fee",
+      "ast_top2": [
+        "bug_ship_fee",
+        "clean_ledger_meta"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 1.656,
+      "file_top1": "bug_ship_fee",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.014
+    },
+    {
+      "case_id": 13,
+      "kind": "single_defect",
+      "batch_size": 8,
+      "culprits": [
+        "bug_ship_fee"
+      ],
+      "ast_top1": "bug_ship_fee",
+      "ast_top2": [
+        "bug_ship_fee",
+        "clean_checkout_meta"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.627,
+      "file_top1": "bug_ship_fee",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.015
+    },
+    {
+      "case_id": 14,
+      "kind": "single_defect",
+      "batch_size": 4,
+      "culprits": [
+        "bug_ship_days"
+      ],
+      "ast_top1": "bug_ship_days",
+      "ast_top2": [
+        "bug_ship_days",
+        "clean_auth_lead"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 1.749,
+      "file_top1": "bug_ship_days",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.01
+    },
+    {
+      "case_id": 15,
+      "kind": "single_defect",
+      "batch_size": 8,
+      "culprits": [
+        "bug_ship_days"
+      ],
+      "ast_top1": "bug_ship_days",
+      "ast_top2": [
+        "bug_ship_days",
+        "clean_checkout_meta"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 3.069,
+      "file_top1": "bug_ship_days",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.011
+    },
+    {
+      "case_id": 16,
+      "kind": "single_defect",
+      "batch_size": 4,
+      "culprits": [
+        "bug_auth_norm"
+      ],
+      "ast_top1": "bug_auth_norm",
+      "ast_top2": [
+        "bug_auth_norm",
+        "clean_pricing_clamp"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 1.69,
+      "file_top1": "bug_auth_norm",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.016
+    },
+    {
+      "case_id": 17,
+      "kind": "single_defect",
+      "batch_size": 8,
+      "culprits": [
+        "bug_auth_norm"
+      ],
+      "ast_top1": "clean_checkout_meta",
+      "ast_top2": [
+        "clean_checkout_meta",
+        "bug_auth_norm"
+      ],
+      "ast_hit_top1": false,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.738,
+      "file_top1": "clean_checkout_meta",
+      "file_hit_top1": false,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.017
+    },
+    {
+      "case_id": 18,
+      "kind": "single_defect",
+      "batch_size": 4,
+      "culprits": [
+        "bug_auth_limit"
+      ],
+      "ast_top1": "bug_auth_limit",
+      "ast_top2": [
+        "bug_auth_limit",
+        "clean_inv_check_zero"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 1.662,
+      "file_top1": "bug_auth_limit",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.015
+    },
+    {
+      "case_id": 19,
+      "kind": "single_defect",
+      "batch_size": 8,
+      "culprits": [
+        "bug_auth_limit"
+      ],
+      "ast_top1": "clean_checkout_meta",
+      "ast_top2": [
+        "clean_checkout_meta",
+        "bug_auth_limit"
+      ],
+      "ast_hit_top1": false,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.667,
+      "file_top1": "clean_checkout_meta",
+      "file_hit_top1": false,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.016
+    },
+    {
+      "case_id": 20,
+      "kind": "single_defect",
+      "batch_size": 4,
+      "culprits": [
+        "bug_ledger_sum"
+      ],
+      "ast_top1": "bug_ledger_sum",
+      "ast_top2": [
+        "bug_ledger_sum",
+        "clean_auth_lead"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 1.74,
+      "file_top1": "bug_ledger_sum",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.01
+    },
+    {
+      "case_id": 21,
+      "kind": "single_defect",
+      "batch_size": 8,
+      "culprits": [
+        "bug_ledger_sum"
+      ],
+      "ast_top1": "bug_ledger_sum",
+      "ast_top2": [
+        "bug_ledger_sum",
+        "clean_checkout_meta"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 3.178,
+      "file_top1": "bug_ledger_sum",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.011
+    },
+    {
+      "case_id": 22,
+      "kind": "single_defect",
+      "batch_size": 4,
+      "culprits": [
+        "bug_checkout_total"
+      ],
+      "ast_top1": "bug_checkout_total",
+      "ast_top2": [
+        "bug_checkout_total",
+        "clean_auth_lead"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 1.86,
+      "file_top1": "bug_checkout_total",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.011
+    },
+    {
+      "case_id": 23,
+      "kind": "single_defect",
+      "batch_size": 8,
+      "culprits": [
+        "bug_checkout_total"
+      ],
+      "ast_top1": "bug_checkout_total",
+      "ast_top2": [
+        "bug_checkout_total",
+        "clean_auth_lead"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.588,
+      "file_top1": "bug_checkout_total",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.012
+    },
+    {
+      "case_id": 24,
+      "kind": "cofile_distractor",
+      "batch_size": 4,
+      "culprits": [
+        "bug_pricing_mult"
+      ],
+      "ast_top1": "bug_pricing_mult",
+      "ast_top2": [
+        "bug_pricing_mult",
+        "clean_auth_empty"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 1.592,
+      "file_top1": "cofile_pricing_docs",
+      "file_hit_top1": false,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.013
+    },
+    {
+      "case_id": 25,
+      "kind": "cofile_distractor",
+      "batch_size": 8,
+      "culprits": [
+        "bug_pricing_mult"
+      ],
+      "ast_top1": "bug_pricing_mult",
+      "ast_top2": [
+        "bug_pricing_mult",
+        "clean_inv_check_zero"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.385,
+      "file_top1": "cofile_pricing_docs",
+      "file_hit_top1": false,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.015
+    },
+    {
+      "case_id": 26,
+      "kind": "cofile_distractor",
+      "batch_size": 4,
+      "culprits": [
+        "bug_pricing_disc"
+      ],
+      "ast_top1": "bug_pricing_disc",
+      "ast_top2": [
+        "bug_pricing_disc",
+        "clean_auth_lead"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 1.657,
+      "file_top1": "cofile_pricing_docs",
+      "file_hit_top1": false,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.014
+    },
+    {
+      "case_id": 27,
+      "kind": "cofile_distractor",
+      "batch_size": 8,
+      "culprits": [
+        "bug_pricing_disc"
+      ],
+      "ast_top1": "bug_pricing_disc",
+      "ast_top2": [
+        "bug_pricing_disc",
+        "clean_checkout_meta"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.592,
+      "file_top1": "cofile_pricing_docs",
+      "file_hit_top1": false,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.014
+    },
+    {
+      "case_id": 28,
+      "kind": "cofile_distractor",
+      "batch_size": 4,
+      "culprits": [
+        "bug_pricing_tax"
+      ],
+      "ast_top1": "bug_pricing_tax",
+      "ast_top2": [
+        "bug_pricing_tax",
+        "clean_auth_lead"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 1.63,
+      "file_top1": "cofile_pricing_docs",
+      "file_hit_top1": false,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.015
+    },
+    {
+      "case_id": 29,
+      "kind": "cofile_distractor",
+      "batch_size": 8,
+      "culprits": [
+        "bug_pricing_tax"
+      ],
+      "ast_top1": "bug_pricing_tax",
+      "ast_top2": [
+        "bug_pricing_tax",
+        "clean_inv_check_zero"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.458,
+      "file_top1": "cofile_pricing_docs",
+      "file_hit_top1": false,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.015
+    },
+    {
+      "case_id": 30,
+      "kind": "cofile_distractor",
+      "batch_size": 4,
+      "culprits": [
+        "bug_inv_check"
+      ],
+      "ast_top1": "bug_inv_check",
+      "ast_top2": [
+        "bug_inv_check",
+        "clean_auth_lead"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 1.726,
+      "file_top1": "cofile_inv_docs",
+      "file_hit_top1": false,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.015
+    },
+    {
+      "case_id": 31,
+      "kind": "cofile_distractor",
+      "batch_size": 8,
+      "culprits": [
+        "bug_inv_check"
+      ],
+      "ast_top1": "bug_inv_check",
+      "ast_top2": [
+        "bug_inv_check",
+        "clean_auth_lead"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.443,
+      "file_top1": "cofile_inv_docs",
+      "file_hit_top1": false,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.016
+    },
+    {
+      "case_id": 32,
+      "kind": "cofile_distractor",
+      "batch_size": 6,
+      "culprits": [
+        "bug_inv_reserve"
+      ],
+      "ast_top1": "bug_inv_reserve",
+      "ast_top2": [
+        "bug_inv_reserve",
+        "clean_auth_lead"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.025,
+      "file_top1": "cofile_inv_docs",
+      "file_hit_top1": false,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.014
+    },
+    {
+      "case_id": 33,
+      "kind": "cofile_distractor",
+      "batch_size": 6,
+      "culprits": [
+        "bug_inv_restock"
+      ],
+      "ast_top1": "bug_inv_restock",
+      "ast_top2": [
+        "bug_inv_restock",
+        "clean_checkout_meta"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.538,
+      "file_top1": "cofile_inv_docs",
+      "file_hit_top1": false,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.011
+    },
+    {
+      "case_id": 34,
+      "kind": "cofile_distractor",
+      "batch_size": 6,
+      "culprits": [
+        "bug_ship_fee"
+      ],
+      "ast_top1": "bug_ship_fee",
+      "ast_top2": [
+        "bug_ship_fee",
+        "clean_checkout_meta"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.334,
+      "file_top1": "cofile_ship_docs",
+      "file_hit_top1": false,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.014
+    },
+    {
+      "case_id": 35,
+      "kind": "cofile_distractor",
+      "batch_size": 6,
+      "culprits": [
+        "bug_ship_days"
+      ],
+      "ast_top1": "bug_ship_days",
+      "ast_top2": [
+        "bug_ship_days",
+        "clean_auth_empty"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.224,
+      "file_top1": "cofile_ship_docs",
+      "file_hit_top1": false,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.01
+    },
+    {
+      "case_id": 36,
+      "kind": "cofile_distractor",
+      "batch_size": 6,
+      "culprits": [
+        "bug_auth_norm"
+      ],
+      "ast_top1": "bug_auth_norm",
+      "ast_top2": [
+        "bug_auth_norm",
+        "clean_inv_check_zero"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.024,
+      "file_top1": "cofile_auth_docs",
+      "file_hit_top1": false,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.016
+    },
+    {
+      "case_id": 37,
+      "kind": "cofile_distractor",
+      "batch_size": 6,
+      "culprits": [
+        "bug_auth_limit"
+      ],
+      "ast_top1": "bug_auth_limit",
+      "ast_top2": [
+        "bug_auth_limit",
+        "clean_inv_check_zero"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.01,
+      "file_top1": "cofile_auth_docs",
+      "file_hit_top1": false,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.016
+    },
+    {
+      "case_id": 38,
+      "kind": "cofile_distractor",
+      "batch_size": 6,
+      "culprits": [
+        "bug_ledger_sum"
+      ],
+      "ast_top1": "bug_ledger_sum",
+      "ast_top2": [
+        "bug_ledger_sum",
+        "clean_checkout_meta"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.494,
+      "file_top1": "cofile_ledger_docs",
+      "file_hit_top1": false,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.011
+    },
+    {
+      "case_id": 39,
+      "kind": "cofile_distractor",
+      "batch_size": 6,
+      "culprits": [
+        "bug_checkout_total"
+      ],
+      "ast_top1": "bug_checkout_total",
+      "ast_top2": [
+        "bug_checkout_total",
+        "clean_auth_lead"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.472,
+      "file_top1": "cofile_checkout_docs",
+      "file_hit_top1": false,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.011
+    },
+    {
+      "case_id": 40,
+      "kind": "semantic_conflict",
+      "batch_size": 4,
+      "culprits": [
+        "sem_checkout_penny",
+        "sem_pricing_round0"
+      ],
+      "ast_top1": "sem_checkout_penny",
+      "ast_top2": [
+        "sem_checkout_penny",
+        "clean_ledger_meta"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 1.791,
+      "file_top1": "sem_checkout_penny",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.01
+    },
+    {
+      "case_id": 41,
+      "kind": "semantic_conflict",
+      "batch_size": 6,
+      "culprits": [
+        "sem_checkout_penny",
+        "sem_pricing_round0"
+      ],
+      "ast_top1": "sem_checkout_penny",
+      "ast_top2": [
+        "sem_checkout_penny",
+        "clean_ledger_meta"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.275,
+      "file_top1": "sem_checkout_penny",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.011
+    },
+    {
+      "case_id": 42,
+      "kind": "semantic_conflict",
+      "batch_size": 6,
+      "culprits": [
+        "sem_checkout_penny",
+        "sem_pricing_round0"
+      ],
+      "ast_top1": "sem_checkout_penny",
+      "ast_top2": [
+        "sem_checkout_penny",
+        "clean_auth_lead"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.298,
+      "file_top1": "sem_checkout_penny",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.011
+    },
+    {
+      "case_id": 43,
+      "kind": "semantic_conflict",
+      "batch_size": 8,
+      "culprits": [
+        "sem_checkout_penny",
+        "sem_pricing_round0"
+      ],
+      "ast_top1": "sem_checkout_penny",
+      "ast_top2": [
+        "sem_checkout_penny",
+        "clean_inv_check_zero"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.657,
+      "file_top1": "sem_checkout_penny",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.011
+    },
+    {
+      "case_id": 44,
+      "kind": "semantic_conflict",
+      "batch_size": 4,
+      "culprits": [
+        "sem_checkout_tax_bundle",
+        "sem_pricing_tax_tier"
+      ],
+      "ast_top1": "sem_checkout_tax_bundle",
+      "ast_top2": [
+        "sem_checkout_tax_bundle",
+        "clean_auth_lead"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 1.86,
+      "file_top1": "sem_checkout_tax_bundle",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.01
+    },
+    {
+      "case_id": 45,
+      "kind": "semantic_conflict",
+      "batch_size": 6,
+      "culprits": [
+        "sem_checkout_tax_bundle",
+        "sem_pricing_tax_tier"
+      ],
+      "ast_top1": "sem_checkout_tax_bundle",
+      "ast_top2": [
+        "sem_checkout_tax_bundle",
+        "clean_auth_lead"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.321,
+      "file_top1": "sem_checkout_tax_bundle",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.011
+    },
+    {
+      "case_id": 46,
+      "kind": "semantic_conflict",
+      "batch_size": 6,
+      "culprits": [
+        "sem_checkout_tax_bundle",
+        "sem_pricing_tax_tier"
+      ],
+      "ast_top1": "sem_checkout_tax_bundle",
+      "ast_top2": [
+        "sem_checkout_tax_bundle",
+        "clean_auth_lead"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.2,
+      "file_top1": "sem_checkout_tax_bundle",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.01
+    },
+    {
+      "case_id": 47,
+      "kind": "semantic_conflict",
+      "batch_size": 8,
+      "culprits": [
+        "sem_checkout_tax_bundle",
+        "sem_pricing_tax_tier"
+      ],
+      "ast_top1": "sem_checkout_tax_bundle",
+      "ast_top2": [
+        "sem_checkout_tax_bundle",
+        "clean_auth_lead"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.626,
+      "file_top1": "sem_checkout_tax_bundle",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.011
+    },
+    {
+      "case_id": 48,
+      "kind": "semantic_conflict",
+      "batch_size": 4,
+      "culprits": [
+        "sem_checkout_cat_invar",
+        "sem_inv_inplace_mut"
+      ],
+      "ast_top1": "sem_checkout_cat_invar",
+      "ast_top2": [
+        "sem_checkout_cat_invar",
+        "clean_pricing_guard"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 1.903,
+      "file_top1": "sem_checkout_cat_invar",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.012
+    },
+    {
+      "case_id": 49,
+      "kind": "semantic_conflict",
+      "batch_size": 6,
+      "culprits": [
+        "sem_checkout_cat_invar",
+        "sem_inv_inplace_mut"
+      ],
+      "ast_top1": "sem_checkout_cat_invar",
+      "ast_top2": [
+        "sem_checkout_cat_invar",
+        "clean_ledger_meta"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.267,
+      "file_top1": "sem_checkout_cat_invar",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.012
+    },
+    {
+      "case_id": 50,
+      "kind": "semantic_conflict",
+      "batch_size": 6,
+      "culprits": [
+        "sem_checkout_cat_invar",
+        "sem_inv_inplace_mut"
+      ],
+      "ast_top1": "sem_checkout_cat_invar",
+      "ast_top2": [
+        "sem_checkout_cat_invar",
+        "clean_pricing_clamp"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.224,
+      "file_top1": "sem_checkout_cat_invar",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.012
+    },
+    {
+      "case_id": 51,
+      "kind": "semantic_conflict",
+      "batch_size": 8,
+      "culprits": [
+        "sem_checkout_cat_invar",
+        "sem_inv_inplace_mut"
+      ],
+      "ast_top1": "sem_checkout_cat_invar",
+      "ast_top2": [
+        "sem_checkout_cat_invar",
+        "clean_auth_lead"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.538,
+      "file_top1": "sem_checkout_cat_invar",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.013
+    },
+    {
+      "case_id": 52,
+      "kind": "semantic_conflict",
+      "batch_size": 4,
+      "culprits": [
+        "sem_auth_strict_trim",
+        "sem_checkout_pad_role"
+      ],
+      "ast_top1": "sem_checkout_pad_role",
+      "ast_top2": [
+        "sem_checkout_pad_role",
+        "clean_inv_check_zero"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 1.91,
+      "file_top1": "sem_checkout_pad_role",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.012
+    },
+    {
+      "case_id": 53,
+      "kind": "semantic_conflict",
+      "batch_size": 6,
+      "culprits": [
+        "sem_auth_strict_trim",
+        "sem_checkout_pad_role"
+      ],
+      "ast_top1": "sem_checkout_pad_role",
+      "ast_top2": [
+        "sem_checkout_pad_role",
+        "clean_pricing_clamp"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.273,
+      "file_top1": "sem_checkout_pad_role",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.012
+    },
+    {
+      "case_id": 54,
+      "kind": "semantic_conflict",
+      "batch_size": 6,
+      "culprits": [
+        "sem_auth_strict_trim",
+        "sem_checkout_pad_role"
+      ],
+      "ast_top1": "sem_checkout_pad_role",
+      "ast_top2": [
+        "sem_checkout_pad_role",
+        "clean_inv_check_zero"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.378,
+      "file_top1": "sem_checkout_pad_role",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.012
+    },
+    {
+      "case_id": 55,
+      "kind": "semantic_conflict",
+      "batch_size": 8,
+      "culprits": [
+        "sem_auth_strict_trim",
+        "sem_checkout_pad_role"
+      ],
+      "ast_top1": "sem_checkout_pad_role",
+      "ast_top2": [
+        "sem_checkout_pad_role",
+        "clean_inv_check_zero"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.597,
+      "file_top1": "sem_checkout_pad_role",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.013
+    },
+    {
+      "case_id": 56,
+      "kind": "semantic_conflict",
+      "batch_size": 4,
+      "culprits": [
+        "sem_checkout_upper_id",
+        "sem_ledger_id_prefix"
+      ],
+      "ast_top1": "sem_checkout_upper_id",
+      "ast_top2": [
+        "sem_checkout_upper_id",
+        "sem_ledger_id_prefix"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 1.839,
+      "file_top1": "sem_checkout_upper_id",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.013
+    },
+    {
+      "case_id": 57,
+      "kind": "semantic_conflict",
+      "batch_size": 6,
+      "culprits": [
+        "sem_checkout_upper_id",
+        "sem_ledger_id_prefix"
+      ],
+      "ast_top1": "sem_checkout_upper_id",
+      "ast_top2": [
+        "sem_checkout_upper_id",
+        "sem_ledger_id_prefix"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.297,
+      "file_top1": "sem_checkout_upper_id",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.014
+    },
+    {
+      "case_id": 58,
+      "kind": "semantic_conflict",
+      "batch_size": 6,
+      "culprits": [
+        "sem_checkout_upper_id",
+        "sem_ledger_id_prefix"
+      ],
+      "ast_top1": "sem_checkout_upper_id",
+      "ast_top2": [
+        "sem_checkout_upper_id",
+        "sem_ledger_id_prefix"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.227,
+      "file_top1": "sem_checkout_upper_id",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.014
+    },
+    {
+      "case_id": 59,
+      "kind": "semantic_conflict",
+      "batch_size": 8,
+      "culprits": [
+        "sem_checkout_upper_id",
+        "sem_ledger_id_prefix"
+      ],
+      "ast_top1": "sem_checkout_upper_id",
+      "ast_top2": [
+        "sem_checkout_upper_id",
+        "sem_ledger_id_prefix"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.63,
+      "file_top1": "sem_checkout_upper_id",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.014
+    },
+    {
+      "case_id": 60,
+      "kind": "semantic_conflict",
+      "batch_size": 4,
+      "culprits": [
+        "sem_checkout_opt_expr",
+        "sem_ship_strict_bool"
+      ],
+      "ast_top1": "sem_checkout_opt_expr",
+      "ast_top2": [
+        "sem_checkout_opt_expr",
+        "sem_ship_strict_bool"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 1.932,
+      "file_top1": "sem_checkout_opt_expr",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.014
+    },
+    {
+      "case_id": 61,
+      "kind": "semantic_conflict",
+      "batch_size": 6,
+      "culprits": [
+        "sem_checkout_opt_expr",
+        "sem_ship_strict_bool"
+      ],
+      "ast_top1": "sem_checkout_opt_expr",
+      "ast_top2": [
+        "sem_checkout_opt_expr",
+        "sem_ship_strict_bool"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 3.042,
+      "file_top1": "sem_checkout_opt_expr",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.014
+    },
+    {
+      "case_id": 62,
+      "kind": "semantic_conflict",
+      "batch_size": 6,
+      "culprits": [
+        "sem_checkout_opt_expr",
+        "sem_ship_strict_bool"
+      ],
+      "ast_top1": "sem_checkout_opt_expr",
+      "ast_top2": [
+        "sem_checkout_opt_expr",
+        "sem_ship_strict_bool"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.198,
+      "file_top1": "sem_checkout_opt_expr",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.013
+    },
+    {
+      "case_id": 63,
+      "kind": "semantic_conflict",
+      "batch_size": 8,
+      "culprits": [
+        "sem_checkout_opt_expr",
+        "sem_ship_strict_bool"
+      ],
+      "ast_top1": "sem_checkout_opt_expr",
+      "ast_top2": [
+        "sem_checkout_opt_expr",
+        "sem_ship_strict_bool"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.734,
+      "file_top1": "sem_checkout_opt_expr",
+      "file_hit_top1": true,
+      "file_hit_top2": true,
+      "file_latency_ms": 0.015
+    }
+  ]
+}

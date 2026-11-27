@@ -1,0 +1,44 @@
+\section{Evaluation Setup}
+\label{sec:eval_setup}
+
+Our evaluation is structured around five research questions:
+\begin{itemize}
+    \item \textbf{RQ1 (Causal Blame Micro-Benchmark)}: How accurately and quickly does \texttt{ASTStackCausalRanker} isolate single-PR defects, co-file distractors, and true pairwise semantic conflicts on real executed Python failures compared to non-AST file-level traceback matching?
+    \item \textbf{RQ2 (End-to-End Queue Performance)}: How does SSMQ compare against serial, static-batch, linear-speculative, outcome-tree SubmitQueue, and fixed-retry baselines in throughput, P95 latency, CI compute cost, and per-repository/velocity scaling?
+    \item \textbf{RQ3 (Non-Circularity Under Off-Graph Conflicts)}: Do SSMQ's gains survive when up to $60\%$ of semantic conflicts lie outside $\hat{G}$, and how does SSMQ behave on a zero-conflict control?
+    \item \textbf{RQ4 (Ablation \& Flaky Pareto Frontier)}: What is each mechanism's isolated contribution, and how does two-regime Beta-Binomial gating balance P95 latency against clean-PR false rejections across $\phi \in [0\%, 15\%]$?
+    \item \textbf{RQ5 (Failure-Density Regime of 1-Step Blame)}: Across rising defect densities and batch sizes, in which operating regime does 1-step causal blame significantly outperform binary bisection versus saturate under multi-culprit batches (Proposition~\ref{prop:complexity})?
+\end{itemize}
+
+\subsection{Real Executable 64-Batch Python Blame Micro-Benchmark}
+Rather than assuming synthetic blame accuracy, we construct an executable six-module Python repository (\texttt{pricing}, \texttt{inventory}, \texttt{shipping}, \texttt{auth}, \texttt{ledger}, \texttt{checkout}; 18 functions plus an end-to-end integration test suite) and execute \BenchTotalBatches{} failing multi-PR batches (sizes 4--8 PRs) via real subprocess \texttt{unittest} runs:
+\begin{enumerate}
+    \item \textbf{\BenchSingleBatches{} Disjoint Single-PR Regressions}: 12 distinct functional bugs across all six modules mixed with real functional-AST benign PRs (input validation guards, fast paths, metadata fields).
+    \item \textbf{\BenchCofileBatches{} Co-File Distractor Regressions}: Functional bugs paired with a benign documentation/comment PR modifying the \emph{exact same file} with higher line churn ($+3$ lines vs.\ $+1$ line), directly stress-testing AST symbol filtering against file-level heuristics.
+    \item \textbf{\BenchSemBatches{} True Pairwise Semantic Conflicts}: 6 cross-file conflict pairs verified by automated unit tests to satisfy the strict invariant \emph{PR $A$ passes alone, PR $B$ passes alone, and $A+B$ fails integration tests} (covering rounding precision drift, luxury-tax tier non-linearity, in-place dictionary mutation vs.\ immutability assertions, whitespace trimming contracts, order-ID casing invariants, and strict boolean typing).
+\end{enumerate}
+
+We evaluate four deterministic rankers on the identical real Python stack traces: \texttt{RandomRanker}, \texttt{ChurnRiskRanker} (sorted by LOC churn), \texttt{FileTracebackOverlapRanker} (a strong non-AST deterministic baseline parsing stack-trace file paths and failing test module names with churn tie-breaking), and \texttt{ASTStackCausalRanker} (Algorithm~\ref{alg:blame}).
+
+\subsection{Real OSS Trace Replay and Decoupled Conflict Oracle}
+Our discrete-event evaluation replays the 600 real merged PRs summarized in Table~\ref{tab:trace_summary}. To prevent temporal leakage, the earliest $25\%$ of commits ($50$ PRs per repo) construct $\hat{G}$ and calibrate risk normalization; the remaining $75\%$ ($450$ PRs total) form the evaluation stream, preserving real relative inter-arrival gaps scaled to mean offered velocity $6.0 \times v$~PRs/hr ($v \in \{1\times, 3\times, 5\times, 10\times\}$). CI execution uses $W=8$ parallel runners with job durations $\mathcal{N}(12.0, 2.0^2)$~min, individual PR defect rate calibrated to mean $8\%$ (risk-weighted across PRs), and SSMQ's blame accuracy and overhead calibrated strictly from our 64-batch micro-benchmark measurements (\BenchASTTopOnePct{}\% Top-1, \BenchASTTopTwoPct{}\% Top-2, \BenchASTMs{}~ms).
+
+Crucially, to eliminate circularity between conflict generation and graph-disjoint batching, our simulator decouples the \emph{ground-truth conflict oracle} $G^*$ from the scheduler's observed graph $\hat{G}$ via \texttt{graph\_recall} $\rho \in [0.40, 1.00]$:
+\begin{itemize}
+    \item \textbf{On-Graph Conflicts}: Sampled at density $P_c = 0.18$ across pairs with overlapping observed cones in $\hat{G}$.
+    \item \textbf{Off-Graph Latent Conflicts}: Sampled across \emph{disjoint} pairs outside $\hat{G}$ (weighted $4\times$ higher within the same top-level repository root) so that $(1-\rho)$ of all true semantic conflicts are completely invisible to SSMQ's batcher. At default $\rho = 0.80$, $20\%$ of conflicts are latent off-graph edges; at $\rho = 0.40$, $60\%$ are invisible.
+    \item \textbf{Persistent vs.\ Intra-Batch Conflicts}: $3\%$ of all conflicts are designated \emph{persistent} against cumulative mainline (remaining broken even after sequential rebase and requiring rejection), while $97\%$ represent rebase-resolvable intra-batch interference (passing once isolated).
+\end{itemize}
+
+\subsection{Baselines, Ablations, and Paired Statistical Inference}
+We benchmark \textbf{SSMQ} against five production baselines and three controlled ablations:
+\begin{itemize}
+    \item \texttt{SerialQueue}: Strictly sequential single-PR verification ($W=1$).
+    \item \texttt{StaticBatchBisect}: FIFO static batching ($K_{\max}=8$) with binary bisection on failure (Bors / GitHub Merge Queue style~\cite{fallahzadeh2023accelerating}).
+    \item \texttt{SpeculativeLinear}: Linear speculative train ($D_{\max}=4$, GitLab Merge Train style) aborting all downstream descendants on head failure.
+    \item \texttt{UberSubmitQueue}: Faithful EuroSys~'19 outcome-tree planner~\cite{ananthanarayanan2019keeping} ranking both pass and fail speculative branches by expected merges per CI minute, charging partial runner time for canceled branches.
+    \item \texttt{FlakeAwareBatch}: Static FIFO batching with unconditional single retry prior to bisection~\cite{henderson2023flake}.
+    \item \texttt{SSMQ-NoGraph}, \texttt{SSMQ-NoFlaky}, \texttt{SSMQ-NoBlame}: Controlled ablations disabling each SSMQ mechanism individually.
+\end{itemize}
+
+All \TotalSealedRuns{} experimental suites (\TotalSealedRecords{} simulation records + \BenchTotalBatches{} executed Python batches) run across 20 deterministic paired seeds per repository with identical defect, conflict, and persistence ground truth per $(\text{repo}, \text{seed})$. Every run is sealed with its exact Git commit SHA and combined harness, dataset, and artifact SHA-256 checksums. Our deterministic Python auditor verifies zero cumulative mainline escapes (\TotalEscapedDefects{}), computes $95\%$ percentile bootstrap confidence intervals ($2{,}000$ resamples), paired two-sided Wilcoxon signed-rank $p$-values with Holm-Bonferroni family-wise correction, and Cliff's $|\delta|$ effect sizes. Disjoint 20-seed A/A calibration (\texttt{v3\_exp1\_aa\_noise}) confirms seed-block stability of \AANoiseThroughputPct{}\% throughput, \AANoiseLatencyPct{}\% P95 latency, and \AANoiseComputePct{}\% CI compute cost.

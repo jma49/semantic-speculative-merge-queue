@@ -1,15 +1,18 @@
-% AUTO-GENERATED FROM v2_exp0_blame_microbench — DO NOT EDIT
+% AUTO-GENERATED FROM v3_exp0_blame_microbench — DO NOT EDIT
 \begin{table}[t]
 \centering
-\caption{Real Executed Python Multi-PR Blame Micro-Benchmark (48 Failing Batches: 24 Regressions + 24 True Pairwise Semantic Conflicts).}
+\footnotesize
+\setlength{\tabcolsep}{2.8pt}
+\caption{Real Executed Python Blame Micro-Benchmark (64 Failing Batches: 24 Disjoint + 16 Co-File Distractor + 24 Semantic Conflicts).}
 \label{tab:blame_microbench}
-\begin{tabular}{lccc}
+\begin{tabular}{lccccc}
 \toprule
-\textbf{Ranker} & \textbf{Top-1 Acc.} & \textbf{Top-2 Acc.} & \textbf{Latency} \\
+\textbf{Ranker} & \textbf{Top-1} & \textbf{Top-2} & \textbf{CoFile} & \textbf{Sem.} & \textbf{Time} \\
 \midrule
-RandomRanker & 29.2\% & 58.3\% & $<0.1$~ms \\
-ChurnRiskRanker & 2.1\% & 8.3\% & $<0.1$~ms \\
-\textbf{ASTStackCausalRanker (Ours)} & \textbf{91.7\%} & \textbf{100.0\%} & \textbf{2.29~ms} \\
+RandomRanker & 26.6\% & 48.4\% & -- & -- & $<0.1$ms \\
+ChurnRiskRanker & 0.0\% & 9.4\% & -- & -- & $<0.1$ms \\
+FileOverlapRanker & 68.8\% & 100.0\% & 0.0\% & 100.0\% & 0.01ms \\
+\textbf{ASTStackCausal} & \textbf{93.8\%} & \textbf{100.0\%} & \textbf{100.0\%} & \textbf{100.0\%} & \textbf{2.25ms} \\
 \bottomrule
 \end{tabular}
 \end{table}

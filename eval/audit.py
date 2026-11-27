@@ -470,10 +470,10 @@ def emit_pgfplots_figures(
         f"({fa10['p95_latency_min']['mean']:.1f},{fa10['false_rejection_rate']['mean']*100:.2f}) }};"
     )
     label_offsets = {
-        "SSMQ-NoFlaky": ("above right", "0pt"),
-        "SSMQ": ("above right", "1pt"),
-        "StaticBatchBisect": ("above", "2pt"),
-        "FlakeAwareBatch": ("above left", "1pt"),
+        "SSMQ-NoFlaky": ("south west", "2pt"),
+        "SSMQ": ("south west", "2pt"),
+        "StaticBatchBisect": ("south", "3pt"),
+        "FlakeAwareBatch": ("south east", "2pt"),
     }
     for skey, slbl, scol, smark, xlat, yfr in p10_pts:
         anc, _ = label_offsets[skey]
@@ -481,7 +481,7 @@ def emit_pgfplots_figures(
             f"\\addplot[only marks, color={scol}, mark={smark}, mark size=3.2pt] coordinates {{ ({xlat:.1f},{yfr:.2f}) }};"
         )
         f5_lines.append(
-            f"\\node[font=\\scriptsize\\bfseries, anchor={anc}, text={scol}!85!black] at (axis cs:{xlat:.1f},{yfr:.2f}) {{{slbl}}};"
+            f"\\node[font=\\scriptsize\\bfseries, anchor={anc}, inner sep=3pt, text={scol}!85!black] at (axis cs:{xlat:.1f},{yfr:.2f}) {{{slbl}}};"
         )
     f5_lines += [
         "\\node[font=\\scriptsize, anchor=north east, fill=ssmqBlue!8, draw=ssmqBlue!50, inner sep=2.5pt] at (axis cs:342,6.4) {Better: Lower-Left $\\swarrow$};",
@@ -539,7 +539,7 @@ def emit_pgfplots_figures(
         f"(FileOverlap,{blame_bench['file_overlap_top2_acc']*100:.1f}) "
         f"(ASTStack,{blame_bench['ast_stack_top2_acc']*100:.1f}) }}; \\addlegendentry{{Top-2 Acc.}}",
         "\\nextgroupplot[title={(b) Failure-Density Regime: Blame vs.\\ Bisection},",
-        "  ybar=2pt, bar width=8pt, ymin=0, ymax=380,",
+        "  ybar=2pt, bar width=8pt, ymin=0, ymax=210,",
         "  symbolic x coords={8\\%/K8,15\\%/K8,22\\%/K12,40\\%Rec},",
         "  xtick=data, ylabel={P95 Latency (min) $\\downarrow$}, enlarge x limits=0.20,",
         "  legend style={at={(0.03,0.97)}, anchor=north west, font=\\scriptsize, draw=gray!40}]",
@@ -548,7 +548,7 @@ def emit_pgfplots_figures(
         f"\\addplot[fill=ssmqBlue!80, draw=ssmqBlue!90!black] coordinates {{ {_reg_pts('SSMQ')} }}; \\addlegendentry{{SSMQ (Full)}}",
         "\\end{groupplot}",
         "\\end{tikzpicture}",
-        "\\caption{(a) Attribution accuracy across 64 real executed Python failing batches, demonstrating AST symbol-level + 1-hop call-graph gains over file-level traceback matching (\\texttt{FileOverlap}). (b) End-to-end failure-density regime sweep showing where 1-step causal blame amplifies savings over binary bisection (\\texttt{SSMQ-NoBlame}) as defect rates and batch sizes grow.}",
+        "\\caption{(a) Attribution accuracy across 64 real executed Python failing batches, demonstrating AST symbol-level + 1-hop call-graph gains over file-level traceback matching (\\texttt{FileOverlap}). (b) Failure-density regime sweep contrasting \\texttt{StaticBatch}, \\texttt{SSMQ-NoBlame}, and full \\texttt{SSMQ}: 1-step blame yields statistically significant P95 reductions in single-culprit regimes ($8\\%$--$15\\%$ defect, $K=8$) while saturating when high defect density ($22\\%$, $K=12$) causes multi-culprit batches that fall back to bisection.}",
         "\\label{fig:blame_regime}",
         "\\end{figure*}",
     ]
@@ -714,7 +714,14 @@ def main() -> None:
     pc_sl = paired_contrasts["SpeculativeLinear"]
     pc_fa = paired_contrasts["FlakeAwareBatch"]
 
+    trace_stats = json.loads((REPO_ROOT / "results" / "trace_stats.json").read_text(encoding="utf-8"))
+    ts_by_repo = {r["repo"]: r for r in trace_stats["repositories"]}
+
     macros: Dict[str, Tuple[str, str]] = {
+        "TraceFifoOverlapPct": (_fmt(ts_by_repo["kubernetes/kubernetes"]["fifo_k8_module_overlap_rate"] * 100.0, 1), "trace_stats"),
+        "TraceKbsDisjPct": (_fmt(ts_by_repo["kubernetes/kubernetes"]["disjoint_batch4_feasibility_rate"] * 100.0, 1), "trace_stats"),
+        "TraceTSDisjPct": (_fmt(ts_by_repo["microsoft/TypeScript"]["disjoint_batch4_feasibility_rate"] * 100.0, 1), "trace_stats"),
+        "TraceNextDisjPct": (_fmt(ts_by_repo["vercel/next.js"]["disjoint_batch4_feasibility_rate"] * 100.0, 1), "trace_stats"),
         "TotalSealedRuns": (str(audit["verified_run_count"]), "v3_audit"),
         "TotalSealedRecords": (str(total_sim_records), "v3_audit"),
         "TotalEscapedDefects": (str(total_escaped), "cumulative_safety_invariant"),
@@ -821,6 +828,13 @@ def main() -> None:
         "FlakyFifteenSSMQPNinetyFive": (_fmt(flk_summary["0.15"]["SSMQ"]["p95_latency_min"]["mean"], 1), "v3_exp6_flaky_sweep"),
         "FlakyFifteenFlakeBatchPNinetyFive": (_fmt(flk_summary["0.15"]["FlakeAwareBatch"]["p95_latency_min"]["mean"], 1), "v3_exp6_flaky_sweep"),
         # High-failure blame regime (v3_exp8)
+        "RegimeNomBlameGainPct": (_fmt(-reg_contrasts["nominal_8pct_k8"]["p95"]["pct_change"], 1), "v3_exp8_blame_regime"),
+        "RegimeNomBlameP": (_fmt_p(reg_contrasts["nominal_8pct_k8"]["p95"]["wilcoxon_p"]), "v3_exp8_blame_regime"),
+        "RegimeElevSSMQPNinetyFive": (_fmt(reg_summary["elevated_15pct_k8"]["SSMQ"]["p95_latency_min"]["mean"], 1), "v3_exp8_blame_regime"),
+        "RegimeElevNoBlamePNinetyFive": (_fmt(reg_summary["elevated_15pct_k8"]["SSMQ-NoBlame"]["p95_latency_min"]["mean"], 1), "v3_exp8_blame_regime"),
+        "RegimeElevStaticPNinetyFive": (_fmt(reg_summary["elevated_15pct_k8"]["StaticBatchBisect"]["p95_latency_min"]["mean"], 1), "v3_exp8_blame_regime"),
+        "RegimeElevBlameGainPct": (_fmt(-reg_contrasts["elevated_15pct_k8"]["p95"]["pct_change"], 1), "v3_exp8_blame_regime"),
+        "RegimeElevBlameP": (_fmt_p(reg_contrasts["elevated_15pct_k8"]["p95"]["wilcoxon_p"]), "v3_exp8_blame_regime"),
         "RegimeHighDefSSMQPNinetyFive": (_fmt(reg_summary["highdef_22pct_k12"]["SSMQ"]["p95_latency_min"]["mean"], 1), "v3_exp8_blame_regime"),
         "RegimeHighDefNoBlamePNinetyFive": (_fmt(reg_summary["highdef_22pct_k12"]["SSMQ-NoBlame"]["p95_latency_min"]["mean"], 1), "v3_exp8_blame_regime"),
         "RegimeHighDefStaticPNinetyFive": (_fmt(reg_summary["highdef_22pct_k12"]["StaticBatchBisect"]["p95_latency_min"]["mean"], 1), "v3_exp8_blame_regime"),

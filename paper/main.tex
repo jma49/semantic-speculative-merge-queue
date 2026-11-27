@@ -2,15 +2,31 @@
 \IEEEoverridecommandlockouts
 
 \usepackage{cite}
-\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{algorithm}
 \usepackage{algorithmic}
 \usepackage{graphicx}
 \usepackage{textcomp}
 \usepackage{xcolor}
 \usepackage{booktabs}
 \usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepgfplotslibrary{groupplots}
+\usetikzlibrary{arrows.meta,positioning,fit,backgrounds,shapes.geometric,calc}
 
-% Deterministic empirical macros — auto-generated from sealed v2 runs (runs/v2_*/manifest.json)
+% Colorblind-safe Okabe-Ito-inspired palette for publication-grade vector figures
+\definecolor{ssmqBlue}{HTML}{0072B2}
+\definecolor{ssmqOrange}{HTML}{E69F00}
+\definecolor{ssmqTeal}{HTML}{009E73}
+\definecolor{ssmqPurple}{HTML}{CC79A7}
+\definecolor{ssmqRed}{HTML}{D55E00}
+\definecolor{ssmqGray}{HTML}{6C757D}
+
+\newtheorem{proposition}{Proposition}
+
+% Deterministic empirical macros — auto-generated from sealed v3 runs (runs/v3_*/manifest.json)
 \input{generated/numbers.tex}
 
 \begin{document}
@@ -25,22 +41,23 @@ San Francisco Bay Area, CA, USA}
 \maketitle
 
 \begin{abstract}
-High-velocity software development---increasingly accelerated by autonomous coding agents---places severe strain on Continuous Integration (CI) merge queues. Conventional merge queues treat pull requests (PRs) as opaque FIFO tokens, combining static batching or speculative execution trees with blind $O(\log K)$ binary bisection on failure. Under overlapping module edits and non-deterministic test flakiness, these designs suffer cascading \emph{speculative invalidation storms} that inflate tail merge latency, waste CI runners, or falsely reject clean PRs.
+High-velocity software development---increasingly accelerated by autonomous coding agents---places acute strain on Continuous Integration (CI) merge queues. Conventional merge queues treat pull requests (PRs) as opaque FIFO tokens, combining static batching or speculative execution trees with blind $O(\log K)$ binary bisection on failure. Empirical characterization of 600 chronologically merged PRs across \texttt{kubernetes/kubernetes}, \texttt{microsoft/TypeScript}, and \texttt{vercel/next.js} shows that every consecutive 8-PR FIFO window contains at least one two-level module collision, exposing FIFO queues to semantic merge conflicts and non-deterministic test flakiness that trigger cascading \emph{speculative invalidation storms}.
 
-We present \textbf{SSMQ (Semantic Speculative Merge Queue)}, a dependency-aware merge queue scheduler integrating three mechanisms: (1) \emph{graph-disjoint risk-stratified batching}, which learns file co-change and module-proximity cones from historical warm-up commits to pack orthogonal low-risk PRs into fast-lane batches while isolating overlapping or high-risk changes; (2) \emph{two-regime Beta-Binomial flaky gating}, which guards singletons against false flaky rejections while avoiding wasteful whole-batch retries unless posterior flakiness exceeds $50\%$; and (3) \emph{fail-safe 1-step causal blame attribution}, backed by a deterministic AST-diff and stack-trace ranker. On \BenchTotalBatches{} real executed failing Python multi-PR batches (\BenchSingleBatches{} regressions and \BenchSemBatches{} true pairwise semantic conflicts), our AST/traceback ranker achieves \BenchASTTopOnePct{}\% Top-1 (\BenchASTTopTwoPct{}\% Top-2) accuracy in \BenchASTMs{}~ms. Using these empirically measured parameters to calibrate \TotalSealedRecords{} sealed discrete-event replays over 600 real merged PRs from \texttt{kubernetes/kubernetes}, \texttt{microsoft/TypeScript}, and \texttt{vercel/next.js} under decoupled off-graph conflicts ($80\%$ graph recall) and cumulative mainline verification (\TotalEscapedDefects{} escaped defects), SSMQ achieves \SSMQThroughput{}~PRs/hr, \SSMQPNinetyFiveLat{}~min P95 latency, and \SSMQCICost{}~runner-min/PR at $5\times$ velocity---cutting P95 latency by \LatRedVsStaticPct{}\% vs.\ static batching (\StaticPNinetyFiveLat{}~min, Holm-adjusted Wilcoxon $p\HolmPLatVsStatic{}$), \LatRedVsUberPct{}\% vs.\ a EuroSys~'19 outcome-tree SubmitQueue (\UberPNinetyFiveLat{}~min, $p\HolmPLatVsUber{}$), and \LatRedVsFlakePct{}\% vs.\ fixed-retry batching (\FlakeBatchPNinetyFiveLat{}~min), while maintaining gains even when $60\%$ of true conflicts lie outside the scheduler's dependency graph.
+We present \textbf{SSMQ (Semantic Speculative Merge Queue)}, a dependency-aware merge queue scheduler integrating three mechanisms: (1) \emph{graph-disjoint risk-stratified batching}, which learns file co-change and two-level module impact cones strictly from chronological warm-up commits to pack orthogonal low-risk PRs into fast-lane batches while isolating colliding or high-risk changes in starvation-bounded protected lanes; (2) \emph{two-regime Beta-Binomial flaky gating}, which guards singletons against false flaky rejection while avoiding wasteful full-batch retries unless posterior flakiness exceeds $50\%$; and (3) \emph{fail-safe 1-step causal blame attribution}, backed by a deterministic AST-diff and stack-trace call-graph ranker with binary bisection fallback. On \BenchTotalBatches{} real executed failing Python multi-PR batches (\BenchSingleBatches{} disjoint regressions, \BenchCofileBatches{} co-file distractor regressions, and \BenchSemBatches{} verified pairwise semantic conflicts), our AST/traceback ranker achieves \BenchASTTopOnePct{}\% Top-1 (\BenchASTTopTwoPct{}\% Top-2, MRR \BenchASTMRR{}) in \BenchASTMs{}~ms, outperforming a file-level traceback overlap baseline (\BenchFileTopOnePct{}\% Top-1; \BenchASTCofilePct{}\% vs.\ \BenchFileCofilePct{}\% on co-file distractors). Across \TotalSealedRuns{} SHA-256-sealed suites totaling \TotalSealedRecords{} discrete-event replays under decoupled off-graph conflicts ($80\%$ graph recall) and cumulative mainline verification (\TotalEscapedDefects{} escaped defects), SSMQ achieves \SSMQThroughput{}~PRs/hr, \SSMQPNinetyFiveLat{}~min P95 latency, and \SSMQCICost{}~runner-min/PR at $5\times$ velocity---cutting P95 latency by \LatRedVsStaticPct{}\% vs.\ static batching (\StaticPNinetyFiveLat{}~min, Holm-adjusted Wilcoxon $p\HolmPLatVsStatic{}$, Cliff's $|\delta|=\CliffsLatVsStatic{}$), \LatRedVsUberPct{}\% vs.\ a EuroSys~'19 outcome-tree SubmitQueue (\UberPNinetyFiveLat{}~min, $p\HolmPLatVsUber{}$, $|\delta|=\CliffsLatVsUber{}$), and \LatRedVsFlakePct{}\% vs.\ fixed-retry batching (\FlakeBatchPNinetyFiveLat{}~min), while maintaining substantial gains even when $60\%$ of semantic conflicts lie outside the scheduler's observed graph.
 \end{abstract}
 
 \begin{IEEEkeywords}
-Continuous Integration, Merge Queues, Speculative Execution, Change Impact Analysis, Flaky Tests, Fault Attribution
+Continuous Integration, Merge Queues, Speculative Execution, Change Impact Analysis, Flaky Tests, Causal Fault Attribution
 \end{IEEEkeywords}
 
 \input{sections/01_introduction.tex}
-\input{sections/02_methodology.tex}
-\input{sections/03_evaluation_setup.tex}
-\input{sections/04_results.tex}
-\input{sections/05_related_work.tex}
-\input{sections/06_discussion_threats.tex}
-\input{sections/07_conclusion.tex}
+\input{sections/02_background_motivation.tex}
+\input{sections/03_methodology.tex}
+\input{sections/04_evaluation_setup.tex}
+\input{sections/05_results.tex}
+\input{sections/06_related_work.tex}
+\input{sections/07_discussion_threats.tex}
+\input{sections/08_conclusion.tex}
 \input{sections/ai_disclosure.tex}
 
 \bibliographystyle{IEEEtran}
