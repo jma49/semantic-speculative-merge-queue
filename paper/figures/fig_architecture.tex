@@ -22,22 +22,22 @@
 \node[smallbox=ssmqTeal] (merge) at (13.40, 1.40) {\textbf{Commit to Mainline}\\ Update $\mathrm{Beta}(\alpha,\beta)$\\ (0 Modeled/Git Escapes)};
 
 % Row 2: Flaky Gate -> (Singleton Reject OR Multi-PR Blame OR Bisection when allow_blame=False)
-\node[box=ssmqPurple] (flaky) at (10.05, -1.15) {\textbf{4. Two-Regime Flaky}\\ \textbf{Gate (Alg.~\ref{alg:flaky})}\\ $|B|{=}1$: $\tau_1{=}0.25$\\ $|B|{>}1$: $\tau_B{=}0.50$};
+\node[box=ssmqPurple, text width=2.25cm] (flaky) at (9.75, -1.20) {\textbf{4. Two-Regime Flaky}\\ \textbf{Gate (Alg.~\ref{alg:flaky})}\\ $|B|{=}1$: $\tau_1{=}0.25$\\ $|B|{>}1$: $\tau_B{=}0.50$};
 
-\node[smallbox=ssmqRed] (reject) at (13.40, -1.15) {\textbf{Isolated Reject}\\ $|B|{=}1$ \& retry\\ denied/exhausted};
+\node[smallbox=ssmqRed, text width=2.15cm] (reject) at (13.65, -1.20) {\textbf{Isolated Reject}\\ $|B|{=}1$ \& retry\\ denied/exhausted};
 
-\node[box=ssmqOrange] (blame) at (5.50, -1.15) {\textbf{5. 1-Step Causal Blame}\\ \textbf{(Alg.~\ref{alg:blame})}\\ Evict $s_1 \to$ enqueue\\ $(B{\setminus}\{s_1\}, \text{blame}{=}\text{F})$ \& $\{s_1\}$};
+\node[box=ssmqOrange, text width=2.35cm] (blame) at (5.15, -1.20) {\textbf{5. 1-Step Causal Blame}\\ \textbf{(Alg.~\ref{alg:blame})}\\ Evict $s_1 \to$ enqueue\\ $(B{\setminus}\{s_1\}, \text{blame}{=}\text{F})$ \& $\{s_1\}$};
 
-\node[smallbox=ssmqGray] (bisect) at (0.85, -1.15) {\textbf{6. Bisection Fallback}\\ Split $|B|{>}1$ using\\ $s_2$ priority hint};
+\node[smallbox=ssmqGray, text width=2.25cm] (bisect) at (0.85, -1.20) {\textbf{6. Bisection Fallback}\\ Split $|B|{>}1$ using\\ $s_2$ priority hint};
 
 % Primary forward arrows
 \draw[arr] (graph) -- (queue);
 \draw[arr] (queue) -- (ci);
 \draw[arr] (ci) -- (pass);
 \draw[arr] (pass.east) -- node[above, yshift=2pt, font=\scriptsize\bfseries, align=center] {Pass \&\\ Clean Delta} (merge.west);
-\draw[arr] (pass.south) -- node[lbl, right, xshift=2pt] {Fail} (flaky.north);
-\draw[arr] (flaky.east) -- node[lbl, above, yshift=2pt] {$|B|{=}1$, no retry} (reject.west);
-\draw[arr] (flaky.west) -- node[lbl, above, yshift=2pt] {$|B|{>}1$, no retry, blame=T} (blame.east);
+\draw[arr] (pass.south) -- (pass.south |- flaky.north) node[lbl, midway, right, xshift=2pt] {Fail};
+\draw[arr] (flaky.east) -- node[lbl, above, yshift=2pt, align=center, font=\tiny\bfseries] {$|B|{=}1$,\\ no retry} (reject.west);
+\draw[arr] (flaky.west) -- node[lbl, above, yshift=2pt, align=center, font=\tiny\bfseries] {$|B|{>}1$, no retry,\\ \texttt{blame=T}} (blame.east);
 
 % When a remainder (allow_blame=False) later fails CI & flaky gate, it routes directly from Flaky Gate -> Bisection!
 \draw[arr, draw=ssmqGray!85!black] (flaky.south) -- ++(0,-0.32) -| node[lbl, pos=0.25, below, yshift=-1pt, text=ssmqGray!85!black] {$|B|{>}1$, no retry, \texttt{allow\_blame=False} (incl.\ failed remainders)} (bisect.south);
