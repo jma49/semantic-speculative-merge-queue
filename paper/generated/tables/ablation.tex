@@ -1,18 +1,17 @@
-% AUTO-GENERATED FROM exp3_ablation_v1 — DO NOT EDIT
+% AUTO-GENERATED FROM v2_exp4_ablation — DO NOT EDIT
 \begin{table}[t]
 \centering
-\caption{Ablation Study of SSMQ Components ($5\times$ Velocity, $\phi=5\%$, 20 Seeds $\times$ 3 Repos).}
+\caption{Component Ablation ($5\times$ Velocity, $\phi=5\%$, $80\%$ Graph Recall, 20 Seeds $\times$ 3 Repos).}
 \label{tab:ablation}
 \begin{tabular}{lcccc}
 \toprule
-\textbf{Variant} & \textbf{Tput} & \textbf{P95} & \textbf{CI Cost} & \textbf{Blame} \\
- & (PR/h) & (min) & (m/PR) & (rnds) \\
+\textbf{Variant} & \textbf{Tput} & \textbf{P95} & \textbf{Cost} & \textbf{FR\%} \\
 \midrule
-\textbf{SSMQ} & \textbf{23.81} & \textbf{49.7} & \textbf{11.35} & \textbf{0.72} \\
-SSMQ-NoGraph & 21.74 & 85.9 & 12.77 & 2.17 \\
-SSMQ-NoFlaky & 23.86 & 46.7 & 11.06 & 0.42 \\
-SSMQ-NoBlame & 23.74 & 50.6 & 11.44 & 0.79 \\
-StaticBatchBisect & 22.08 & 78.4 & 12.56 & 1.80 \\
+\textbf{SSMQ} & \textbf{17.77} & \textbf{79.5} & \textbf{17.06} & \textbf{1.64\%} \\
+SSMQ-NoGraph & 15.57 & 136.1 & 20.84 & 1.33\% \\
+SSMQ-NoFlaky & 18.23 & 68.3 & 15.85 & 2.56\% \\
+SSMQ-NoBlame & 17.66 & 80.6 & 17.17 & 1.72\% \\
+StaticBatchBisect & 16.05 & 121.9 & 19.78 & 1.96\% \\
 \bottomrule
 \end{tabular}
 \end{table}

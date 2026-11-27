@@ -1,0 +1,26 @@
+% AUTO-GENERATED FROM v2_exp2_main_bench — DO NOT EDIT
+\begin{table}[t]
+\centering
+\caption{Per-Repository Breakdown at $5\times$ Velocity ($\phi=5\%$, $80\%$ Graph Recall, 20 Seeds).}
+\label{tab:per_repo}
+\begin{tabular}{llcccc}
+\toprule
+\textbf{Repo} & \textbf{Strategy} & \textbf{Tput} & \textbf{P95} & \textbf{Cost} & \textbf{FR\%} \\
+\midrule
+kubernetes & Static & 18.00 & 92.7 & 16.88 & 2.10\% \\
+kubernetes & UberTree & 11.17 & 323.6 & 40.50 & 1.49\% \\
+kubernetes & FlakeBatch & 14.40 & 181.5 & 24.33 & 0.18\% \\
+kubernetes & \textbf{SSMQ} & \textbf{19.65} & \textbf{64.0} & \textbf{15.46} & \textbf{1.50\%} \\
+\midrule
+typescript & Static & 12.89 & 167.2 & 25.36 & 2.03\% \\
+typescript & UberTree & 8.13 & 411.7 & 51.00 & 2.02\% \\
+typescript & FlakeBatch & 9.31 & 331.9 & 39.88 & 0.07\% \\
+typescript & \textbf{SSMQ} & \textbf{15.08} & \textbf{103.6} & \textbf{21.12} & \textbf{2.03\%} \\
+\midrule
+nextjs & Static & 17.27 & 105.8 & 17.09 & 1.76\% \\
+nextjs & UberTree & 11.50 & 292.8 & 38.77 & 1.66\% \\
+nextjs & FlakeBatch & 14.00 & 193.2 & 25.56 & 0.11\% \\
+nextjs & \textbf{SSMQ} & \textbf{18.59} & \textbf{70.8} & \textbf{14.58} & \textbf{1.41\%} \\
+\bottomrule
+\end{tabular}
+\end{table}

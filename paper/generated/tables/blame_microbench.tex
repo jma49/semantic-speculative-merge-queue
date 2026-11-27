@@ -1,0 +1,15 @@
+% AUTO-GENERATED FROM v2_exp0_blame_microbench — DO NOT EDIT
+\begin{table}[t]
+\centering
+\caption{Real Executed Python Multi-PR Blame Micro-Benchmark (48 Failing Batches: 24 Regressions + 24 True Pairwise Semantic Conflicts).}
+\label{tab:blame_microbench}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Ranker} & \textbf{Top-1 Acc.} & \textbf{Top-2 Acc.} & \textbf{Latency} \\
+\midrule
+RandomRanker & 29.2\% & 58.3\% & $<0.1$~ms \\
+ChurnRiskRanker & 2.1\% & 8.3\% & $<0.1$~ms \\
+\textbf{ASTStackCausalRanker (Ours)} & \textbf{91.7\%} & \textbf{100.0\%} & \textbf{2.29~ms} \\
+\bottomrule
+\end{tabular}
+\end{table}

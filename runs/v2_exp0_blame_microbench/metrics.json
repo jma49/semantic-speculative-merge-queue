@@ -1,0 +1,809 @@
+{
+  "summary": {
+    "total_failing_batches": 48,
+    "single_defect_batches": 24,
+    "semantic_conflict_batches": 24,
+    "ast_stack_top1_acc": 0.9167,
+    "ast_stack_top2_acc": 1.0,
+    "ast_stack_mrr": 0.9583,
+    "ast_stack_mean_ms": 2.288,
+    "churn_risk_top1_acc": 0.0208,
+    "churn_risk_top2_acc": 0.0833,
+    "random_top1_acc": 0.2917,
+    "random_top2_acc": 0.5833
+  },
+  "records": [
+    {
+      "case_id": 0,
+      "kind": "single_defect",
+      "batch_size": 4,
+      "culprits": [
+        "bug_pricing_mult"
+      ],
+      "ast_top1": "bug_pricing_mult",
+      "ast_top2": [
+        "bug_pricing_mult",
+        "clean_auth_lead"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.027
+    },
+    {
+      "case_id": 1,
+      "kind": "single_defect",
+      "batch_size": 8,
+      "culprits": [
+        "bug_pricing_mult"
+      ],
+      "ast_top1": "bug_pricing_mult",
+      "ast_top2": [
+        "bug_pricing_mult",
+        "clean_checkout_meta"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.721
+    },
+    {
+      "case_id": 2,
+      "kind": "single_defect",
+      "batch_size": 4,
+      "culprits": [
+        "bug_pricing_disc"
+      ],
+      "ast_top1": "bug_pricing_disc",
+      "ast_top2": [
+        "bug_pricing_disc",
+        "clean_ship_floor"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 1.644
+    },
+    {
+      "case_id": 3,
+      "kind": "single_defect",
+      "batch_size": 8,
+      "culprits": [
+        "bug_pricing_disc"
+      ],
+      "ast_top1": "bug_pricing_disc",
+      "ast_top2": [
+        "bug_pricing_disc",
+        "clean_checkout_meta"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.913
+    },
+    {
+      "case_id": 4,
+      "kind": "single_defect",
+      "batch_size": 4,
+      "culprits": [
+        "bug_pricing_tax"
+      ],
+      "ast_top1": "bug_pricing_tax",
+      "ast_top2": [
+        "bug_pricing_tax",
+        "clean_ship_floor"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 1.644
+    },
+    {
+      "case_id": 5,
+      "kind": "single_defect",
+      "batch_size": 8,
+      "culprits": [
+        "bug_pricing_tax"
+      ],
+      "ast_top1": "bug_pricing_tax",
+      "ast_top2": [
+        "bug_pricing_tax",
+        "clean_auth_lead"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.38
+    },
+    {
+      "case_id": 6,
+      "kind": "single_defect",
+      "batch_size": 4,
+      "culprits": [
+        "bug_inv_check"
+      ],
+      "ast_top1": "clean_checkout_meta",
+      "ast_top2": [
+        "clean_checkout_meta",
+        "bug_inv_check"
+      ],
+      "ast_hit_top1": false,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.003
+    },
+    {
+      "case_id": 7,
+      "kind": "single_defect",
+      "batch_size": 8,
+      "culprits": [
+        "bug_inv_check"
+      ],
+      "ast_top1": "clean_checkout_meta",
+      "ast_top2": [
+        "clean_checkout_meta",
+        "bug_inv_check"
+      ],
+      "ast_hit_top1": false,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.554
+    },
+    {
+      "case_id": 8,
+      "kind": "single_defect",
+      "batch_size": 4,
+      "culprits": [
+        "bug_inv_reserve"
+      ],
+      "ast_top1": "bug_inv_reserve",
+      "ast_top2": [
+        "bug_inv_reserve",
+        "clean_ledger_meta"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 1.683
+    },
+    {
+      "case_id": 9,
+      "kind": "single_defect",
+      "batch_size": 8,
+      "culprits": [
+        "bug_inv_reserve"
+      ],
+      "ast_top1": "bug_inv_reserve",
+      "ast_top2": [
+        "bug_inv_reserve",
+        "clean_checkout_meta"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.668
+    },
+    {
+      "case_id": 10,
+      "kind": "single_defect",
+      "batch_size": 4,
+      "culprits": [
+        "bug_inv_restock"
+      ],
+      "ast_top1": "bug_inv_restock",
+      "ast_top2": [
+        "bug_inv_restock",
+        "clean_auth_empty"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 1.777
+    },
+    {
+      "case_id": 11,
+      "kind": "single_defect",
+      "batch_size": 8,
+      "culprits": [
+        "bug_inv_restock"
+      ],
+      "ast_top1": "bug_inv_restock",
+      "ast_top2": [
+        "bug_inv_restock",
+        "clean_checkout_meta"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 3.027
+    },
+    {
+      "case_id": 12,
+      "kind": "single_defect",
+      "batch_size": 4,
+      "culprits": [
+        "bug_ship_fee"
+      ],
+      "ast_top1": "bug_ship_fee",
+      "ast_top2": [
+        "bug_ship_fee",
+        "clean_ledger_meta"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 1.668
+    },
+    {
+      "case_id": 13,
+      "kind": "single_defect",
+      "batch_size": 8,
+      "culprits": [
+        "bug_ship_fee"
+      ],
+      "ast_top1": "bug_ship_fee",
+      "ast_top2": [
+        "bug_ship_fee",
+        "clean_checkout_meta"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.638
+    },
+    {
+      "case_id": 14,
+      "kind": "single_defect",
+      "batch_size": 4,
+      "culprits": [
+        "bug_ship_days"
+      ],
+      "ast_top1": "bug_ship_days",
+      "ast_top2": [
+        "bug_ship_days",
+        "clean_auth_lead"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 1.753
+    },
+    {
+      "case_id": 15,
+      "kind": "single_defect",
+      "batch_size": 8,
+      "culprits": [
+        "bug_ship_days"
+      ],
+      "ast_top1": "bug_ship_days",
+      "ast_top2": [
+        "bug_ship_days",
+        "clean_checkout_meta"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 3.112
+    },
+    {
+      "case_id": 16,
+      "kind": "single_defect",
+      "batch_size": 4,
+      "culprits": [
+        "bug_auth_norm"
+      ],
+      "ast_top1": "bug_auth_norm",
+      "ast_top2": [
+        "bug_auth_norm",
+        "clean_pricing_clamp"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 1.686
+    },
+    {
+      "case_id": 17,
+      "kind": "single_defect",
+      "batch_size": 8,
+      "culprits": [
+        "bug_auth_norm"
+      ],
+      "ast_top1": "clean_checkout_meta",
+      "ast_top2": [
+        "clean_checkout_meta",
+        "bug_auth_norm"
+      ],
+      "ast_hit_top1": false,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.847
+    },
+    {
+      "case_id": 18,
+      "kind": "single_defect",
+      "batch_size": 4,
+      "culprits": [
+        "bug_auth_limit"
+      ],
+      "ast_top1": "bug_auth_limit",
+      "ast_top2": [
+        "bug_auth_limit",
+        "clean_inv_check_zero"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 1.656
+    },
+    {
+      "case_id": 19,
+      "kind": "single_defect",
+      "batch_size": 8,
+      "culprits": [
+        "bug_auth_limit"
+      ],
+      "ast_top1": "clean_checkout_meta",
+      "ast_top2": [
+        "clean_checkout_meta",
+        "bug_auth_limit"
+      ],
+      "ast_hit_top1": false,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.634
+    },
+    {
+      "case_id": 20,
+      "kind": "single_defect",
+      "batch_size": 4,
+      "culprits": [
+        "bug_ledger_sum"
+      ],
+      "ast_top1": "bug_ledger_sum",
+      "ast_top2": [
+        "bug_ledger_sum",
+        "clean_auth_lead"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 1.725
+    },
+    {
+      "case_id": 21,
+      "kind": "single_defect",
+      "batch_size": 8,
+      "culprits": [
+        "bug_ledger_sum"
+      ],
+      "ast_top1": "bug_ledger_sum",
+      "ast_top2": [
+        "bug_ledger_sum",
+        "clean_checkout_meta"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 3.218
+    },
+    {
+      "case_id": 22,
+      "kind": "single_defect",
+      "batch_size": 4,
+      "culprits": [
+        "bug_checkout_total"
+      ],
+      "ast_top1": "bug_checkout_total",
+      "ast_top2": [
+        "bug_checkout_total",
+        "clean_auth_lead"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 1.881
+    },
+    {
+      "case_id": 23,
+      "kind": "single_defect",
+      "batch_size": 8,
+      "culprits": [
+        "bug_checkout_total"
+      ],
+      "ast_top1": "bug_checkout_total",
+      "ast_top2": [
+        "bug_checkout_total",
+        "clean_auth_lead"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.553
+    },
+    {
+      "case_id": 24,
+      "kind": "semantic_conflict",
+      "batch_size": 4,
+      "culprits": [
+        "sem_checkout_penny",
+        "sem_pricing_round0"
+      ],
+      "ast_top1": "sem_checkout_penny",
+      "ast_top2": [
+        "sem_checkout_penny",
+        "sem_pricing_round0"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 1.796
+    },
+    {
+      "case_id": 25,
+      "kind": "semantic_conflict",
+      "batch_size": 6,
+      "culprits": [
+        "sem_checkout_penny",
+        "sem_pricing_round0"
+      ],
+      "ast_top1": "sem_checkout_penny",
+      "ast_top2": [
+        "sem_checkout_penny",
+        "clean_inv_check_zero"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.356
+    },
+    {
+      "case_id": 26,
+      "kind": "semantic_conflict",
+      "batch_size": 6,
+      "culprits": [
+        "sem_checkout_penny",
+        "sem_pricing_round0"
+      ],
+      "ast_top1": "sem_checkout_penny",
+      "ast_top2": [
+        "sem_checkout_penny",
+        "clean_auth_lead"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.219
+    },
+    {
+      "case_id": 27,
+      "kind": "semantic_conflict",
+      "batch_size": 8,
+      "culprits": [
+        "sem_checkout_penny",
+        "sem_pricing_round0"
+      ],
+      "ast_top1": "sem_checkout_penny",
+      "ast_top2": [
+        "sem_checkout_penny",
+        "clean_auth_lead"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.647
+    },
+    {
+      "case_id": 28,
+      "kind": "semantic_conflict",
+      "batch_size": 4,
+      "culprits": [
+        "sem_checkout_tax_bundle",
+        "sem_pricing_tax_tier"
+      ],
+      "ast_top1": "sem_checkout_tax_bundle",
+      "ast_top2": [
+        "sem_checkout_tax_bundle",
+        "clean_auth_lead"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 1.933
+    },
+    {
+      "case_id": 29,
+      "kind": "semantic_conflict",
+      "batch_size": 6,
+      "culprits": [
+        "sem_checkout_tax_bundle",
+        "sem_pricing_tax_tier"
+      ],
+      "ast_top1": "sem_checkout_tax_bundle",
+      "ast_top2": [
+        "sem_checkout_tax_bundle",
+        "clean_inv_check_zero"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.462
+    },
+    {
+      "case_id": 30,
+      "kind": "semantic_conflict",
+      "batch_size": 6,
+      "culprits": [
+        "sem_checkout_tax_bundle",
+        "sem_pricing_tax_tier"
+      ],
+      "ast_top1": "sem_checkout_tax_bundle",
+      "ast_top2": [
+        "sem_checkout_tax_bundle",
+        "clean_inv_check_zero"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.333
+    },
+    {
+      "case_id": 31,
+      "kind": "semantic_conflict",
+      "batch_size": 8,
+      "culprits": [
+        "sem_checkout_tax_bundle",
+        "sem_pricing_tax_tier"
+      ],
+      "ast_top1": "sem_checkout_tax_bundle",
+      "ast_top2": [
+        "sem_checkout_tax_bundle",
+        "clean_auth_lead"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.806
+    },
+    {
+      "case_id": 32,
+      "kind": "semantic_conflict",
+      "batch_size": 4,
+      "culprits": [
+        "sem_checkout_cat_invar",
+        "sem_inv_inplace_mut"
+      ],
+      "ast_top1": "sem_checkout_cat_invar",
+      "ast_top2": [
+        "sem_checkout_cat_invar",
+        "clean_ship_floor"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 1.97
+    },
+    {
+      "case_id": 33,
+      "kind": "semantic_conflict",
+      "batch_size": 6,
+      "culprits": [
+        "sem_checkout_cat_invar",
+        "sem_inv_inplace_mut"
+      ],
+      "ast_top1": "sem_checkout_cat_invar",
+      "ast_top2": [
+        "sem_checkout_cat_invar",
+        "clean_auth_lead"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.31
+    },
+    {
+      "case_id": 34,
+      "kind": "semantic_conflict",
+      "batch_size": 6,
+      "culprits": [
+        "sem_checkout_cat_invar",
+        "sem_inv_inplace_mut"
+      ],
+      "ast_top1": "sem_checkout_cat_invar",
+      "ast_top2": [
+        "sem_checkout_cat_invar",
+        "clean_auth_lead"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.321
+    },
+    {
+      "case_id": 35,
+      "kind": "semantic_conflict",
+      "batch_size": 8,
+      "culprits": [
+        "sem_checkout_cat_invar",
+        "sem_inv_inplace_mut"
+      ],
+      "ast_top1": "sem_checkout_cat_invar",
+      "ast_top2": [
+        "sem_checkout_cat_invar",
+        "clean_auth_lead"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.682
+    },
+    {
+      "case_id": 36,
+      "kind": "semantic_conflict",
+      "batch_size": 4,
+      "culprits": [
+        "sem_auth_strict_trim",
+        "sem_checkout_pad_role"
+      ],
+      "ast_top1": "sem_checkout_pad_role",
+      "ast_top2": [
+        "sem_checkout_pad_role",
+        "clean_inv_check_zero"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 1.979
+    },
+    {
+      "case_id": 37,
+      "kind": "semantic_conflict",
+      "batch_size": 6,
+      "culprits": [
+        "sem_auth_strict_trim",
+        "sem_checkout_pad_role"
+      ],
+      "ast_top1": "sem_checkout_pad_role",
+      "ast_top2": [
+        "sem_checkout_pad_role",
+        "clean_pricing_guard"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.227
+    },
+    {
+      "case_id": 38,
+      "kind": "semantic_conflict",
+      "batch_size": 6,
+      "culprits": [
+        "sem_auth_strict_trim",
+        "sem_checkout_pad_role"
+      ],
+      "ast_top1": "sem_checkout_pad_role",
+      "ast_top2": [
+        "sem_checkout_pad_role",
+        "clean_inv_check_zero"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.262
+    },
+    {
+      "case_id": 39,
+      "kind": "semantic_conflict",
+      "batch_size": 8,
+      "culprits": [
+        "sem_auth_strict_trim",
+        "sem_checkout_pad_role"
+      ],
+      "ast_top1": "sem_checkout_pad_role",
+      "ast_top2": [
+        "sem_checkout_pad_role",
+        "clean_ledger_meta"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.621
+    },
+    {
+      "case_id": 40,
+      "kind": "semantic_conflict",
+      "batch_size": 4,
+      "culprits": [
+        "sem_checkout_upper_id",
+        "sem_ledger_id_prefix"
+      ],
+      "ast_top1": "sem_checkout_upper_id",
+      "ast_top2": [
+        "sem_checkout_upper_id",
+        "sem_ledger_id_prefix"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 1.913
+    },
+    {
+      "case_id": 41,
+      "kind": "semantic_conflict",
+      "batch_size": 6,
+      "culprits": [
+        "sem_checkout_upper_id",
+        "sem_ledger_id_prefix"
+      ],
+      "ast_top1": "sem_checkout_upper_id",
+      "ast_top2": [
+        "sem_checkout_upper_id",
+        "sem_ledger_id_prefix"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.275
+    },
+    {
+      "case_id": 42,
+      "kind": "semantic_conflict",
+      "batch_size": 6,
+      "culprits": [
+        "sem_checkout_upper_id",
+        "sem_ledger_id_prefix"
+      ],
+      "ast_top1": "sem_checkout_upper_id",
+      "ast_top2": [
+        "sem_checkout_upper_id",
+        "sem_ledger_id_prefix"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.272
+    },
+    {
+      "case_id": 43,
+      "kind": "semantic_conflict",
+      "batch_size": 8,
+      "culprits": [
+        "sem_checkout_upper_id",
+        "sem_ledger_id_prefix"
+      ],
+      "ast_top1": "sem_checkout_upper_id",
+      "ast_top2": [
+        "sem_checkout_upper_id",
+        "sem_ledger_id_prefix"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.664
+    },
+    {
+      "case_id": 44,
+      "kind": "semantic_conflict",
+      "batch_size": 4,
+      "culprits": [
+        "sem_checkout_opt_expr",
+        "sem_ship_strict_bool"
+      ],
+      "ast_top1": "sem_checkout_opt_expr",
+      "ast_top2": [
+        "sem_checkout_opt_expr",
+        "sem_ship_strict_bool"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 1.965
+    },
+    {
+      "case_id": 45,
+      "kind": "semantic_conflict",
+      "batch_size": 6,
+      "culprits": [
+        "sem_checkout_opt_expr",
+        "sem_ship_strict_bool"
+      ],
+      "ast_top1": "sem_checkout_opt_expr",
+      "ast_top2": [
+        "sem_checkout_opt_expr",
+        "sem_ship_strict_bool"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.383
+    },
+    {
+      "case_id": 46,
+      "kind": "semantic_conflict",
+      "batch_size": 6,
+      "culprits": [
+        "sem_checkout_opt_expr",
+        "sem_ship_strict_bool"
+      ],
+      "ast_top1": "sem_checkout_opt_expr",
+      "ast_top2": [
+        "sem_checkout_opt_expr",
+        "sem_ship_strict_bool"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.347
+    },
+    {
+      "case_id": 47,
+      "kind": "semantic_conflict",
+      "batch_size": 8,
+      "culprits": [
+        "sem_checkout_opt_expr",
+        "sem_ship_strict_bool"
+      ],
+      "ast_top1": "sem_checkout_opt_expr",
+      "ast_top2": [
+        "sem_checkout_opt_expr",
+        "sem_ship_strict_bool"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_latency_ms": 2.677
+    }
+  ]
+}

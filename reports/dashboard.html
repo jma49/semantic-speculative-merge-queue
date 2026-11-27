@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Research Paper Factory & SSMQ Audited Results</title>
+<title>SSMQ v2 Audited Benchmark &amp; Non-Circularity Dashboard</title>
 <style>
   * { box-sizing: border-box; }
   body {
@@ -23,7 +23,7 @@
     padding: 12px 14px;
   }
   .kpi-label { font-size: 11px; color: var(--muted-foreground); margin-bottom: 4px; }
-  .kpi-val { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
+  .kpi-val { font-size: 19px; font-weight: 700; letter-spacing: -0.02em; }
   .kpi-sub { font-size: 11px; color: var(--muted-foreground); margin-top: 2px; }
   .box {
     background: var(--card);
@@ -35,14 +35,19 @@
   .box-sub { font-size: 11px; color: var(--muted-foreground); margin: 0 0 12px 0; }
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   .bar-list { display: flex; flex-direction: column; gap: 8px; }
-  .bar-row { display: grid; grid-template-columns: 126px 1fr 56px; align-items: center; gap: 8px; }
+  .bar-row { display: grid; grid-template-columns: 122px 1fr 56px; align-items: center; gap: 8px; }
   .bar-name { font-size: 11.5px; text-align: right; color: var(--muted-foreground); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .bar-name.hl { color: var(--foreground); font-weight: 600; }
   .bar-track { height: 18px; background: var(--secondary); border-radius: 4px; overflow: hidden; }
-  .bar-fill { height: 100%; border-radius: 4px; background: var(--chart-2, #64748b); }
+  .bar-fill { height: 100%; border-radius: 4px; background: var(--chart-2, #10b981); }
   .bar-fill.hl { background: var(--chart-1, #2563eb); }
   .bar-val { font-size: 11.5px; font-variant-numeric: tabular-nums; text-align: right; color: var(--muted-foreground); }
   .bar-val.hl { color: var(--foreground); font-weight: 700; }
+  table { width: 100%; border-collapse: collapse; font-size: 11.5px; }
+  th, td { padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: right; font-variant-numeric: tabular-nums; }
+  th:first-child, td:first-child { text-align: left; }
+  th { color: var(--muted-foreground); font-weight: 600; font-size: 11px; }
+  tr.hl td { font-weight: 700; color: var(--foreground); }
   .pill-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
   .pill {
     display: inline-flex; align-items: center; gap: 5px;
@@ -52,12 +57,6 @@
   .dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
   .dot.ok { background: var(--success, #10b981); }
   .dot.wait { background: var(--warning, #f59e0b); }
-  .chart-svg { width: 100%; height: 190px; display: block; }
-  table { width: 100%; border-collapse: collapse; font-size: 11.5px; }
-  th, td { padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: right; font-variant-numeric: tabular-nums; }
-  th:first-child, td:first-child { text-align: left; }
-  th { color: var(--muted-foreground); font-weight: 600; font-size: 11px; }
-  tr.hl td { font-weight: 700; color: var(--foreground); }
   @media (max-width: 560px) {
     .kpi-grid { grid-template-columns: repeat(2, 1fr); }
     .two-col { grid-template-columns: 1fr; }
@@ -68,125 +67,79 @@
 <div class="stack">
   <div class="kpi-grid">
     <div class="kpi">
-      <div class="kpi-label">P95 Merge Latency (5×)</div>
-      <div class="kpi-val" style="color: var(--chart-1, #2563eb);">49.7 m</div>
-      <div class="kpi-sub">-36.6% vs Static Batch (78.4 m)</div>
+      <div class="kpi-label">v2 P95 Latency (80% Recall)</div>
+      <div class="kpi-val" style="color: var(--chart-1, #2563eb);">79.5 m</div>
+      <div class="kpi-sub">-34.8% vs Static · Holm p&lt;0.0001</div>
     </div>
     <div class="kpi">
-      <div class="kpi-label">CI Compute Cost</div>
-      <div class="kpi-val" style="color: var(--success, #10b981);">11.35 m/PR</div>
-      <div class="kpi-sub">-46.9% vs Linear, -32.8% vs Flake</div>
+      <div class="kpi-label">Real Executed AST Blame</div>
+      <div class="kpi-val" style="color: var(--success, #10b981);">91.7% Top-1</div>
+      <div class="kpi-sub">100% Top-2 · 2.29 ms (48 batches)</div>
     </div>
     <div class="kpi">
-      <div class="kpi-label">Peak 10× Throughput</div>
-      <div class="kpi-val">34.45 PR/h</div>
-      <div class="kpi-sub">vs 31.25 Static / 6.27 Risk-Gated</div>
+      <div class="kpi-label">CI Cost vs UberTree</div>
+      <div class="kpi-val">17.06 m/PR</div>
+      <div class="kpi-sub">-60.7% vs EuroSys'19 Tree · -13.8% Static</div>
     </div>
     <div class="kpi">
-      <div class="kpi-label">Sealed Audit &amp; Refs</div>
-      <div class="kpi-val">3,480 / 27</div>
-      <div class="kpi-sub">0 escapes · 0% preprints · 0.10% A/A</div>
+      <div class="kpi-label">Sealed v2 Audit</div>
+      <div class="kpi-val">4,920 + 48</div>
+      <div class="kpi-sub">0 cumulative escapes · 79 macros</div>
     </div>
   </div>
 
   <div class="two-col">
     <div class="box">
-      <h3 class="box-title">P95 Merge Latency at 5× Velocity (min ↓)</h3>
-      <p class="box-sub">Mean across 3 real OSS repos (kubernetes, TypeScript, next.js), 20 seeds</p>
+      <h3 class="box-title">v2 Main P95 Merge Latency (min ↓)</h3>
+      <p class="box-sub">5× velocity, 5% flaky, 20% off-graph latent conflicts, 20 paired seeds × 3 repos</p>
       <div class="bar-list">
-        <div class="bar-row"><div class="bar-name hl">SSMQ (Ours)</div><div class="bar-track"><div class="bar-fill hl" style="width: 3.5%;"></div></div><div class="bar-val hl">49.7</div></div>
-        <div class="bar-row"><div class="bar-name">StaticBatchBisect</div><div class="bar-track"><div class="bar-fill" style="width: 5.5%;"></div></div><div class="bar-val">78.4</div></div>
-        <div class="bar-row"><div class="bar-name">FlakeAwareBatch</div><div class="bar-track"><div class="bar-fill" style="width: 9.7%;"></div></div><div class="bar-val">137.8</div></div>
-        <div class="bar-row"><div class="bar-name">SpeculativeLinear</div><div class="bar-track"><div class="bar-fill" style="width: 52.3%; background: var(--destructive, #ef4444);"></div></div><div class="bar-val">746.5</div></div>
-        <div class="bar-row"><div class="bar-name">UberSubmitProxy</div><div class="bar-track"><div class="bar-fill" style="width: 69.0%; background: var(--warning, #f59e0b);"></div></div><div class="bar-val">984.0</div></div>
-        <div class="bar-row"><div class="bar-name">SerialQueue</div><div class="bar-track"><div class="bar-fill" style="width: 100%;"></div></div><div class="bar-val">1426.4</div></div>
+        <div class="bar-row"><div class="bar-name hl">SSMQ (Ours)</div><div class="bar-track"><div class="bar-fill hl" style="width: 5.6%;"></div></div><div class="bar-val hl">79.5</div></div>
+        <div class="bar-row"><div class="bar-name">StaticBatchBisect</div><div class="bar-track"><div class="bar-fill" style="width: 8.7%;"></div></div><div class="bar-val">121.9</div></div>
+        <div class="bar-row"><div class="bar-name">FlakeAwareBatch</div><div class="bar-track"><div class="bar-fill" style="width: 16.7%;"></div></div><div class="bar-val">235.5</div></div>
+        <div class="bar-row"><div class="bar-name">UberTree (EuroSys)</div><div class="bar-track"><div class="bar-fill" style="width: 24.3%; background: var(--warning, #f59e0b);"></div></div><div class="bar-val">342.7</div></div>
+        <div class="bar-row"><div class="bar-name">SpeculativeLinear</div><div class="bar-track"><div class="bar-fill" style="width: 63.9%; background: var(--destructive, #ef4444);"></div></div><div class="bar-val">899.8</div></div>
+        <div class="bar-row"><div class="bar-name">SerialQueue</div><div class="bar-track"><div class="bar-fill" style="width: 100%;"></div></div><div class="bar-val">1408.8</div></div>
       </div>
     </div>
 
     <div class="box">
-      <h3 class="box-title">CI Compute Cost per Merged PR (min/PR ↓)</h3>
-      <p class="box-sub">Includes partial runner time on aborted speculative builds</p>
-      <div class="bar-list">
-        <div class="bar-row"><div class="bar-name hl">SSMQ (Ours)</div><div class="bar-track"><div class="bar-fill hl" style="width: 53.1%;"></div></div><div class="bar-val hl">11.35</div></div>
-        <div class="bar-row"><div class="bar-name">StaticBatchBisect</div><div class="bar-track"><div class="bar-fill" style="width: 58.8%;"></div></div><div class="bar-val">12.56</div></div>
-        <div class="bar-row"><div class="bar-name">UberSubmitProxy</div><div class="bar-track"><div class="bar-fill" style="width: 58.9%;"></div></div><div class="bar-val">12.59</div></div>
-        <div class="bar-row"><div class="bar-name">SerialQueue</div><div class="bar-track"><div class="bar-fill" style="width: 64.3%;"></div></div><div class="bar-val">13.74</div></div>
-        <div class="bar-row"><div class="bar-name">FlakeAwareBatch</div><div class="bar-track"><div class="bar-fill" style="width: 79.1%; background: var(--warning, #f59e0b);"></div></div><div class="bar-val">16.90</div></div>
-        <div class="bar-row"><div class="bar-name">SpeculativeLinear</div><div class="bar-track"><div class="bar-fill" style="width: 100%; background: var(--destructive, #ef4444);"></div></div><div class="bar-val">21.36</div></div>
-      </div>
+      <h3 class="box-title">Non-Circularity: P95 vs Graph Recall (min ↓)</h3>
+      <p class="box-sub">SSMQ beats Static even with 60% unseen off-graph latent conflicts</p>
+      <table>
+        <thead>
+          <tr><th>Regime</th><th>Static</th><th>UberTree</th><th>SSMQ</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>No-Conflict (P=0)</td><td>43.7</td><td>153.3</td><td>49.5</td></tr>
+          <tr class="hl"><td>40% Recall (60% latent)</td><td>148.6</td><td>442.3</td><td>111.2</td></tr>
+          <tr class="hl"><td>60% Recall (40% latent)</td><td>135.2</td><td>388.0</td><td>93.9</td></tr>
+          <tr class="hl"><td>80% Recall (20% latent)</td><td>121.9</td><td>342.7</td><td>79.5</td></tr>
+          <tr class="hl"><td>100% Recall (0% latent)</td><td>112.1</td><td>307.3</td><td>69.4</td></tr>
+        </tbody>
+      </table>
     </div>
   </div>
 
   <div class="box">
-    <h3 class="box-title">Throughput Scaling Under AI-Agent PR Velocity Surge (1× → 10×)</h3>
-    <p class="box-sub">Effective merged PRs/hour across 600 real OSS PR traces (exp2_velocity_sweep_v1)</p>
-    <svg class="chart-svg" viewBox="0 0 660 190" preserveAspectRatio="xMidYMid meet">
-      <g stroke="var(--border)" stroke-width="1">
-        <line x1="48" y1="18" x2="520" y2="18"/>
-        <line x1="48" y1="54" x2="520" y2="54"/>
-        <line x1="48" y1="90" x2="520" y2="90"/>
-        <line x1="48" y1="126" x2="520" y2="126"/>
-        <line x1="48" y1="162" x2="520" y2="162"/>
-      </g>
-      <g fill="var(--muted-foreground)" font-size="10" text-anchor="end">
-        <text x="42" y="21">40</text>
-        <text x="42" y="57">30</text>
-        <text x="42" y="93">20</text>
-        <text x="42" y="129">10</text>
-        <text x="42" y="165">0</text>
-      </g>
-      <g fill="var(--muted-foreground)" font-size="11" text-anchor="middle">
-        <text x="68" y="180">1× (6/h)</text>
-        <text x="212" y="180">3× (18/h)</text>
-        <text x="356" y="180">5× (30/h)</text>
-        <text x="500" y="180">10× (60/h)</text>
-      </g>
-      <!-- y = 162 - (val / 40) * 144 -->
-      <!-- SSMQ: 5.36, 15.78, 23.81, 34.45 -->
-      <polyline fill="none" stroke="var(--chart-1, #2563eb)" stroke-width="3" points="68,142.7 212,105.2 356,76.3 500,38.0"/>
-      <g fill="var(--chart-1, #2563eb)">
-        <circle cx="68" cy="142.7" r="4"/><circle cx="212" cy="105.2" r="4"/><circle cx="356" cy="76.3" r="4"/><circle cx="500" cy="38.0" r="4.5"/>
-      </g>
-      <!-- StaticBatchBisect: 5.30, 15.30, 22.08, 31.25 -->
-      <polyline fill="none" stroke="var(--chart-2, #10b981)" stroke-width="2" points="68,142.9 212,106.9 356,82.5 500,49.5"/>
-      <!-- FlakeAwareBatch: 5.51, 14.09, 18.55, 23.61 -->
-      <polyline fill="none" stroke="var(--chart-3, #f59e0b)" stroke-width="2" stroke-dasharray="4 3" points="68,142.2 212,111.3 356,95.2 500,77.0"/>
-      <!-- SpeculativeLinear: 4.61, 7.31, 7.57, 7.59 -->
-      <polyline fill="none" stroke="var(--destructive, #ef4444)" stroke-width="2" points="68,145.4 212,135.7 356,134.7 500,134.7"/>
-      <!-- UberSubmitProxy: 4.28, 6.20, 6.27, 6.27 -->
-      <polyline fill="none" stroke="var(--muted-foreground)" stroke-width="1.8" stroke-dasharray="2 2" points="68,146.6 212,139.7 356,139.4 500,139.4"/>
-
-      <!-- Legend -->
-      <g font-size="11" fill="var(--foreground)">
-        <line x1="534" y1="36" x2="552" y2="36" stroke="var(--chart-1, #2563eb)" stroke-width="3"/><text x="558" y="40" font-weight="700">SSMQ (34.45)</text>
-        <line x1="534" y1="58" x2="552" y2="58" stroke="var(--chart-2, #10b981)" stroke-width="2"/><text x="558" y="62">Static (31.25)</text>
-        <line x1="534" y1="80" x2="552" y2="80" stroke="var(--chart-3, #f59e0b)" stroke-width="2" stroke-dasharray="4 3"/><text x="558" y="84">FlakeBatch (23.6)</text>
-        <line x1="534" y1="102" x2="552" y2="102" stroke="var(--destructive, #ef4444)" stroke-width="2"/><text x="558" y="106">SpecLinear (7.6)</text>
-        <line x1="534" y1="124" x2="552" y2="124" stroke="var(--muted-foreground)" stroke-width="1.8" stroke-dasharray="2 2"/><text x="558" y="128">UberProxy (6.3)</text>
-      </g>
-    </svg>
-  </div>
-
-  <div class="box">
-    <h3 class="box-title">Multi-Model Pipeline Orchestration &amp; Gate Status</h3>
-    <div class="pill-row">
-      <span class="pill"><span class="dot ok"></span>Antigravity · Gemini 4 Neon (Coordinator / Scout / Writer Fallback)</span>
-      <span class="pill"><span class="dot ok"></span>Codex · GPT-6.2 Sol (Architect + PC Reviewer: 3/10 Strict Audit)</span>
-      <span class="pill"><span class="dot ok"></span>Deterministic Python Auditor (Zero LLM · 61 LaTeX Macros)</span>
-      <span class="pill"><span class="dot wait"></span>Claude · Opus 5.5 (Queued for Sat PM PST Reset: 2026-11-28 15:00)</span>
-    </div>
-    <table style="margin-top: 12px;">
+    <h3 class="box-title">Flaky Delivery Pareto (10% Flakiness) &amp; Scheduled Claude Opus 5.5 Slot</h3>
+    <p class="box-sub">SSMQ cuts clean-PR false rejections &gt;50% vs NoFlaky/Static without fixed-retry latency blowup</p>
+    <table>
       <thead>
-        <tr><th>Variant / Ablation (5×, 5% Flaky)</th><th>Throughput</th><th>P95 Lat.</th><th>CI Cost</th><th>Blame Rnds</th></tr>
+        <tr><th>Strategy (φ=10%, 5× vel.)</th><th>Throughput</th><th>P95 Lat.</th><th>CI Cost</th><th>Clean-PR False Rej. ↓</th></tr>
       </thead>
       <tbody>
-        <tr class="hl"><td>SSMQ (Full)</td><td>23.81 PR/h</td><td>49.7 min</td><td>11.35 m/PR</td><td>0.72</td></tr>
-        <tr><td>SSMQ-NoGraph (FIFO batching)</td><td>21.74 PR/h</td><td>85.9 min</td><td>12.77 m/PR</td><td>2.17</td></tr>
-        <tr><td>SSMQ-NoBlame (binary bisect)</td><td>23.74 PR/h</td><td>50.6 min</td><td>11.44 m/PR</td><td>0.79</td></tr>
-        <tr><td>SSMQ-NoFlaky (no retries · rejects clean PRs)</td><td>23.86 PR/h</td><td>46.7 min</td><td>11.06 m/PR</td><td>0.42</td></tr>
-        <tr><td>StaticBatchBisect (baseline)</td><td>22.08 PR/h</td><td>78.4 min</td><td>12.56 m/PR</td><td>1.80</td></tr>
+        <tr class="hl"><td>SSMQ (Two-Regime Flaky Guard)</td><td>16.72 PR/h</td><td>96.5 min</td><td>18.95 m/PR</td><td>2.20%</td></tr>
+        <tr><td>SSMQ-NoFlaky (no retries)</td><td>17.66 PR/h</td><td>70.2 min</td><td>16.43 m/PR</td><td>5.35%</td></tr>
+        <tr><td>StaticBatchBisect</td><td>15.63 PR/h</td><td>122.3 min</td><td>20.33 m/PR</td><td>4.43%</td></tr>
+        <tr><td>FlakeAwareBatch (always retry)</td><td>12.42 PR/h</td><td>238.8 min</td><td>30.39 m/PR</td><td>0.43%</td></tr>
+        <tr><td>UberSubmitQueue (EuroSys'19 Tree)</td><td>9.96 PR/h</td><td>347.8 min</td><td>45.05 m/PR</td><td>3.60%</td></tr>
       </tbody>
     </table>
+    <div class="pill-row">
+      <span class="pill"><span class="dot ok"></span>Commit 0a6f669 · 8/8 Sealed SHA-256 Manifests</span>
+      <span class="pill"><span class="dot ok"></span>GitHub Actions CI + Auto IEEEtran PDF Build</span>
+      <span class="pill"><span class="dot wait"></span>Claude Opus 5.5 Scheduled: Sat 2026-11-28 15:30 PST</span>
+    </div>
   </div>
 </div>
 </body>

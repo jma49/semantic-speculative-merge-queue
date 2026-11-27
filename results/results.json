@@ -1,138 +1,150 @@
 {
+  "schema_version": "2.0",
   "audit_passed": true,
-  "verified_run_count": 6,
-  "total_sealed_records": 3480,
+  "verified_run_count": 8,
+  "total_sealed_sim_records": 4920,
   "total_escaped_defects": 0,
-  "run_manifests": {
-    "exp0_aa_noise": "exp0_aa_noise_v1",
-    "exp1_main_bench": "exp1_main_bench_v1",
-    "exp2_velocity_sweep": "exp2_velocity_sweep_v1",
-    "exp3_ablation": "exp3_ablation_v1",
-    "exp4a_flaky_sweep": "exp4a_flaky_sweep_v1",
-    "exp4b_blame_accuracy": "exp4b_blame_accuracy_v1"
+  "manifests": {
+    "v2_exp0_blame_microbench": {
+      "run_id": "v2_exp0_blame_microbench",
+      "git_commit": "0a6f669",
+      "sha256": "dfe29e3039622c6f"
+    },
+    "v2_exp1_aa_noise": {
+      "run_id": "v2_exp1_aa_noise",
+      "git_commit": "0a6f669",
+      "sha256": "b834185012b5656d"
+    },
+    "v2_exp2_main_bench": {
+      "run_id": "v2_exp2_main_bench",
+      "git_commit": "0a6f669",
+      "sha256": "78d3d615d8633956"
+    },
+    "v2_exp3_velocity": {
+      "run_id": "v2_exp3_velocity",
+      "git_commit": "0a6f669",
+      "sha256": "a5a7d02153b7b30c"
+    },
+    "v2_exp4_ablation": {
+      "run_id": "v2_exp4_ablation",
+      "git_commit": "0a6f669",
+      "sha256": "95ffa28b388c6d40"
+    },
+    "v2_exp5_graph_recall": {
+      "run_id": "v2_exp5_graph_recall",
+      "git_commit": "0a6f669",
+      "sha256": "f3b5617b8c2a1842"
+    },
+    "v2_exp6_flaky_sweep": {
+      "run_id": "v2_exp6_flaky_sweep",
+      "git_commit": "0a6f669",
+      "sha256": "ef260b19d2f80071"
+    },
+    "v2_exp7_blame_sweep": {
+      "run_id": "v2_exp7_blame_sweep",
+      "git_commit": "0a6f669",
+      "sha256": "21e582e4c2592e72"
+    }
   },
-  "exp0_aa_noise": {
+  "v2_exp0_blame_microbench": {
+    "total_failing_batches": 48,
+    "single_defect_batches": 24,
+    "semantic_conflict_batches": 24,
+    "ast_stack_top1_acc": 0.9167,
+    "ast_stack_top2_acc": 1.0,
+    "ast_stack_mrr": 0.9583,
+    "ast_stack_mean_ms": 2.288,
+    "churn_risk_top1_acc": 0.0208,
+    "churn_risk_top2_acc": 0.0833,
+    "random_top1_acc": 0.2917,
+    "random_top2_acc": 0.5833
+  },
+  "v2_exp1_aa_noise": {
     "throughput_prs_per_hr": {
       "block_A": {
-        "mean": 23.8059,
-        "ci_lo": 23.3799,
-        "ci_hi": 24.2389,
+        "mean": 17.7748,
+        "ci_lo": 17.1904,
+        "ci_hi": 18.3252,
         "n": 60
       },
       "block_B": {
-        "mean": 23.7819,
-        "ci_lo": 23.3607,
-        "ci_hi": 24.1987,
+        "mean": 17.1735,
+        "ci_lo": 16.5869,
+        "ci_hi": 17.7099,
         "n": 60
       },
-      "rel_diff_pct": 0.1,
-      "cliffs_delta": -0.0156
-    },
-    "p50_latency_min": {
-      "block_A": {
-        "mean": 22.0481,
-        "ci_lo": 20.6952,
-        "ci_hi": 23.3801,
-        "n": 60
-      },
-      "block_B": {
-        "mean": 22.4311,
-        "ci_lo": 21.1241,
-        "ci_hi": 23.7993,
-        "n": 60
-      },
-      "rel_diff_pct": 1.74,
-      "cliffs_delta": -0.0372
+      "rel_diff_pct": 3.38
     },
     "p95_latency_min": {
       "block_A": {
-        "mean": 49.7431,
-        "ci_lo": 45.3445,
-        "ci_hi": 54.4716,
+        "mean": 79.49,
+        "ci_lo": 73.7672,
+        "ci_hi": 85.5356,
         "n": 60
       },
       "block_B": {
-        "mean": 51.0538,
-        "ci_lo": 46.5738,
-        "ci_hi": 55.7689,
+        "mean": 84.833,
+        "ci_lo": 78.9081,
+        "ci_hi": 91.3429,
         "n": 60
       },
-      "rel_diff_pct": 2.63,
-      "cliffs_delta": -0.0878
+      "rel_diff_pct": 6.72
     },
     "ci_minutes_per_merged_pr": {
       "block_A": {
-        "mean": 11.3457,
-        "ci_lo": 10.904,
-        "ci_hi": 11.7884,
+        "mean": 17.0562,
+        "ci_lo": 16.2289,
+        "ci_hi": 17.9332,
         "n": 60
       },
       "block_B": {
-        "mean": 11.4771,
-        "ci_lo": 11.0445,
-        "ci_hi": 11.9092,
+        "mean": 17.7852,
+        "ci_lo": 16.8327,
+        "ci_hi": 18.8536,
         "n": 60
       },
-      "rel_diff_pct": 1.16,
-      "cliffs_delta": -0.0556
+      "rel_diff_pct": 4.27
     },
-    "invalidation_rate": {
+    "false_rejection_rate": {
       "block_A": {
-        "mean": 0.0097,
-        "ci_lo": 0.0058,
-        "ci_hi": 0.014,
+        "mean": 0.0164,
+        "ci_lo": 0.0134,
+        "ci_hi": 0.0195,
         "n": 60
       },
       "block_B": {
-        "mean": 0.0134,
-        "ci_lo": 0.0087,
-        "ci_hi": 0.0188,
+        "mean": 0.0135,
+        "ci_lo": 0.0108,
+        "ci_hi": 0.0162,
         "n": 60
       },
-      "rel_diff_pct": 38.14,
-      "cliffs_delta": -0.1219
-    },
-    "mean_blame_rounds": {
-      "block_A": {
-        "mean": 0.7242,
-        "ci_lo": 0.6325,
-        "ci_hi": 0.8234,
-        "n": 60
-      },
-      "block_B": {
-        "mean": 0.8344,
-        "ci_lo": 0.7227,
-        "ci_hi": 0.9499,
-        "n": 60
-      },
-      "rel_diff_pct": 15.22,
-      "cliffs_delta": -0.1269
+      "rel_diff_pct": 17.68
     }
   },
-  "exp1_main_overall": {
+  "v2_exp2_main_overall": {
     "SerialQueue": {
       "throughput_prs_per_hr": {
-        "mean": 4.3698,
-        "ci_lo": 4.3344,
-        "ci_hi": 4.4028,
+        "mean": 3.6293,
+        "ci_lo": 3.5533,
+        "ci_hi": 3.699,
         "n": 60
       },
       "p50_latency_min": {
-        "mean": 680.5385,
-        "ci_lo": 672.2239,
-        "ci_hi": 689.4042,
+        "mean": 619.705,
+        "ci_lo": 606.0983,
+        "ci_hi": 633.2466,
         "n": 60
       },
       "p95_latency_min": {
-        "mean": 1426.4441,
-        "ci_lo": 1420.6506,
-        "ci_hi": 1432.1764,
+        "mean": 1408.7704,
+        "ci_lo": 1399.7114,
+        "ci_hi": 1417.4121,
         "n": 60
       },
       "ci_minutes_per_merged_pr": {
-        "mean": 13.7442,
-        "ci_lo": 13.6406,
-        "ci_hi": 13.8557,
+        "mean": 16.6453,
+        "ci_lo": 16.2974,
+        "ci_hi": 17.0256,
         "n": 60
       },
       "invalidation_rate": {
@@ -145,225 +157,333 @@
         "mean": 0.0,
         "ci_lo": 0.0,
         "ci_hi": 0.0,
+        "n": 60
+      },
+      "false_rejection_rate": {
+        "mean": 0.0422,
+        "ci_lo": 0.0387,
+        "ci_hi": 0.046,
+        "n": 60
+      },
+      "mean_batch_size": {
+        "mean": 1.0,
+        "ci_lo": 1.0,
+        "ci_hi": 1.0,
+        "n": 60
+      },
+      "runner_utilization": {
+        "mean": 0.125,
+        "ci_lo": 0.125,
+        "ci_hi": 0.125,
         "n": 60
       }
     },
     "StaticBatchBisect": {
       "throughput_prs_per_hr": {
-        "mean": 22.0778,
-        "ci_lo": 21.6159,
-        "ci_hi": 22.5468,
+        "mean": 16.0539,
+        "ci_lo": 15.4173,
+        "ci_hi": 16.6646,
         "n": 60
       },
       "p50_latency_min": {
-        "mean": 34.2862,
-        "ci_lo": 30.8023,
-        "ci_hi": 37.789,
+        "mean": 42.1982,
+        "ci_lo": 38.9615,
+        "ci_hi": 45.5933,
         "n": 60
       },
       "p95_latency_min": {
-        "mean": 78.4204,
-        "ci_lo": 71.7828,
-        "ci_hi": 85.4033,
+        "mean": 121.8881,
+        "ci_lo": 113.0301,
+        "ci_hi": 131.1292,
         "n": 60
       },
       "ci_minutes_per_merged_pr": {
-        "mean": 12.5606,
-        "ci_lo": 12.1386,
-        "ci_hi": 13.0039,
+        "mean": 19.776,
+        "ci_lo": 18.7452,
+        "ci_hi": 20.9158,
         "n": 60
       },
       "invalidation_rate": {
-        "mean": 0.0,
-        "ci_lo": 0.0,
-        "ci_hi": 0.0,
+        "mean": 0.0088,
+        "ci_lo": 0.0073,
+        "ci_hi": 0.0103,
         "n": 60
       },
       "mean_blame_rounds": {
-        "mean": 1.8018,
-        "ci_lo": 1.6817,
-        "ci_hi": 1.9171,
+        "mean": 1.8147,
+        "ci_lo": 1.717,
+        "ci_hi": 1.9109,
+        "n": 60
+      },
+      "false_rejection_rate": {
+        "mean": 0.0196,
+        "ci_lo": 0.0171,
+        "ci_hi": 0.0222,
+        "n": 60
+      },
+      "mean_batch_size": {
+        "mean": 2.1265,
+        "ci_lo": 2.0925,
+        "ci_hi": 2.1607,
+        "n": 60
+      },
+      "runner_utilization": {
+        "mean": 0.6404,
+        "ci_lo": 0.6321,
+        "ci_hi": 0.6489,
         "n": 60
       }
     },
     "SpeculativeLinear": {
       "throughput_prs_per_hr": {
-        "mean": 7.5737,
-        "ci_lo": 7.3519,
-        "ci_hi": 7.794,
+        "mean": 5.3732,
+        "ci_lo": 5.1277,
+        "ci_hi": 5.6092,
         "n": 60
       },
       "p50_latency_min": {
-        "mean": 343.1475,
-        "ci_lo": 326.7219,
-        "ci_hi": 359.3165,
+        "mean": 357.958,
+        "ci_lo": 339.9539,
+        "ci_hi": 375.383,
         "n": 60
       },
       "p95_latency_min": {
-        "mean": 746.4647,
-        "ci_lo": 718.4956,
-        "ci_hi": 773.6944,
+        "mean": 899.7556,
+        "ci_lo": 869.4665,
+        "ci_hi": 930.4023,
         "n": 60
       },
       "ci_minutes_per_merged_pr": {
-        "mean": 21.36,
-        "ci_lo": 20.9089,
-        "ci_hi": 21.8321,
+        "mean": 30.9785,
+        "ci_lo": 29.5994,
+        "ci_hi": 32.444,
         "n": 60
       },
       "invalidation_rate": {
-        "mean": 0.3159,
-        "ci_lo": 0.3073,
-        "ci_hi": 0.3243,
+        "mean": 0.4027,
+        "ci_lo": 0.3921,
+        "ci_hi": 0.4135,
         "n": 60
       },
       "mean_blame_rounds": {
-        "mean": 0.8855,
-        "ci_lo": 0.8719,
-        "ci_hi": 0.8992,
+        "mean": 0.7138,
+        "ci_lo": 0.6955,
+        "ci_hi": 0.733,
+        "n": 60
+      },
+      "false_rejection_rate": {
+        "mean": 0.0213,
+        "ci_lo": 0.0184,
+        "ci_hi": 0.0244,
+        "n": 60
+      },
+      "mean_batch_size": {
+        "mean": 2.5275,
+        "ci_lo": 2.5113,
+        "ci_hi": 2.5436,
+        "n": 60
+      },
+      "runner_utilization": {
+        "mean": 0.336,
+        "ci_lo": 0.3334,
+        "ci_hi": 0.3386,
         "n": 60
       }
     },
     "UberSubmitQueue": {
       "throughput_prs_per_hr": {
-        "mean": 6.266,
-        "ci_lo": 5.9945,
-        "ci_hi": 6.5208,
+        "mean": 10.2654,
+        "ci_lo": 9.8176,
+        "ci_hi": 10.6836,
         "n": 60
       },
       "p50_latency_min": {
-        "mean": 474.2107,
-        "ci_lo": 445.4715,
-        "ci_hi": 502.4438,
+        "mean": 120.1212,
+        "ci_lo": 112.3032,
+        "ci_hi": 128.4403,
         "n": 60
       },
       "p95_latency_min": {
-        "mean": 983.9945,
-        "ci_lo": 934.2485,
-        "ci_hi": 1037.0197,
+        "mean": 342.6786,
+        "ci_lo": 327.1172,
+        "ci_hi": 358.4148,
         "n": 60
       },
       "ci_minutes_per_merged_pr": {
-        "mean": 12.5851,
-        "ci_lo": 12.3315,
-        "ci_hi": 12.8405,
+        "mean": 43.4199,
+        "ci_lo": 41.8105,
+        "ci_hi": 45.1641,
         "n": 60
       },
       "invalidation_rate": {
-        "mean": 0.0006,
-        "ci_lo": 0.0001,
-        "ci_hi": 0.0012,
+        "mean": 0.7517,
+        "ci_lo": 0.7498,
+        "ci_hi": 0.7536,
         "n": 60
       },
       "mean_blame_rounds": {
-        "mean": 0.7219,
-        "ci_lo": 0.6283,
-        "ci_hi": 0.8103,
+        "mean": 1.2382,
+        "ci_lo": 1.1487,
+        "ci_hi": 1.3245,
+        "n": 60
+      },
+      "false_rejection_rate": {
+        "mean": 0.0173,
+        "ci_lo": 0.0145,
+        "ci_hi": 0.0201,
+        "n": 60
+      },
+      "mean_batch_size": {
+        "mean": 1.8567,
+        "ci_lo": 1.7784,
+        "ci_hi": 1.9341,
+        "n": 60
+      },
+      "runner_utilization": {
+        "mean": 0.9057,
+        "ci_lo": 0.8934,
+        "ci_hi": 0.9171,
         "n": 60
       }
     },
     "FlakeAwareBatch": {
       "throughput_prs_per_hr": {
-        "mean": 18.5533,
-        "ci_lo": 18.0326,
-        "ci_hi": 19.0783,
+        "mean": 12.5728,
+        "ci_lo": 11.9245,
+        "ci_hi": 13.1643,
         "n": 60
       },
       "p50_latency_min": {
-        "mean": 53.4642,
-        "ci_lo": 46.5093,
-        "ci_hi": 60.2726,
+        "mean": 67.4967,
+        "ci_lo": 60.281,
+        "ci_hi": 74.7207,
         "n": 60
       },
       "p95_latency_min": {
-        "mean": 137.7597,
-        "ci_lo": 125.8366,
-        "ci_hi": 149.4482,
+        "mean": 235.5394,
+        "ci_lo": 216.9752,
+        "ci_hi": 255.3168,
         "n": 60
       },
       "ci_minutes_per_merged_pr": {
-        "mean": 16.8951,
-        "ci_lo": 16.2296,
-        "ci_hi": 17.5762,
+        "mean": 29.9232,
+        "ci_lo": 28.1074,
+        "ci_hi": 31.9065,
         "n": 60
       },
       "invalidation_rate": {
-        "mean": 0.0226,
-        "ci_lo": 0.0197,
-        "ci_hi": 0.0257,
+        "mean": 0.0187,
+        "ci_lo": 0.0165,
+        "ci_hi": 0.021,
         "n": 60
       },
       "mean_blame_rounds": {
-        "mean": 4.238,
-        "ci_lo": 4.0418,
-        "ci_hi": 4.4414,
+        "mean": 4.5726,
+        "ci_lo": 4.3987,
+        "ci_hi": 4.7487,
+        "n": 60
+      },
+      "false_rejection_rate": {
+        "mean": 0.0012,
+        "ci_lo": 0.0005,
+        "ci_hi": 0.002,
+        "n": 60
+      },
+      "mean_batch_size": {
+        "mean": 2.3487,
+        "ci_lo": 2.3187,
+        "ci_hi": 2.3809,
+        "n": 60
+      },
+      "runner_utilization": {
+        "mean": 0.7451,
+        "ci_lo": 0.7362,
+        "ci_hi": 0.753,
         "n": 60
       }
     },
     "SSMQ": {
       "throughput_prs_per_hr": {
-        "mean": 23.8059,
-        "ci_lo": 23.3799,
-        "ci_hi": 24.2389,
+        "mean": 17.7748,
+        "ci_lo": 17.1904,
+        "ci_hi": 18.3252,
         "n": 60
       },
       "p50_latency_min": {
-        "mean": 22.0481,
-        "ci_lo": 20.6952,
-        "ci_hi": 23.3801,
+        "mean": 26.7299,
+        "ci_lo": 25.2992,
+        "ci_hi": 28.1829,
         "n": 60
       },
       "p95_latency_min": {
-        "mean": 49.7431,
-        "ci_lo": 45.3445,
-        "ci_hi": 54.4716,
+        "mean": 79.49,
+        "ci_lo": 73.7672,
+        "ci_hi": 85.5356,
         "n": 60
       },
       "ci_minutes_per_merged_pr": {
-        "mean": 11.3457,
-        "ci_lo": 10.904,
-        "ci_hi": 11.7884,
+        "mean": 17.0562,
+        "ci_lo": 16.2289,
+        "ci_hi": 17.9332,
         "n": 60
       },
       "invalidation_rate": {
-        "mean": 0.0097,
-        "ci_lo": 0.0058,
-        "ci_hi": 0.014,
+        "mean": 0.0154,
+        "ci_lo": 0.0127,
+        "ci_hi": 0.0184,
         "n": 60
       },
       "mean_blame_rounds": {
-        "mean": 0.7242,
-        "ci_lo": 0.6325,
-        "ci_hi": 0.8234,
+        "mean": 0.8434,
+        "ci_lo": 0.7483,
+        "ci_hi": 0.9363,
+        "n": 60
+      },
+      "false_rejection_rate": {
+        "mean": 0.0164,
+        "ci_lo": 0.0134,
+        "ci_hi": 0.0195,
+        "n": 60
+      },
+      "mean_batch_size": {
+        "mean": 1.322,
+        "ci_lo": 1.2699,
+        "ci_hi": 1.3742,
+        "n": 60
+      },
+      "runner_utilization": {
+        "mean": 0.6165,
+        "ci_lo": 0.6042,
+        "ci_hi": 0.6288,
         "n": 60
       }
     }
   },
-  "exp1_main_per_repo": {
+  "v2_exp2_main_per_repo": {
     "kubernetes": {
       "SerialQueue": {
         "throughput_prs_per_hr": {
-          "mean": 4.3609,
-          "ci_lo": 4.2969,
-          "ci_hi": 4.426,
+          "mean": 3.793,
+          "ci_lo": 3.7327,
+          "ci_hi": 3.8528,
           "n": 20
         },
         "p50_latency_min": {
-          "mean": 697.536,
-          "ci_lo": 681.3465,
-          "ci_hi": 712.1244,
+          "mean": 670.142,
+          "ci_lo": 651.2223,
+          "ci_hi": 687.6689,
           "n": 20
         },
         "p95_latency_min": {
-          "mean": 1433.9345,
-          "ci_lo": 1423.4773,
-          "ci_hi": 1443.5573,
+          "mean": 1426.3485,
+          "ci_lo": 1413.9367,
+          "ci_hi": 1437.2877,
           "n": 20
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 13.7753,
-          "ci_lo": 13.5734,
-          "ci_hi": 13.976,
+          "mean": 15.8394,
+          "ci_lo": 15.5868,
+          "ci_hi": 16.0949,
           "n": 20
         },
         "invalidation_rate": {
@@ -376,196 +496,304 @@
           "mean": 0.0,
           "ci_lo": 0.0,
           "ci_hi": 0.0,
+          "n": 20
+        },
+        "false_rejection_rate": {
+          "mean": 0.0443,
+          "ci_lo": 0.0373,
+          "ci_hi": 0.0523,
+          "n": 20
+        },
+        "mean_batch_size": {
+          "mean": 1.0,
+          "ci_lo": 1.0,
+          "ci_hi": 1.0,
+          "n": 20
+        },
+        "runner_utilization": {
+          "mean": 0.125,
+          "ci_lo": 0.125,
+          "ci_hi": 0.125,
           "n": 20
         }
       },
       "StaticBatchBisect": {
         "throughput_prs_per_hr": {
-          "mean": 23.8463,
-          "ci_lo": 23.3245,
-          "ci_hi": 24.4118,
+          "mean": 17.9985,
+          "ci_lo": 17.5779,
+          "ci_hi": 18.4205,
           "n": 20
         },
         "p50_latency_min": {
-          "mean": 19.7642,
-          "ci_lo": 17.2531,
-          "ci_hi": 22.4282,
+          "mean": 30.5415,
+          "ci_lo": 26.6712,
+          "ci_hi": 34.495,
           "n": 20
         },
         "p95_latency_min": {
-          "mean": 54.4334,
-          "ci_lo": 49.8098,
-          "ci_hi": 58.7456,
+          "mean": 92.6982,
+          "ci_lo": 87.9567,
+          "ci_hi": 96.8754,
           "n": 20
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 11.4791,
-          "ci_lo": 11.085,
-          "ci_hi": 11.8587,
+          "mean": 16.8759,
+          "ci_lo": 16.3702,
+          "ci_hi": 17.3454,
           "n": 20
         },
         "invalidation_rate": {
-          "mean": 0.0,
-          "ci_lo": 0.0,
-          "ci_hi": 0.0,
+          "mean": 0.0088,
+          "ci_lo": 0.0065,
+          "ci_hi": 0.0109,
           "n": 20
         },
         "mean_blame_rounds": {
-          "mean": 1.2859,
-          "ci_lo": 1.15,
-          "ci_hi": 1.4237,
+          "mean": 1.3513,
+          "ci_lo": 1.2697,
+          "ci_hi": 1.4325,
+          "n": 20
+        },
+        "false_rejection_rate": {
+          "mean": 0.021,
+          "ci_lo": 0.0174,
+          "ci_hi": 0.0249,
+          "n": 20
+        },
+        "mean_batch_size": {
+          "mean": 1.9735,
+          "ci_lo": 1.9537,
+          "ci_hi": 1.9926,
+          "n": 20
+        },
+        "runner_utilization": {
+          "mean": 0.6308,
+          "ci_lo": 0.622,
+          "ci_hi": 0.6389,
           "n": 20
         }
       },
       "SpeculativeLinear": {
         "throughput_prs_per_hr": {
-          "mean": 7.8738,
-          "ci_lo": 7.6384,
-          "ci_hi": 8.1296,
+          "mean": 5.8268,
+          "ci_lo": 5.6469,
+          "ci_hi": 5.9985,
           "n": 20
         },
         "p50_latency_min": {
-          "mean": 365.4483,
-          "ci_lo": 341.4169,
-          "ci_hi": 386.771,
+          "mean": 402.8363,
+          "ci_lo": 379.4563,
+          "ci_hi": 426.6794,
           "n": 20
         },
         "p95_latency_min": {
-          "mean": 718.4946,
-          "ci_lo": 691.2679,
-          "ci_hi": 746.3648,
+          "mean": 870.8565,
+          "ci_lo": 844.7837,
+          "ci_hi": 895.8946,
           "n": 20
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 20.8604,
-          "ci_lo": 20.3064,
-          "ci_hi": 21.3858,
+          "mean": 27.7239,
+          "ci_lo": 26.926,
+          "ci_hi": 28.5451,
           "n": 20
         },
         "invalidation_rate": {
-          "mean": 0.3149,
-          "ci_lo": 0.3019,
-          "ci_hi": 0.3267,
+          "mean": 0.3822,
+          "ci_lo": 0.3729,
+          "ci_hi": 0.3923,
           "n": 20
         },
         "mean_blame_rounds": {
-          "mean": 0.8646,
-          "ci_lo": 0.8432,
-          "ci_hi": 0.8853,
+          "mean": 0.7595,
+          "ci_lo": 0.7362,
+          "ci_hi": 0.7842,
+          "n": 20
+        },
+        "false_rejection_rate": {
+          "mean": 0.0182,
+          "ci_lo": 0.0141,
+          "ci_hi": 0.0226,
+          "n": 20
+        },
+        "mean_batch_size": {
+          "mean": 2.5589,
+          "ci_lo": 2.5423,
+          "ci_hi": 2.5759,
+          "n": 20
+        },
+        "runner_utilization": {
+          "mean": 0.335,
+          "ci_lo": 0.3328,
+          "ci_hi": 0.3371,
           "n": 20
         }
       },
       "UberSubmitQueue": {
         "throughput_prs_per_hr": {
-          "mean": 6.7133,
-          "ci_lo": 6.5788,
-          "ci_hi": 6.8613,
+          "mean": 11.1672,
+          "ci_lo": 10.7866,
+          "ci_hi": 11.5394,
           "n": 20
         },
         "p50_latency_min": {
-          "mean": 527.6648,
-          "ci_lo": 512.3916,
-          "ci_hi": 542.4188,
+          "mean": 111.0344,
+          "ci_lo": 99.1579,
+          "ci_hi": 122.3382,
           "n": 20
         },
         "p95_latency_min": {
-          "mean": 893.0806,
-          "ci_lo": 876.4581,
-          "ci_hi": 910.6562,
+          "mean": 323.5856,
+          "ci_lo": 309.7795,
+          "ci_hi": 336.318,
           "n": 20
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 12.121,
-          "ci_lo": 11.8415,
-          "ci_hi": 12.401,
+          "mean": 40.4966,
+          "ci_lo": 38.8236,
+          "ci_hi": 42.2349,
           "n": 20
         },
         "invalidation_rate": {
-          "mean": 0.0011,
-          "ci_lo": 0.0,
-          "ci_hi": 0.0022,
+          "mean": 0.7507,
+          "ci_lo": 0.7482,
+          "ci_hi": 0.7531,
           "n": 20
         },
         "mean_blame_rounds": {
-          "mean": 0.8472,
-          "ci_lo": 0.7498,
-          "ci_hi": 0.9432,
+          "mean": 1.3622,
+          "ci_lo": 1.3257,
+          "ci_hi": 1.3967,
+          "n": 20
+        },
+        "false_rejection_rate": {
+          "mean": 0.0149,
+          "ci_lo": 0.0105,
+          "ci_hi": 0.0198,
+          "n": 20
+        },
+        "mean_batch_size": {
+          "mean": 1.9887,
+          "ci_lo": 1.9718,
+          "ci_hi": 2.0074,
+          "n": 20
+        },
+        "runner_utilization": {
+          "mean": 0.9348,
+          "ci_lo": 0.9228,
+          "ci_hi": 0.947,
           "n": 20
         }
       },
       "FlakeAwareBatch": {
         "throughput_prs_per_hr": {
-          "mean": 20.3259,
-          "ci_lo": 19.679,
-          "ci_hi": 20.9982,
+          "mean": 14.4041,
+          "ci_lo": 13.9534,
+          "ci_hi": 14.8238,
           "n": 20
         },
         "p50_latency_min": {
-          "mean": 27.2344,
-          "ci_lo": 21.7146,
-          "ci_hi": 33.3236,
+          "mean": 45.586,
+          "ci_lo": 38.9507,
+          "ci_hi": 52.3625,
           "n": 20
         },
         "p95_latency_min": {
-          "mean": 96.4896,
-          "ci_lo": 87.6673,
-          "ci_hi": 104.4944,
+          "mean": 181.4951,
+          "ci_lo": 171.8949,
+          "ci_hi": 191.4761,
           "n": 20
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 14.5835,
-          "ci_lo": 13.8654,
-          "ci_hi": 15.2855,
+          "mean": 24.3333,
+          "ci_lo": 23.4761,
+          "ci_hi": 25.216,
           "n": 20
         },
         "invalidation_rate": {
-          "mean": 0.0244,
-          "ci_lo": 0.0188,
-          "ci_hi": 0.03,
+          "mean": 0.0212,
+          "ci_lo": 0.018,
+          "ci_hi": 0.0249,
           "n": 20
         },
         "mean_blame_rounds": {
-          "mean": 3.3579,
-          "ci_lo": 3.1264,
-          "ci_hi": 3.6175,
+          "mean": 3.7395,
+          "ci_lo": 3.6041,
+          "ci_hi": 3.8735,
+          "n": 20
+        },
+        "false_rejection_rate": {
+          "mean": 0.0018,
+          "ci_lo": 0.0004,
+          "ci_hi": 0.0033,
+          "n": 20
+        },
+        "mean_batch_size": {
+          "mean": 2.223,
+          "ci_lo": 2.2048,
+          "ci_hi": 2.2425,
+          "n": 20
+        },
+        "runner_utilization": {
+          "mean": 0.7264,
+          "ci_lo": 0.7146,
+          "ci_hi": 0.7373,
           "n": 20
         }
       },
       "SSMQ": {
         "throughput_prs_per_hr": {
-          "mean": 25.2425,
-          "ci_lo": 24.6634,
-          "ci_hi": 25.7927,
+          "mean": 19.6523,
+          "ci_lo": 19.1419,
+          "ci_hi": 20.1593,
           "n": 20
         },
         "p50_latency_min": {
-          "mean": 16.1332,
-          "ci_lo": 15.5826,
-          "ci_hi": 16.722,
+          "mean": 22.7008,
+          "ci_lo": 20.6252,
+          "ci_hi": 24.8109,
           "n": 20
         },
         "p95_latency_min": {
-          "mean": 34.7257,
-          "ci_lo": 33.2924,
-          "ci_hi": 36.1867,
+          "mean": 63.9923,
+          "ci_lo": 59.1049,
+          "ci_hi": 68.6362,
           "n": 20
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 10.8179,
-          "ci_lo": 10.566,
-          "ci_hi": 11.0575,
+          "mean": 15.4617,
+          "ci_lo": 14.8125,
+          "ci_hi": 16.1416,
           "n": 20
         },
         "invalidation_rate": {
-          "mean": 0.006,
-          "ci_lo": 0.002,
-          "ci_hi": 0.01,
+          "mean": 0.0149,
+          "ci_lo": 0.0108,
+          "ci_hi": 0.0191,
           "n": 20
         },
         "mean_blame_rounds": {
-          "mean": 0.7442,
-          "ci_lo": 0.6203,
-          "ci_hi": 0.8711,
+          "mean": 0.9353,
+          "ci_lo": 0.8077,
+          "ci_hi": 1.0755,
+          "n": 20
+        },
+        "false_rejection_rate": {
+          "mean": 0.015,
+          "ci_lo": 0.0098,
+          "ci_hi": 0.0209,
+          "n": 20
+        },
+        "mean_batch_size": {
+          "mean": 1.3639,
+          "ci_lo": 1.3524,
+          "ci_hi": 1.376,
+          "n": 20
+        },
+        "runner_utilization": {
+          "mean": 0.6294,
+          "ci_lo": 0.6175,
+          "ci_hi": 0.6421,
           "n": 20
         }
       }
@@ -573,27 +801,27 @@
     "typescript": {
       "SerialQueue": {
         "throughput_prs_per_hr": {
-          "mean": 4.3739,
-          "ci_lo": 4.3159,
-          "ci_hi": 4.4315,
+          "mean": 3.273,
+          "ci_lo": 3.2044,
+          "ci_hi": 3.3432,
           "n": 20
         },
         "p50_latency_min": {
-          "mean": 678.9783,
-          "ci_lo": 668.4564,
-          "ci_hi": 691.5135,
+          "mean": 579.4769,
+          "ci_lo": 560.5749,
+          "ci_hi": 601.3192,
           "n": 20
         },
         "p95_latency_min": {
-          "mean": 1425.6301,
-          "ci_lo": 1415.9931,
-          "ci_hi": 1434.7693,
+          "mean": 1395.4079,
+          "ci_lo": 1378.3729,
+          "ci_hi": 1412.1625,
           "n": 20
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 13.7303,
-          "ci_lo": 13.5487,
-          "ci_hi": 13.9147,
+          "mean": 18.3753,
+          "ci_lo": 18.0006,
+          "ci_hi": 18.7648,
           "n": 20
         },
         "invalidation_rate": {
@@ -606,196 +834,304 @@
           "mean": 0.0,
           "ci_lo": 0.0,
           "ci_hi": 0.0,
+          "n": 20
+        },
+        "false_rejection_rate": {
+          "mean": 0.0365,
+          "ci_lo": 0.031,
+          "ci_hi": 0.0427,
+          "n": 20
+        },
+        "mean_batch_size": {
+          "mean": 1.0,
+          "ci_lo": 1.0,
+          "ci_hi": 1.0,
+          "n": 20
+        },
+        "runner_utilization": {
+          "mean": 0.125,
+          "ci_lo": 0.125,
+          "ci_hi": 0.125,
           "n": 20
         }
       },
       "StaticBatchBisect": {
         "throughput_prs_per_hr": {
-          "mean": 20.3539,
-          "ci_lo": 19.9804,
-          "ci_hi": 20.7246,
+          "mean": 12.8944,
+          "ci_lo": 12.5391,
+          "ci_hi": 13.2496,
           "n": 20
         },
         "p50_latency_min": {
-          "mean": 48.5615,
-          "ci_lo": 45.0767,
-          "ci_hi": 51.9108,
+          "mean": 55.474,
+          "ci_lo": 51.3586,
+          "ci_hi": 59.7361,
           "n": 20
         },
         "p95_latency_min": {
-          "mean": 110.3317,
-          "ci_lo": 103.7432,
-          "ci_hi": 116.5394,
+          "mean": 167.2037,
+          "ci_lo": 160.8452,
+          "ci_hi": 174.0295,
           "n": 20
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 14.5267,
-          "ci_lo": 14.1581,
-          "ci_hi": 14.9003,
+          "mean": 25.3649,
+          "ci_lo": 24.5313,
+          "ci_hi": 26.2207,
           "n": 20
         },
         "invalidation_rate": {
-          "mean": 0.0,
-          "ci_lo": 0.0,
-          "ci_hi": 0.0,
+          "mean": 0.0097,
+          "ci_lo": 0.0072,
+          "ci_hi": 0.012,
           "n": 20
         },
         "mean_blame_rounds": {
-          "mean": 2.2212,
-          "ci_lo": 2.1366,
-          "ci_hi": 2.3035,
+          "mean": 2.0806,
+          "ci_lo": 1.9863,
+          "ci_hi": 2.1821,
+          "n": 20
+        },
+        "false_rejection_rate": {
+          "mean": 0.0203,
+          "ci_lo": 0.0163,
+          "ci_hi": 0.025,
+          "n": 20
+        },
+        "mean_batch_size": {
+          "mean": 2.1279,
+          "ci_lo": 2.1107,
+          "ci_hi": 2.1485,
+          "n": 20
+        },
+        "runner_utilization": {
+          "mean": 0.678,
+          "ci_lo": 0.671,
+          "ci_hi": 0.6851,
           "n": 20
         }
       },
       "SpeculativeLinear": {
         "throughput_prs_per_hr": {
-          "mean": 6.6379,
-          "ci_lo": 6.4532,
-          "ci_hi": 6.8052,
+          "mean": 4.1772,
+          "ci_lo": 4.0319,
+          "ci_hi": 4.3188,
           "n": 20
         },
         "p50_latency_min": {
-          "mean": 386.6132,
-          "ci_lo": 367.8286,
-          "ci_hi": 406.1336,
+          "mean": 372.4061,
+          "ci_lo": 341.8146,
+          "ci_hi": 402.4645,
           "n": 20
         },
         "p95_latency_min": {
-          "mean": 867.3128,
-          "ci_lo": 845.0052,
-          "ci_hi": 892.1902,
+          "mean": 1040.6082,
+          "ci_lo": 1013.6378,
+          "ci_hi": 1067.5468,
           "n": 20
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 22.9495,
-          "ci_lo": 22.2725,
-          "ci_hi": 23.6122,
+          "mean": 38.1036,
+          "ci_lo": 36.6834,
+          "ci_hi": 39.7148,
           "n": 20
         },
         "invalidation_rate": {
-          "mean": 0.3373,
-          "ci_lo": 0.3255,
-          "ci_hi": 0.3493,
+          "mean": 0.4511,
+          "ci_lo": 0.4411,
+          "ci_hi": 0.4621,
           "n": 20
         },
         "mean_blame_rounds": {
-          "mean": 0.9134,
-          "ci_lo": 0.8931,
-          "ci_hi": 0.9334,
+          "mean": 0.6652,
+          "ci_lo": 0.6386,
+          "ci_hi": 0.6914,
+          "n": 20
+        },
+        "false_rejection_rate": {
+          "mean": 0.0228,
+          "ci_lo": 0.0176,
+          "ci_hi": 0.0293,
+          "n": 20
+        },
+        "mean_batch_size": {
+          "mean": 2.4551,
+          "ci_lo": 2.4454,
+          "ci_hi": 2.4657,
+          "n": 20
+        },
+        "runner_utilization": {
+          "mean": 0.3295,
+          "ci_lo": 0.3259,
+          "ci_hi": 0.333,
           "n": 20
         }
       },
       "UberSubmitQueue": {
         "throughput_prs_per_hr": {
-          "mean": 4.8872,
-          "ci_lo": 4.8182,
-          "ci_hi": 4.9572,
+          "mean": 8.1327,
+          "ci_lo": 7.8991,
+          "ci_hi": 8.3815,
           "n": 20
         },
         "p50_latency_min": {
-          "mean": 574.4195,
-          "ci_lo": 562.0317,
-          "ci_hi": 587.3632,
+          "mean": 144.7741,
+          "ci_lo": 130.4931,
+          "ci_hi": 160.3693,
           "n": 20
         },
         "p95_latency_min": {
-          "mean": 1267.461,
-          "ci_lo": 1253.7587,
-          "ci_hi": 1281.3475,
+          "mean": 411.6682,
+          "ci_lo": 399.7744,
+          "ci_hi": 422.7969,
           "n": 20
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 13.677,
-          "ci_lo": 13.4701,
-          "ci_hi": 13.8763,
+          "mean": 50.9978,
+          "ci_lo": 49.3962,
+          "ci_hi": 52.5596,
           "n": 20
         },
         "invalidation_rate": {
-          "mean": 0.0,
-          "ci_lo": 0.0,
-          "ci_hi": 0.0,
+          "mean": 0.7539,
+          "ci_lo": 0.7507,
+          "ci_hi": 0.7572,
           "n": 20
         },
         "mean_blame_rounds": {
-          "mean": 0.3022,
-          "ci_lo": 0.2589,
-          "ci_hi": 0.343,
+          "mean": 0.7916,
+          "ci_lo": 0.7671,
+          "ci_hi": 0.8168,
+          "n": 20
+        },
+        "false_rejection_rate": {
+          "mean": 0.0202,
+          "ci_lo": 0.0145,
+          "ci_hi": 0.026,
+          "n": 20
+        },
+        "mean_batch_size": {
+          "mean": 1.4342,
+          "ci_lo": 1.4276,
+          "ci_hi": 1.4406,
+          "n": 20
+        },
+        "runner_utilization": {
+          "mean": 0.86,
+          "ci_lo": 0.8546,
+          "ci_hi": 0.8655,
           "n": 20
         }
       },
       "FlakeAwareBatch": {
         "throughput_prs_per_hr": {
-          "mean": 16.4263,
-          "ci_lo": 16.061,
-          "ci_hi": 16.8184,
+          "mean": 9.3139,
+          "ci_lo": 8.9899,
+          "ci_hi": 9.635,
           "n": 20
         },
         "p50_latency_min": {
-          "mean": 84.7616,
-          "ci_lo": 78.0501,
-          "ci_hi": 90.9036,
+          "mean": 99.2333,
+          "ci_lo": 90.1406,
+          "ci_hi": 108.5588,
           "n": 20
         },
         "p95_latency_min": {
-          "mean": 196.8553,
-          "ci_lo": 188.0933,
-          "ci_hi": 205.2075,
+          "mean": 331.9234,
+          "ci_lo": 320.8449,
+          "ci_hi": 343.4941,
           "n": 20
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 20.0104,
-          "ci_lo": 19.5298,
-          "ci_hi": 20.5943,
+          "mean": 39.881,
+          "ci_lo": 38.4013,
+          "ci_hi": 41.2762,
           "n": 20
         },
         "invalidation_rate": {
-          "mean": 0.0205,
-          "ci_lo": 0.0175,
-          "ci_hi": 0.0239,
+          "mean": 0.0143,
+          "ci_lo": 0.0116,
+          "ci_hi": 0.0169,
           "n": 20
         },
         "mean_blame_rounds": {
-          "mean": 4.9435,
-          "ci_lo": 4.778,
-          "ci_hi": 5.1135,
+          "mean": 5.0827,
+          "ci_lo": 4.9212,
+          "ci_hi": 5.2475,
+          "n": 20
+        },
+        "false_rejection_rate": {
+          "mean": 0.0007,
+          "ci_lo": 0.0,
+          "ci_hi": 0.0021,
+          "n": 20
+        },
+        "mean_batch_size": {
+          "mean": 2.3302,
+          "ci_lo": 2.3092,
+          "ci_hi": 2.3533,
+          "n": 20
+        },
+        "runner_utilization": {
+          "mean": 0.769,
+          "ci_lo": 0.7589,
+          "ci_hi": 0.7791,
           "n": 20
         }
       },
       "SSMQ": {
         "throughput_prs_per_hr": {
-          "mean": 22.232,
-          "ci_lo": 21.9628,
-          "ci_hi": 22.515,
+          "mean": 15.0849,
+          "ci_lo": 14.556,
+          "ci_hi": 15.5664,
           "n": 20
         },
         "p50_latency_min": {
-          "mean": 27.5336,
-          "ci_lo": 26.3432,
-          "ci_hi": 28.6562,
+          "mean": 30.0618,
+          "ci_lo": 27.9997,
+          "ci_hi": 32.2986,
           "n": 20
         },
         "p95_latency_min": {
-          "mean": 73.0319,
-          "ci_lo": 69.6342,
-          "ci_hi": 76.5307,
+          "mean": 103.6344,
+          "ci_lo": 95.5306,
+          "ci_hi": 112.1761,
           "n": 20
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 13.4889,
-          "ci_lo": 13.2428,
-          "ci_hi": 13.7474,
+          "mean": 21.1241,
+          "ci_lo": 20.2028,
+          "ci_hi": 22.1164,
           "n": 20
         },
         "invalidation_rate": {
-          "mean": 0.0176,
-          "ci_lo": 0.0097,
-          "ci_hi": 0.0269,
+          "mean": 0.0184,
+          "ci_lo": 0.0133,
+          "ci_hi": 0.024,
           "n": 20
         },
         "mean_blame_rounds": {
-          "mean": 0.4884,
-          "ci_lo": 0.3491,
-          "ci_hi": 0.6379,
+          "mean": 0.5255,
+          "ci_lo": 0.3969,
+          "ci_hi": 0.6651,
+          "n": 20
+        },
+        "false_rejection_rate": {
+          "mean": 0.0203,
+          "ci_lo": 0.0151,
+          "ci_hi": 0.0269,
+          "n": 20
+        },
+        "mean_batch_size": {
+          "mean": 1.0539,
+          "ci_lo": 1.0516,
+          "ci_hi": 1.0562,
+          "n": 20
+        },
+        "runner_utilization": {
+          "mean": 0.6588,
+          "ci_lo": 0.65,
+          "ci_hi": 0.6679,
           "n": 20
         }
       }
@@ -803,27 +1139,27 @@
     "nextjs": {
       "SerialQueue": {
         "throughput_prs_per_hr": {
-          "mean": 4.3747,
-          "ci_lo": 4.3186,
-          "ci_hi": 4.431,
+          "mean": 3.8219,
+          "ci_lo": 3.7585,
+          "ci_hi": 3.8812,
           "n": 20
         },
         "p50_latency_min": {
-          "mean": 665.1013,
-          "ci_lo": 650.1717,
-          "ci_hi": 680.1888,
+          "mean": 609.4961,
+          "ci_lo": 596.4588,
+          "ci_hi": 622.6833,
           "n": 20
         },
         "p95_latency_min": {
-          "mean": 1419.7675,
-          "ci_lo": 1409.5952,
-          "ci_hi": 1429.6617,
+          "mean": 1404.555,
+          "ci_lo": 1391.0183,
+          "ci_hi": 1416.8021,
           "n": 20
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 13.727,
-          "ci_lo": 13.548,
-          "ci_hi": 13.908,
+          "mean": 15.721,
+          "ci_lo": 15.4718,
+          "ci_hi": 15.9892,
           "n": 20
         },
         "invalidation_rate": {
@@ -836,432 +1172,850 @@
           "mean": 0.0,
           "ci_lo": 0.0,
           "ci_hi": 0.0,
+          "n": 20
+        },
+        "false_rejection_rate": {
+          "mean": 0.0458,
+          "ci_lo": 0.0408,
+          "ci_hi": 0.051,
+          "n": 20
+        },
+        "mean_batch_size": {
+          "mean": 1.0,
+          "ci_lo": 1.0,
+          "ci_hi": 1.0,
+          "n": 20
+        },
+        "runner_utilization": {
+          "mean": 0.125,
+          "ci_lo": 0.125,
+          "ci_hi": 0.125,
           "n": 20
         }
       },
       "StaticBatchBisect": {
         "throughput_prs_per_hr": {
-          "mean": 22.0331,
-          "ci_lo": 21.5351,
-          "ci_hi": 22.5427,
+          "mean": 17.2687,
+          "ci_lo": 16.8437,
+          "ci_hi": 17.7094,
           "n": 20
         },
         "p50_latency_min": {
-          "mean": 34.5328,
-          "ci_lo": 32.6302,
-          "ci_hi": 36.6312,
+          "mean": 40.579,
+          "ci_lo": 38.7112,
+          "ci_hi": 42.5373,
           "n": 20
         },
         "p95_latency_min": {
-          "mean": 70.4961,
-          "ci_lo": 65.3449,
-          "ci_hi": 75.7018,
+          "mean": 105.7624,
+          "ci_lo": 98.8348,
+          "ci_hi": 112.7319,
           "n": 20
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 11.676,
-          "ci_lo": 11.1815,
-          "ci_hi": 12.2299,
+          "mean": 17.0871,
+          "ci_lo": 16.5484,
+          "ci_hi": 17.6328,
           "n": 20
         },
         "invalidation_rate": {
-          "mean": 0.0,
-          "ci_lo": 0.0,
-          "ci_hi": 0.0,
+          "mean": 0.008,
+          "ci_lo": 0.0052,
+          "ci_hi": 0.0114,
           "n": 20
         },
         "mean_blame_rounds": {
-          "mean": 1.8982,
-          "ci_lo": 1.7983,
-          "ci_hi": 1.9969,
+          "mean": 2.0123,
+          "ci_lo": 1.922,
+          "ci_hi": 2.096,
+          "n": 20
+        },
+        "false_rejection_rate": {
+          "mean": 0.0176,
+          "ci_lo": 0.0129,
+          "ci_hi": 0.0227,
+          "n": 20
+        },
+        "mean_batch_size": {
+          "mean": 2.278,
+          "ci_lo": 2.2524,
+          "ci_hi": 2.3035,
+          "n": 20
+        },
+        "runner_utilization": {
+          "mean": 0.6124,
+          "ci_lo": 0.6035,
+          "ci_hi": 0.621,
           "n": 20
         }
       },
       "SpeculativeLinear": {
         "throughput_prs_per_hr": {
-          "mean": 8.2094,
-          "ci_lo": 7.8996,
-          "ci_hi": 8.5021,
+          "mean": 6.1156,
+          "ci_lo": 5.8965,
+          "ci_hi": 6.3381,
           "n": 20
         },
         "p50_latency_min": {
-          "mean": 277.3811,
-          "ci_lo": 258.1932,
-          "ci_hi": 297.1507,
+          "mean": 298.6316,
+          "ci_lo": 280.2463,
+          "ci_hi": 318.6997,
           "n": 20
         },
         "p95_latency_min": {
-          "mean": 653.5867,
-          "ci_lo": 623.9542,
-          "ci_hi": 684.0888,
+          "mean": 787.8022,
+          "ci_lo": 758.1926,
+          "ci_hi": 816.5535,
           "n": 20
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 20.27,
-          "ci_lo": 19.6333,
-          "ci_hi": 20.9335,
+          "mean": 27.108,
+          "ci_lo": 26.2719,
+          "ci_hi": 27.9899,
           "n": 20
         },
         "invalidation_rate": {
-          "mean": 0.2956,
-          "ci_lo": 0.2823,
-          "ci_hi": 0.3094,
+          "mean": 0.3748,
+          "ci_lo": 0.3627,
+          "ci_hi": 0.3876,
           "n": 20
         },
         "mean_blame_rounds": {
-          "mean": 0.8784,
-          "ci_lo": 0.8542,
-          "ci_hi": 0.9027,
+          "mean": 0.7167,
+          "ci_lo": 0.6851,
+          "ci_hi": 0.7469,
+          "n": 20
+        },
+        "false_rejection_rate": {
+          "mean": 0.0231,
+          "ci_lo": 0.0177,
+          "ci_hi": 0.0285,
+          "n": 20
+        },
+        "mean_batch_size": {
+          "mean": 2.5685,
+          "ci_lo": 2.5445,
+          "ci_hi": 2.5909,
+          "n": 20
+        },
+        "runner_utilization": {
+          "mean": 0.3434,
+          "ci_lo": 0.3382,
+          "ci_hi": 0.349,
           "n": 20
         }
       },
       "UberSubmitQueue": {
         "throughput_prs_per_hr": {
-          "mean": 7.1974,
-          "ci_lo": 7.0194,
-          "ci_hi": 7.3829,
+          "mean": 11.4964,
+          "ci_lo": 11.1021,
+          "ci_hi": 11.8917,
           "n": 20
         },
         "p50_latency_min": {
-          "mean": 320.5477,
-          "ci_lo": 302.1837,
-          "ci_hi": 339.19,
+          "mean": 104.5552,
+          "ci_lo": 95.366,
+          "ci_hi": 113.4333,
           "n": 20
         },
         "p95_latency_min": {
-          "mean": 791.4418,
-          "ci_lo": 768.8677,
-          "ci_hi": 813.0602,
+          "mean": 292.7822,
+          "ci_lo": 277.2888,
+          "ci_hi": 309.7059,
           "n": 20
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 11.9571,
-          "ci_lo": 11.6324,
-          "ci_hi": 12.2865,
+          "mean": 38.7652,
+          "ci_lo": 37.1763,
+          "ci_hi": 40.5538,
           "n": 20
         },
         "invalidation_rate": {
-          "mean": 0.0007,
-          "ci_lo": 0.0,
-          "ci_hi": 0.0018,
+          "mean": 0.7505,
+          "ci_lo": 0.7469,
+          "ci_hi": 0.7542,
           "n": 20
         },
         "mean_blame_rounds": {
-          "mean": 1.0162,
-          "ci_lo": 0.9072,
-          "ci_hi": 1.1089,
+          "mean": 1.5608,
+          "ci_lo": 1.4836,
+          "ci_hi": 1.6438,
+          "n": 20
+        },
+        "false_rejection_rate": {
+          "mean": 0.0166,
+          "ci_lo": 0.0127,
+          "ci_hi": 0.0204,
+          "n": 20
+        },
+        "mean_batch_size": {
+          "mean": 2.1472,
+          "ci_lo": 2.123,
+          "ci_hi": 2.1705,
+          "n": 20
+        },
+        "runner_utilization": {
+          "mean": 0.9223,
+          "ci_lo": 0.9012,
+          "ci_hi": 0.9437,
           "n": 20
         }
       },
       "FlakeAwareBatch": {
         "throughput_prs_per_hr": {
-          "mean": 18.9075,
-          "ci_lo": 18.2754,
-          "ci_hi": 19.529,
+          "mean": 14.0004,
+          "ci_lo": 13.5393,
+          "ci_hi": 14.4603,
           "n": 20
         },
         "p50_latency_min": {
-          "mean": 48.3965,
-          "ci_lo": 45.6092,
-          "ci_hi": 51.1993,
+          "mean": 57.6709,
+          "ci_lo": 52.9633,
+          "ci_hi": 62.3301,
           "n": 20
         },
         "p95_latency_min": {
-          "mean": 119.9342,
-          "ci_lo": 110.5971,
-          "ci_hi": 129.3165,
+          "mean": 193.1997,
+          "ci_lo": 178.4918,
+          "ci_hi": 207.6557,
           "n": 20
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 16.0914,
-          "ci_lo": 15.3191,
-          "ci_hi": 16.9987,
+          "mean": 25.5554,
+          "ci_lo": 24.3949,
+          "ci_hi": 26.7505,
           "n": 20
         },
         "invalidation_rate": {
-          "mean": 0.0229,
-          "ci_lo": 0.0171,
-          "ci_hi": 0.0293,
+          "mean": 0.0207,
+          "ci_lo": 0.0166,
+          "ci_hi": 0.0253,
           "n": 20
         },
         "mean_blame_rounds": {
-          "mean": 4.4125,
-          "ci_lo": 4.2112,
-          "ci_hi": 4.6246,
+          "mean": 4.8957,
+          "ci_lo": 4.7117,
+          "ci_hi": 5.0798,
+          "n": 20
+        },
+        "false_rejection_rate": {
+          "mean": 0.0011,
+          "ci_lo": 0.0,
+          "ci_hi": 0.0022,
+          "n": 20
+        },
+        "mean_batch_size": {
+          "mean": 2.4927,
+          "ci_lo": 2.4653,
+          "ci_hi": 2.5223,
+          "n": 20
+        },
+        "runner_utilization": {
+          "mean": 0.7398,
+          "ci_lo": 0.7254,
+          "ci_hi": 0.7529,
           "n": 20
         }
       },
       "SSMQ": {
         "throughput_prs_per_hr": {
-          "mean": 23.9432,
-          "ci_lo": 23.3219,
-          "ci_hi": 24.5528,
+          "mean": 18.5873,
+          "ci_lo": 18.0879,
+          "ci_hi": 19.053,
           "n": 20
         },
         "p50_latency_min": {
-          "mean": 22.4775,
-          "ci_lo": 21.1584,
-          "ci_hi": 23.9896,
+          "mean": 27.4272,
+          "ci_lo": 25.4983,
+          "ci_hi": 29.5878,
           "n": 20
         },
         "p95_latency_min": {
-          "mean": 41.4718,
-          "ci_lo": 37.9495,
-          "ci_hi": 45.3743,
+          "mean": 70.8434,
+          "ci_lo": 64.4299,
+          "ci_hi": 78.0123,
           "n": 20
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 9.7303,
-          "ci_lo": 9.2992,
-          "ci_hi": 10.2274,
+          "mean": 14.5828,
+          "ci_lo": 13.8908,
+          "ci_hi": 15.3526,
           "n": 20
         },
         "invalidation_rate": {
-          "mean": 0.0055,
-          "ci_lo": 0.0005,
-          "ci_hi": 0.0122,
+          "mean": 0.0129,
+          "ci_lo": 0.008,
+          "ci_hi": 0.0178,
           "n": 20
         },
         "mean_blame_rounds": {
-          "mean": 0.9399,
-          "ci_lo": 0.7852,
-          "ci_hi": 1.1206,
+          "mean": 1.0696,
+          "ci_lo": 0.9438,
+          "ci_hi": 1.2104,
+          "n": 20
+        },
+        "false_rejection_rate": {
+          "mean": 0.0141,
+          "ci_lo": 0.0097,
+          "ci_hi": 0.0184,
+          "n": 20
+        },
+        "mean_batch_size": {
+          "mean": 1.5483,
+          "ci_lo": 1.5251,
+          "ci_hi": 1.5739,
+          "n": 20
+        },
+        "runner_utilization": {
+          "mean": 0.5614,
+          "ci_lo": 0.5447,
+          "ci_hi": 0.5786,
           "n": 20
         }
       }
     }
   },
-  "exp1_effect_sizes_vs_ssmq": {
+  "v2_exp2_paired_contrasts": {
     "SerialQueue": {
-      "throughput_prs_per_hr": 1.0,
-      "p50_latency_min": -1.0,
-      "p95_latency_min": -1.0,
-      "ci_minutes_per_merged_pr": -0.7628,
-      "invalidation_rate": 0.3667,
-      "mean_blame_rounds": 1.0
+      "throughput_prs_per_hr": {
+        "n_pairs": 60,
+        "diff_mean": 14.1455,
+        "diff_ci_lo": 13.6372,
+        "diff_ci_hi": 14.6383,
+        "pct_change": 389.76,
+        "wilcoxon_p": 0.0,
+        "cliffs_delta": 1.0,
+        "holm_p": 0.0
+      },
+      "p95_latency_min": {
+        "n_pairs": 60,
+        "diff_mean": -1329.2804,
+        "diff_ci_lo": -1339.7588,
+        "diff_ci_hi": -1318.8465,
+        "pct_change": -94.36,
+        "wilcoxon_p": 0.0,
+        "cliffs_delta": -1.0,
+        "holm_p": 0.0
+      },
+      "ci_minutes_per_merged_pr": {
+        "n_pairs": 60,
+        "diff_mean": 0.4109,
+        "diff_ci_lo": -0.1255,
+        "diff_ci_hi": 0.9797,
+        "pct_change": 2.47,
+        "wilcoxon_p": 0.38704518,
+        "cliffs_delta": -0.0589,
+        "holm_p": 0.77409036
+      },
+      "false_rejection_rate": {
+        "n_pairs": 60,
+        "diff_mean": -0.0258,
+        "diff_ci_lo": -0.0298,
+        "diff_ci_hi": -0.0217,
+        "pct_change": -61.06,
+        "wilcoxon_p": 0.0,
+        "cliffs_delta": -0.8161,
+        "holm_p": 0.0
+      },
+      "mean_blame_rounds": {
+        "n_pairs": 60,
+        "diff_mean": 0.8434,
+        "diff_ci_lo": 0.7478,
+        "diff_ci_hi": 0.938,
+        "pct_change": 0.0,
+        "wilcoxon_p": 0.0,
+        "cliffs_delta": 1.0,
+        "holm_p": 0.0
+      }
     },
     "StaticBatchBisect": {
-      "throughput_prs_per_hr": 0.5017,
-      "p50_latency_min": -0.5439,
-      "p95_latency_min": -0.6061,
-      "ci_minutes_per_merged_pr": -0.3672,
-      "invalidation_rate": 0.3667,
-      "mean_blame_rounds": -0.9075
+      "throughput_prs_per_hr": {
+        "n_pairs": 60,
+        "diff_mean": 1.7209,
+        "diff_ci_lo": 1.4845,
+        "diff_ci_hi": 1.9529,
+        "pct_change": 10.72,
+        "wilcoxon_p": 0.0,
+        "cliffs_delta": 0.3922,
+        "holm_p": 0.0
+      },
+      "p95_latency_min": {
+        "n_pairs": 60,
+        "diff_mean": -42.3981,
+        "diff_ci_lo": -49.0818,
+        "diff_ci_hi": -36.2904,
+        "pct_change": -34.78,
+        "wilcoxon_p": 0.0,
+        "cliffs_delta": -0.6989,
+        "holm_p": 0.0
+      },
+      "ci_minutes_per_merged_pr": {
+        "n_pairs": 60,
+        "diff_mean": -2.7198,
+        "diff_ci_lo": -3.2463,
+        "diff_ci_hi": -2.2091,
+        "pct_change": -13.75,
+        "wilcoxon_p": 0.0,
+        "cliffs_delta": -0.3983,
+        "holm_p": 0.0
+      },
+      "false_rejection_rate": {
+        "n_pairs": 60,
+        "diff_mean": -0.0032,
+        "diff_ci_lo": -0.0067,
+        "diff_ci_hi": 0.0005,
+        "pct_change": -16.23,
+        "wilcoxon_p": 0.18757134,
+        "cliffs_delta": -0.1753,
+        "holm_p": 0.56271402
+      },
+      "mean_blame_rounds": {
+        "n_pairs": 60,
+        "diff_mean": -0.9713,
+        "diff_ci_lo": -1.1238,
+        "diff_ci_hi": -0.824,
+        "pct_change": -53.52,
+        "wilcoxon_p": 0.0,
+        "cliffs_delta": -0.91,
+        "holm_p": 0.0
+      }
     },
     "SpeculativeLinear": {
-      "throughput_prs_per_hr": 1.0,
-      "p50_latency_min": -1.0,
-      "p95_latency_min": -1.0,
-      "ci_minutes_per_merged_pr": -1.0,
-      "invalidation_rate": -1.0,
-      "mean_blame_rounds": -0.3464
+      "throughput_prs_per_hr": {
+        "n_pairs": 60,
+        "diff_mean": 12.4016,
+        "diff_ci_lo": 12.0065,
+        "diff_ci_hi": 12.782,
+        "pct_change": 230.8,
+        "wilcoxon_p": 0.0,
+        "cliffs_delta": 1.0,
+        "holm_p": 0.0
+      },
+      "p95_latency_min": {
+        "n_pairs": 60,
+        "diff_mean": -820.2656,
+        "diff_ci_lo": -847.7868,
+        "diff_ci_hi": -793.2965,
+        "pct_change": -91.17,
+        "wilcoxon_p": 0.0,
+        "cliffs_delta": -1.0,
+        "holm_p": 0.0
+      },
+      "ci_minutes_per_merged_pr": {
+        "n_pairs": 60,
+        "diff_mean": -13.9223,
+        "diff_ci_lo": -14.6925,
+        "diff_ci_hi": -13.2196,
+        "pct_change": -44.94,
+        "wilcoxon_p": 0.0,
+        "cliffs_delta": -0.9944,
+        "holm_p": 0.0
+      },
+      "false_rejection_rate": {
+        "n_pairs": 60,
+        "diff_mean": -0.0049,
+        "diff_ci_lo": -0.0089,
+        "diff_ci_hi": -0.0012,
+        "pct_change": -22.97,
+        "wilcoxon_p": 0.02056192,
+        "cliffs_delta": -0.2297,
+        "holm_p": 0.1028096
+      },
+      "mean_blame_rounds": {
+        "n_pairs": 60,
+        "diff_mean": 0.1296,
+        "diff_ci_lo": 0.0381,
+        "diff_ci_hi": 0.2211,
+        "pct_change": 18.16,
+        "wilcoxon_p": 0.02546636,
+        "cliffs_delta": 0.3122,
+        "holm_p": 0.1028096
+      }
     },
     "UberSubmitQueue": {
-      "throughput_prs_per_hr": 1.0,
-      "p50_latency_min": -1.0,
-      "p95_latency_min": -1.0,
-      "ci_minutes_per_merged_pr": -0.4333,
-      "invalidation_rate": 0.3097,
-      "mean_blame_rounds": -0.0267
+      "throughput_prs_per_hr": {
+        "n_pairs": 60,
+        "diff_mean": 7.5094,
+        "diff_ci_lo": 7.2244,
+        "diff_ci_hi": 7.7901,
+        "pct_change": 73.15,
+        "wilcoxon_p": 0.0,
+        "cliffs_delta": 0.9972,
+        "holm_p": 0.0
+      },
+      "p95_latency_min": {
+        "n_pairs": 60,
+        "diff_mean": -263.1886,
+        "diff_ci_lo": -275.3418,
+        "diff_ci_hi": -251.0989,
+        "pct_change": -76.8,
+        "wilcoxon_p": 0.0,
+        "cliffs_delta": -1.0,
+        "holm_p": 0.0
+      },
+      "ci_minutes_per_merged_pr": {
+        "n_pairs": 60,
+        "diff_mean": -26.3637,
+        "diff_ci_lo": -27.3936,
+        "diff_ci_hi": -25.3527,
+        "pct_change": -60.72,
+        "wilcoxon_p": 0.0,
+        "cliffs_delta": -1.0,
+        "holm_p": 0.0
+      },
+      "false_rejection_rate": {
+        "n_pairs": 60,
+        "diff_mean": -0.0008,
+        "diff_ci_lo": -0.0047,
+        "diff_ci_hi": 0.0033,
+        "pct_change": -4.71,
+        "wilcoxon_p": 0.71006152,
+        "cliffs_delta": -0.0556,
+        "holm_p": 0.77409036
+      },
+      "mean_blame_rounds": {
+        "n_pairs": 60,
+        "diff_mean": -0.3948,
+        "diff_ci_lo": -0.4659,
+        "diff_ci_hi": -0.3154,
+        "pct_change": -31.88,
+        "wilcoxon_p": 0.0,
+        "cliffs_delta": -0.5022,
+        "holm_p": 0.0
+      }
     },
     "FlakeAwareBatch": {
-      "throughput_prs_per_hr": 0.9528,
-      "p50_latency_min": -0.7111,
-      "p95_latency_min": -0.9756,
-      "ci_minutes_per_merged_pr": -0.9206,
-      "invalidation_rate": -0.5875,
-      "mean_blame_rounds": -1.0
+      "throughput_prs_per_hr": {
+        "n_pairs": 60,
+        "diff_mean": 5.202,
+        "diff_ci_lo": 4.9561,
+        "diff_ci_hi": 5.4607,
+        "pct_change": 41.37,
+        "wilcoxon_p": 0.0,
+        "cliffs_delta": 0.8678,
+        "holm_p": 0.0
+      },
+      "p95_latency_min": {
+        "n_pairs": 60,
+        "diff_mean": -156.0494,
+        "diff_ci_lo": -171.0958,
+        "diff_ci_hi": -141.8051,
+        "pct_change": -66.25,
+        "wilcoxon_p": 0.0,
+        "cliffs_delta": -0.9994,
+        "holm_p": 0.0
+      },
+      "ci_minutes_per_merged_pr": {
+        "n_pairs": 60,
+        "diff_mean": -12.867,
+        "diff_ci_lo": -14.1069,
+        "diff_ci_hi": -11.6809,
+        "pct_change": -43.0,
+        "wilcoxon_p": 0.0,
+        "cliffs_delta": -0.9389,
+        "holm_p": 0.0
+      },
+      "false_rejection_rate": {
+        "n_pairs": 60,
+        "diff_mean": 0.0152,
+        "diff_ci_lo": 0.0122,
+        "diff_ci_hi": 0.0184,
+        "pct_change": 1263.34,
+        "wilcoxon_p": 0.0,
+        "cliffs_delta": 0.7642,
+        "holm_p": 0.0
+      },
+      "mean_blame_rounds": {
+        "n_pairs": 60,
+        "diff_mean": -3.7292,
+        "diff_ci_lo": -3.9482,
+        "diff_ci_hi": -3.5145,
+        "pct_change": -81.55,
+        "wilcoxon_p": 0.0,
+        "cliffs_delta": -1.0,
+        "holm_p": 0.0
+      }
     }
   },
-  "exp2_velocity_sweep": {
+  "v2_exp3_velocity": {
     "1.0": {
       "StaticBatchBisect": {
         "throughput_prs_per_hr": {
-          "mean": 5.2966,
-          "ci_lo": 5.2574,
-          "ci_hi": 5.3321,
+          "mean": 4.387,
+          "ci_lo": 4.2976,
+          "ci_hi": 4.4699,
           "n": 60
         },
         "p50_latency_min": {
-          "mean": 12.6482,
-          "ci_lo": 12.5346,
-          "ci_hi": 12.7743,
+          "mean": 12.783,
+          "ci_lo": 12.628,
+          "ci_hi": 12.9512,
           "n": 60
         },
         "p95_latency_min": {
-          "mean": 35.8329,
-          "ci_lo": 32.9007,
-          "ci_hi": 38.7249,
+          "mean": 40.8983,
+          "ci_lo": 37.398,
+          "ci_hi": 44.0342,
           "n": 60
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 13.2609,
-          "ci_lo": 13.0659,
-          "ci_hi": 13.4593,
+          "mean": 17.5446,
+          "ci_lo": 16.9271,
+          "ci_hi": 18.2111,
           "n": 60
         },
         "invalidation_rate": {
-          "mean": 0.0,
-          "ci_lo": 0.0,
-          "ci_hi": 0.0,
+          "mean": 0.0049,
+          "ci_lo": 0.0035,
+          "ci_hi": 0.0065,
           "n": 60
         },
         "mean_blame_rounds": {
-          "mean": 0.6521,
-          "ci_lo": 0.5601,
-          "ci_hi": 0.7515,
+          "mean": 0.3901,
+          "ci_lo": 0.3443,
+          "ci_hi": 0.431,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0358,
+          "ci_lo": 0.0326,
+          "ci_hi": 0.0392,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 1.3197,
+          "ci_lo": 1.2778,
+          "ci_hi": 1.3575,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.1587,
+          "ci_lo": 0.1559,
+          "ci_hi": 0.1614,
           "n": 60
         }
       },
       "SpeculativeLinear": {
         "throughput_prs_per_hr": {
-          "mean": 4.6099,
-          "ci_lo": 4.5344,
-          "ci_hi": 4.6917,
+          "mean": 3.5001,
+          "ci_lo": 3.3773,
+          "ci_hi": 3.6182,
           "n": 60
         },
         "p50_latency_min": {
-          "mean": 115.715,
-          "ci_lo": 106.6043,
-          "ci_hi": 124.3568,
+          "mean": 138.9008,
+          "ci_lo": 129.1298,
+          "ci_hi": 148.1461,
           "n": 60
         },
         "p95_latency_min": {
-          "mean": 293.4291,
-          "ci_lo": 271.2677,
-          "ci_hi": 314.5202,
+          "mean": 423.7856,
+          "ci_lo": 397.2946,
+          "ci_hi": 449.6804,
           "n": 60
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 20.5573,
-          "ci_lo": 20.0584,
-          "ci_hi": 21.0409,
+          "mean": 29.8533,
+          "ci_lo": 28.3604,
+          "ci_hi": 31.421,
           "n": 60
         },
         "invalidation_rate": {
-          "mean": 0.2893,
-          "ci_lo": 0.2778,
-          "ci_hi": 0.2997,
+          "mean": 0.3803,
+          "ci_lo": 0.3664,
+          "ci_hi": 0.3942,
           "n": 60
         },
         "mean_blame_rounds": {
-          "mean": 0.8682,
-          "ci_lo": 0.8525,
-          "ci_hi": 0.8836,
+          "mean": 0.6892,
+          "ci_lo": 0.6707,
+          "ci_hi": 0.7073,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0229,
+          "ci_lo": 0.0199,
+          "ci_hi": 0.026,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 2.4419,
+          "ci_lo": 2.4231,
+          "ci_hi": 2.4617,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.2118,
+          "ci_lo": 0.2089,
+          "ci_hi": 0.2149,
           "n": 60
         }
       },
       "UberSubmitQueue": {
         "throughput_prs_per_hr": {
-          "mean": 4.2792,
-          "ci_lo": 4.1475,
-          "ci_hi": 4.4198,
+          "mean": 4.3698,
+          "ci_lo": 4.2774,
+          "ci_hi": 4.454,
           "n": 60
         },
         "p50_latency_min": {
-          "mean": 160.524,
-          "ci_lo": 144.9331,
-          "ci_hi": 176.2786,
+          "mean": 28.152,
+          "ci_lo": 25.5555,
+          "ci_hi": 31.0428,
           "n": 60
         },
         "p95_latency_min": {
-          "mean": 430.2511,
-          "ci_lo": 383.9266,
-          "ci_hi": 476.6418,
+          "mean": 100.3353,
+          "ci_lo": 94.3772,
+          "ci_hi": 106.1903,
           "n": 60
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 12.6579,
-          "ci_lo": 12.4099,
-          "ci_hi": 12.9018,
+          "mean": 39.6253,
+          "ci_lo": 37.971,
+          "ci_hi": 41.3896,
           "n": 60
         },
         "invalidation_rate": {
-          "mean": 0.0031,
-          "ci_lo": 0.0017,
-          "ci_hi": 0.0046,
+          "mean": 0.7237,
+          "ci_lo": 0.7182,
+          "ci_hi": 0.729,
           "n": 60
         },
         "mean_blame_rounds": {
-          "mean": 0.6938,
-          "ci_lo": 0.6008,
-          "ci_hi": 0.7817,
+          "mean": 0.9137,
+          "ci_lo": 0.8374,
+          "ci_hi": 0.9904,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0228,
+          "ci_lo": 0.02,
+          "ci_hi": 0.0258,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 1.6511,
+          "ci_lo": 1.5914,
+          "ci_hi": 1.7121,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.356,
+          "ci_lo": 0.3472,
+          "ci_hi": 0.3642,
           "n": 60
         }
       },
       "FlakeAwareBatch": {
         "throughput_prs_per_hr": {
-          "mean": 5.5059,
-          "ci_lo": 5.4758,
-          "ci_hi": 5.5348,
+          "mean": 4.5164,
+          "ci_lo": 4.4178,
+          "ci_hi": 4.6048,
           "n": 60
         },
         "p50_latency_min": {
-          "mean": 12.8937,
-          "ci_lo": 12.76,
-          "ci_hi": 13.0372,
+          "mean": 13.1414,
+          "ci_lo": 12.9682,
+          "ci_hi": 13.3296,
           "n": 60
         },
         "p95_latency_min": {
-          "mean": 57.4301,
-          "ci_lo": 52.0717,
-          "ci_hi": 62.6396,
+          "mean": 71.6517,
+          "ci_lo": 65.3066,
+          "ci_hi": 77.7026,
           "n": 60
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 15.2421,
-          "ci_lo": 14.8742,
-          "ci_hi": 15.6179,
+          "mean": 23.9135,
+          "ci_lo": 22.5373,
+          "ci_hi": 25.4122,
           "n": 60
         },
         "invalidation_rate": {
-          "mean": 0.0328,
-          "ci_lo": 0.0298,
-          "ci_hi": 0.0359,
+          "mean": 0.0247,
+          "ci_lo": 0.0219,
+          "ci_hi": 0.0275,
           "n": 60
         },
         "mean_blame_rounds": {
-          "mean": 2.2007,
-          "ci_lo": 2.0206,
-          "ci_hi": 2.3797,
+          "mean": 1.8983,
+          "ci_lo": 1.8032,
+          "ci_hi": 1.9956,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0018,
+          "ci_lo": 0.0011,
+          "ci_hi": 0.0027,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 1.4854,
+          "ci_lo": 1.4305,
+          "ci_hi": 1.5381,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.2207,
+          "ci_lo": 0.2126,
+          "ci_hi": 0.2292,
           "n": 60
         }
       },
       "SSMQ": {
         "throughput_prs_per_hr": {
-          "mean": 5.3568,
-          "ci_lo": 5.3162,
-          "ci_hi": 5.3974,
+          "mean": 4.4374,
+          "ci_lo": 4.3421,
+          "ci_hi": 4.5292,
           "n": 60
         },
         "p50_latency_min": {
-          "mean": 12.6408,
-          "ci_lo": 12.5574,
-          "ci_hi": 12.724,
+          "mean": 12.7248,
+          "ci_lo": 12.6264,
+          "ci_hi": 12.8282,
           "n": 60
         },
         "p95_latency_min": {
-          "mean": 22.9611,
-          "ci_lo": 21.7153,
-          "ci_hi": 24.2063,
+          "mean": 26.4568,
+          "ci_lo": 24.4172,
+          "ci_hi": 28.8196,
           "n": 60
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 13.5111,
-          "ci_lo": 13.3213,
-          "ci_hi": 13.6999,
+          "mean": 17.9496,
+          "ci_lo": 17.2978,
+          "ci_hi": 18.6438,
           "n": 60
         },
         "invalidation_rate": {
-          "mean": 0.0139,
-          "ci_lo": 0.0098,
-          "ci_hi": 0.0184,
+          "mean": 0.0159,
+          "ci_lo": 0.0125,
+          "ci_hi": 0.0195,
           "n": 60
         },
         "mean_blame_rounds": {
-          "mean": 0.4036,
-          "ci_lo": 0.324,
-          "ci_hi": 0.4857,
+          "mean": 0.4539,
+          "ci_lo": 0.3691,
+          "ci_hi": 0.541,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0245,
+          "ci_lo": 0.0204,
+          "ci_hi": 0.0285,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 1.0584,
+          "ci_lo": 1.0463,
+          "ci_hi": 1.0725,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.1643,
+          "ci_lo": 0.1606,
+          "ci_hi": 0.1684,
           "n": 60
         }
       }
@@ -1269,191 +2023,281 @@
     "3.0": {
       "StaticBatchBisect": {
         "throughput_prs_per_hr": {
-          "mean": 15.299,
-          "ci_lo": 15.1416,
-          "ci_hi": 15.4488,
+          "mean": 11.8408,
+          "ci_lo": 11.5059,
+          "ci_hi": 12.1546,
           "n": 60
         },
         "p50_latency_min": {
-          "mean": 18.7506,
-          "ci_lo": 17.108,
-          "ci_hi": 20.6206,
+          "mean": 24.6088,
+          "ci_lo": 22.3775,
+          "ci_hi": 26.8123,
           "n": 60
         },
         "p95_latency_min": {
-          "mean": 54.0131,
-          "ci_lo": 50.8184,
-          "ci_hi": 57.8037,
+          "mean": 79.2593,
+          "ci_lo": 73.357,
+          "ci_hi": 85.2782,
           "n": 60
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 12.5343,
-          "ci_lo": 12.2072,
-          "ci_hi": 12.8716,
+          "mean": 19.0628,
+          "ci_lo": 18.1607,
+          "ci_hi": 20.0287,
           "n": 60
         },
         "invalidation_rate": {
-          "mean": 0.0,
-          "ci_lo": 0.0,
-          "ci_hi": 0.0,
+          "mean": 0.0074,
+          "ci_lo": 0.0058,
+          "ci_hi": 0.0092,
           "n": 60
         },
         "mean_blame_rounds": {
-          "mean": 1.3181,
-          "ci_lo": 1.2203,
-          "ci_hi": 1.4277,
+          "mean": 1.3936,
+          "ci_lo": 1.3091,
+          "ci_hi": 1.4759,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0232,
+          "ci_lo": 0.0205,
+          "ci_hi": 0.026,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 1.896,
+          "ci_lo": 1.861,
+          "ci_hi": 1.9273,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.4606,
+          "ci_lo": 0.4514,
+          "ci_hi": 0.4699,
           "n": 60
         }
       },
       "SpeculativeLinear": {
         "throughput_prs_per_hr": {
-          "mean": 7.3136,
-          "ci_lo": 7.0665,
-          "ci_hi": 7.5489,
+          "mean": 5.2572,
+          "ci_lo": 4.9895,
+          "ci_hi": 5.5154,
           "n": 60
         },
         "p50_latency_min": {
-          "mean": 253.669,
-          "ci_lo": 235.5143,
-          "ci_hi": 270.9623,
+          "mean": 271.8428,
+          "ci_lo": 254.9276,
+          "ci_hi": 288.7158,
           "n": 60
         },
         "p95_latency_min": {
-          "mean": 598.6703,
-          "ci_lo": 565.135,
-          "ci_hi": 635.1282,
+          "mean": 748.1411,
+          "ci_lo": 708.8013,
+          "ci_hi": 789.6532,
           "n": 60
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 21.2896,
-          "ci_lo": 20.8324,
-          "ci_hi": 21.7624,
+          "mean": 30.8539,
+          "ci_lo": 29.4845,
+          "ci_hi": 32.3101,
           "n": 60
         },
         "invalidation_rate": {
-          "mean": 0.3129,
-          "ci_lo": 0.3039,
-          "ci_hi": 0.322,
+          "mean": 0.4012,
+          "ci_lo": 0.3905,
+          "ci_hi": 0.4122,
           "n": 60
         },
         "mean_blame_rounds": {
-          "mean": 0.8848,
-          "ci_lo": 0.8717,
-          "ci_hi": 0.8978,
+          "mean": 0.7113,
+          "ci_lo": 0.6927,
+          "ci_hi": 0.7308,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0215,
+          "ci_lo": 0.0185,
+          "ci_hi": 0.0245,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 2.5202,
+          "ci_lo": 2.5041,
+          "ci_hi": 2.5363,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.3262,
+          "ci_lo": 0.3221,
+          "ci_hi": 0.3303,
           "n": 60
         }
       },
       "UberSubmitQueue": {
         "throughput_prs_per_hr": {
-          "mean": 6.2041,
-          "ci_lo": 5.9327,
-          "ci_hi": 6.454,
+          "mean": 8.5514,
+          "ci_lo": 8.2437,
+          "ci_hi": 8.8416,
           "n": 60
         },
         "p50_latency_min": {
-          "mean": 358.8331,
-          "ci_lo": 334.4171,
-          "ci_hi": 382.6414,
+          "mean": 94.8412,
+          "ci_lo": 88.2983,
+          "ci_hi": 101.4224,
           "n": 60
         },
         "p95_latency_min": {
-          "mean": 807.7625,
-          "ci_lo": 754.8637,
-          "ci_hi": 863.5944,
+          "mean": 279.9287,
+          "ci_lo": 267.9476,
+          "ci_hi": 291.998,
           "n": 60
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 12.6069,
-          "ci_lo": 12.3505,
-          "ci_hi": 12.8632,
+          "mean": 42.8157,
+          "ci_lo": 41.1367,
+          "ci_hi": 44.6343,
           "n": 60
         },
         "invalidation_rate": {
-          "mean": 0.0017,
-          "ci_lo": 0.0008,
-          "ci_hi": 0.0026,
+          "mean": 0.7463,
+          "ci_lo": 0.7438,
+          "ci_hi": 0.7488,
           "n": 60
         },
         "mean_blame_rounds": {
-          "mean": 0.7145,
-          "ci_lo": 0.6178,
-          "ci_hi": 0.8038,
+          "mean": 1.1675,
+          "ci_lo": 1.0829,
+          "ci_hi": 1.2483,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0202,
+          "ci_lo": 0.0172,
+          "ci_hi": 0.0233,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 1.8256,
+          "ci_lo": 1.7517,
+          "ci_hi": 1.8987,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.7461,
+          "ci_lo": 0.7389,
+          "ci_hi": 0.7527,
           "n": 60
         }
       },
       "FlakeAwareBatch": {
         "throughput_prs_per_hr": {
-          "mean": 14.0936,
-          "ci_lo": 13.8533,
-          "ci_hi": 14.3406,
+          "mean": 10.0591,
+          "ci_lo": 9.6477,
+          "ci_hi": 10.4497,
           "n": 60
         },
         "p50_latency_min": {
-          "mean": 31.7932,
-          "ci_lo": 27.3177,
-          "ci_hi": 36.3512,
+          "mean": 46.2817,
+          "ci_lo": 40.2937,
+          "ci_hi": 52.309,
           "n": 60
         },
         "p95_latency_min": {
-          "mean": 98.3693,
-          "ci_lo": 90.3275,
-          "ci_hi": 106.8427,
+          "mean": 179.9806,
+          "ci_lo": 164.6338,
+          "ci_hi": 195.9205,
           "n": 60
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 16.2532,
-          "ci_lo": 15.5594,
-          "ci_hi": 16.9621,
+          "mean": 29.0485,
+          "ci_lo": 27.1958,
+          "ci_hi": 30.9367,
           "n": 60
         },
         "invalidation_rate": {
-          "mean": 0.0262,
-          "ci_lo": 0.023,
-          "ci_hi": 0.0299,
+          "mean": 0.0176,
+          "ci_lo": 0.0157,
+          "ci_hi": 0.0194,
           "n": 60
         },
         "mean_blame_rounds": {
-          "mean": 3.5886,
-          "ci_lo": 3.3796,
-          "ci_hi": 3.7987,
+          "mean": 4.0132,
+          "ci_lo": 3.8461,
+          "ci_hi": 4.1903,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0011,
+          "ci_lo": 0.0005,
+          "ci_hi": 0.0018,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 2.2063,
+          "ci_lo": 2.1708,
+          "ci_hi": 2.2401,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.5843,
+          "ci_lo": 0.572,
+          "ci_hi": 0.5964,
           "n": 60
         }
       },
       "SSMQ": {
         "throughput_prs_per_hr": {
-          "mean": 15.7824,
-          "ci_lo": 15.6552,
-          "ci_hi": 15.8984,
+          "mean": 12.5708,
+          "ci_lo": 12.2658,
+          "ci_hi": 12.8481,
           "n": 60
         },
         "p50_latency_min": {
-          "mean": 15.4177,
-          "ci_lo": 14.9407,
-          "ci_hi": 15.9467,
+          "mean": 18.3531,
+          "ci_lo": 17.4982,
+          "ci_hi": 19.3492,
           "n": 60
         },
         "p95_latency_min": {
-          "mean": 34.725,
-          "ci_lo": 32.4485,
-          "ci_hi": 36.8924,
+          "mean": 48.8276,
+          "ci_lo": 45.5535,
+          "ci_hi": 52.2949,
           "n": 60
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 12.2144,
-          "ci_lo": 11.8903,
-          "ci_hi": 12.5485,
+          "mean": 17.455,
+          "ci_lo": 16.6551,
+          "ci_hi": 18.2911,
           "n": 60
         },
         "invalidation_rate": {
-          "mean": 0.0118,
-          "ci_lo": 0.0078,
-          "ci_hi": 0.016,
+          "mean": 0.0158,
+          "ci_lo": 0.0129,
+          "ci_hi": 0.0193,
           "n": 60
         },
         "mean_blame_rounds": {
-          "mean": 0.6132,
-          "ci_lo": 0.5183,
-          "ci_hi": 0.7166,
+          "mean": 0.7561,
+          "ci_lo": 0.6634,
+          "ci_hi": 0.8533,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0189,
+          "ci_lo": 0.0157,
+          "ci_hi": 0.0223,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 1.2451,
+          "ci_lo": 1.2082,
+          "ci_hi": 1.2838,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.4501,
+          "ci_lo": 0.4383,
+          "ci_hi": 0.4617,
           "n": 60
         }
       }
@@ -1461,191 +2305,281 @@
     "5.0": {
       "StaticBatchBisect": {
         "throughput_prs_per_hr": {
-          "mean": 22.0778,
-          "ci_lo": 21.6159,
-          "ci_hi": 22.5468,
+          "mean": 16.0539,
+          "ci_lo": 15.4173,
+          "ci_hi": 16.6646,
           "n": 60
         },
         "p50_latency_min": {
-          "mean": 34.2862,
-          "ci_lo": 30.8023,
-          "ci_hi": 37.789,
+          "mean": 42.1982,
+          "ci_lo": 38.9615,
+          "ci_hi": 45.5933,
           "n": 60
         },
         "p95_latency_min": {
-          "mean": 78.4204,
-          "ci_lo": 71.7828,
-          "ci_hi": 85.4033,
+          "mean": 121.8881,
+          "ci_lo": 113.0301,
+          "ci_hi": 131.1292,
           "n": 60
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 12.5606,
-          "ci_lo": 12.1386,
-          "ci_hi": 13.0039,
+          "mean": 19.776,
+          "ci_lo": 18.7452,
+          "ci_hi": 20.9158,
           "n": 60
         },
         "invalidation_rate": {
-          "mean": 0.0,
-          "ci_lo": 0.0,
-          "ci_hi": 0.0,
+          "mean": 0.0088,
+          "ci_lo": 0.0073,
+          "ci_hi": 0.0103,
           "n": 60
         },
         "mean_blame_rounds": {
-          "mean": 1.8018,
-          "ci_lo": 1.6817,
-          "ci_hi": 1.9171,
+          "mean": 1.8147,
+          "ci_lo": 1.717,
+          "ci_hi": 1.9109,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0196,
+          "ci_lo": 0.0171,
+          "ci_hi": 0.0222,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 2.1265,
+          "ci_lo": 2.0925,
+          "ci_hi": 2.1607,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.6404,
+          "ci_lo": 0.6321,
+          "ci_hi": 0.6489,
           "n": 60
         }
       },
       "SpeculativeLinear": {
         "throughput_prs_per_hr": {
-          "mean": 7.5737,
-          "ci_lo": 7.3519,
-          "ci_hi": 7.794,
+          "mean": 5.3732,
+          "ci_lo": 5.1277,
+          "ci_hi": 5.6092,
           "n": 60
         },
         "p50_latency_min": {
-          "mean": 343.1475,
-          "ci_lo": 326.7219,
-          "ci_hi": 359.3165,
+          "mean": 357.958,
+          "ci_lo": 339.9539,
+          "ci_hi": 375.383,
           "n": 60
         },
         "p95_latency_min": {
-          "mean": 746.4647,
-          "ci_lo": 718.4956,
-          "ci_hi": 773.6944,
+          "mean": 899.7556,
+          "ci_lo": 869.4665,
+          "ci_hi": 930.4023,
           "n": 60
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 21.36,
-          "ci_lo": 20.9089,
-          "ci_hi": 21.8321,
+          "mean": 30.9785,
+          "ci_lo": 29.5994,
+          "ci_hi": 32.444,
           "n": 60
         },
         "invalidation_rate": {
-          "mean": 0.3159,
-          "ci_lo": 0.3073,
-          "ci_hi": 0.3243,
+          "mean": 0.4027,
+          "ci_lo": 0.3921,
+          "ci_hi": 0.4135,
           "n": 60
         },
         "mean_blame_rounds": {
-          "mean": 0.8855,
-          "ci_lo": 0.8719,
-          "ci_hi": 0.8992,
+          "mean": 0.7138,
+          "ci_lo": 0.6955,
+          "ci_hi": 0.733,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0213,
+          "ci_lo": 0.0184,
+          "ci_hi": 0.0244,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 2.5275,
+          "ci_lo": 2.5113,
+          "ci_hi": 2.5436,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.336,
+          "ci_lo": 0.3334,
+          "ci_hi": 0.3386,
           "n": 60
         }
       },
       "UberSubmitQueue": {
         "throughput_prs_per_hr": {
-          "mean": 6.266,
-          "ci_lo": 5.9945,
-          "ci_hi": 6.5208,
+          "mean": 10.2654,
+          "ci_lo": 9.8176,
+          "ci_hi": 10.6836,
           "n": 60
         },
         "p50_latency_min": {
-          "mean": 474.2107,
-          "ci_lo": 445.4715,
-          "ci_hi": 502.4438,
+          "mean": 120.1212,
+          "ci_lo": 112.3032,
+          "ci_hi": 128.4403,
           "n": 60
         },
         "p95_latency_min": {
-          "mean": 983.9945,
-          "ci_lo": 934.2485,
-          "ci_hi": 1037.0197,
+          "mean": 342.6786,
+          "ci_lo": 327.1172,
+          "ci_hi": 358.4148,
           "n": 60
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 12.5851,
-          "ci_lo": 12.3315,
-          "ci_hi": 12.8405,
+          "mean": 43.4199,
+          "ci_lo": 41.8105,
+          "ci_hi": 45.1641,
           "n": 60
         },
         "invalidation_rate": {
-          "mean": 0.0006,
-          "ci_lo": 0.0001,
-          "ci_hi": 0.0012,
+          "mean": 0.7517,
+          "ci_lo": 0.7498,
+          "ci_hi": 0.7536,
           "n": 60
         },
         "mean_blame_rounds": {
-          "mean": 0.7219,
-          "ci_lo": 0.6283,
-          "ci_hi": 0.8103,
+          "mean": 1.2382,
+          "ci_lo": 1.1487,
+          "ci_hi": 1.3245,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0173,
+          "ci_lo": 0.0145,
+          "ci_hi": 0.0201,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 1.8567,
+          "ci_lo": 1.7784,
+          "ci_hi": 1.9341,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.9057,
+          "ci_lo": 0.8934,
+          "ci_hi": 0.9171,
           "n": 60
         }
       },
       "FlakeAwareBatch": {
         "throughput_prs_per_hr": {
-          "mean": 18.5533,
-          "ci_lo": 18.0326,
-          "ci_hi": 19.0783,
+          "mean": 12.5728,
+          "ci_lo": 11.9245,
+          "ci_hi": 13.1643,
           "n": 60
         },
         "p50_latency_min": {
-          "mean": 53.4642,
-          "ci_lo": 46.5093,
-          "ci_hi": 60.2726,
+          "mean": 67.4967,
+          "ci_lo": 60.281,
+          "ci_hi": 74.7207,
           "n": 60
         },
         "p95_latency_min": {
-          "mean": 137.7597,
-          "ci_lo": 125.8366,
-          "ci_hi": 149.4482,
+          "mean": 235.5394,
+          "ci_lo": 216.9752,
+          "ci_hi": 255.3168,
           "n": 60
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 16.8951,
-          "ci_lo": 16.2296,
-          "ci_hi": 17.5762,
+          "mean": 29.9232,
+          "ci_lo": 28.1074,
+          "ci_hi": 31.9065,
           "n": 60
         },
         "invalidation_rate": {
-          "mean": 0.0226,
-          "ci_lo": 0.0197,
-          "ci_hi": 0.0257,
+          "mean": 0.0187,
+          "ci_lo": 0.0165,
+          "ci_hi": 0.021,
           "n": 60
         },
         "mean_blame_rounds": {
-          "mean": 4.238,
-          "ci_lo": 4.0418,
-          "ci_hi": 4.4414,
+          "mean": 4.5726,
+          "ci_lo": 4.3987,
+          "ci_hi": 4.7487,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0012,
+          "ci_lo": 0.0005,
+          "ci_hi": 0.002,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 2.3487,
+          "ci_lo": 2.3187,
+          "ci_hi": 2.3809,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.7451,
+          "ci_lo": 0.7362,
+          "ci_hi": 0.753,
           "n": 60
         }
       },
       "SSMQ": {
         "throughput_prs_per_hr": {
-          "mean": 23.8059,
-          "ci_lo": 23.3799,
-          "ci_hi": 24.2389,
+          "mean": 17.7748,
+          "ci_lo": 17.1904,
+          "ci_hi": 18.3252,
           "n": 60
         },
         "p50_latency_min": {
-          "mean": 22.0481,
-          "ci_lo": 20.6952,
-          "ci_hi": 23.3801,
+          "mean": 26.7299,
+          "ci_lo": 25.2992,
+          "ci_hi": 28.1829,
           "n": 60
         },
         "p95_latency_min": {
-          "mean": 49.7431,
-          "ci_lo": 45.3445,
-          "ci_hi": 54.4716,
+          "mean": 79.49,
+          "ci_lo": 73.7672,
+          "ci_hi": 85.5356,
           "n": 60
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 11.3457,
-          "ci_lo": 10.904,
-          "ci_hi": 11.7884,
+          "mean": 17.0562,
+          "ci_lo": 16.2289,
+          "ci_hi": 17.9332,
           "n": 60
         },
         "invalidation_rate": {
-          "mean": 0.0097,
-          "ci_lo": 0.0058,
-          "ci_hi": 0.014,
+          "mean": 0.0154,
+          "ci_lo": 0.0127,
+          "ci_hi": 0.0184,
           "n": 60
         },
         "mean_blame_rounds": {
-          "mean": 0.7242,
-          "ci_lo": 0.6325,
-          "ci_hi": 0.8234,
+          "mean": 0.8434,
+          "ci_lo": 0.7483,
+          "ci_hi": 0.9363,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0164,
+          "ci_lo": 0.0134,
+          "ci_hi": 0.0195,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 1.322,
+          "ci_lo": 1.2699,
+          "ci_hi": 1.3742,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.6165,
+          "ci_lo": 0.6042,
+          "ci_hi": 0.6288,
           "n": 60
         }
       }
@@ -1653,413 +2587,593 @@
     "10.0": {
       "StaticBatchBisect": {
         "throughput_prs_per_hr": {
-          "mean": 31.2536,
-          "ci_lo": 30.2134,
-          "ci_hi": 32.374,
+          "mean": 21.3364,
+          "ci_lo": 20.284,
+          "ci_hi": 22.3489,
           "n": 60
         },
         "p50_latency_min": {
-          "mean": 49.1975,
-          "ci_lo": 44.9289,
-          "ci_hi": 53.8312,
+          "mean": 56.2769,
+          "ci_lo": 52.2349,
+          "ci_hi": 60.4912,
           "n": 60
         },
         "p95_latency_min": {
-          "mean": 110.2143,
-          "ci_lo": 101.1513,
-          "ci_hi": 119.0763,
+          "mean": 161.078,
+          "ci_lo": 151.3934,
+          "ci_hi": 171.2125,
           "n": 60
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 12.5022,
-          "ci_lo": 12.0503,
-          "ci_hi": 12.9372,
+          "mean": 19.7697,
+          "ci_lo": 18.7322,
+          "ci_hi": 20.8574,
           "n": 60
         },
         "invalidation_rate": {
-          "mean": 0.0,
-          "ci_lo": 0.0,
-          "ci_hi": 0.0,
+          "mean": 0.0086,
+          "ci_lo": 0.0069,
+          "ci_hi": 0.0102,
           "n": 60
         },
         "mean_blame_rounds": {
-          "mean": 2.0154,
-          "ci_lo": 1.9257,
-          "ci_hi": 2.1082,
+          "mean": 2.0367,
+          "ci_lo": 1.9558,
+          "ci_hi": 2.1102,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0175,
+          "ci_lo": 0.0152,
+          "ci_hi": 0.0199,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 2.2494,
+          "ci_lo": 2.2155,
+          "ci_hi": 2.2849,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.8438,
+          "ci_lo": 0.8365,
+          "ci_hi": 0.8515,
           "n": 60
         }
       },
       "SpeculativeLinear": {
         "throughput_prs_per_hr": {
-          "mean": 7.5931,
-          "ci_lo": 7.3757,
-          "ci_hi": 7.8113,
+          "mean": 5.3864,
+          "ci_lo": 5.1457,
+          "ci_hi": 5.6198,
           "n": 60
         },
         "p50_latency_min": {
-          "mean": 448.2105,
-          "ci_lo": 430.9846,
-          "ci_hi": 465.4713,
+          "mean": 456.6371,
+          "ci_lo": 436.8104,
+          "ci_hi": 476.0355,
           "n": 60
         },
         "p95_latency_min": {
-          "mean": 886.0308,
-          "ci_lo": 858.9694,
-          "ci_hi": 912.9701,
+          "mean": 1037.7217,
+          "ci_lo": 1007.7011,
+          "ci_hi": 1067.6147,
           "n": 60
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 21.4171,
-          "ci_lo": 20.9557,
-          "ci_hi": 21.8989,
+          "mean": 31.0214,
+          "ci_lo": 29.6233,
+          "ci_hi": 32.4953,
           "n": 60
         },
         "invalidation_rate": {
-          "mean": 0.3175,
-          "ci_lo": 0.3088,
-          "ci_hi": 0.326,
+          "mean": 0.4035,
+          "ci_lo": 0.3927,
+          "ci_hi": 0.4147,
           "n": 60
         },
         "mean_blame_rounds": {
-          "mean": 0.886,
-          "ci_lo": 0.8724,
-          "ci_hi": 0.8994,
+          "mean": 0.7143,
+          "ci_lo": 0.6957,
+          "ci_hi": 0.7336,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0212,
+          "ci_lo": 0.0183,
+          "ci_hi": 0.0243,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 2.5301,
+          "ci_lo": 2.5153,
+          "ci_hi": 2.5455,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.3373,
+          "ci_lo": 0.335,
+          "ci_hi": 0.34,
           "n": 60
         }
       },
       "UberSubmitQueue": {
         "throughput_prs_per_hr": {
-          "mean": 6.2665,
-          "ci_lo": 5.9949,
-          "ci_hi": 6.5213,
+          "mean": 10.9742,
+          "ci_lo": 10.5602,
+          "ci_hi": 11.3916,
           "n": 60
         },
         "p50_latency_min": {
-          "mean": 585.2096,
-          "ci_lo": 556.7273,
-          "ci_hi": 613.3844,
+          "mean": 174.3237,
+          "ci_lo": 164.7262,
+          "ci_hi": 183.8177,
           "n": 60
         },
         "p95_latency_min": {
-          "mean": 1126.9912,
-          "ci_lo": 1077.3042,
-          "ci_hi": 1180.1064,
+          "mean": 439.1531,
+          "ci_lo": 427.0337,
+          "ci_hi": 450.6174,
           "n": 60
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 12.5852,
-          "ci_lo": 12.3316,
-          "ci_hi": 12.8405,
+          "mean": 43.8253,
+          "ci_lo": 42.2399,
+          "ci_hi": 45.5571,
           "n": 60
         },
         "invalidation_rate": {
-          "mean": 0.0006,
-          "ci_lo": 0.0001,
-          "ci_hi": 0.0012,
+          "mean": 0.7554,
+          "ci_lo": 0.7536,
+          "ci_hi": 0.7571,
           "n": 60
         },
         "mean_blame_rounds": {
-          "mean": 0.7219,
-          "ci_lo": 0.6283,
-          "ci_hi": 0.8103,
+          "mean": 1.3009,
+          "ci_lo": 1.2035,
+          "ci_hi": 1.394,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0159,
+          "ci_lo": 0.013,
+          "ci_hi": 0.0191,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 1.8934,
+          "ci_lo": 1.8105,
+          "ci_hi": 1.9767,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.9788,
+          "ci_lo": 0.9751,
+          "ci_hi": 0.9823,
           "n": 60
         }
       },
       "FlakeAwareBatch": {
         "throughput_prs_per_hr": {
-          "mean": 23.6101,
-          "ci_lo": 22.6938,
-          "ci_hi": 24.515,
+          "mean": 14.7894,
+          "ci_lo": 13.9442,
+          "ci_hi": 15.5909,
           "n": 60
         },
         "p50_latency_min": {
-          "mean": 75.8637,
-          "ci_lo": 69.0433,
-          "ci_hi": 82.8602,
+          "mean": 95.0765,
+          "ci_lo": 87.832,
+          "ci_hi": 102.2956,
           "n": 60
         },
         "p95_latency_min": {
-          "mean": 182.4328,
-          "ci_lo": 168.6166,
-          "ci_hi": 196.6425,
+          "mean": 292.7758,
+          "ci_lo": 274.2078,
+          "ci_hi": 312.6039,
           "n": 60
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 17.3837,
-          "ci_lo": 16.6525,
-          "ci_hi": 18.0922,
+          "mean": 31.1924,
+          "ci_lo": 29.3801,
+          "ci_hi": 33.1874,
           "n": 60
         },
         "invalidation_rate": {
-          "mean": 0.0199,
-          "ci_lo": 0.0175,
-          "ci_hi": 0.0223,
+          "mean": 0.0161,
+          "ci_lo": 0.0144,
+          "ci_hi": 0.018,
           "n": 60
         },
         "mean_blame_rounds": {
-          "mean": 4.6813,
-          "ci_lo": 4.4994,
-          "ci_hi": 4.8578,
+          "mean": 5.2825,
+          "ci_lo": 5.115,
+          "ci_hi": 5.4371,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0011,
+          "ci_lo": 0.0005,
+          "ci_hi": 0.0019,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 2.5102,
+          "ci_lo": 2.4714,
+          "ci_hi": 2.5521,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.9103,
+          "ci_lo": 0.9016,
+          "ci_hi": 0.9188,
           "n": 60
         }
       },
       "SSMQ": {
         "throughput_prs_per_hr": {
-          "mean": 34.4492,
-          "ci_lo": 33.2422,
-          "ci_hi": 35.5637,
+          "mean": 24.0931,
+          "ci_lo": 23.0603,
+          "ci_hi": 25.103,
           "n": 60
         },
         "p50_latency_min": {
-          "mean": 37.421,
-          "ci_lo": 34.3289,
-          "ci_hi": 40.6485,
+          "mean": 41.5057,
+          "ci_lo": 38.5068,
+          "ci_hi": 44.6707,
           "n": 60
         },
         "p95_latency_min": {
-          "mean": 84.393,
-          "ci_lo": 77.0087,
-          "ci_hi": 92.5635,
+          "mean": 120.5612,
+          "ci_lo": 113.0748,
+          "ci_hi": 128.2057,
           "n": 60
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 11.1078,
-          "ci_lo": 10.6137,
-          "ci_hi": 11.5985,
+          "mean": 16.9857,
+          "ci_lo": 16.166,
+          "ci_hi": 17.7943,
           "n": 60
         },
         "invalidation_rate": {
-          "mean": 0.0096,
-          "ci_lo": 0.0056,
-          "ci_hi": 0.014,
+          "mean": 0.0166,
+          "ci_lo": 0.0135,
+          "ci_hi": 0.02,
           "n": 60
         },
         "mean_blame_rounds": {
-          "mean": 0.8156,
-          "ci_lo": 0.705,
-          "ci_hi": 0.9408,
+          "mean": 0.909,
+          "ci_lo": 0.8014,
+          "ci_hi": 1.015,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0147,
+          "ci_lo": 0.0117,
+          "ci_hi": 0.0179,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 1.3584,
+          "ci_lo": 1.2984,
+          "ci_hi": 1.4169,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.8259,
+          "ci_lo": 0.8149,
+          "ci_hi": 0.8362,
           "n": 60
         }
       }
     }
   },
-  "exp3_ablation": {
+  "v2_exp4_ablation": {
     "SSMQ": {
       "throughput_prs_per_hr": {
-        "mean": 23.8059,
-        "ci_lo": 23.3799,
-        "ci_hi": 24.2389,
+        "mean": 17.7748,
+        "ci_lo": 17.1904,
+        "ci_hi": 18.3252,
         "n": 60
       },
       "p50_latency_min": {
-        "mean": 22.0481,
-        "ci_lo": 20.6952,
-        "ci_hi": 23.3801,
+        "mean": 26.7299,
+        "ci_lo": 25.2992,
+        "ci_hi": 28.1829,
         "n": 60
       },
       "p95_latency_min": {
-        "mean": 49.7431,
-        "ci_lo": 45.3445,
-        "ci_hi": 54.4716,
+        "mean": 79.49,
+        "ci_lo": 73.7672,
+        "ci_hi": 85.5356,
         "n": 60
       },
       "ci_minutes_per_merged_pr": {
-        "mean": 11.3457,
-        "ci_lo": 10.904,
-        "ci_hi": 11.7884,
+        "mean": 17.0562,
+        "ci_lo": 16.2289,
+        "ci_hi": 17.9332,
         "n": 60
       },
       "invalidation_rate": {
-        "mean": 0.0097,
-        "ci_lo": 0.0058,
-        "ci_hi": 0.014,
+        "mean": 0.0154,
+        "ci_lo": 0.0127,
+        "ci_hi": 0.0184,
         "n": 60
       },
       "mean_blame_rounds": {
-        "mean": 0.7242,
-        "ci_lo": 0.6325,
-        "ci_hi": 0.8234,
+        "mean": 0.8434,
+        "ci_lo": 0.7483,
+        "ci_hi": 0.9363,
+        "n": 60
+      },
+      "false_rejection_rate": {
+        "mean": 0.0164,
+        "ci_lo": 0.0134,
+        "ci_hi": 0.0195,
+        "n": 60
+      },
+      "mean_batch_size": {
+        "mean": 1.322,
+        "ci_lo": 1.2699,
+        "ci_hi": 1.3742,
+        "n": 60
+      },
+      "runner_utilization": {
+        "mean": 0.6165,
+        "ci_lo": 0.6042,
+        "ci_hi": 0.6288,
         "n": 60
       }
     },
     "SSMQ-NoGraph": {
       "throughput_prs_per_hr": {
-        "mean": 21.7378,
-        "ci_lo": 21.2094,
-        "ci_hi": 22.2632,
+        "mean": 15.5654,
+        "ci_lo": 14.865,
+        "ci_hi": 16.2539,
         "n": 60
       },
       "p50_latency_min": {
-        "mean": 36.501,
-        "ci_lo": 32.133,
-        "ci_hi": 40.7408,
+        "mean": 45.8281,
+        "ci_lo": 41.5524,
+        "ci_hi": 50.0999,
         "n": 60
       },
       "p95_latency_min": {
-        "mean": 85.889,
-        "ci_lo": 78.5224,
-        "ci_hi": 93.8571,
+        "mean": 136.1313,
+        "ci_lo": 123.7273,
+        "ci_hi": 149.2569,
         "n": 60
       },
       "ci_minutes_per_merged_pr": {
-        "mean": 12.7726,
-        "ci_lo": 12.2754,
-        "ci_hi": 13.2762,
+        "mean": 20.8447,
+        "ci_lo": 19.5596,
+        "ci_hi": 22.2913,
         "n": 60
       },
       "invalidation_rate": {
-        "mean": 0.0066,
-        "ci_lo": 0.004,
-        "ci_hi": 0.0096,
+        "mean": 0.0128,
+        "ci_lo": 0.0106,
+        "ci_hi": 0.015,
         "n": 60
       },
       "mean_blame_rounds": {
-        "mean": 2.1729,
-        "ci_lo": 2.0192,
-        "ci_hi": 2.3297,
+        "mean": 2.491,
+        "ci_lo": 2.3236,
+        "ci_hi": 2.6571,
+        "n": 60
+      },
+      "false_rejection_rate": {
+        "mean": 0.0133,
+        "ci_lo": 0.0105,
+        "ci_hi": 0.016,
+        "n": 60
+      },
+      "mean_batch_size": {
+        "mean": 2.2864,
+        "ci_lo": 2.2417,
+        "ci_hi": 2.3338,
+        "n": 60
+      },
+      "runner_utilization": {
+        "mean": 0.6458,
+        "ci_lo": 0.6341,
+        "ci_hi": 0.658,
         "n": 60
       }
     },
     "SSMQ-NoFlaky": {
       "throughput_prs_per_hr": {
-        "mean": 23.8613,
-        "ci_lo": 23.4515,
-        "ci_hi": 24.2858,
+        "mean": 18.2284,
+        "ci_lo": 17.7356,
+        "ci_hi": 18.7147,
         "n": 60
       },
       "p50_latency_min": {
-        "mean": 20.9342,
-        "ci_lo": 19.8353,
-        "ci_hi": 21.9739,
+        "mean": 24.399,
+        "ci_lo": 23.3342,
+        "ci_hi": 25.5535,
         "n": 60
       },
       "p95_latency_min": {
-        "mean": 46.675,
-        "ci_lo": 43.041,
-        "ci_hi": 50.3907,
+        "mean": 68.2913,
+        "ci_lo": 65.0211,
+        "ci_hi": 71.5745,
         "n": 60
       },
       "ci_minutes_per_merged_pr": {
-        "mean": 11.0564,
-        "ci_lo": 10.6391,
-        "ci_hi": 11.4603,
+        "mean": 15.8515,
+        "ci_lo": 15.2311,
+        "ci_hi": 16.516,
         "n": 60
       },
       "invalidation_rate": {
-        "mean": 0.0,
-        "ci_lo": 0.0,
-        "ci_hi": 0.0,
+        "mean": 0.0112,
+        "ci_lo": 0.0093,
+        "ci_hi": 0.0132,
         "n": 60
       },
       "mean_blame_rounds": {
-        "mean": 0.4191,
-        "ci_lo": 0.3412,
-        "ci_hi": 0.4998,
+        "mean": 0.543,
+        "ci_lo": 0.4664,
+        "ci_hi": 0.6185,
+        "n": 60
+      },
+      "false_rejection_rate": {
+        "mean": 0.0256,
+        "ci_lo": 0.0225,
+        "ci_hi": 0.0289,
+        "n": 60
+      },
+      "mean_batch_size": {
+        "mean": 1.3421,
+        "ci_lo": 1.2901,
+        "ci_hi": 1.3961,
+        "n": 60
+      },
+      "runner_utilization": {
+        "mean": 0.5926,
+        "ci_lo": 0.5821,
+        "ci_hi": 0.6023,
         "n": 60
       }
     },
     "SSMQ-NoBlame": {
       "throughput_prs_per_hr": {
-        "mean": 23.7351,
-        "ci_lo": 23.3037,
-        "ci_hi": 24.1515,
+        "mean": 17.6646,
+        "ci_lo": 17.0873,
+        "ci_hi": 18.2047,
         "n": 60
       },
       "p50_latency_min": {
-        "mean": 22.0921,
-        "ci_lo": 20.7142,
-        "ci_hi": 23.4206,
+        "mean": 27.2491,
+        "ci_lo": 25.8074,
+        "ci_hi": 28.768,
         "n": 60
       },
       "p95_latency_min": {
-        "mean": 50.5733,
-        "ci_lo": 46.1202,
-        "ci_hi": 55.1931,
+        "mean": 80.6438,
+        "ci_lo": 75.2417,
+        "ci_hi": 86.2133,
         "n": 60
       },
       "ci_minutes_per_merged_pr": {
-        "mean": 11.4434,
-        "ci_lo": 11.0145,
-        "ci_hi": 11.8728,
+        "mean": 17.1705,
+        "ci_lo": 16.3277,
+        "ci_hi": 18.0397,
         "n": 60
       },
       "invalidation_rate": {
-        "mean": 0.0101,
-        "ci_lo": 0.0061,
-        "ci_hi": 0.0147,
+        "mean": 0.0151,
+        "ci_lo": 0.0125,
+        "ci_hi": 0.018,
         "n": 60
       },
       "mean_blame_rounds": {
-        "mean": 0.792,
-        "ci_lo": 0.6862,
-        "ci_hi": 0.9105,
+        "mean": 0.847,
+        "ci_lo": 0.7504,
+        "ci_hi": 0.9426,
+        "n": 60
+      },
+      "false_rejection_rate": {
+        "mean": 0.0172,
+        "ci_lo": 0.0141,
+        "ci_hi": 0.0201,
+        "n": 60
+      },
+      "mean_batch_size": {
+        "mean": 1.3146,
+        "ci_lo": 1.2647,
+        "ci_hi": 1.3649,
+        "n": 60
+      },
+      "runner_utilization": {
+        "mean": 0.6178,
+        "ci_lo": 0.6053,
+        "ci_hi": 0.6299,
         "n": 60
       }
     },
     "StaticBatchBisect": {
       "throughput_prs_per_hr": {
-        "mean": 22.0778,
-        "ci_lo": 21.6159,
-        "ci_hi": 22.5468,
+        "mean": 16.0539,
+        "ci_lo": 15.4173,
+        "ci_hi": 16.6646,
         "n": 60
       },
       "p50_latency_min": {
-        "mean": 34.2862,
-        "ci_lo": 30.8023,
-        "ci_hi": 37.789,
+        "mean": 42.1982,
+        "ci_lo": 38.9615,
+        "ci_hi": 45.5933,
         "n": 60
       },
       "p95_latency_min": {
-        "mean": 78.4204,
-        "ci_lo": 71.7828,
-        "ci_hi": 85.4033,
+        "mean": 121.8881,
+        "ci_lo": 113.0301,
+        "ci_hi": 131.1292,
         "n": 60
       },
       "ci_minutes_per_merged_pr": {
-        "mean": 12.5606,
-        "ci_lo": 12.1386,
-        "ci_hi": 13.0039,
+        "mean": 19.776,
+        "ci_lo": 18.7452,
+        "ci_hi": 20.9158,
         "n": 60
       },
       "invalidation_rate": {
-        "mean": 0.0,
-        "ci_lo": 0.0,
-        "ci_hi": 0.0,
+        "mean": 0.0088,
+        "ci_lo": 0.0073,
+        "ci_hi": 0.0103,
         "n": 60
       },
       "mean_blame_rounds": {
-        "mean": 1.8018,
-        "ci_lo": 1.6817,
-        "ci_hi": 1.9171,
+        "mean": 1.8147,
+        "ci_lo": 1.717,
+        "ci_hi": 1.9109,
+        "n": 60
+      },
+      "false_rejection_rate": {
+        "mean": 0.0196,
+        "ci_lo": 0.0171,
+        "ci_hi": 0.0222,
+        "n": 60
+      },
+      "mean_batch_size": {
+        "mean": 2.1265,
+        "ci_lo": 2.0925,
+        "ci_hi": 2.1607,
+        "n": 60
+      },
+      "runner_utilization": {
+        "mean": 0.6404,
+        "ci_lo": 0.6321,
+        "ci_hi": 0.6489,
         "n": 60
       }
     }
   },
-  "exp4a_flaky_sweep": {
-    "0.0": {
+  "v2_exp5_graph_recall": {
+    "no_conflict": {
       "StaticBatchBisect": {
         "throughput_prs_per_hr": {
-          "mean": 22.8423,
-          "ci_lo": 22.396,
-          "ci_hi": 23.3322,
+          "mean": 24.5538,
+          "ci_lo": 24.2124,
+          "ci_hi": 24.8884,
           "n": 60
         },
         "p50_latency_min": {
-          "mean": 32.6202,
-          "ci_lo": 29.2158,
-          "ci_hi": 36.0286,
+          "mean": 15.8706,
+          "ci_lo": 15.003,
+          "ci_hi": 16.9163,
           "n": 60
         },
         "p95_latency_min": {
-          "mean": 74.5002,
-          "ci_lo": 68.233,
-          "ci_hi": 81.0784,
+          "mean": 43.7286,
+          "ci_lo": 41.463,
+          "ci_hi": 46.1031,
           "n": 60
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 11.9915,
-          "ci_lo": 11.5951,
-          "ci_hi": 12.4165,
+          "mean": 9.3971,
+          "ci_lo": 9.1267,
+          "ci_hi": 9.6808,
           "n": 60
         },
         "invalidation_rate": {
@@ -2069,161 +3183,1159 @@
           "n": 60
         },
         "mean_blame_rounds": {
-          "mean": 1.7569,
-          "ci_lo": 1.6386,
-          "ci_hi": 1.872,
-          "n": 60
-        }
-      },
-      "SpeculativeLinear": {
-        "throughput_prs_per_hr": {
-          "mean": 8.2162,
-          "ci_lo": 7.9694,
-          "ci_hi": 8.4553,
+          "mean": 1.414,
+          "ci_lo": 1.2745,
+          "ci_hi": 1.5624,
           "n": 60
         },
-        "p50_latency_min": {
-          "mean": 317.9391,
-          "ci_lo": 302.1657,
-          "ci_hi": 333.5968,
+        "false_rejection_rate": {
+          "mean": 0.0198,
+          "ci_lo": 0.0172,
+          "ci_hi": 0.0226,
           "n": 60
         },
-        "p95_latency_min": {
-          "mean": 688.7169,
-          "ci_lo": 660.9607,
-          "ci_hi": 718.2406,
+        "mean_batch_size": {
+          "mean": 2.0858,
+          "ci_lo": 2.0075,
+          "ci_hi": 2.1548,
           "n": 60
         },
-        "ci_minutes_per_merged_pr": {
-          "mean": 19.793,
-          "ci_lo": 19.4159,
-          "ci_hi": 20.1959,
-          "n": 60
-        },
-        "invalidation_rate": {
-          "mean": 0.2879,
-          "ci_lo": 0.2797,
-          "ci_hi": 0.2963,
-          "n": 60
-        },
-        "mean_blame_rounds": {
-          "mean": 0.9009,
-          "ci_lo": 0.8883,
-          "ci_hi": 0.9126,
+        "runner_utilization": {
+          "mean": 0.479,
+          "ci_lo": 0.4675,
+          "ci_hi": 0.4914,
           "n": 60
         }
       },
       "UberSubmitQueue": {
         "throughput_prs_per_hr": {
-          "mean": 6.5232,
-          "ci_lo": 6.2469,
-          "ci_hi": 6.7826,
+          "mean": 18.6529,
+          "ci_lo": 18.0182,
+          "ci_hi": 19.2826,
           "n": 60
         },
         "p50_latency_min": {
-          "mean": 466.4736,
-          "ci_lo": 437.7717,
-          "ci_hi": 494.7372,
+          "mean": 63.0478,
+          "ci_lo": 55.7865,
+          "ci_hi": 70.4669,
           "n": 60
         },
         "p95_latency_min": {
-          "mean": 966.2036,
-          "ci_lo": 913.4545,
-          "ci_hi": 1020.477,
+          "mean": 153.3321,
+          "ci_lo": 140.7559,
+          "ci_hi": 166.0541,
           "n": 60
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 12.0902,
-          "ci_lo": 11.8569,
-          "ci_hi": 12.3322,
+          "mean": 21.0296,
+          "ci_lo": 20.1388,
+          "ci_hi": 21.9761,
           "n": 60
         },
         "invalidation_rate": {
-          "mean": 0.0004,
-          "ci_lo": 0.0,
-          "ci_hi": 0.0008,
+          "mean": 0.7569,
+          "ci_lo": 0.7545,
+          "ci_hi": 0.7594,
           "n": 60
         },
         "mean_blame_rounds": {
-          "mean": 0.7191,
-          "ci_lo": 0.6264,
-          "ci_hi": 0.8072,
-          "n": 60
-        }
-      },
-      "FlakeAwareBatch": {
-        "throughput_prs_per_hr": {
-          "mean": 18.8964,
-          "ci_lo": 18.3617,
-          "ci_hi": 19.4344,
+          "mean": 2.3533,
+          "ci_lo": 2.244,
+          "ci_hi": 2.4583,
           "n": 60
         },
-        "p50_latency_min": {
-          "mean": 50.7886,
-          "ci_lo": 43.8858,
-          "ci_hi": 57.4811,
+        "false_rejection_rate": {
+          "mean": 0.0084,
+          "ci_lo": 0.0068,
+          "ci_hi": 0.01,
           "n": 60
         },
-        "p95_latency_min": {
-          "mean": 133.1666,
-          "ci_lo": 120.7275,
-          "ci_hi": 145.5027,
+        "mean_batch_size": {
+          "mean": 3.5463,
+          "ci_lo": 3.4636,
+          "ci_hi": 3.6284,
           "n": 60
         },
-        "ci_minutes_per_merged_pr": {
-          "mean": 16.4317,
-          "ci_lo": 15.7194,
-          "ci_hi": 17.1662,
-          "n": 60
-        },
-        "invalidation_rate": {
-          "mean": 0.0,
-          "ci_lo": 0.0,
-          "ci_hi": 0.0,
-          "n": 60
-        },
-        "mean_blame_rounds": {
-          "mean": 4.1628,
-          "ci_lo": 3.9503,
-          "ci_hi": 4.3784,
+        "runner_utilization": {
+          "mean": 0.8007,
+          "ci_lo": 0.7835,
+          "ci_hi": 0.8181,
           "n": 60
         }
       },
       "SSMQ": {
         "throughput_prs_per_hr": {
-          "mean": 24.7157,
-          "ci_lo": 24.3505,
-          "ci_hi": 25.1001,
+          "mean": 23.8603,
+          "ci_lo": 23.446,
+          "ci_hi": 24.2694,
           "n": 60
         },
         "p50_latency_min": {
-          "mean": 20.5174,
-          "ci_lo": 19.4346,
-          "ci_hi": 21.5953,
+          "mean": 22.0201,
+          "ci_lo": 20.6739,
+          "ci_hi": 23.3295,
           "n": 60
         },
         "p95_latency_min": {
-          "mean": 44.898,
-          "ci_lo": 41.1219,
-          "ci_hi": 48.7986,
+          "mean": 49.542,
+          "ci_lo": 45.1616,
+          "ci_hi": 54.2449,
           "n": 60
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 10.6325,
-          "ci_lo": 10.2406,
-          "ci_hi": 11.0257,
+          "mean": 11.3153,
+          "ci_lo": 10.88,
+          "ci_hi": 11.7561,
           "n": 60
         },
         "invalidation_rate": {
+          "mean": 0.0094,
+          "ci_lo": 0.0057,
+          "ci_hi": 0.0136,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.7024,
+          "ci_lo": 0.6156,
+          "ci_hi": 0.7955,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0191,
+          "ci_lo": 0.0156,
+          "ci_hi": 0.0226,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 1.3596,
+          "ci_lo": 1.3004,
+          "ci_hi": 1.4188,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.558,
+          "ci_lo": 0.5426,
+          "ci_hi": 0.5728,
+          "n": 60
+        }
+      }
+    },
+    "recall_0.40": {
+      "StaticBatchBisect": {
+        "throughput_prs_per_hr": {
+          "mean": 13.4359,
+          "ci_lo": 13.0535,
+          "ci_hi": 13.8081,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 44.9932,
+          "ci_lo": 41.4755,
+          "ci_hi": 48.5949,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 148.6489,
+          "ci_lo": 142.2161,
+          "ci_hi": 155.5518,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 24.3638,
+          "ci_lo": 23.5498,
+          "ci_hi": 25.2322,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.009,
+          "ci_lo": 0.0075,
+          "ci_hi": 0.0105,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 1.8244,
+          "ci_lo": 1.7413,
+          "ci_hi": 1.9054,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0225,
+          "ci_lo": 0.02,
+          "ci_hi": 0.0251,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 2.0551,
+          "ci_lo": 2.0241,
+          "ci_hi": 2.0869,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.6726,
+          "ci_lo": 0.6671,
+          "ci_hi": 0.678,
+          "n": 60
+        }
+      },
+      "UberSubmitQueue": {
+        "throughput_prs_per_hr": {
+          "mean": 7.7979,
+          "ci_lo": 7.5738,
+          "ci_hi": 8.0228,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 134.8937,
+          "ci_lo": 124.1758,
+          "ci_hi": 145.6195,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 442.2553,
+          "ci_lo": 430.7155,
+          "ci_hi": 454.6135,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 57.862,
+          "ci_lo": 56.4039,
+          "ci_hi": 59.3615,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.7598,
+          "ci_lo": 0.7581,
+          "ci_hi": 0.7615,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 1.3318,
+          "ci_lo": 1.2358,
+          "ci_hi": 1.4246,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0203,
+          "ci_lo": 0.0172,
+          "ci_hi": 0.0236,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 1.8833,
+          "ci_lo": 1.8038,
+          "ci_hi": 1.9617,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.9307,
+          "ci_lo": 0.9187,
+          "ci_hi": 0.9431,
+          "n": 60
+        }
+      },
+      "SSMQ": {
+        "throughput_prs_per_hr": {
+          "mean": 14.6241,
+          "ci_lo": 14.2717,
+          "ci_hi": 14.978,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 32.5655,
+          "ci_lo": 30.5012,
+          "ci_hi": 34.5941,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 111.2043,
+          "ci_lo": 106.0157,
+          "ci_hi": 116.7338,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 21.9858,
+          "ci_lo": 21.2276,
+          "ci_hi": 22.7311,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0166,
+          "ci_lo": 0.0141,
+          "ci_hi": 0.0192,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 1.0049,
+          "ci_lo": 0.8959,
+          "ci_hi": 1.1133,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0177,
+          "ci_lo": 0.0144,
+          "ci_hi": 0.0209,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 1.2973,
+          "ci_lo": 1.2487,
+          "ci_hi": 1.3454,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.6617,
+          "ci_lo": 0.6531,
+          "ci_hi": 0.6697,
+          "n": 60
+        }
+      }
+    },
+    "recall_0.60": {
+      "StaticBatchBisect": {
+        "throughput_prs_per_hr": {
+          "mean": 14.7545,
+          "ci_lo": 14.1486,
+          "ci_hi": 15.3273,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 43.7896,
+          "ci_lo": 40.3067,
+          "ci_hi": 47.2345,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 135.1865,
+          "ci_lo": 126.3931,
+          "ci_hi": 144.1998,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 21.9266,
+          "ci_lo": 20.7645,
+          "ci_hi": 23.14,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0082,
+          "ci_lo": 0.0067,
+          "ci_hi": 0.0096,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 1.8256,
+          "ci_lo": 1.7363,
+          "ci_hi": 1.914,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0201,
+          "ci_lo": 0.0176,
+          "ci_hi": 0.0227,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 2.0929,
+          "ci_lo": 2.061,
+          "ci_hi": 2.1254,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.6531,
+          "ci_lo": 0.6449,
+          "ci_hi": 0.6616,
+          "n": 60
+        }
+      },
+      "UberSubmitQueue": {
+        "throughput_prs_per_hr": {
+          "mean": 9.0298,
+          "ci_lo": 8.6352,
+          "ci_hi": 9.4091,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 129.043,
+          "ci_lo": 119.958,
+          "ci_hi": 138.2013,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 388.0035,
+          "ci_lo": 371.841,
+          "ci_hi": 402.7833,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 50.0432,
+          "ci_lo": 48.2202,
+          "ci_hi": 52.0457,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.7549,
+          "ci_lo": 0.753,
+          "ci_hi": 0.7567,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 1.2802,
+          "ci_lo": 1.1921,
+          "ci_hi": 1.3658,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0208,
+          "ci_lo": 0.0184,
+          "ci_hi": 0.0236,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 1.8738,
+          "ci_lo": 1.7971,
+          "ci_hi": 1.9515,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.9184,
+          "ci_lo": 0.9072,
+          "ci_hi": 0.9298,
+          "n": 60
+        }
+      },
+      "SSMQ": {
+        "throughput_prs_per_hr": {
+          "mean": 16.1758,
+          "ci_lo": 15.5812,
+          "ci_hi": 16.7088,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 29.8578,
+          "ci_lo": 28.194,
+          "ci_hi": 31.5463,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 93.8909,
+          "ci_lo": 87.8468,
+          "ci_hi": 100.3031,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 19.3211,
+          "ci_lo": 18.3609,
+          "ci_hi": 20.3547,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0167,
+          "ci_lo": 0.014,
+          "ci_hi": 0.0196,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.9181,
+          "ci_lo": 0.8225,
+          "ci_hi": 1.0131,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0168,
+          "ci_lo": 0.0139,
+          "ci_hi": 0.0198,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 1.3178,
+          "ci_lo": 1.2656,
+          "ci_hi": 1.3707,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.6348,
+          "ci_lo": 0.6227,
+          "ci_hi": 0.6462,
+          "n": 60
+        }
+      }
+    },
+    "recall_0.80": {
+      "StaticBatchBisect": {
+        "throughput_prs_per_hr": {
+          "mean": 16.0539,
+          "ci_lo": 15.4173,
+          "ci_hi": 16.6646,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 42.1982,
+          "ci_lo": 38.9615,
+          "ci_hi": 45.5933,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 121.8881,
+          "ci_lo": 113.0301,
+          "ci_hi": 131.1292,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 19.776,
+          "ci_lo": 18.7452,
+          "ci_hi": 20.9158,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0088,
+          "ci_lo": 0.0073,
+          "ci_hi": 0.0103,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 1.8147,
+          "ci_lo": 1.717,
+          "ci_hi": 1.9109,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0196,
+          "ci_lo": 0.0171,
+          "ci_hi": 0.0222,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 2.1265,
+          "ci_lo": 2.0925,
+          "ci_hi": 2.1607,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.6404,
+          "ci_lo": 0.6321,
+          "ci_hi": 0.6489,
+          "n": 60
+        }
+      },
+      "UberSubmitQueue": {
+        "throughput_prs_per_hr": {
+          "mean": 10.2654,
+          "ci_lo": 9.8176,
+          "ci_hi": 10.6836,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 120.1212,
+          "ci_lo": 112.3032,
+          "ci_hi": 128.4403,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 342.6786,
+          "ci_lo": 327.1172,
+          "ci_hi": 358.4148,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 43.4199,
+          "ci_lo": 41.8105,
+          "ci_hi": 45.1641,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.7517,
+          "ci_lo": 0.7498,
+          "ci_hi": 0.7536,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 1.2382,
+          "ci_lo": 1.1487,
+          "ci_hi": 1.3245,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0173,
+          "ci_lo": 0.0145,
+          "ci_hi": 0.0201,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 1.8567,
+          "ci_lo": 1.7784,
+          "ci_hi": 1.9341,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.9057,
+          "ci_lo": 0.8934,
+          "ci_hi": 0.9171,
+          "n": 60
+        }
+      },
+      "SSMQ": {
+        "throughput_prs_per_hr": {
+          "mean": 17.7748,
+          "ci_lo": 17.1904,
+          "ci_hi": 18.3252,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 26.7299,
+          "ci_lo": 25.2992,
+          "ci_hi": 28.1829,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 79.49,
+          "ci_lo": 73.7672,
+          "ci_hi": 85.5356,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 17.0562,
+          "ci_lo": 16.2289,
+          "ci_hi": 17.9332,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0154,
+          "ci_lo": 0.0127,
+          "ci_hi": 0.0184,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.8434,
+          "ci_lo": 0.7483,
+          "ci_hi": 0.9363,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0164,
+          "ci_lo": 0.0134,
+          "ci_hi": 0.0195,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 1.322,
+          "ci_lo": 1.2699,
+          "ci_hi": 1.3742,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.6165,
+          "ci_lo": 0.6042,
+          "ci_hi": 0.6288,
+          "n": 60
+        }
+      }
+    },
+    "recall_1.00": {
+      "StaticBatchBisect": {
+        "throughput_prs_per_hr": {
+          "mean": 17.0236,
+          "ci_lo": 16.3837,
+          "ci_hi": 17.6877,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 39.8878,
+          "ci_lo": 36.3564,
+          "ci_hi": 43.3322,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 112.1354,
+          "ci_lo": 102.9962,
+          "ci_hi": 121.5488,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 18.102,
+          "ci_lo": 17.153,
+          "ci_hi": 19.1028,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0078,
+          "ci_lo": 0.0062,
+          "ci_hi": 0.0093,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 1.819,
+          "ci_lo": 1.711,
+          "ci_hi": 1.9215,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0196,
+          "ci_lo": 0.017,
+          "ci_hi": 0.0223,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 2.1501,
+          "ci_lo": 2.1119,
+          "ci_hi": 2.1866,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.6227,
+          "ci_lo": 0.6133,
+          "ci_hi": 0.6324,
+          "n": 60
+        }
+      },
+      "UberSubmitQueue": {
+        "throughput_prs_per_hr": {
+          "mean": 11.2746,
+          "ci_lo": 10.8221,
+          "ci_hi": 11.7127,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 111.2834,
+          "ci_lo": 104.2493,
+          "ci_hi": 118.5413,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 307.3166,
+          "ci_lo": 293.1896,
+          "ci_hi": 321.8046,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 38.6387,
+          "ci_lo": 37.2846,
+          "ci_hi": 40.1082,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.7487,
+          "ci_lo": 0.7467,
+          "ci_hi": 0.7507,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 1.1953,
+          "ci_lo": 1.1042,
+          "ci_hi": 1.2819,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0175,
+          "ci_lo": 0.0149,
+          "ci_hi": 0.0201,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 1.8472,
+          "ci_lo": 1.7705,
+          "ci_hi": 1.9236,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.8881,
+          "ci_lo": 0.8768,
+          "ci_hi": 0.9007,
+          "n": 60
+        }
+      },
+      "SSMQ": {
+        "throughput_prs_per_hr": {
+          "mean": 18.901,
+          "ci_lo": 18.3171,
+          "ci_hi": 19.4611,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 25.222,
+          "ci_lo": 24.0247,
+          "ci_hi": 26.5325,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 69.369,
+          "ci_lo": 63.9366,
+          "ci_hi": 74.9399,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 15.5045,
+          "ci_lo": 14.7394,
+          "ci_hi": 16.3104,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0164,
+          "ci_lo": 0.0132,
+          "ci_hi": 0.0199,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.7869,
+          "ci_lo": 0.6911,
+          "ci_hi": 0.8815,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0158,
+          "ci_lo": 0.0131,
+          "ci_hi": 0.0186,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 1.3286,
+          "ci_lo": 1.2755,
+          "ci_hi": 1.383,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.5977,
+          "ci_lo": 0.5839,
+          "ci_hi": 0.611,
+          "n": 60
+        }
+      }
+    }
+  },
+  "v2_exp6_flaky_sweep": {
+    "0.0": {
+      "StaticBatchBisect": {
+        "throughput_prs_per_hr": {
+          "mean": 16.3906,
+          "ci_lo": 15.7535,
+          "ci_hi": 16.9869,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 40.4321,
+          "ci_lo": 37.0677,
+          "ci_hi": 43.7741,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 120.2101,
+          "ci_lo": 111.176,
+          "ci_hi": 129.9301,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 19.1579,
+          "ci_lo": 18.1415,
+          "ci_hi": 20.2534,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0099,
+          "ci_lo": 0.0082,
+          "ci_hi": 0.0116,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 1.7958,
+          "ci_lo": 1.699,
+          "ci_hi": 1.8901,
+          "n": 60
+        },
+        "false_rejection_rate": {
           "mean": 0.0,
           "ci_lo": 0.0,
           "ci_hi": 0.0,
           "n": 60
         },
+        "mean_batch_size": {
+          "mean": 2.1354,
+          "ci_lo": 2.1031,
+          "ci_hi": 2.1689,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.6337,
+          "ci_lo": 0.6247,
+          "ci_hi": 0.6427,
+          "n": 60
+        }
+      },
+      "SpeculativeLinear": {
+        "throughput_prs_per_hr": {
+          "mean": 5.7173,
+          "ci_lo": 5.4411,
+          "ci_hi": 5.9802,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 336.4633,
+          "ci_lo": 318.8514,
+          "ci_hi": 353.8622,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 857.141,
+          "ci_lo": 823.9684,
+          "ci_hi": 891.4424,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 29.2251,
+          "ci_lo": 27.8555,
+          "ci_hi": 30.7461,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.3833,
+          "ci_lo": 0.3715,
+          "ci_hi": 0.396,
+          "n": 60
+        },
         "mean_blame_rounds": {
-          "mean": 0.5186,
-          "ci_lo": 0.4425,
-          "ci_hi": 0.6032,
+          "mean": 0.7325,
+          "ci_lo": 0.7114,
+          "ci_hi": 0.7526,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0,
+          "ci_lo": 0.0,
+          "ci_hi": 0.0,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 2.5508,
+          "ci_lo": 2.5312,
+          "ci_hi": 2.5691,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.3356,
+          "ci_lo": 0.3331,
+          "ci_hi": 0.3384,
+          "n": 60
+        }
+      },
+      "UberSubmitQueue": {
+        "throughput_prs_per_hr": {
+          "mean": 10.5887,
+          "ci_lo": 10.1271,
+          "ci_hi": 11.0341,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 115.9368,
+          "ci_lo": 107.8802,
+          "ci_hi": 123.8897,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 334.5725,
+          "ci_lo": 319.2438,
+          "ci_hi": 350.3508,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 41.8547,
+          "ci_lo": 40.2446,
+          "ci_hi": 43.5651,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.7499,
+          "ci_lo": 0.7478,
+          "ci_hi": 0.7518,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 1.2241,
+          "ci_lo": 1.1355,
+          "ci_hi": 1.3083,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0,
+          "ci_lo": 0.0,
+          "ci_hi": 0.0,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 1.8536,
+          "ci_lo": 1.7734,
+          "ci_hi": 1.9319,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.8994,
+          "ci_lo": 0.8883,
+          "ci_hi": 0.9112,
+          "n": 60
+        }
+      },
+      "FlakeAwareBatch": {
+        "throughput_prs_per_hr": {
+          "mean": 12.7778,
+          "ci_lo": 12.1115,
+          "ci_hi": 13.4121,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 63.3191,
+          "ci_lo": 55.6606,
+          "ci_hi": 71.3646,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 227.4878,
+          "ci_lo": 209.3589,
+          "ci_hi": 247.0858,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 29.1985,
+          "ci_lo": 27.3083,
+          "ci_hi": 31.1684,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0048,
+          "ci_lo": 0.0038,
+          "ci_hi": 0.0057,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 4.4972,
+          "ci_lo": 4.3192,
+          "ci_hi": 4.6696,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0,
+          "ci_lo": 0.0,
+          "ci_hi": 0.0,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 2.3562,
+          "ci_lo": 2.3256,
+          "ci_hi": 2.3898,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.7379,
+          "ci_lo": 0.7291,
+          "ci_hi": 0.7459,
+          "n": 60
+        }
+      },
+      "SSMQ-NoFlaky": {
+        "throughput_prs_per_hr": {
+          "mean": 18.8238,
+          "ci_lo": 18.2963,
+          "ci_hi": 19.3151,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 23.6168,
+          "ci_lo": 22.6089,
+          "ci_hi": 24.6655,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 66.4289,
+          "ci_lo": 62.9823,
+          "ci_hi": 70.0237,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 15.2884,
+          "ci_lo": 14.6855,
+          "ci_hi": 15.9429,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0132,
+          "ci_lo": 0.0112,
+          "ci_hi": 0.0151,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.533,
+          "ci_lo": 0.4555,
+          "ci_hi": 0.6066,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0,
+          "ci_lo": 0.0,
+          "ci_hi": 0.0,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 1.346,
+          "ci_lo": 1.2929,
+          "ci_hi": 1.4016,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.5902,
+          "ci_lo": 0.5795,
+          "ci_hi": 0.6001,
+          "n": 60
+        }
+      },
+      "SSMQ": {
+        "throughput_prs_per_hr": {
+          "mean": 18.6796,
+          "ci_lo": 18.1811,
+          "ci_hi": 19.1584,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 24.3099,
+          "ci_lo": 23.2088,
+          "ci_hi": 25.3996,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 67.5278,
+          "ci_lo": 64.0251,
+          "ci_hi": 71.1443,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 15.5785,
+          "ci_lo": 14.9616,
+          "ci_hi": 16.2463,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0121,
+          "ci_lo": 0.0101,
+          "ci_hi": 0.014,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.6273,
+          "ci_lo": 0.5461,
+          "ci_hi": 0.7052,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0,
+          "ci_lo": 0.0,
+          "ci_hi": 0.0,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 1.3398,
+          "ci_lo": 1.2871,
+          "ci_hi": 1.3944,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.5968,
+          "ci_lo": 0.5858,
+          "ci_hi": 0.6068,
           "n": 60
         }
       }
@@ -2231,191 +4343,337 @@
     "0.02": {
       "StaticBatchBisect": {
         "throughput_prs_per_hr": {
-          "mean": 22.5462,
-          "ci_lo": 22.1246,
-          "ci_hi": 22.9916,
+          "mean": 16.2154,
+          "ci_lo": 15.5875,
+          "ci_hi": 16.8106,
           "n": 60
         },
         "p50_latency_min": {
-          "mean": 33.4359,
-          "ci_lo": 30.0247,
-          "ci_hi": 36.8505,
+          "mean": 41.319,
+          "ci_lo": 38.1811,
+          "ci_hi": 44.5547,
           "n": 60
         },
         "p95_latency_min": {
-          "mean": 75.6693,
-          "ci_lo": 69.3955,
-          "ci_hi": 82.1634,
+          "mean": 120.6719,
+          "ci_lo": 111.4526,
+          "ci_hi": 130.185,
           "n": 60
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 12.1974,
-          "ci_lo": 11.7937,
-          "ci_hi": 12.614,
+          "mean": 19.3934,
+          "ci_lo": 18.3704,
+          "ci_hi": 20.5114,
           "n": 60
         },
         "invalidation_rate": {
-          "mean": 0.0,
-          "ci_lo": 0.0,
-          "ci_hi": 0.0,
+          "mean": 0.0089,
+          "ci_lo": 0.0073,
+          "ci_hi": 0.0105,
           "n": 60
         },
         "mean_blame_rounds": {
-          "mean": 1.7785,
-          "ci_lo": 1.6607,
-          "ci_hi": 1.8953,
+          "mean": 1.8092,
+          "ci_lo": 1.7153,
+          "ci_hi": 1.9022,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0076,
+          "ci_lo": 0.0059,
+          "ci_hi": 0.0094,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 2.1331,
+          "ci_lo": 2.1005,
+          "ci_hi": 2.1661,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.6347,
+          "ci_lo": 0.6256,
+          "ci_hi": 0.6439,
           "n": 60
         }
       },
       "SpeculativeLinear": {
         "throughput_prs_per_hr": {
-          "mean": 7.9669,
-          "ci_lo": 7.7397,
-          "ci_hi": 8.1826,
+          "mean": 5.5734,
+          "ci_lo": 5.3153,
+          "ci_hi": 5.8215,
           "n": 60
         },
         "p50_latency_min": {
-          "mean": 327.9611,
-          "ci_lo": 312.9587,
-          "ci_hi": 342.8585,
+          "mean": 342.3194,
+          "ci_lo": 325.73,
+          "ci_hi": 358.4114,
           "n": 60
         },
         "p95_latency_min": {
-          "mean": 709.1019,
-          "ci_lo": 682.411,
-          "ci_hi": 736.8463,
+          "mean": 874.0468,
+          "ci_lo": 841.9129,
+          "ci_hi": 906.6541,
           "n": 60
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 20.3667,
-          "ci_lo": 19.9732,
-          "ci_hi": 20.7523,
+          "mean": 29.9532,
+          "ci_lo": 28.5785,
+          "ci_hi": 31.4541,
           "n": 60
         },
         "invalidation_rate": {
-          "mean": 0.2983,
-          "ci_lo": 0.29,
-          "ci_hi": 0.3063,
+          "mean": 0.3918,
+          "ci_lo": 0.3803,
+          "ci_hi": 0.4035,
           "n": 60
         },
         "mean_blame_rounds": {
-          "mean": 0.8935,
-          "ci_lo": 0.881,
-          "ci_hi": 0.9056,
+          "mean": 0.7247,
+          "ci_lo": 0.7049,
+          "ci_hi": 0.7447,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0086,
+          "ci_lo": 0.0065,
+          "ci_hi": 0.0108,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 2.5407,
+          "ci_lo": 2.5236,
+          "ci_hi": 2.5575,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.3361,
+          "ci_lo": 0.3335,
+          "ci_hi": 0.3387,
           "n": 60
         }
       },
       "UberSubmitQueue": {
         "throughput_prs_per_hr": {
-          "mean": 6.4325,
-          "ci_lo": 6.1523,
-          "ci_hi": 6.689,
+          "mean": 10.4517,
+          "ci_lo": 9.9865,
+          "ci_hi": 10.8946,
           "n": 60
         },
         "p50_latency_min": {
-          "mean": 468.4742,
-          "ci_lo": 439.4402,
-          "ci_hi": 496.5771,
+          "mean": 118.4487,
+          "ci_lo": 110.2487,
+          "ci_hi": 126.7809,
           "n": 60
         },
         "p95_latency_min": {
-          "mean": 972.2916,
-          "ci_lo": 920.9611,
-          "ci_hi": 1026.1032,
+          "mean": 338.0798,
+          "ci_lo": 321.7472,
+          "ci_hi": 354.352,
           "n": 60
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 12.2691,
-          "ci_lo": 12.032,
-          "ci_hi": 12.5143,
+          "mean": 42.5066,
+          "ci_lo": 40.8355,
+          "ci_hi": 44.2455,
           "n": 60
         },
         "invalidation_rate": {
-          "mean": 0.0004,
-          "ci_lo": 0.0,
-          "ci_hi": 0.0008,
+          "mean": 0.7504,
+          "ci_lo": 0.7483,
+          "ci_hi": 0.7522,
           "n": 60
         },
         "mean_blame_rounds": {
-          "mean": 0.7191,
-          "ci_lo": 0.6264,
-          "ci_hi": 0.8072,
+          "mean": 1.2266,
+          "ci_lo": 1.139,
+          "ci_hi": 1.3106,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0062,
+          "ci_lo": 0.0045,
+          "ci_hi": 0.008,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 1.8533,
+          "ci_lo": 1.7759,
+          "ci_hi": 1.9318,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.901,
+          "ci_lo": 0.8897,
+          "ci_hi": 0.9122,
           "n": 60
         }
       },
       "FlakeAwareBatch": {
         "throughput_prs_per_hr": {
-          "mean": 18.7992,
-          "ci_lo": 18.2957,
-          "ci_hi": 19.3131,
+          "mean": 12.7066,
+          "ci_lo": 12.0473,
+          "ci_hi": 13.3226,
           "n": 60
         },
         "p50_latency_min": {
-          "mean": 51.7842,
-          "ci_lo": 44.8764,
-          "ci_hi": 58.4205,
+          "mean": 65.3827,
+          "ci_lo": 58.1662,
+          "ci_hi": 72.9313,
           "n": 60
         },
         "p95_latency_min": {
-          "mean": 135.473,
-          "ci_lo": 123.1896,
-          "ci_hi": 147.5672,
+          "mean": 228.4479,
+          "ci_lo": 210.0727,
+          "ci_hi": 247.5719,
           "n": 60
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 16.6425,
-          "ci_lo": 15.9371,
-          "ci_hi": 17.3591,
+          "mean": 29.4266,
+          "ci_lo": 27.5555,
+          "ci_hi": 31.3987,
           "n": 60
         },
         "invalidation_rate": {
-          "mean": 0.0095,
-          "ci_lo": 0.008,
-          "ci_hi": 0.011,
+          "mean": 0.0103,
+          "ci_lo": 0.009,
+          "ci_hi": 0.0117,
           "n": 60
         },
         "mean_blame_rounds": {
-          "mean": 4.2195,
-          "ci_lo": 4.0157,
-          "ci_hi": 4.4263,
+          "mean": 4.5215,
+          "ci_lo": 4.348,
+          "ci_hi": 4.6961,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0,
+          "ci_lo": 0.0,
+          "ci_hi": 0.0,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 2.3543,
+          "ci_lo": 2.3232,
+          "ci_hi": 2.3866,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.7399,
+          "ci_lo": 0.7312,
+          "ci_hi": 0.7485,
+          "n": 60
+        }
+      },
+      "SSMQ-NoFlaky": {
+        "throughput_prs_per_hr": {
+          "mean": 18.613,
+          "ci_lo": 18.0941,
+          "ci_hi": 19.0987,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 23.7166,
+          "ci_lo": 22.6251,
+          "ci_hi": 24.8291,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 66.8056,
+          "ci_lo": 63.2399,
+          "ci_hi": 70.3777,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 15.4724,
+          "ci_lo": 14.8555,
+          "ci_hi": 16.1413,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0117,
+          "ci_lo": 0.0096,
+          "ci_hi": 0.0137,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.5352,
+          "ci_lo": 0.4593,
+          "ci_hi": 0.61,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0093,
+          "ci_lo": 0.0072,
+          "ci_hi": 0.0117,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 1.3456,
+          "ci_lo": 1.2927,
+          "ci_hi": 1.4005,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.5903,
+          "ci_lo": 0.5797,
+          "ci_hi": 0.5999,
           "n": 60
         }
       },
       "SSMQ": {
         "throughput_prs_per_hr": {
-          "mean": 24.371,
-          "ci_lo": 23.9832,
-          "ci_hi": 24.775,
+          "mean": 18.367,
+          "ci_lo": 17.8408,
+          "ci_hi": 18.8654,
           "n": 60
         },
         "p50_latency_min": {
-          "mean": 20.9335,
-          "ci_lo": 19.7262,
-          "ci_hi": 22.067,
+          "mean": 24.8513,
+          "ci_lo": 23.552,
+          "ci_hi": 26.176,
           "n": 60
         },
         "p95_latency_min": {
-          "mean": 46.4405,
-          "ci_lo": 42.4818,
-          "ci_hi": 50.6639,
+          "mean": 70.5585,
+          "ci_lo": 66.2996,
+          "ci_hi": 75.0135,
           "n": 60
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 10.8784,
-          "ci_lo": 10.4655,
-          "ci_hi": 11.281,
+          "mean": 16.0134,
+          "ci_lo": 15.2976,
+          "ci_hi": 16.7372,
           "n": 60
         },
         "invalidation_rate": {
-          "mean": 0.0016,
-          "ci_lo": 0.0005,
-          "ci_hi": 0.0028,
+          "mean": 0.0118,
+          "ci_lo": 0.0098,
+          "ci_hi": 0.0138,
           "n": 60
         },
         "mean_blame_rounds": {
-          "mean": 0.5738,
-          "ci_lo": 0.4921,
-          "ci_hi": 0.6617,
+          "mean": 0.6769,
+          "ci_lo": 0.5958,
+          "ci_hi": 0.7555,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0077,
+          "ci_lo": 0.0058,
+          "ci_hi": 0.0101,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 1.3342,
+          "ci_lo": 1.2814,
+          "ci_hi": 1.3875,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.6018,
+          "ci_lo": 0.59,
+          "ci_hi": 0.6118,
           "n": 60
         }
       }
@@ -2423,191 +4681,337 @@
     "0.05": {
       "StaticBatchBisect": {
         "throughput_prs_per_hr": {
-          "mean": 22.0778,
-          "ci_lo": 21.6159,
-          "ci_hi": 22.5468,
+          "mean": 16.0539,
+          "ci_lo": 15.4173,
+          "ci_hi": 16.6646,
           "n": 60
         },
         "p50_latency_min": {
-          "mean": 34.2862,
-          "ci_lo": 30.8023,
-          "ci_hi": 37.789,
+          "mean": 42.1982,
+          "ci_lo": 38.9615,
+          "ci_hi": 45.5933,
           "n": 60
         },
         "p95_latency_min": {
-          "mean": 78.4204,
-          "ci_lo": 71.7828,
-          "ci_hi": 85.4033,
+          "mean": 121.8881,
+          "ci_lo": 113.0301,
+          "ci_hi": 131.1292,
           "n": 60
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 12.5606,
-          "ci_lo": 12.1386,
-          "ci_hi": 13.0039,
+          "mean": 19.776,
+          "ci_lo": 18.7452,
+          "ci_hi": 20.9158,
           "n": 60
         },
         "invalidation_rate": {
-          "mean": 0.0,
-          "ci_lo": 0.0,
-          "ci_hi": 0.0,
+          "mean": 0.0088,
+          "ci_lo": 0.0073,
+          "ci_hi": 0.0103,
           "n": 60
         },
         "mean_blame_rounds": {
-          "mean": 1.8018,
-          "ci_lo": 1.6817,
-          "ci_hi": 1.9171,
+          "mean": 1.8147,
+          "ci_lo": 1.717,
+          "ci_hi": 1.9109,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0196,
+          "ci_lo": 0.0171,
+          "ci_hi": 0.0222,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 2.1265,
+          "ci_lo": 2.0925,
+          "ci_hi": 2.1607,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.6404,
+          "ci_lo": 0.6321,
+          "ci_hi": 0.6489,
           "n": 60
         }
       },
       "SpeculativeLinear": {
         "throughput_prs_per_hr": {
-          "mean": 7.5737,
-          "ci_lo": 7.3519,
-          "ci_hi": 7.794,
+          "mean": 5.3732,
+          "ci_lo": 5.1277,
+          "ci_hi": 5.6092,
           "n": 60
         },
         "p50_latency_min": {
-          "mean": 343.1475,
-          "ci_lo": 326.7219,
-          "ci_hi": 359.3165,
+          "mean": 357.958,
+          "ci_lo": 339.9539,
+          "ci_hi": 375.383,
           "n": 60
         },
         "p95_latency_min": {
-          "mean": 746.4647,
-          "ci_lo": 718.4956,
-          "ci_hi": 773.6944,
+          "mean": 899.7556,
+          "ci_lo": 869.4665,
+          "ci_hi": 930.4023,
           "n": 60
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 21.36,
-          "ci_lo": 20.9089,
-          "ci_hi": 21.8321,
+          "mean": 30.9785,
+          "ci_lo": 29.5994,
+          "ci_hi": 32.444,
           "n": 60
         },
         "invalidation_rate": {
-          "mean": 0.3159,
-          "ci_lo": 0.3073,
-          "ci_hi": 0.3243,
+          "mean": 0.4027,
+          "ci_lo": 0.3921,
+          "ci_hi": 0.4135,
           "n": 60
         },
         "mean_blame_rounds": {
-          "mean": 0.8855,
-          "ci_lo": 0.8719,
-          "ci_hi": 0.8992,
+          "mean": 0.7138,
+          "ci_lo": 0.6955,
+          "ci_hi": 0.733,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0213,
+          "ci_lo": 0.0184,
+          "ci_hi": 0.0244,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 2.5275,
+          "ci_lo": 2.5113,
+          "ci_hi": 2.5436,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.336,
+          "ci_lo": 0.3334,
+          "ci_hi": 0.3386,
           "n": 60
         }
       },
       "UberSubmitQueue": {
         "throughput_prs_per_hr": {
-          "mean": 6.266,
-          "ci_lo": 5.9945,
-          "ci_hi": 6.5208,
+          "mean": 10.2654,
+          "ci_lo": 9.8176,
+          "ci_hi": 10.6836,
           "n": 60
         },
         "p50_latency_min": {
-          "mean": 474.2107,
-          "ci_lo": 445.4715,
-          "ci_hi": 502.4438,
+          "mean": 120.1212,
+          "ci_lo": 112.3032,
+          "ci_hi": 128.4403,
           "n": 60
         },
         "p95_latency_min": {
-          "mean": 983.9945,
-          "ci_lo": 934.2485,
-          "ci_hi": 1037.0197,
+          "mean": 342.6786,
+          "ci_lo": 327.1172,
+          "ci_hi": 358.4148,
           "n": 60
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 12.5851,
-          "ci_lo": 12.3315,
-          "ci_hi": 12.8405,
+          "mean": 43.4199,
+          "ci_lo": 41.8105,
+          "ci_hi": 45.1641,
           "n": 60
         },
         "invalidation_rate": {
-          "mean": 0.0006,
-          "ci_lo": 0.0001,
-          "ci_hi": 0.0012,
+          "mean": 0.7517,
+          "ci_lo": 0.7498,
+          "ci_hi": 0.7536,
           "n": 60
         },
         "mean_blame_rounds": {
-          "mean": 0.7219,
-          "ci_lo": 0.6283,
-          "ci_hi": 0.8103,
+          "mean": 1.2382,
+          "ci_lo": 1.1487,
+          "ci_hi": 1.3245,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0173,
+          "ci_lo": 0.0145,
+          "ci_hi": 0.0201,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 1.8567,
+          "ci_lo": 1.7784,
+          "ci_hi": 1.9341,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.9057,
+          "ci_lo": 0.8934,
+          "ci_hi": 0.9171,
           "n": 60
         }
       },
       "FlakeAwareBatch": {
         "throughput_prs_per_hr": {
-          "mean": 18.5533,
-          "ci_lo": 18.0326,
-          "ci_hi": 19.0783,
+          "mean": 12.5728,
+          "ci_lo": 11.9245,
+          "ci_hi": 13.1643,
           "n": 60
         },
         "p50_latency_min": {
-          "mean": 53.4642,
-          "ci_lo": 46.5093,
-          "ci_hi": 60.2726,
+          "mean": 67.4967,
+          "ci_lo": 60.281,
+          "ci_hi": 74.7207,
           "n": 60
         },
         "p95_latency_min": {
-          "mean": 137.7597,
-          "ci_lo": 125.8366,
-          "ci_hi": 149.4482,
+          "mean": 235.5394,
+          "ci_lo": 216.9752,
+          "ci_hi": 255.3168,
           "n": 60
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 16.8951,
-          "ci_lo": 16.2296,
-          "ci_hi": 17.5762,
+          "mean": 29.9232,
+          "ci_lo": 28.1074,
+          "ci_hi": 31.9065,
           "n": 60
         },
         "invalidation_rate": {
-          "mean": 0.0226,
-          "ci_lo": 0.0197,
-          "ci_hi": 0.0257,
+          "mean": 0.0187,
+          "ci_lo": 0.0165,
+          "ci_hi": 0.021,
           "n": 60
         },
         "mean_blame_rounds": {
-          "mean": 4.238,
-          "ci_lo": 4.0418,
-          "ci_hi": 4.4414,
+          "mean": 4.5726,
+          "ci_lo": 4.3987,
+          "ci_hi": 4.7487,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0012,
+          "ci_lo": 0.0005,
+          "ci_hi": 0.002,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 2.3487,
+          "ci_lo": 2.3187,
+          "ci_hi": 2.3809,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.7451,
+          "ci_lo": 0.7362,
+          "ci_hi": 0.753,
+          "n": 60
+        }
+      },
+      "SSMQ-NoFlaky": {
+        "throughput_prs_per_hr": {
+          "mean": 18.2284,
+          "ci_lo": 17.7356,
+          "ci_hi": 18.7147,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 24.399,
+          "ci_lo": 23.3342,
+          "ci_hi": 25.5535,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 68.2913,
+          "ci_lo": 65.0211,
+          "ci_hi": 71.5745,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 15.8515,
+          "ci_lo": 15.2311,
+          "ci_hi": 16.516,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0112,
+          "ci_lo": 0.0093,
+          "ci_hi": 0.0132,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.543,
+          "ci_lo": 0.4664,
+          "ci_hi": 0.6185,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0256,
+          "ci_lo": 0.0225,
+          "ci_hi": 0.0289,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 1.3421,
+          "ci_lo": 1.2901,
+          "ci_hi": 1.3961,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.5926,
+          "ci_lo": 0.5821,
+          "ci_hi": 0.6023,
           "n": 60
         }
       },
       "SSMQ": {
         "throughput_prs_per_hr": {
-          "mean": 23.8059,
-          "ci_lo": 23.3799,
-          "ci_hi": 24.2389,
+          "mean": 17.7748,
+          "ci_lo": 17.1904,
+          "ci_hi": 18.3252,
           "n": 60
         },
         "p50_latency_min": {
-          "mean": 22.0481,
-          "ci_lo": 20.6952,
-          "ci_hi": 23.3801,
+          "mean": 26.7299,
+          "ci_lo": 25.2992,
+          "ci_hi": 28.1829,
           "n": 60
         },
         "p95_latency_min": {
-          "mean": 49.7431,
-          "ci_lo": 45.3445,
-          "ci_hi": 54.4716,
+          "mean": 79.49,
+          "ci_lo": 73.7672,
+          "ci_hi": 85.5356,
           "n": 60
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 11.3457,
-          "ci_lo": 10.904,
-          "ci_hi": 11.7884,
+          "mean": 17.0562,
+          "ci_lo": 16.2289,
+          "ci_hi": 17.9332,
           "n": 60
         },
         "invalidation_rate": {
-          "mean": 0.0097,
-          "ci_lo": 0.0058,
-          "ci_hi": 0.014,
+          "mean": 0.0154,
+          "ci_lo": 0.0127,
+          "ci_hi": 0.0184,
           "n": 60
         },
         "mean_blame_rounds": {
-          "mean": 0.7242,
-          "ci_lo": 0.6325,
-          "ci_hi": 0.8234,
+          "mean": 0.8434,
+          "ci_lo": 0.7483,
+          "ci_hi": 0.9363,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0164,
+          "ci_lo": 0.0134,
+          "ci_hi": 0.0195,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 1.322,
+          "ci_lo": 1.2699,
+          "ci_hi": 1.3742,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.6165,
+          "ci_lo": 0.6042,
+          "ci_hi": 0.6288,
           "n": 60
         }
       }
@@ -2615,385 +5019,911 @@
     "0.1": {
       "StaticBatchBisect": {
         "throughput_prs_per_hr": {
-          "mean": 21.3461,
-          "ci_lo": 20.884,
-          "ci_hi": 21.8165,
+          "mean": 15.6273,
+          "ci_lo": 15.0341,
+          "ci_hi": 16.2041,
           "n": 60
         },
         "p50_latency_min": {
-          "mean": 35.8747,
-          "ci_lo": 32.3327,
-          "ci_hi": 39.5898,
+          "mean": 43.1074,
+          "ci_lo": 39.883,
+          "ci_hi": 46.2397,
           "n": 60
         },
         "p95_latency_min": {
-          "mean": 82.16,
-          "ci_lo": 75.1548,
-          "ci_hi": 89.7656,
+          "mean": 122.3454,
+          "ci_lo": 113.7837,
+          "ci_hi": 131.0271,
           "n": 60
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 13.1798,
-          "ci_lo": 12.7138,
-          "ci_hi": 13.6642,
+          "mean": 20.3286,
+          "ci_lo": 19.3431,
+          "ci_hi": 21.4252,
           "n": 60
         },
         "invalidation_rate": {
-          "mean": 0.0,
-          "ci_lo": 0.0,
-          "ci_hi": 0.0,
+          "mean": 0.0082,
+          "ci_lo": 0.0067,
+          "ci_hi": 0.0097,
           "n": 60
         },
         "mean_blame_rounds": {
-          "mean": 1.8264,
-          "ci_lo": 1.7094,
-          "ci_hi": 1.9419,
+          "mean": 1.844,
+          "ci_lo": 1.7456,
+          "ci_hi": 1.9376,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0443,
+          "ci_lo": 0.0404,
+          "ci_hi": 0.0483,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 2.1241,
+          "ci_lo": 2.0912,
+          "ci_hi": 2.1563,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.6428,
+          "ci_lo": 0.6343,
+          "ci_hi": 0.6512,
           "n": 60
         }
       },
       "SpeculativeLinear": {
         "throughput_prs_per_hr": {
-          "mean": 6.9409,
-          "ci_lo": 6.7491,
-          "ci_hi": 7.1379,
+          "mean": 5.0665,
+          "ci_lo": 4.8503,
+          "ci_hi": 5.2745,
           "n": 60
         },
         "p50_latency_min": {
-          "mean": 372.3183,
-          "ci_lo": 357.3213,
-          "ci_hi": 388.3067,
+          "mean": 378.6294,
+          "ci_lo": 360.8866,
+          "ci_hi": 396.0721,
           "n": 60
         },
         "p95_latency_min": {
-          "mean": 803.3817,
-          "ci_lo": 778.3977,
-          "ci_hi": 829.0617,
+          "mean": 935.4138,
+          "ci_lo": 907.3813,
+          "ci_hi": 962.3882,
           "n": 60
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 23.2525,
-          "ci_lo": 22.6927,
-          "ci_hi": 23.7954,
+          "mean": 32.9825,
+          "ci_lo": 31.6065,
+          "ci_hi": 34.4982,
           "n": 60
         },
         "invalidation_rate": {
-          "mean": 0.344,
-          "ci_lo": 0.3359,
-          "ci_hi": 0.3516,
+          "mean": 0.4226,
+          "ci_lo": 0.4128,
+          "ci_hi": 0.4324,
           "n": 60
         },
         "mean_blame_rounds": {
-          "mean": 0.8721,
-          "ci_lo": 0.8566,
-          "ci_hi": 0.889,
+          "mean": 0.688,
+          "ci_lo": 0.6683,
+          "ci_hi": 0.7093,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0472,
+          "ci_lo": 0.0424,
+          "ci_hi": 0.0519,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 2.5127,
+          "ci_lo": 2.4989,
+          "ci_hi": 2.5266,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.3382,
+          "ci_lo": 0.3357,
+          "ci_hi": 0.3408,
           "n": 60
         }
       },
       "UberSubmitQueue": {
         "throughput_prs_per_hr": {
-          "mean": 6.0057,
-          "ci_lo": 5.7386,
-          "ci_hi": 6.2558,
+          "mean": 9.9635,
+          "ci_lo": 9.5453,
+          "ci_hi": 10.3615,
           "n": 60
         },
         "p50_latency_min": {
-          "mean": 480.7085,
-          "ci_lo": 453.0644,
-          "ci_hi": 507.9946,
+          "mean": 123.7678,
+          "ci_lo": 115.4382,
+          "ci_hi": 132.0456,
           "n": 60
         },
         "p95_latency_min": {
-          "mean": 998.2376,
-          "ci_lo": 949.5965,
-          "ci_hi": 1049.5518,
+          "mean": 347.7517,
+          "ci_lo": 333.4995,
+          "ci_hi": 361.5867,
           "n": 60
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 13.1451,
-          "ci_lo": 12.8573,
-          "ci_hi": 13.4303,
+          "mean": 45.047,
+          "ci_lo": 43.3636,
+          "ci_hi": 46.7645,
           "n": 60
         },
         "invalidation_rate": {
-          "mean": 0.0008,
-          "ci_lo": 0.0002,
-          "ci_hi": 0.0014,
+          "mean": 0.7524,
+          "ci_lo": 0.7505,
+          "ci_hi": 0.7543,
           "n": 60
         },
         "mean_blame_rounds": {
-          "mean": 0.7232,
-          "ci_lo": 0.6294,
-          "ci_hi": 0.8107,
+          "mean": 1.2535,
+          "ci_lo": 1.162,
+          "ci_hi": 1.3427,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.036,
+          "ci_lo": 0.0322,
+          "ci_hi": 0.0401,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 1.8629,
+          "ci_lo": 1.7853,
+          "ci_hi": 1.9409,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.9132,
+          "ci_lo": 0.9023,
+          "ci_hi": 0.9247,
           "n": 60
         }
       },
       "FlakeAwareBatch": {
         "throughput_prs_per_hr": {
-          "mean": 18.3262,
-          "ci_lo": 17.7827,
-          "ci_hi": 18.8489,
+          "mean": 12.4153,
+          "ci_lo": 11.7734,
+          "ci_hi": 13.0187,
           "n": 60
         },
         "p50_latency_min": {
-          "mean": 55.8013,
-          "ci_lo": 49.0289,
-          "ci_hi": 62.5685,
+          "mean": 71.3109,
+          "ci_lo": 64.6334,
+          "ci_hi": 77.8171,
           "n": 60
         },
         "p95_latency_min": {
-          "mean": 141.875,
-          "ci_lo": 129.6353,
-          "ci_hi": 154.093,
+          "mean": 238.7677,
+          "ci_lo": 220.6994,
+          "ci_hi": 257.2693,
           "n": 60
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 17.3969,
-          "ci_lo": 16.6898,
-          "ci_hi": 18.1075,
+          "mean": 30.3881,
+          "ci_lo": 28.5737,
+          "ci_hi": 32.3736,
           "n": 60
         },
         "invalidation_rate": {
-          "mean": 0.0398,
-          "ci_lo": 0.0365,
-          "ci_hi": 0.0431,
+          "mean": 0.0299,
+          "ci_lo": 0.0271,
+          "ci_hi": 0.0326,
           "n": 60
         },
         "mean_blame_rounds": {
-          "mean": 4.2898,
-          "ci_lo": 4.0987,
-          "ci_hi": 4.4879,
+          "mean": 4.5978,
+          "ci_lo": 4.4267,
+          "ci_hi": 4.7646,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0043,
+          "ci_lo": 0.0031,
+          "ci_hi": 0.0056,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 2.3466,
+          "ci_lo": 2.317,
+          "ci_hi": 2.3793,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.7483,
+          "ci_lo": 0.7405,
+          "ci_hi": 0.756,
+          "n": 60
+        }
+      },
+      "SSMQ-NoFlaky": {
+        "throughput_prs_per_hr": {
+          "mean": 17.6557,
+          "ci_lo": 17.1781,
+          "ci_hi": 18.1111,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 25.2,
+          "ci_lo": 24.1211,
+          "ci_hi": 26.3466,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 70.1529,
+          "ci_lo": 67.1894,
+          "ci_hi": 73.0374,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 16.4313,
+          "ci_lo": 15.7964,
+          "ci_hi": 17.0927,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0112,
+          "ci_lo": 0.0092,
+          "ci_hi": 0.0133,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.5438,
+          "ci_lo": 0.4654,
+          "ci_hi": 0.6199,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0535,
+          "ci_lo": 0.0482,
+          "ci_hi": 0.0591,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 1.3372,
+          "ci_lo": 1.2849,
+          "ci_hi": 1.3908,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.5951,
+          "ci_lo": 0.5847,
+          "ci_hi": 0.6044,
           "n": 60
         }
       },
       "SSMQ": {
         "throughput_prs_per_hr": {
-          "mean": 22.8375,
-          "ci_lo": 22.4172,
-          "ci_hi": 23.2585,
+          "mean": 16.721,
+          "ci_lo": 16.062,
+          "ci_hi": 17.3559,
           "n": 60
         },
         "p50_latency_min": {
-          "mean": 24.4106,
-          "ci_lo": 22.6573,
-          "ci_hi": 26.1197,
+          "mean": 30.9324,
+          "ci_lo": 29.0427,
+          "ci_hi": 33.1468,
           "n": 60
         },
         "p95_latency_min": {
-          "mean": 57.3328,
-          "ci_lo": 51.8104,
-          "ci_hi": 63.1008,
+          "mean": 96.5488,
+          "ci_lo": 88.5783,
+          "ci_hi": 104.7079,
           "n": 60
         },
         "ci_minutes_per_merged_pr": {
-          "mean": 12.1713,
-          "ci_lo": 11.6618,
-          "ci_hi": 12.6636,
+          "mean": 18.9504,
+          "ci_lo": 17.8371,
+          "ci_hi": 20.0937,
           "n": 60
         },
         "invalidation_rate": {
-          "mean": 0.0319,
-          "ci_lo": 0.0239,
-          "ci_hi": 0.04,
+          "mean": 0.0301,
+          "ci_lo": 0.0255,
+          "ci_hi": 0.0346,
           "n": 60
         },
         "mean_blame_rounds": {
-          "mean": 1.0264,
-          "ci_lo": 0.8902,
-          "ci_hi": 1.1736,
+          "mean": 1.1318,
+          "ci_lo": 1.0475,
+          "ci_hi": 1.2219,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.022,
+          "ci_lo": 0.0177,
+          "ci_hi": 0.0262,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 1.3099,
+          "ci_lo": 1.26,
+          "ci_hi": 1.3607,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.6379,
+          "ci_lo": 0.6238,
+          "ci_hi": 0.6517,
           "n": 60
         }
       }
     }
   },
-  "exp4b_blame_accuracy": {
+  "v2_exp7_blame_sweep": {
     "0.5": {
-      "throughput_prs_per_hr": {
-        "mean": 23.6897,
-        "ci_lo": 23.3023,
-        "ci_hi": 24.0845,
-        "n": 60
+      "SSMQ": {
+        "throughput_prs_per_hr": {
+          "mean": 17.7094,
+          "ci_lo": 17.1354,
+          "ci_hi": 18.2537,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 27.2437,
+          "ci_lo": 25.7515,
+          "ci_hi": 28.7984,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 80.2457,
+          "ci_lo": 74.6996,
+          "ci_hi": 85.9396,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 17.1624,
+          "ci_lo": 16.3379,
+          "ci_hi": 18.0326,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.015,
+          "ci_lo": 0.0124,
+          "ci_hi": 0.0179,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.8541,
+          "ci_lo": 0.7557,
+          "ci_hi": 0.9516,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0172,
+          "ci_lo": 0.014,
+          "ci_hi": 0.0203,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 1.3206,
+          "ci_lo": 1.2689,
+          "ci_hi": 1.3733,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.6186,
+          "ci_lo": 0.6059,
+          "ci_hi": 0.6308,
+          "n": 60
+        }
       },
-      "p50_latency_min": {
-        "mean": 22.1414,
-        "ci_lo": 20.7736,
-        "ci_hi": 23.5138,
-        "n": 60
-      },
-      "p95_latency_min": {
-        "mean": 50.6201,
-        "ci_lo": 46.2575,
-        "ci_hi": 55.2735,
-        "n": 60
-      },
-      "ci_minutes_per_merged_pr": {
-        "mean": 11.4541,
-        "ci_lo": 11.0336,
-        "ci_hi": 11.8719,
-        "n": 60
-      },
-      "invalidation_rate": {
-        "mean": 0.0098,
-        "ci_lo": 0.006,
-        "ci_hi": 0.0141,
-        "n": 60
-      },
-      "mean_blame_rounds": {
-        "mean": 0.7808,
-        "ci_lo": 0.6819,
-        "ci_hi": 0.8898,
-        "n": 60
+      "SSMQ-NoBlame": {
+        "throughput_prs_per_hr": {
+          "mean": 17.6646,
+          "ci_lo": 17.0873,
+          "ci_hi": 18.2047,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 27.2491,
+          "ci_lo": 25.8074,
+          "ci_hi": 28.768,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 80.6438,
+          "ci_lo": 75.2417,
+          "ci_hi": 86.2133,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 17.1705,
+          "ci_lo": 16.3277,
+          "ci_hi": 18.0397,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0151,
+          "ci_lo": 0.0125,
+          "ci_hi": 0.018,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.847,
+          "ci_lo": 0.7504,
+          "ci_hi": 0.9426,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0172,
+          "ci_lo": 0.0141,
+          "ci_hi": 0.0201,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 1.3146,
+          "ci_lo": 1.2647,
+          "ci_hi": 1.3649,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.6178,
+          "ci_lo": 0.6053,
+          "ci_hi": 0.6299,
+          "n": 60
+        }
       }
     },
     "0.65": {
-      "throughput_prs_per_hr": {
-        "mean": 23.7423,
-        "ci_lo": 23.3435,
-        "ci_hi": 24.143,
-        "n": 60
+      "SSMQ": {
+        "throughput_prs_per_hr": {
+          "mean": 17.7212,
+          "ci_lo": 17.1435,
+          "ci_hi": 18.2784,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 27.0104,
+          "ci_lo": 25.5364,
+          "ci_hi": 28.5609,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 80.4907,
+          "ci_lo": 74.9995,
+          "ci_hi": 86.2227,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 17.1281,
+          "ci_lo": 16.2892,
+          "ci_hi": 18.005,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0152,
+          "ci_lo": 0.0126,
+          "ci_hi": 0.0182,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.8495,
+          "ci_lo": 0.7515,
+          "ci_hi": 0.9461,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0168,
+          "ci_lo": 0.0137,
+          "ci_hi": 0.0199,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 1.3201,
+          "ci_lo": 1.2692,
+          "ci_hi": 1.3725,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.6176,
+          "ci_lo": 0.605,
+          "ci_hi": 0.6297,
+          "n": 60
+        }
       },
-      "p50_latency_min": {
-        "mean": 22.1127,
-        "ci_lo": 20.7834,
-        "ci_hi": 23.4687,
-        "n": 60
-      },
-      "p95_latency_min": {
-        "mean": 50.2147,
-        "ci_lo": 45.7521,
-        "ci_hi": 55.0073,
-        "n": 60
-      },
-      "ci_minutes_per_merged_pr": {
-        "mean": 11.4058,
-        "ci_lo": 10.9785,
-        "ci_hi": 11.8402,
-        "n": 60
-      },
-      "invalidation_rate": {
-        "mean": 0.0098,
-        "ci_lo": 0.006,
-        "ci_hi": 0.0141,
-        "n": 60
-      },
-      "mean_blame_rounds": {
-        "mean": 0.7601,
-        "ci_lo": 0.6637,
-        "ci_hi": 0.8627,
-        "n": 60
+      "SSMQ-NoBlame": {
+        "throughput_prs_per_hr": {
+          "mean": 17.6646,
+          "ci_lo": 17.0873,
+          "ci_hi": 18.2047,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 27.2491,
+          "ci_lo": 25.8074,
+          "ci_hi": 28.768,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 80.6438,
+          "ci_lo": 75.2417,
+          "ci_hi": 86.2133,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 17.1705,
+          "ci_lo": 16.3277,
+          "ci_hi": 18.0397,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0151,
+          "ci_lo": 0.0125,
+          "ci_hi": 0.018,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.847,
+          "ci_lo": 0.7504,
+          "ci_hi": 0.9426,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0172,
+          "ci_lo": 0.0141,
+          "ci_hi": 0.0201,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 1.3146,
+          "ci_lo": 1.2647,
+          "ci_hi": 1.3649,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.6178,
+          "ci_lo": 0.6053,
+          "ci_hi": 0.6299,
+          "n": 60
+        }
       }
     },
     "0.75": {
-      "throughput_prs_per_hr": {
-        "mean": 23.7507,
-        "ci_lo": 23.3477,
-        "ci_hi": 24.1667,
-        "n": 60
+      "SSMQ": {
+        "throughput_prs_per_hr": {
+          "mean": 17.6904,
+          "ci_lo": 17.1115,
+          "ci_hi": 18.2298,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 26.998,
+          "ci_lo": 25.5472,
+          "ci_hi": 28.4768,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 79.9518,
+          "ci_lo": 74.505,
+          "ci_hi": 85.874,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 17.1125,
+          "ci_lo": 16.2875,
+          "ci_hi": 17.9861,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0152,
+          "ci_lo": 0.0125,
+          "ci_hi": 0.0182,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.8453,
+          "ci_lo": 0.7504,
+          "ci_hi": 0.9379,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0169,
+          "ci_lo": 0.0138,
+          "ci_hi": 0.0201,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 1.3198,
+          "ci_lo": 1.2681,
+          "ci_hi": 1.3721,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.6161,
+          "ci_lo": 0.6037,
+          "ci_hi": 0.628,
+          "n": 60
+        }
       },
-      "p50_latency_min": {
-        "mean": 22.1155,
-        "ci_lo": 20.7631,
-        "ci_hi": 23.453,
-        "n": 60
-      },
-      "p95_latency_min": {
-        "mean": 49.989,
-        "ci_lo": 45.5156,
-        "ci_hi": 54.7792,
-        "n": 60
-      },
-      "ci_minutes_per_merged_pr": {
-        "mean": 11.3794,
-        "ci_lo": 10.9459,
-        "ci_hi": 11.816,
-        "n": 60
-      },
-      "invalidation_rate": {
-        "mean": 0.0097,
-        "ci_lo": 0.0058,
-        "ci_hi": 0.014,
-        "n": 60
-      },
-      "mean_blame_rounds": {
-        "mean": 0.7412,
-        "ci_lo": 0.6439,
-        "ci_hi": 0.8426,
-        "n": 60
+      "SSMQ-NoBlame": {
+        "throughput_prs_per_hr": {
+          "mean": 17.6646,
+          "ci_lo": 17.0873,
+          "ci_hi": 18.2047,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 27.2491,
+          "ci_lo": 25.8074,
+          "ci_hi": 28.768,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 80.6438,
+          "ci_lo": 75.2417,
+          "ci_hi": 86.2133,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 17.1705,
+          "ci_lo": 16.3277,
+          "ci_hi": 18.0397,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0151,
+          "ci_lo": 0.0125,
+          "ci_hi": 0.018,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.847,
+          "ci_lo": 0.7504,
+          "ci_hi": 0.9426,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0172,
+          "ci_lo": 0.0141,
+          "ci_hi": 0.0201,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 1.3146,
+          "ci_lo": 1.2647,
+          "ci_hi": 1.3649,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.6178,
+          "ci_lo": 0.6053,
+          "ci_hi": 0.6299,
+          "n": 60
+        }
       }
     },
     "0.85": {
-      "throughput_prs_per_hr": {
-        "mean": 23.8059,
-        "ci_lo": 23.3799,
-        "ci_hi": 24.2389,
-        "n": 60
+      "SSMQ": {
+        "throughput_prs_per_hr": {
+          "mean": 17.715,
+          "ci_lo": 17.1352,
+          "ci_hi": 18.2637,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 26.892,
+          "ci_lo": 25.5074,
+          "ci_hi": 28.2937,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 79.6287,
+          "ci_lo": 74.1049,
+          "ci_hi": 85.6826,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 17.0857,
+          "ci_lo": 16.2573,
+          "ci_hi": 17.9622,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0154,
+          "ci_lo": 0.0127,
+          "ci_hi": 0.0183,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.8468,
+          "ci_lo": 0.7518,
+          "ci_hi": 0.9393,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0166,
+          "ci_lo": 0.0135,
+          "ci_hi": 0.0196,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 1.322,
+          "ci_lo": 1.2698,
+          "ci_hi": 1.3737,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.6158,
+          "ci_lo": 0.6035,
+          "ci_hi": 0.6278,
+          "n": 60
+        }
       },
-      "p50_latency_min": {
-        "mean": 22.0481,
-        "ci_lo": 20.6952,
-        "ci_hi": 23.3801,
-        "n": 60
-      },
-      "p95_latency_min": {
-        "mean": 49.7431,
-        "ci_lo": 45.3445,
-        "ci_hi": 54.4716,
-        "n": 60
-      },
-      "ci_minutes_per_merged_pr": {
-        "mean": 11.3457,
-        "ci_lo": 10.904,
-        "ci_hi": 11.7884,
-        "n": 60
-      },
-      "invalidation_rate": {
-        "mean": 0.0097,
-        "ci_lo": 0.0058,
-        "ci_hi": 0.014,
-        "n": 60
-      },
-      "mean_blame_rounds": {
-        "mean": 0.7242,
-        "ci_lo": 0.6325,
-        "ci_hi": 0.8234,
-        "n": 60
+      "SSMQ-NoBlame": {
+        "throughput_prs_per_hr": {
+          "mean": 17.6646,
+          "ci_lo": 17.0873,
+          "ci_hi": 18.2047,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 27.2491,
+          "ci_lo": 25.8074,
+          "ci_hi": 28.768,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 80.6438,
+          "ci_lo": 75.2417,
+          "ci_hi": 86.2133,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 17.1705,
+          "ci_lo": 16.3277,
+          "ci_hi": 18.0397,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0151,
+          "ci_lo": 0.0125,
+          "ci_hi": 0.018,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.847,
+          "ci_lo": 0.7504,
+          "ci_hi": 0.9426,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0172,
+          "ci_lo": 0.0141,
+          "ci_hi": 0.0201,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 1.3146,
+          "ci_lo": 1.2647,
+          "ci_hi": 1.3649,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.6178,
+          "ci_lo": 0.6053,
+          "ci_hi": 0.6299,
+          "n": 60
+        }
       }
     },
-    "0.95": {
-      "throughput_prs_per_hr": {
-        "mean": 23.858,
-        "ci_lo": 23.4401,
-        "ci_hi": 24.2722,
-        "n": 60
+    "0.9167": {
+      "SSMQ": {
+        "throughput_prs_per_hr": {
+          "mean": 17.7748,
+          "ci_lo": 17.1904,
+          "ci_hi": 18.3252,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 26.7299,
+          "ci_lo": 25.2992,
+          "ci_hi": 28.1829,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 79.49,
+          "ci_lo": 73.7672,
+          "ci_hi": 85.5356,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 17.0562,
+          "ci_lo": 16.2289,
+          "ci_hi": 17.9332,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0154,
+          "ci_lo": 0.0127,
+          "ci_hi": 0.0184,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.8434,
+          "ci_lo": 0.7483,
+          "ci_hi": 0.9363,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0164,
+          "ci_lo": 0.0134,
+          "ci_hi": 0.0195,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 1.322,
+          "ci_lo": 1.2699,
+          "ci_hi": 1.3742,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.6165,
+          "ci_lo": 0.6042,
+          "ci_hi": 0.6288,
+          "n": 60
+        }
       },
-      "p50_latency_min": {
-        "mean": 22.0365,
-        "ci_lo": 20.6879,
-        "ci_hi": 23.3695,
-        "n": 60
-      },
-      "p95_latency_min": {
-        "mean": 49.5334,
-        "ci_lo": 45.0729,
-        "ci_hi": 54.2617,
-        "n": 60
-      },
-      "ci_minutes_per_merged_pr": {
-        "mean": 11.318,
-        "ci_lo": 10.8814,
-        "ci_hi": 11.7632,
-        "n": 60
-      },
-      "invalidation_rate": {
-        "mean": 0.0097,
-        "ci_lo": 0.0058,
-        "ci_hi": 0.014,
-        "n": 60
-      },
-      "mean_blame_rounds": {
-        "mean": 0.7128,
-        "ci_lo": 0.619,
-        "ci_hi": 0.8107,
-        "n": 60
+      "SSMQ-NoBlame": {
+        "throughput_prs_per_hr": {
+          "mean": 17.6646,
+          "ci_lo": 17.0873,
+          "ci_hi": 18.2047,
+          "n": 60
+        },
+        "p50_latency_min": {
+          "mean": 27.2491,
+          "ci_lo": 25.8074,
+          "ci_hi": 28.768,
+          "n": 60
+        },
+        "p95_latency_min": {
+          "mean": 80.6438,
+          "ci_lo": 75.2417,
+          "ci_hi": 86.2133,
+          "n": 60
+        },
+        "ci_minutes_per_merged_pr": {
+          "mean": 17.1705,
+          "ci_lo": 16.3277,
+          "ci_hi": 18.0397,
+          "n": 60
+        },
+        "invalidation_rate": {
+          "mean": 0.0151,
+          "ci_lo": 0.0125,
+          "ci_hi": 0.018,
+          "n": 60
+        },
+        "mean_blame_rounds": {
+          "mean": 0.847,
+          "ci_lo": 0.7504,
+          "ci_hi": 0.9426,
+          "n": 60
+        },
+        "false_rejection_rate": {
+          "mean": 0.0172,
+          "ci_lo": 0.0141,
+          "ci_hi": 0.0201,
+          "n": 60
+        },
+        "mean_batch_size": {
+          "mean": 1.3146,
+          "ci_lo": 1.2647,
+          "ci_hi": 1.3649,
+          "n": 60
+        },
+        "runner_utilization": {
+          "mean": 0.6178,
+          "ci_lo": 0.6053,
+          "ci_hi": 0.6299,
+          "n": 60
+        }
       }
     }
   }

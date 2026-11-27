@@ -530,6 +530,7 @@ def main() -> None:
     (tables_dir / "per_repo.tex").write_text("\n".join(t_repo) + "\n", encoding="utf-8")
 
     # Table 3: Ablation Study
+    ablation_order = ["SSMQ", "SSMQ-NoGraph", "SSMQ-NoFlaky", "SSMQ-NoBlame", "StaticBatchBisect"]
     t_abl = [
         "% AUTO-GENERATED FROM v2_exp4_ablation — DO NOT EDIT",
         "\\begin{table}[t]",
@@ -541,7 +542,7 @@ def main() -> None:
         "\\textbf{Variant} & \\textbf{Tput} & \\textbf{P95} & \\textbf{Cost} & \\textbf{FR\\%} \\\\",
         "\\midrule",
     ]
-    for strat in ABLATION_STRATEGIES:
+    for strat in ablation_order:
         d = abl_summary[strat]
         b0, b1 = ("\\textbf{", "}") if strat == "SSMQ" else ("", "")
         t_abl.append(

@@ -1,34 +1,41 @@
-# Gate 2 Deterministic Audit & Reconciliation Report (`reports/audit_report.md`)
+# Deterministic Audit & Paired Inference Report v2 (`reports/audit_report.md`)
 
-- **Audit Verdict**: **PASS (0 Blocking Errors)**
-- **Verified Sealed Runs**: 6
-- **Total Sealed Evaluation Records**: 3480
-- **Mainline Safety Invariant (Escaped Defects)**: `0` (0.0%)
-- **Generated LaTeX Macros**: `61` in `paper/generated/numbers.tex`
+- **Audit Verdict**: **PASS (0 Blocking Errors, Full Harness+Dataset+Artifact SHA-256 Verified)**
+- **Verified Sealed v2 Runs**: 8 (real git commits recorded on all manifests)
+- **Total Sealed Simulation Records**: 4920 + 48 real executed Python unittest batches
+- **Cumulative Mainline Escaped Defects**: `0` (0.0%)
+- **Generated LaTeX Macros**: `79` in `paper/generated/numbers.tex`
 
-## A/A Noise Floor Calibration (`exp0_aa_noise_v1`)
+## Real Executable Blame Micro-Benchmark (`v2_exp0_blame_microbench`)
+- `ASTStackCausalRanker`: **91.7% Top-1**, **100.0% Top-2**, MRR **0.958**, mean latency **2.29 ms** (vs Random 29.2% / Churn 2.1%).
 
-- Throughput Block A vs B relative diff: **0.10%** (Cliff's $\delta = -0.016$)
-- P95 Latency Block A vs B relative diff: **2.63%** (Cliff's $\delta = -0.088$)
-- CI Compute Cost Block A vs B relative diff: **1.16%** (Cliff's $\delta = -0.056$)
+## Main Benchmark (`v2_exp2_main_bench`, 5x Velocity, 5% Flaky, 80% Graph Recall, 3% Persistent Conflict)
 
-## Main Benchmark Summary (`exp1_main_bench_v1`, 5x Velocity, 5% Flaky, 20 Seeds x 3 Repos)
+| Strategy | Throughput (PR/h) | P95 Lat (min) | CI Cost (m/PR) | Invalid. (%) | False Rej. (%) |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **SerialQueue** | 3.63 | 1408.8 | 16.65 | 0.0% | 4.22% |
+| **StaticBatchBisect** | 16.05 | 121.9 | 19.78 | 0.9% | 1.96% |
+| **SpeculativeLinear** | 5.37 | 899.8 | 30.98 | 40.3% | 2.13% |
+| **UberSubmitQueue** | 10.27 | 342.7 | 43.42 | 75.2% | 1.73% |
+| **FlakeAwareBatch** | 12.57 | 235.5 | 29.92 | 1.9% | 0.12% |
+| **SSMQ** | 17.77 | 79.5 | 17.06 | 1.5% | 1.64% |
 
-| Strategy | Throughput (PR/h) | P50 Lat (m) | P95 Lat (m) | CI Cost (m/PR) | Invalid. (%) | Blame Rounds |
-| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **SerialQueue** | 4.37 | 680.5 | 1426.4 | 13.74 | 0.0% | 0.00 |
-| **StaticBatchBisect** | 22.08 | 34.3 | 78.4 | 12.56 | 0.0% | 1.80 |
-| **SpeculativeLinear** | 7.57 | 343.1 | 746.5 | 21.36 | 31.6% | 0.89 |
-| **UberSubmitQueue** | 6.27 | 474.2 | 984.0 | 12.59 | 0.1% | 0.72 |
-| **FlakeAwareBatch** | 18.55 | 53.5 | 137.8 | 16.90 | 2.3% | 4.24 |
-| **SSMQ** | 23.81 | 22.0 | 49.7 | 11.35 | 1.0% | 0.72 |
+## Matched Paired Contrasts (SSMQ vs Baselines, Holm-Bonferroni Adjusted Wilcoxon p-values)
 
-## Ablation Study (`exp3_ablation_v1`)
-
-| Variant | Throughput (PR/h) | P95 Lat (m) | CI Cost (m/PR) | Blame Rounds |
+| Baseline | Δ Tput (%) | Δ P95 Lat (%) [Holm p] | Δ CI Cost (%) [Holm p] | Δ False Rej. (pp) [Holm p] |
 | :--- | :---: | :---: | :---: | :---: |
-| **SSMQ** | 23.81 | 49.7 | 11.35 | 0.72 |
-| **SSMQ-NoGraph** | 21.74 | 85.9 | 12.77 | 2.17 |
-| **SSMQ-NoFlaky** | 23.86 | 46.7 | 11.06 | 0.42 |
-| **SSMQ-NoBlame** | 23.74 | 50.6 | 11.44 | 0.79 |
-| **StaticBatchBisect** | 22.08 | 78.4 | 12.56 | 1.80 |
+| SerialQueue | +389.8% | -94.4% (`p=<0.0001`) | +2.5% (`p=0.7741`) | -2.58pp (`p=<0.0001`) |
+| StaticBatchBisect | +10.7% | -34.8% (`p=<0.0001`) | -13.8% (`p=<0.0001`) | -0.32pp (`p=0.5627`) |
+| SpeculativeLinear | +230.8% | -91.2% (`p=<0.0001`) | -44.9% (`p=<0.0001`) | -0.49pp (`p=0.1028`) |
+| UberSubmitQueue | +73.2% | -76.8% (`p=<0.0001`) | -60.7% (`p=<0.0001`) | -0.08pp (`p=0.7741`) |
+| FlakeAwareBatch | +41.4% | -66.2% (`p=<0.0001`) | -43.0% (`p=<0.0001`) | +1.52pp (`p=<0.0001`) |
+
+## Non-Circularity Check: Graph Recall Sweep & No-Conflict Control (`v2_exp5_graph_recall`)
+
+| Regime | Static P95 (m) | UberTree P95 (m) | SSMQ P95 (m) | SSMQ Tput (PR/h) |
+| :--- | :---: | :---: | :---: | :---: |
+| No-Conflict Control ($P_c=0$) | 43.7 | 153.3 | **49.5** | 23.86 |
+| 40\% Graph Recall (60\% latent) | 148.6 | 442.3 | **111.2** | 14.62 |
+| 60\% Graph Recall (40\% latent) | 135.2 | 388.0 | **93.9** | 16.18 |
+| 80\% Graph Recall (20\% latent) | 121.9 | 342.7 | **79.5** | 17.77 |
+| 100\% Graph Recall (0\% latent) | 112.1 | 307.3 | **69.4** | 18.90 |
