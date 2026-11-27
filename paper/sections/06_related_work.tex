@@ -1,36 +1,33 @@
 \section{Related Work}
 \label{sec:related}
 
-Table~\ref{tab:related_taxonomy} positions SSMQ relative to prior merge-queue and CI verification approaches across four areas.
+Table~\ref{tab:related_taxonomy} contrasts SSMQ with prior merge-queue and CI verification designs.
 
 \begin{table*}[t]
 \centering
 \scriptsize
-\setlength{\tabcolsep}{4.5pt}
+\setlength{\tabcolsep}{4pt}
 \caption{Qualitative Comparison of Merge Queue \& CI Verification Paradigms.}
 \label{tab:related_taxonomy}
 \begin{tabular}{lcccc}
 \toprule
 \textbf{System / Paradigm} & \textbf{Dependency Awareness} & \textbf{Speculation / Batching} & \textbf{Flaky Gating} & \textbf{Fault Attribution} \\
 \midrule
-Static Batching (Bors / GitHub~\cite{fallahzadeh2023accelerating}) & None (FIFO) & Static batch $K$ & None & $O(\log K)$ binary bisection \\
-Linear Trains (GitLab Merge Trains) & None (FIFO) & Linear prefix train & None & Head abort \& restart \\
-SubmitQueue (Uber~\cite{ananthanarayanan2019keeping}) & Conflict graph + risk model & Dependency-aware outcome tree & Implicit & Outcome-tree branch split \\
-Flake-Aware Bisection~\cite{henderson2023flake} & None (FIFO) & Post-submit culprit search & Bayesian & Noisy binary bisection \\
-Predictive Test Selection~\cite{machalica2019predictive,jin2023hybridcisave} & Test granularity & Single-PR build pruning & Orthogonal & N/A (composable) \\
+Bors / GitHub Merge Queue~\cite{fallahzadeh2023accelerating} & None (FIFO) & Static batch / staged groups & None & Bisection / group rebuild \\
+GitLab Merge Trains & None (FIFO) & Linear prefix train & None & Head abort \& restart \\
+SubmitQueue (Uber~\cite{ananthanarayanan2019keeping}) & Conflict graph + risk model & Dependency-aware outcome tree & External / unmodeled & Outcome-tree branch split \\
+Flake-Aware Bisection~\cite{henderson2023flake} & None (post-submit) & Culprit search (fixed retry baseline) & Bayesian & Noisy binary bisection \\
+Predictive Build/Test Selection~\cite{machalica2019predictive,jin2023hybridcisave} & Target / test granularity & Single-PR build \& test pruning & Orthogonal & N/A (composable) \\
 \textbf{SSMQ (Ours)} & \textbf{Cone-Disjoint ($\hat{G}$)} & \textbf{Risk-Stratified Lanes} & \textbf{2-Regime Beta-Binomial} & \textbf{1-Step AST + Fallback} \\
 \bottomrule
 \end{tabular}
 \end{table*}
 
-\textbf{CI Merge Queues, Batching, and Test Selection.}
-CI strengthens defect containment at the cost of queueing latency and runner demand~\cite{hilton2016usage,zhao2017impact,bernardo2023impact,wessel2023github}. Industrial systems include Google's TAP~\cite{elbaum2014techniques,memon2017taming} for batched regression testing, Uber's SubmitQueue~\cite{ananthanarayanan2019keeping} with conflict-graph analysis and dependency-aware speculative outcome trees supporting independent commits, and Meta's lean pre-/post-merge pipelines~\cite{juloori2025scale}. Follow-on studies explore dynamic batch sizing~\cite{bavand2021mining}, parallel batch testing~\cite{fallahzadeh2023accelerating}, risk-weighted bisection~\cite{najafi2019bisecting}, and PR prioritization~\cite{jungwirth2025improving}. Orthogonal test-selection methods shrink per-build cost via transition models~\cite{leong2019assessing}, predictive ML~\cite{machalica2019predictive}, reinforcement learning~\cite{spieker2017reinforcement}, joint build/test pruning~\cite{jin2023hybridcisave}, and pipeline-aware optimization~\cite{schwendner2025practical}. SSMQ complements both threads by proactively packing cone-disjoint batches before execution rather than speculating deeply across colliding FIFO prefixes, composing directly with per-batch test selection.
+\textbf{CI Merge Queues, Reordering, and Selection.}
+Empirical studies confirm CI improves defect containment while adding queueing and compute cost~\cite{hilton2016usage,zhao2017impact,bernardo2023impact,wessel2023github}. At scale, Google's TAP~\cite{elbaum2014techniques,memon2017taming} batched regression runs, Uber's SubmitQueue~\cite{ananthanarayanan2019keeping} speculated over conflict-graph outcome trees, and Meta~\cite{juloori2025scale} split pre- and post-merge stages. Subsequent work studied failure-history batching~\cite{bavand2021mining}, parallel batch testing~\cite{fallahzadeh2023accelerating}, risk-weighted bisection~\cite{najafi2019bisecting}, and PR prioritization~\cite{jungwirth2025improving}. Orthogonal selection shrinks per-job cost via transition models~\cite{leong2019assessing}, predictive ML~\cite{machalica2019predictive}, reinforcement learning~\cite{spieker2017reinforcement}, joint build/test pruning~\cite{jin2023hybridcisave}, and pipeline scheduling~\cite{schwendner2025practical}. SSMQ unifies warm-up cone-disjoint packing, asymmetric flaky gating, and AST blame in one queue policy composable with build/test selection.
 
 \textbf{Flaky Tests and Noisy Culprit Isolation.}
-Empirical studies document pervasive flakiness across unit, UI, and integration suites~\cite{luo2014empirical,lam2020large,romano2021empirical,tahir2023test}, including systemic co-occurring bursts~\cite{parry2025systemic}. DeFlaker~\cite{bell2018laker} and iDFlakies~\cite{lam2019idflakies} detect flakes via differential coverage and test-order permutation. Post-submit culprit finders include Ziftci and Reardon~\cite{ziftci2017broke} and Henderson et~al.~\cite{henderson2023flake}, who formulated Bayesian noisy post-submit bisection (evaluating fixed retries as a comparative baseline). SSMQ embeds online asymmetric Beta-Binomial gating into pre-merge scheduling, decoupling singleton rejection protection from multi-PR batch splitting.
+Longitudinal studies document widespread unit, UI, and integration flakiness~\cite{luo2014empirical,lam2020large,romano2021empirical,tahir2023test}, including systemic bursts~\cite{parry2025systemic}. DeFlaker~\cite{bell2018laker} and iDFlakies~\cite{lam2019idflakies} detect flakes via coverage diffs and test-order permutation, whereas Ziftci and Reardon~\cite{ziftci2017broke} and Henderson et al.~\cite{henderson2023flake} target post-submit culprit search under noise (benchmarking fixed retries). SSMQ embeds online asymmetric Beta-Binomial gating directly into pre-merge scheduling to separate singleton protection from batch splitting.
 
-\textbf{Merge Conflicts and Change Impact Analysis.}
-Prior work predicts Git textual conflicts from edit histories~\cite{owhadikareshk2019predicting}, routes code reviews via PR impact analysis~\cite{gmen2025enhanced}, and resolves textual or semantic conflicts with neural models~\cite{zhang2022trained,svyatkovskiy2022program}. SSMQ instead applies warm-up co-change and directory cones proactively during batch packing to avoid co-scheduling coupled PRs.
-
-\textbf{Fault Localization.}
-Spectrum-based localization (Tarantula~\cite{jones2005empirical}, Ochiai~\cite{abreu2009practical}) requires per-test coverage matrices, whereas LLM stack-trace localization~\cite{jambigi2025fault} incurs model inference latency. \texttt{ASTStackCausalRanker} combines zero-instrumentation AST function diffs with specificity-weighted 1-hop call graphs in \BenchASTMs{}~ms under fail-safe bisection fallback.
+\textbf{Merge Conflicts and Fault Localization.}
+Prior work predicts textual conflicts~\cite{owhadikareshk2019predicting}, applies PR impact analysis to review~\cite{gmen2025enhanced}, and resolves conflicts with neural models~\cite{zhang2022trained,svyatkovskiy2022program}; spectrum-based localization (Tarantula~\cite{jones2005empirical}, Ochiai~\cite{abreu2009practical}) needs coverage matrices, and LLM stack-trace localization~\cite{jambigi2025fault} requires model inference. SSMQ avoids co-scheduling colliding cones and ranks suspects via zero-instrumentation AST function diffs and 1-hop call graphs in \BenchASTMs{}~ms with bisection fallback.

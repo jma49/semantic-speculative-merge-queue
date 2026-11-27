@@ -1,0 +1,24 @@
+{
+  "schema_version": "5.0",
+  "run_id": "v5_exp0_blame_microbench",
+  "experiment": "v5_exp0_blame_microbench",
+  "timestamp_utc": "2026-11-27T05:05:04.751235+00:00",
+  "git_commit": "b575c486b0e4a932ea0470316c07443b12612b0d",
+  "python_version": "3.9.6",
+  "platform": "macOS-27.2.1-arm64-arm-64bit",
+  "harness_sha256": "fd68ba028cab43f513779d0d1a48836354ca91f7569194e1f9394818a8ba54ce",
+  "dataset_sha256": "694044a627b849e35672ac2f2985cad3c02562a5a2ddafccf838d400100085d6",
+  "command": "python3 eval/harness.py --runs-dir runs",
+  "seeds": [
+    2026
+  ],
+  "record_count": 86,
+  "metrics_file": "metrics.json",
+  "metrics_sha256": "ee94dacac0f7c8281eb161a5212eb48825f2ccec0cee844173946237f314a653",
+  "artifact_sha256": "ee94dacac0f7c8281eb161a5212eb48825f2ccec0cee844173946237f314a653",
+  "meta": {
+    "type": "executable_python_unittest_microbench",
+    "batches": 86,
+    "symmetric_id_churn_balance": true
+  }
+}

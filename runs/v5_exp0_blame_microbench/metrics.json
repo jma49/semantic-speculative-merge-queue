@@ -1,0 +1,3649 @@
+{
+  "summary": {
+    "total_failing_batches": 86,
+    "single_defect_batches": 24,
+    "cofile_comment_batches": 16,
+    "cofile_sibling_batches": 22,
+    "semantic_conflict_batches": 24,
+    "ast_stack_top1_acc": 0.9884,
+    "ast_stack_top2_acc": 1.0,
+    "ast_stack_mrr": 0.9942,
+    "ast_stack_mean_ms": 2.272,
+    "ast_stack_max_ms": 3.505,
+    "ast_stack_loo_recovery_rate": 0.9884,
+    "ast_stack_disjoint_top1_acc": 1.0,
+    "ast_stack_comment_top1_acc": 1.0,
+    "ast_stack_sibling_top1_acc": 0.9545,
+    "ast_stack_sem_top1_acc": 1.0,
+    "file_trivia_top1_acc": 0.7558,
+    "file_trivia_top2_acc": 0.8837,
+    "file_trivia_mrr": 0.8445,
+    "file_trivia_mean_ms": 2.128,
+    "file_trivia_loo_recovery_rate": 0.7558,
+    "file_trivia_disjoint_top1_acc": 0.9167,
+    "file_trivia_comment_top1_acc": 1.0,
+    "file_trivia_sibling_top1_acc": 0.5,
+    "file_trivia_sem_top1_acc": 0.6667,
+    "file_raw_top1_acc": 0.6628,
+    "file_raw_top2_acc": 0.8837,
+    "file_raw_mrr": 0.798,
+    "file_raw_mean_ms": 0.861,
+    "file_raw_loo_recovery_rate": 0.6628,
+    "file_raw_comment_top1_acc": 0.5,
+    "file_raw_sibling_top1_acc": 0.5,
+    "churn_risk_top1_acc": 0.0,
+    "churn_risk_top2_acc": 0.0814,
+    "churn_risk_mrr": 0.2421,
+    "churn_risk_mean_ms": 0.0021,
+    "churn_risk_loo_recovery_rate": 0.0,
+    "churn_risk_comment_top1_acc": 0.0,
+    "churn_risk_sibling_top1_acc": 0.0,
+    "random_top1_acc": 0.2558,
+    "random_top2_acc": 0.407,
+    "random_mrr": 0.465,
+    "random_mean_ms": 0.0064,
+    "random_loo_recovery_rate": 0.2558,
+    "random_comment_top1_acc": 0.1875,
+    "random_sibling_top1_acc": 0.2273
+  },
+  "records": [
+    {
+      "case_id": 0,
+      "kind": "single_defect",
+      "batch_size": 4,
+      "patch_ids": [
+        "pr_c08_auth_lead",
+        "pr_c09_auth_empty",
+        "pr_d01_pricing_mult",
+        "pr_c05_inv_helper"
+      ],
+      "culprits": [
+        "pr_d01_pricing_mult"
+      ],
+      "failing_tests": [
+        "test_base_price",
+        "test_checkout_end_to_end"
+      ],
+      "ast_top1": "pr_d01_pricing_mult",
+      "ast_top2": [
+        "pr_d01_pricing_mult",
+        "pr_c08_auth_lead"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 1.884,
+      "file_trivia_top1": "pr_d01_pricing_mult",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_d01_pricing_mult",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": true,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=2)"
+      ]
+    },
+    {
+      "case_id": 1,
+      "kind": "single_defect",
+      "batch_size": 8,
+      "patch_ids": [
+        "pr_c05_inv_helper",
+        "pr_d01_pricing_mult",
+        "pr_c07_ship_floor",
+        "pr_c08_auth_lead",
+        "pr_c04_inv_check_zero",
+        "pr_c10_ledger_meta",
+        "pr_c12_checkout_meta",
+        "pr_c11_ledger_empty"
+      ],
+      "culprits": [
+        "pr_d01_pricing_mult"
+      ],
+      "failing_tests": [
+        "test_base_price",
+        "test_checkout_end_to_end"
+      ],
+      "ast_top1": "pr_d01_pricing_mult",
+      "ast_top2": [
+        "pr_d01_pricing_mult",
+        "pr_c12_checkout_meta"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.654,
+      "file_trivia_top1": "pr_d01_pricing_mult",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_d01_pricing_mult",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=2)"
+      ]
+    },
+    {
+      "case_id": 2,
+      "kind": "single_defect",
+      "batch_size": 4,
+      "patch_ids": [
+        "pr_c09_auth_empty",
+        "pr_d02_pricing_disc",
+        "pr_c07_ship_floor",
+        "pr_c11_ledger_empty"
+      ],
+      "culprits": [
+        "pr_d02_pricing_disc"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end",
+        "test_discount_and_tax"
+      ],
+      "ast_top1": "pr_d02_pricing_disc",
+      "ast_top2": [
+        "pr_d02_pricing_disc",
+        "pr_c07_ship_floor"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 1.732,
+      "file_trivia_top1": "pr_d02_pricing_disc",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_d02_pricing_disc",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=2)"
+      ]
+    },
+    {
+      "case_id": 3,
+      "kind": "single_defect",
+      "batch_size": 8,
+      "patch_ids": [
+        "pr_c06_ship_zone",
+        "pr_c11_ledger_empty",
+        "pr_c10_ledger_meta",
+        "pr_c09_auth_empty",
+        "pr_c04_inv_check_zero",
+        "pr_c12_checkout_meta",
+        "pr_c05_inv_helper",
+        "pr_d02_pricing_disc"
+      ],
+      "culprits": [
+        "pr_d02_pricing_disc"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end",
+        "test_discount_and_tax"
+      ],
+      "ast_top1": "pr_d02_pricing_disc",
+      "ast_top2": [
+        "pr_d02_pricing_disc",
+        "pr_c12_checkout_meta"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.709,
+      "file_trivia_top1": "pr_d02_pricing_disc",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_d02_pricing_disc",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=2)"
+      ]
+    },
+    {
+      "case_id": 4,
+      "kind": "single_defect",
+      "batch_size": 4,
+      "patch_ids": [
+        "pr_d03_pricing_tax",
+        "pr_c07_ship_floor",
+        "pr_c11_ledger_empty",
+        "pr_c09_auth_empty"
+      ],
+      "culprits": [
+        "pr_d03_pricing_tax"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end",
+        "test_discount_and_tax"
+      ],
+      "ast_top1": "pr_d03_pricing_tax",
+      "ast_top2": [
+        "pr_d03_pricing_tax",
+        "pr_c07_ship_floor"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 1.714,
+      "file_trivia_top1": "pr_d03_pricing_tax",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_d03_pricing_tax",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=2)"
+      ]
+    },
+    {
+      "case_id": 5,
+      "kind": "single_defect",
+      "batch_size": 8,
+      "patch_ids": [
+        "pr_c10_ledger_meta",
+        "pr_c05_inv_helper",
+        "pr_c08_auth_lead",
+        "pr_c09_auth_empty",
+        "pr_d03_pricing_tax",
+        "pr_c11_ledger_empty",
+        "pr_c06_ship_zone",
+        "pr_c07_ship_floor"
+      ],
+      "culprits": [
+        "pr_d03_pricing_tax"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end",
+        "test_discount_and_tax"
+      ],
+      "ast_top1": "pr_d03_pricing_tax",
+      "ast_top2": [
+        "pr_d03_pricing_tax",
+        "pr_c06_ship_zone"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.411,
+      "file_trivia_top1": "pr_d03_pricing_tax",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_d03_pricing_tax",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=2)"
+      ]
+    },
+    {
+      "case_id": 6,
+      "kind": "single_defect",
+      "batch_size": 4,
+      "patch_ids": [
+        "pr_c06_ship_zone",
+        "pr_d04_inv_check",
+        "pr_c03_pricing_zero_disc",
+        "pr_c12_checkout_meta"
+      ],
+      "culprits": [
+        "pr_d04_inv_check"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end",
+        "test_inventory_stock_and_reserve"
+      ],
+      "ast_top1": "pr_d04_inv_check",
+      "ast_top2": [
+        "pr_d04_inv_check",
+        "pr_c12_checkout_meta"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.027,
+      "file_trivia_top1": "pr_d04_inv_check",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_d04_inv_check",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": true,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=1, errors=1)"
+      ]
+    },
+    {
+      "case_id": 7,
+      "kind": "single_defect",
+      "batch_size": 8,
+      "patch_ids": [
+        "pr_c12_checkout_meta",
+        "pr_c09_auth_empty",
+        "pr_c01_pricing_guard",
+        "pr_c10_ledger_meta",
+        "pr_c06_ship_zone",
+        "pr_c02_pricing_clamp",
+        "pr_c11_ledger_empty",
+        "pr_d04_inv_check"
+      ],
+      "culprits": [
+        "pr_d04_inv_check"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end",
+        "test_inventory_stock_and_reserve"
+      ],
+      "ast_top1": "pr_d04_inv_check",
+      "ast_top2": [
+        "pr_d04_inv_check",
+        "pr_c12_checkout_meta"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.715,
+      "file_trivia_top1": "pr_d04_inv_check",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_d04_inv_check",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=1, errors=1)"
+      ]
+    },
+    {
+      "case_id": 8,
+      "kind": "single_defect",
+      "batch_size": 4,
+      "patch_ids": [
+        "pr_c10_ledger_meta",
+        "pr_c07_ship_floor",
+        "pr_c11_ledger_empty",
+        "pr_d05_inv_reserve"
+      ],
+      "culprits": [
+        "pr_d05_inv_reserve"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end",
+        "test_inventory_stock_and_reserve"
+      ],
+      "ast_top1": "pr_d05_inv_reserve",
+      "ast_top2": [
+        "pr_d05_inv_reserve",
+        "pr_c07_ship_floor"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 1.729,
+      "file_trivia_top1": "pr_d05_inv_reserve",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_d05_inv_reserve",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=2)"
+      ]
+    },
+    {
+      "case_id": 9,
+      "kind": "single_defect",
+      "batch_size": 8,
+      "patch_ids": [
+        "pr_c07_ship_floor",
+        "pr_c02_pricing_clamp",
+        "pr_c11_ledger_empty",
+        "pr_c10_ledger_meta",
+        "pr_c06_ship_zone",
+        "pr_c12_checkout_meta",
+        "pr_c01_pricing_guard",
+        "pr_d05_inv_reserve"
+      ],
+      "culprits": [
+        "pr_d05_inv_reserve"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end",
+        "test_inventory_stock_and_reserve"
+      ],
+      "ast_top1": "pr_d05_inv_reserve",
+      "ast_top2": [
+        "pr_d05_inv_reserve",
+        "pr_c12_checkout_meta"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.715,
+      "file_trivia_top1": "pr_d05_inv_reserve",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_d05_inv_reserve",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=2)"
+      ]
+    },
+    {
+      "case_id": 10,
+      "kind": "single_defect",
+      "batch_size": 4,
+      "patch_ids": [
+        "pr_c09_auth_empty",
+        "pr_d06_inv_restock",
+        "pr_c11_ledger_empty",
+        "pr_c01_pricing_guard"
+      ],
+      "culprits": [
+        "pr_d06_inv_restock"
+      ],
+      "failing_tests": [
+        "test_inventory_restock"
+      ],
+      "ast_top1": "pr_d06_inv_restock",
+      "ast_top2": [
+        "pr_d06_inv_restock",
+        "pr_c01_pricing_guard"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 1.695,
+      "file_trivia_top1": "pr_d06_inv_restock",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_d06_inv_restock",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=1)"
+      ]
+    },
+    {
+      "case_id": 11,
+      "kind": "single_defect",
+      "batch_size": 8,
+      "patch_ids": [
+        "pr_d06_inv_restock",
+        "pr_c12_checkout_meta",
+        "pr_c02_pricing_clamp",
+        "pr_c11_ledger_empty",
+        "pr_c06_ship_zone",
+        "pr_c07_ship_floor",
+        "pr_c09_auth_empty",
+        "pr_c10_ledger_meta"
+      ],
+      "culprits": [
+        "pr_d06_inv_restock"
+      ],
+      "failing_tests": [
+        "test_inventory_restock"
+      ],
+      "ast_top1": "pr_d06_inv_restock",
+      "ast_top2": [
+        "pr_d06_inv_restock",
+        "pr_c02_pricing_clamp"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.701,
+      "file_trivia_top1": "pr_d06_inv_restock",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_d06_inv_restock",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=1)"
+      ]
+    },
+    {
+      "case_id": 12,
+      "kind": "single_defect",
+      "batch_size": 4,
+      "patch_ids": [
+        "pr_c03_pricing_zero_disc",
+        "pr_c10_ledger_meta",
+        "pr_d07_ship_fee",
+        "pr_c09_auth_empty"
+      ],
+      "culprits": [
+        "pr_d07_ship_fee"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end",
+        "test_shipping_fee_only"
+      ],
+      "ast_top1": "pr_d07_ship_fee",
+      "ast_top2": [
+        "pr_d07_ship_fee",
+        "pr_c03_pricing_zero_disc"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 1.691,
+      "file_trivia_top1": "pr_d07_ship_fee",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_d07_ship_fee",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=2)"
+      ]
+    },
+    {
+      "case_id": 13,
+      "kind": "single_defect",
+      "batch_size": 8,
+      "patch_ids": [
+        "pr_c11_ledger_empty",
+        "pr_c05_inv_helper",
+        "pr_d07_ship_fee",
+        "pr_c08_auth_lead",
+        "pr_c02_pricing_clamp",
+        "pr_c12_checkout_meta",
+        "pr_c01_pricing_guard",
+        "pr_c10_ledger_meta"
+      ],
+      "culprits": [
+        "pr_d07_ship_fee"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end",
+        "test_shipping_fee_only"
+      ],
+      "ast_top1": "pr_d07_ship_fee",
+      "ast_top2": [
+        "pr_d07_ship_fee",
+        "pr_c12_checkout_meta"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.589,
+      "file_trivia_top1": "pr_d07_ship_fee",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_d07_ship_fee",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=2)"
+      ]
+    },
+    {
+      "case_id": 14,
+      "kind": "single_defect",
+      "batch_size": 4,
+      "patch_ids": [
+        "pr_c03_pricing_zero_disc",
+        "pr_c08_auth_lead",
+        "pr_d08_ship_days",
+        "pr_c10_ledger_meta"
+      ],
+      "culprits": [
+        "pr_d08_ship_days"
+      ],
+      "failing_tests": [
+        "test_shipping_days_only"
+      ],
+      "ast_top1": "pr_d08_ship_days",
+      "ast_top2": [
+        "pr_d08_ship_days",
+        "pr_c03_pricing_zero_disc"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 1.612,
+      "file_trivia_top1": "pr_d08_ship_days",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_d08_ship_days",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=1)"
+      ]
+    },
+    {
+      "case_id": 15,
+      "kind": "single_defect",
+      "batch_size": 8,
+      "patch_ids": [
+        "pr_c10_ledger_meta",
+        "pr_c12_checkout_meta",
+        "pr_c05_inv_helper",
+        "pr_c11_ledger_empty",
+        "pr_c02_pricing_clamp",
+        "pr_c01_pricing_guard",
+        "pr_d08_ship_days",
+        "pr_c04_inv_check_zero"
+      ],
+      "culprits": [
+        "pr_d08_ship_days"
+      ],
+      "failing_tests": [
+        "test_shipping_days_only"
+      ],
+      "ast_top1": "pr_d08_ship_days",
+      "ast_top2": [
+        "pr_d08_ship_days",
+        "pr_c01_pricing_guard"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.677,
+      "file_trivia_top1": "pr_d08_ship_days",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_d08_ship_days",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=1)"
+      ]
+    },
+    {
+      "case_id": 16,
+      "kind": "single_defect",
+      "batch_size": 4,
+      "patch_ids": [
+        "pr_c01_pricing_guard",
+        "pr_c02_pricing_clamp",
+        "pr_c07_ship_floor",
+        "pr_d09_auth_norm"
+      ],
+      "culprits": [
+        "pr_d09_auth_norm"
+      ],
+      "failing_tests": [
+        "test_auth_approval",
+        "test_auth_role_norm",
+        "test_checkout_end_to_end"
+      ],
+      "ast_top1": "pr_d09_auth_norm",
+      "ast_top2": [
+        "pr_d09_auth_norm",
+        "pr_c01_pricing_guard"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 1.766,
+      "file_trivia_top1": "pr_d09_auth_norm",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_d09_auth_norm",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=2, errors=1)"
+      ]
+    },
+    {
+      "case_id": 17,
+      "kind": "single_defect",
+      "batch_size": 8,
+      "patch_ids": [
+        "pr_c04_inv_check_zero",
+        "pr_d09_auth_norm",
+        "pr_c12_checkout_meta",
+        "pr_c03_pricing_zero_disc",
+        "pr_c06_ship_zone",
+        "pr_c01_pricing_guard",
+        "pr_c10_ledger_meta",
+        "pr_c05_inv_helper"
+      ],
+      "culprits": [
+        "pr_d09_auth_norm"
+      ],
+      "failing_tests": [
+        "test_auth_approval",
+        "test_auth_role_norm",
+        "test_checkout_end_to_end"
+      ],
+      "ast_top1": "pr_d09_auth_norm",
+      "ast_top2": [
+        "pr_d09_auth_norm",
+        "pr_c12_checkout_meta"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.803,
+      "file_trivia_top1": "pr_d09_auth_norm",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_d09_auth_norm",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=2, errors=1)"
+      ]
+    },
+    {
+      "case_id": 18,
+      "kind": "single_defect",
+      "batch_size": 4,
+      "patch_ids": [
+        "pr_c03_pricing_zero_disc",
+        "pr_c11_ledger_empty",
+        "pr_c04_inv_check_zero",
+        "pr_d10_auth_limit"
+      ],
+      "culprits": [
+        "pr_d10_auth_limit"
+      ],
+      "failing_tests": [
+        "test_auth_approval",
+        "test_checkout_end_to_end"
+      ],
+      "ast_top1": "pr_d10_auth_limit",
+      "ast_top2": [
+        "pr_d10_auth_limit",
+        "pr_c03_pricing_zero_disc"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 1.714,
+      "file_trivia_top1": "pr_d10_auth_limit",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_d10_auth_limit",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=1, errors=1)"
+      ]
+    },
+    {
+      "case_id": 19,
+      "kind": "single_defect",
+      "batch_size": 8,
+      "patch_ids": [
+        "pr_d10_auth_limit",
+        "pr_c05_inv_helper",
+        "pr_c04_inv_check_zero",
+        "pr_c12_checkout_meta",
+        "pr_c11_ledger_empty",
+        "pr_c01_pricing_guard",
+        "pr_c10_ledger_meta",
+        "pr_c02_pricing_clamp"
+      ],
+      "culprits": [
+        "pr_d10_auth_limit"
+      ],
+      "failing_tests": [
+        "test_auth_approval",
+        "test_checkout_end_to_end"
+      ],
+      "ast_top1": "pr_d10_auth_limit",
+      "ast_top2": [
+        "pr_d10_auth_limit",
+        "pr_c12_checkout_meta"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.732,
+      "file_trivia_top1": "pr_d10_auth_limit",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_d10_auth_limit",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=1, errors=1)"
+      ]
+    },
+    {
+      "case_id": 20,
+      "kind": "single_defect",
+      "batch_size": 4,
+      "patch_ids": [
+        "pr_d11_ledger_sum",
+        "pr_c08_auth_lead",
+        "pr_c03_pricing_zero_disc",
+        "pr_c01_pricing_guard"
+      ],
+      "culprits": [
+        "pr_d11_ledger_sum"
+      ],
+      "failing_tests": [
+        "test_ledger_summary"
+      ],
+      "ast_top1": "pr_d11_ledger_sum",
+      "ast_top2": [
+        "pr_d11_ledger_sum",
+        "pr_c01_pricing_guard"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 1.657,
+      "file_trivia_top1": "pr_d11_ledger_sum",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_d11_ledger_sum",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=1)"
+      ]
+    },
+    {
+      "case_id": 21,
+      "kind": "single_defect",
+      "batch_size": 8,
+      "patch_ids": [
+        "pr_c06_ship_zone",
+        "pr_c04_inv_check_zero",
+        "pr_c03_pricing_zero_disc",
+        "pr_c05_inv_helper",
+        "pr_d11_ledger_sum",
+        "pr_c07_ship_floor",
+        "pr_c09_auth_empty",
+        "pr_c12_checkout_meta"
+      ],
+      "culprits": [
+        "pr_d11_ledger_sum"
+      ],
+      "failing_tests": [
+        "test_ledger_summary"
+      ],
+      "ast_top1": "pr_d11_ledger_sum",
+      "ast_top2": [
+        "pr_d11_ledger_sum",
+        "pr_c03_pricing_zero_disc"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.784,
+      "file_trivia_top1": "pr_d11_ledger_sum",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_d11_ledger_sum",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=1)"
+      ]
+    },
+    {
+      "case_id": 22,
+      "kind": "single_defect",
+      "batch_size": 4,
+      "patch_ids": [
+        "pr_d12_checkout_total",
+        "pr_c08_auth_lead",
+        "pr_c11_ledger_empty",
+        "pr_c07_ship_floor"
+      ],
+      "culprits": [
+        "pr_d12_checkout_total"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end"
+      ],
+      "ast_top1": "pr_d12_checkout_total",
+      "ast_top2": [
+        "pr_d12_checkout_total",
+        "pr_c07_ship_floor"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 1.905,
+      "file_trivia_top1": "pr_c07_ship_floor",
+      "file_trivia_hit_top1": false,
+      "file_trivia_loo_pass": false,
+      "file_raw_top1": "pr_c07_ship_floor",
+      "file_raw_hit_top1": false,
+      "file_raw_loo_pass": false,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=1)"
+      ]
+    },
+    {
+      "case_id": 23,
+      "kind": "single_defect",
+      "batch_size": 8,
+      "patch_ids": [
+        "pr_c10_ledger_meta",
+        "pr_c08_auth_lead",
+        "pr_c05_inv_helper",
+        "pr_d12_checkout_total",
+        "pr_c09_auth_empty",
+        "pr_c06_ship_zone",
+        "pr_c11_ledger_empty",
+        "pr_c01_pricing_guard"
+      ],
+      "culprits": [
+        "pr_d12_checkout_total"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end"
+      ],
+      "ast_top1": "pr_d12_checkout_total",
+      "ast_top2": [
+        "pr_d12_checkout_total",
+        "pr_c01_pricing_guard"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.61,
+      "file_trivia_top1": "pr_c01_pricing_guard",
+      "file_trivia_hit_top1": false,
+      "file_trivia_loo_pass": false,
+      "file_raw_top1": "pr_c01_pricing_guard",
+      "file_raw_hit_top1": false,
+      "file_raw_loo_pass": false,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=1)"
+      ]
+    },
+    {
+      "case_id": 24,
+      "kind": "cofile_comment",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_c07_ship_floor",
+        "pr_c08_auth_lead",
+        "pr_a00_pr_m01_pricing_comment",
+        "pr_c11_ledger_empty",
+        "pr_c09_auth_empty",
+        "pr_d01_pricing_mult"
+      ],
+      "culprits": [
+        "pr_d01_pricing_mult"
+      ],
+      "failing_tests": [
+        "test_base_price",
+        "test_checkout_end_to_end"
+      ],
+      "ast_top1": "pr_d01_pricing_mult",
+      "ast_top2": [
+        "pr_d01_pricing_mult",
+        "pr_c07_ship_floor"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 1.969,
+      "file_trivia_top1": "pr_d01_pricing_mult",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_a00_pr_m01_pricing_comment",
+      "file_raw_hit_top1": false,
+      "file_raw_loo_pass": false,
+      "churn_loo_pass": false,
+      "rand_loo_pass": true,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=2)"
+      ]
+    },
+    {
+      "case_id": 25,
+      "kind": "cofile_comment",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_c09_auth_empty",
+        "pr_c08_auth_lead",
+        "pr_z00_pr_m01_pricing_comment",
+        "pr_c07_ship_floor",
+        "pr_c04_inv_check_zero",
+        "pr_d01_pricing_mult"
+      ],
+      "culprits": [
+        "pr_d01_pricing_mult"
+      ],
+      "failing_tests": [
+        "test_base_price",
+        "test_checkout_end_to_end"
+      ],
+      "ast_top1": "pr_d01_pricing_mult",
+      "ast_top2": [
+        "pr_d01_pricing_mult",
+        "pr_c04_inv_check_zero"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.061,
+      "file_trivia_top1": "pr_d01_pricing_mult",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_d01_pricing_mult",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=2)"
+      ]
+    },
+    {
+      "case_id": 26,
+      "kind": "cofile_comment",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_a01_pr_m01_pricing_comment",
+        "pr_c04_inv_check_zero",
+        "pr_d02_pricing_disc",
+        "pr_c06_ship_zone",
+        "pr_c11_ledger_empty",
+        "pr_c08_auth_lead"
+      ],
+      "culprits": [
+        "pr_d02_pricing_disc"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end",
+        "test_discount_and_tax"
+      ],
+      "ast_top1": "pr_d02_pricing_disc",
+      "ast_top2": [
+        "pr_d02_pricing_disc",
+        "pr_c04_inv_check_zero"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.137,
+      "file_trivia_top1": "pr_d02_pricing_disc",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_a01_pr_m01_pricing_comment",
+      "file_raw_hit_top1": false,
+      "file_raw_loo_pass": false,
+      "churn_loo_pass": false,
+      "rand_loo_pass": true,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=2)"
+      ]
+    },
+    {
+      "case_id": 27,
+      "kind": "cofile_comment",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_c10_ledger_meta",
+        "pr_d02_pricing_disc",
+        "pr_c06_ship_zone",
+        "pr_c12_checkout_meta",
+        "pr_z01_pr_m01_pricing_comment",
+        "pr_c09_auth_empty"
+      ],
+      "culprits": [
+        "pr_d02_pricing_disc"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end",
+        "test_discount_and_tax"
+      ],
+      "ast_top1": "pr_d02_pricing_disc",
+      "ast_top2": [
+        "pr_d02_pricing_disc",
+        "pr_c12_checkout_meta"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.329,
+      "file_trivia_top1": "pr_d02_pricing_disc",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_d02_pricing_disc",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=2)"
+      ]
+    },
+    {
+      "case_id": 28,
+      "kind": "cofile_comment",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_c06_ship_zone",
+        "pr_d03_pricing_tax",
+        "pr_c09_auth_empty",
+        "pr_a02_pr_m01_pricing_comment",
+        "pr_c08_auth_lead",
+        "pr_c05_inv_helper"
+      ],
+      "culprits": [
+        "pr_d03_pricing_tax"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end",
+        "test_discount_and_tax"
+      ],
+      "ast_top1": "pr_d03_pricing_tax",
+      "ast_top2": [
+        "pr_d03_pricing_tax",
+        "pr_c06_ship_zone"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.114,
+      "file_trivia_top1": "pr_d03_pricing_tax",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_a02_pr_m01_pricing_comment",
+      "file_raw_hit_top1": false,
+      "file_raw_loo_pass": false,
+      "churn_loo_pass": false,
+      "rand_loo_pass": true,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=2)"
+      ]
+    },
+    {
+      "case_id": 29,
+      "kind": "cofile_comment",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_d03_pricing_tax",
+        "pr_c12_checkout_meta",
+        "pr_z02_pr_m01_pricing_comment",
+        "pr_c11_ledger_empty",
+        "pr_c10_ledger_meta",
+        "pr_c04_inv_check_zero"
+      ],
+      "culprits": [
+        "pr_d03_pricing_tax"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end",
+        "test_discount_and_tax"
+      ],
+      "ast_top1": "pr_d03_pricing_tax",
+      "ast_top2": [
+        "pr_d03_pricing_tax",
+        "pr_c12_checkout_meta"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.328,
+      "file_trivia_top1": "pr_d03_pricing_tax",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_d03_pricing_tax",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=2)"
+      ]
+    },
+    {
+      "case_id": 30,
+      "kind": "cofile_comment",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_d04_inv_check",
+        "pr_c12_checkout_meta",
+        "pr_c08_auth_lead",
+        "pr_c11_ledger_empty",
+        "pr_a03_pr_m02_inv_comment",
+        "pr_c09_auth_empty"
+      ],
+      "culprits": [
+        "pr_d04_inv_check"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end",
+        "test_inventory_stock_and_reserve"
+      ],
+      "ast_top1": "pr_d04_inv_check",
+      "ast_top2": [
+        "pr_d04_inv_check",
+        "pr_c12_checkout_meta"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.403,
+      "file_trivia_top1": "pr_d04_inv_check",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_a03_pr_m02_inv_comment",
+      "file_raw_hit_top1": false,
+      "file_raw_loo_pass": false,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=1, errors=1)"
+      ]
+    },
+    {
+      "case_id": 31,
+      "kind": "cofile_comment",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_z03_pr_m02_inv_comment",
+        "pr_c06_ship_zone",
+        "pr_c11_ledger_empty",
+        "pr_c10_ledger_meta",
+        "pr_c12_checkout_meta",
+        "pr_d04_inv_check"
+      ],
+      "culprits": [
+        "pr_d04_inv_check"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end",
+        "test_inventory_stock_and_reserve"
+      ],
+      "ast_top1": "pr_d04_inv_check",
+      "ast_top2": [
+        "pr_d04_inv_check",
+        "pr_c12_checkout_meta"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.386,
+      "file_trivia_top1": "pr_d04_inv_check",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_d04_inv_check",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=1, errors=1)"
+      ]
+    },
+    {
+      "case_id": 32,
+      "kind": "cofile_comment",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_a04_pr_m02_inv_comment",
+        "pr_c08_auth_lead",
+        "pr_c07_ship_floor",
+        "pr_c09_auth_empty",
+        "pr_c01_pricing_guard",
+        "pr_d05_inv_reserve"
+      ],
+      "culprits": [
+        "pr_d05_inv_reserve"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end",
+        "test_inventory_stock_and_reserve"
+      ],
+      "ast_top1": "pr_d05_inv_reserve",
+      "ast_top2": [
+        "pr_d05_inv_reserve",
+        "pr_c01_pricing_guard"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.149,
+      "file_trivia_top1": "pr_d05_inv_reserve",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_a04_pr_m02_inv_comment",
+      "file_raw_hit_top1": false,
+      "file_raw_loo_pass": false,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=2)"
+      ]
+    },
+    {
+      "case_id": 33,
+      "kind": "cofile_comment",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_d05_inv_reserve",
+        "pr_c02_pricing_clamp",
+        "pr_z04_pr_m02_inv_comment",
+        "pr_c07_ship_floor",
+        "pr_c12_checkout_meta",
+        "pr_c09_auth_empty"
+      ],
+      "culprits": [
+        "pr_d05_inv_reserve"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end",
+        "test_inventory_stock_and_reserve"
+      ],
+      "ast_top1": "pr_d05_inv_reserve",
+      "ast_top2": [
+        "pr_d05_inv_reserve",
+        "pr_c12_checkout_meta"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.457,
+      "file_trivia_top1": "pr_d05_inv_reserve",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_d05_inv_reserve",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=2)"
+      ]
+    },
+    {
+      "case_id": 34,
+      "kind": "cofile_comment",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_a05_pr_m02_inv_comment",
+        "pr_c01_pricing_guard",
+        "pr_c08_auth_lead",
+        "pr_d06_inv_restock",
+        "pr_c11_ledger_empty",
+        "pr_c06_ship_zone"
+      ],
+      "culprits": [
+        "pr_d06_inv_restock"
+      ],
+      "failing_tests": [
+        "test_inventory_restock"
+      ],
+      "ast_top1": "pr_d06_inv_restock",
+      "ast_top2": [
+        "pr_d06_inv_restock",
+        "pr_c01_pricing_guard"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.122,
+      "file_trivia_top1": "pr_d06_inv_restock",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_a05_pr_m02_inv_comment",
+      "file_raw_hit_top1": false,
+      "file_raw_loo_pass": false,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=1)"
+      ]
+    },
+    {
+      "case_id": 35,
+      "kind": "cofile_comment",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_z05_pr_m02_inv_comment",
+        "pr_c07_ship_floor",
+        "pr_c11_ledger_empty",
+        "pr_c03_pricing_zero_disc",
+        "pr_c08_auth_lead",
+        "pr_d06_inv_restock"
+      ],
+      "culprits": [
+        "pr_d06_inv_restock"
+      ],
+      "failing_tests": [
+        "test_inventory_restock"
+      ],
+      "ast_top1": "pr_d06_inv_restock",
+      "ast_top2": [
+        "pr_d06_inv_restock",
+        "pr_c03_pricing_zero_disc"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.114,
+      "file_trivia_top1": "pr_d06_inv_restock",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_d06_inv_restock",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=1)"
+      ]
+    },
+    {
+      "case_id": 36,
+      "kind": "cofile_comment",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_a06_pr_m03_ship_comment",
+        "pr_c11_ledger_empty",
+        "pr_c08_auth_lead",
+        "pr_d07_ship_fee",
+        "pr_c04_inv_check_zero",
+        "pr_c09_auth_empty"
+      ],
+      "culprits": [
+        "pr_d07_ship_fee"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end",
+        "test_shipping_fee_only"
+      ],
+      "ast_top1": "pr_d07_ship_fee",
+      "ast_top2": [
+        "pr_d07_ship_fee",
+        "pr_c04_inv_check_zero"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.114,
+      "file_trivia_top1": "pr_d07_ship_fee",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_a06_pr_m03_ship_comment",
+      "file_raw_hit_top1": false,
+      "file_raw_loo_pass": false,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=2)"
+      ]
+    },
+    {
+      "case_id": 37,
+      "kind": "cofile_comment",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_c09_auth_empty",
+        "pr_z06_pr_m03_ship_comment",
+        "pr_c03_pricing_zero_disc",
+        "pr_c11_ledger_empty",
+        "pr_d07_ship_fee",
+        "pr_c01_pricing_guard"
+      ],
+      "culprits": [
+        "pr_d07_ship_fee"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end",
+        "test_shipping_fee_only"
+      ],
+      "ast_top1": "pr_d07_ship_fee",
+      "ast_top2": [
+        "pr_d07_ship_fee",
+        "pr_c01_pricing_guard"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.159,
+      "file_trivia_top1": "pr_d07_ship_fee",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_d07_ship_fee",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=2)"
+      ]
+    },
+    {
+      "case_id": 38,
+      "kind": "cofile_comment",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_a07_pr_m03_ship_comment",
+        "pr_d08_ship_days",
+        "pr_c03_pricing_zero_disc",
+        "pr_c11_ledger_empty",
+        "pr_c10_ledger_meta",
+        "pr_c09_auth_empty"
+      ],
+      "culprits": [
+        "pr_d08_ship_days"
+      ],
+      "failing_tests": [
+        "test_shipping_days_only"
+      ],
+      "ast_top1": "pr_d08_ship_days",
+      "ast_top2": [
+        "pr_d08_ship_days",
+        "pr_c03_pricing_zero_disc"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.011,
+      "file_trivia_top1": "pr_d08_ship_days",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_a07_pr_m03_ship_comment",
+      "file_raw_hit_top1": false,
+      "file_raw_loo_pass": false,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=1)"
+      ]
+    },
+    {
+      "case_id": 39,
+      "kind": "cofile_comment",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_c05_inv_helper",
+        "pr_c10_ledger_meta",
+        "pr_d08_ship_days",
+        "pr_c11_ledger_empty",
+        "pr_c08_auth_lead",
+        "pr_z07_pr_m03_ship_comment"
+      ],
+      "culprits": [
+        "pr_d08_ship_days"
+      ],
+      "failing_tests": [
+        "test_shipping_days_only"
+      ],
+      "ast_top1": "pr_d08_ship_days",
+      "ast_top2": [
+        "pr_d08_ship_days",
+        "pr_c05_inv_helper"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.057,
+      "file_trivia_top1": "pr_d08_ship_days",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_d08_ship_days",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=1)"
+      ]
+    },
+    {
+      "case_id": 40,
+      "kind": "cofile_sibling",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_c07_ship_floor",
+        "pr_c05_inv_helper",
+        "pr_c04_inv_check_zero",
+        "pr_c11_ledger_empty",
+        "pr_a00_pr_s01_pricing_sib_tax",
+        "pr_d01_pricing_mult"
+      ],
+      "culprits": [
+        "pr_d01_pricing_mult"
+      ],
+      "failing_tests": [
+        "test_base_price",
+        "test_checkout_end_to_end"
+      ],
+      "ast_top1": "pr_d01_pricing_mult",
+      "ast_top2": [
+        "pr_d01_pricing_mult",
+        "pr_a00_pr_s01_pricing_sib_tax"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.222,
+      "file_trivia_top1": "pr_a00_pr_s01_pricing_sib_tax",
+      "file_trivia_hit_top1": false,
+      "file_trivia_loo_pass": false,
+      "file_raw_top1": "pr_a00_pr_s01_pricing_sib_tax",
+      "file_raw_hit_top1": false,
+      "file_raw_loo_pass": false,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=2)"
+      ]
+    },
+    {
+      "case_id": 41,
+      "kind": "cofile_sibling",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_c09_auth_empty",
+        "pr_c06_ship_zone",
+        "pr_z00_pr_s01_pricing_sib_tax",
+        "pr_d01_pricing_mult",
+        "pr_c07_ship_floor",
+        "pr_c08_auth_lead"
+      ],
+      "culprits": [
+        "pr_d01_pricing_mult"
+      ],
+      "failing_tests": [
+        "test_base_price",
+        "test_checkout_end_to_end"
+      ],
+      "ast_top1": "pr_d01_pricing_mult",
+      "ast_top2": [
+        "pr_d01_pricing_mult",
+        "pr_z00_pr_s01_pricing_sib_tax"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.072,
+      "file_trivia_top1": "pr_d01_pricing_mult",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_d01_pricing_mult",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=2)"
+      ]
+    },
+    {
+      "case_id": 42,
+      "kind": "cofile_sibling",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_d02_pricing_disc",
+        "pr_c09_auth_empty",
+        "pr_c11_ledger_empty",
+        "pr_c12_checkout_meta",
+        "pr_c10_ledger_meta",
+        "pr_a01_pr_s02_pricing_sib_base"
+      ],
+      "culprits": [
+        "pr_d02_pricing_disc"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end",
+        "test_discount_and_tax"
+      ],
+      "ast_top1": "pr_d02_pricing_disc",
+      "ast_top2": [
+        "pr_d02_pricing_disc",
+        "pr_a01_pr_s02_pricing_sib_base"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.177,
+      "file_trivia_top1": "pr_a01_pr_s02_pricing_sib_base",
+      "file_trivia_hit_top1": false,
+      "file_trivia_loo_pass": false,
+      "file_raw_top1": "pr_a01_pr_s02_pricing_sib_base",
+      "file_raw_hit_top1": false,
+      "file_raw_loo_pass": false,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=2)"
+      ]
+    },
+    {
+      "case_id": 43,
+      "kind": "cofile_sibling",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_c11_ledger_empty",
+        "pr_d02_pricing_disc",
+        "pr_c04_inv_check_zero",
+        "pr_c06_ship_zone",
+        "pr_c12_checkout_meta",
+        "pr_z01_pr_s02_pricing_sib_base"
+      ],
+      "culprits": [
+        "pr_d02_pricing_disc"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end",
+        "test_discount_and_tax"
+      ],
+      "ast_top1": "pr_d02_pricing_disc",
+      "ast_top2": [
+        "pr_d02_pricing_disc",
+        "pr_z01_pr_s02_pricing_sib_base"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.431,
+      "file_trivia_top1": "pr_d02_pricing_disc",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_d02_pricing_disc",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=2)"
+      ]
+    },
+    {
+      "case_id": 44,
+      "kind": "cofile_sibling",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_c11_ledger_empty",
+        "pr_c05_inv_helper",
+        "pr_a02_pr_s03_pricing_sib_base",
+        "pr_c08_auth_lead",
+        "pr_c06_ship_zone",
+        "pr_d03_pricing_tax"
+      ],
+      "culprits": [
+        "pr_d03_pricing_tax"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end",
+        "test_discount_and_tax"
+      ],
+      "ast_top1": "pr_d03_pricing_tax",
+      "ast_top2": [
+        "pr_d03_pricing_tax",
+        "pr_a02_pr_s03_pricing_sib_base"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.113,
+      "file_trivia_top1": "pr_a02_pr_s03_pricing_sib_base",
+      "file_trivia_hit_top1": false,
+      "file_trivia_loo_pass": false,
+      "file_raw_top1": "pr_a02_pr_s03_pricing_sib_base",
+      "file_raw_hit_top1": false,
+      "file_raw_loo_pass": false,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=2)"
+      ]
+    },
+    {
+      "case_id": 45,
+      "kind": "cofile_sibling",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_c09_auth_empty",
+        "pr_d03_pricing_tax",
+        "pr_c07_ship_floor",
+        "pr_c04_inv_check_zero",
+        "pr_c10_ledger_meta",
+        "pr_z02_pr_s03_pricing_sib_base"
+      ],
+      "culprits": [
+        "pr_d03_pricing_tax"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end",
+        "test_discount_and_tax"
+      ],
+      "ast_top1": "pr_d03_pricing_tax",
+      "ast_top2": [
+        "pr_d03_pricing_tax",
+        "pr_z02_pr_s03_pricing_sib_base"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.151,
+      "file_trivia_top1": "pr_d03_pricing_tax",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_d03_pricing_tax",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=2)"
+      ]
+    },
+    {
+      "case_id": 46,
+      "kind": "cofile_sibling",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_a03_pr_s04_inv_sib_restock",
+        "pr_c07_ship_floor",
+        "pr_c03_pricing_zero_disc",
+        "pr_c12_checkout_meta",
+        "pr_d04_inv_check",
+        "pr_c11_ledger_empty"
+      ],
+      "culprits": [
+        "pr_d04_inv_check"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end",
+        "test_inventory_stock_and_reserve"
+      ],
+      "ast_top1": "pr_d04_inv_check",
+      "ast_top2": [
+        "pr_d04_inv_check",
+        "pr_c12_checkout_meta"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.513,
+      "file_trivia_top1": "pr_a03_pr_s04_inv_sib_restock",
+      "file_trivia_hit_top1": false,
+      "file_trivia_loo_pass": false,
+      "file_raw_top1": "pr_a03_pr_s04_inv_sib_restock",
+      "file_raw_hit_top1": false,
+      "file_raw_loo_pass": false,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=1, errors=1)"
+      ]
+    },
+    {
+      "case_id": 47,
+      "kind": "cofile_sibling",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_c07_ship_floor",
+        "pr_c03_pricing_zero_disc",
+        "pr_d04_inv_check",
+        "pr_c11_ledger_empty",
+        "pr_z03_pr_s04_inv_sib_restock",
+        "pr_c08_auth_lead"
+      ],
+      "culprits": [
+        "pr_d04_inv_check"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end",
+        "test_inventory_stock_and_reserve"
+      ],
+      "ast_top1": "pr_d04_inv_check",
+      "ast_top2": [
+        "pr_d04_inv_check",
+        "pr_z03_pr_s04_inv_sib_restock"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.255,
+      "file_trivia_top1": "pr_d04_inv_check",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_d04_inv_check",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=1, errors=1)"
+      ]
+    },
+    {
+      "case_id": 48,
+      "kind": "cofile_sibling",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_a04_pr_s05_inv_sib_restock",
+        "pr_c07_ship_floor",
+        "pr_c12_checkout_meta",
+        "pr_d05_inv_reserve",
+        "pr_c03_pricing_zero_disc",
+        "pr_c11_ledger_empty"
+      ],
+      "culprits": [
+        "pr_d05_inv_reserve"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end",
+        "test_inventory_stock_and_reserve"
+      ],
+      "ast_top1": "pr_d05_inv_reserve",
+      "ast_top2": [
+        "pr_d05_inv_reserve",
+        "pr_a04_pr_s05_inv_sib_restock"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.421,
+      "file_trivia_top1": "pr_a04_pr_s05_inv_sib_restock",
+      "file_trivia_hit_top1": false,
+      "file_trivia_loo_pass": false,
+      "file_raw_top1": "pr_a04_pr_s05_inv_sib_restock",
+      "file_raw_hit_top1": false,
+      "file_raw_loo_pass": false,
+      "churn_loo_pass": false,
+      "rand_loo_pass": true,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=2)"
+      ]
+    },
+    {
+      "case_id": 49,
+      "kind": "cofile_sibling",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_c09_auth_empty",
+        "pr_d05_inv_reserve",
+        "pr_c03_pricing_zero_disc",
+        "pr_c12_checkout_meta",
+        "pr_c10_ledger_meta",
+        "pr_z04_pr_s05_inv_sib_restock"
+      ],
+      "culprits": [
+        "pr_d05_inv_reserve"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end",
+        "test_inventory_stock_and_reserve"
+      ],
+      "ast_top1": "pr_d05_inv_reserve",
+      "ast_top2": [
+        "pr_d05_inv_reserve",
+        "pr_z04_pr_s05_inv_sib_restock"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.316,
+      "file_trivia_top1": "pr_d05_inv_reserve",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_d05_inv_reserve",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=2)"
+      ]
+    },
+    {
+      "case_id": 50,
+      "kind": "cofile_sibling",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_c12_checkout_meta",
+        "pr_c01_pricing_guard",
+        "pr_c03_pricing_zero_disc",
+        "pr_d06_inv_restock",
+        "pr_a05_pr_s06_inv_sib_check",
+        "pr_c11_ledger_empty"
+      ],
+      "culprits": [
+        "pr_d06_inv_restock"
+      ],
+      "failing_tests": [
+        "test_inventory_restock"
+      ],
+      "ast_top1": "pr_d06_inv_restock",
+      "ast_top2": [
+        "pr_d06_inv_restock",
+        "pr_a05_pr_s06_inv_sib_check"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.382,
+      "file_trivia_top1": "pr_a05_pr_s06_inv_sib_check",
+      "file_trivia_hit_top1": false,
+      "file_trivia_loo_pass": false,
+      "file_raw_top1": "pr_a05_pr_s06_inv_sib_check",
+      "file_raw_hit_top1": false,
+      "file_raw_loo_pass": false,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=1)"
+      ]
+    },
+    {
+      "case_id": 51,
+      "kind": "cofile_sibling",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_c11_ledger_empty",
+        "pr_c06_ship_zone",
+        "pr_c08_auth_lead",
+        "pr_d06_inv_restock",
+        "pr_z05_pr_s06_inv_sib_check",
+        "pr_c07_ship_floor"
+      ],
+      "culprits": [
+        "pr_d06_inv_restock"
+      ],
+      "failing_tests": [
+        "test_inventory_restock"
+      ],
+      "ast_top1": "pr_d06_inv_restock",
+      "ast_top2": [
+        "pr_d06_inv_restock",
+        "pr_z05_pr_s06_inv_sib_check"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.191,
+      "file_trivia_top1": "pr_d06_inv_restock",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_d06_inv_restock",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": true,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=1)"
+      ]
+    },
+    {
+      "case_id": 52,
+      "kind": "cofile_sibling",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_a06_pr_s07_ship_sib_days",
+        "pr_c02_pricing_clamp",
+        "pr_c10_ledger_meta",
+        "pr_c09_auth_empty",
+        "pr_c08_auth_lead",
+        "pr_d07_ship_fee"
+      ],
+      "culprits": [
+        "pr_d07_ship_fee"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end",
+        "test_shipping_fee_only"
+      ],
+      "ast_top1": "pr_d07_ship_fee",
+      "ast_top2": [
+        "pr_d07_ship_fee",
+        "pr_a06_pr_s07_ship_sib_days"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.045,
+      "file_trivia_top1": "pr_a06_pr_s07_ship_sib_days",
+      "file_trivia_hit_top1": false,
+      "file_trivia_loo_pass": false,
+      "file_raw_top1": "pr_a06_pr_s07_ship_sib_days",
+      "file_raw_hit_top1": false,
+      "file_raw_loo_pass": false,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=2)"
+      ]
+    },
+    {
+      "case_id": 53,
+      "kind": "cofile_sibling",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_d07_ship_fee",
+        "pr_c10_ledger_meta",
+        "pr_c04_inv_check_zero",
+        "pr_c08_auth_lead",
+        "pr_z06_pr_s07_ship_sib_days",
+        "pr_c02_pricing_clamp"
+      ],
+      "culprits": [
+        "pr_d07_ship_fee"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end",
+        "test_shipping_fee_only"
+      ],
+      "ast_top1": "pr_d07_ship_fee",
+      "ast_top2": [
+        "pr_d07_ship_fee",
+        "pr_z06_pr_s07_ship_sib_days"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.083,
+      "file_trivia_top1": "pr_d07_ship_fee",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_d07_ship_fee",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": true,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=2)"
+      ]
+    },
+    {
+      "case_id": 54,
+      "kind": "cofile_sibling",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_a07_pr_s08_ship_sib_fee",
+        "pr_d08_ship_days",
+        "pr_c08_auth_lead",
+        "pr_c02_pricing_clamp",
+        "pr_c01_pricing_guard",
+        "pr_c12_checkout_meta"
+      ],
+      "culprits": [
+        "pr_d08_ship_days"
+      ],
+      "failing_tests": [
+        "test_shipping_days_only"
+      ],
+      "ast_top1": "pr_d08_ship_days",
+      "ast_top2": [
+        "pr_d08_ship_days",
+        "pr_a07_pr_s08_ship_sib_fee"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.324,
+      "file_trivia_top1": "pr_a07_pr_s08_ship_sib_fee",
+      "file_trivia_hit_top1": false,
+      "file_trivia_loo_pass": false,
+      "file_raw_top1": "pr_a07_pr_s08_ship_sib_fee",
+      "file_raw_hit_top1": false,
+      "file_raw_loo_pass": false,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=1)"
+      ]
+    },
+    {
+      "case_id": 55,
+      "kind": "cofile_sibling",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_c03_pricing_zero_disc",
+        "pr_c08_auth_lead",
+        "pr_c05_inv_helper",
+        "pr_d08_ship_days",
+        "pr_c09_auth_empty",
+        "pr_z07_pr_s08_ship_sib_fee"
+      ],
+      "culprits": [
+        "pr_d08_ship_days"
+      ],
+      "failing_tests": [
+        "test_shipping_days_only"
+      ],
+      "ast_top1": "pr_d08_ship_days",
+      "ast_top2": [
+        "pr_d08_ship_days",
+        "pr_z07_pr_s08_ship_sib_fee"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.179,
+      "file_trivia_top1": "pr_d08_ship_days",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_d08_ship_days",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=1)"
+      ]
+    },
+    {
+      "case_id": 56,
+      "kind": "cofile_sibling",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_c07_ship_floor",
+        "pr_d09_auth_norm",
+        "pr_a08_pr_s09_auth_sib_appr",
+        "pr_c03_pricing_zero_disc",
+        "pr_c06_ship_zone",
+        "pr_c02_pricing_clamp"
+      ],
+      "culprits": [
+        "pr_d09_auth_norm"
+      ],
+      "failing_tests": [
+        "test_auth_approval",
+        "test_auth_role_norm",
+        "test_checkout_end_to_end"
+      ],
+      "ast_top1": "pr_d09_auth_norm",
+      "ast_top2": [
+        "pr_d09_auth_norm",
+        "pr_a08_pr_s09_auth_sib_appr"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.162,
+      "file_trivia_top1": "pr_a08_pr_s09_auth_sib_appr",
+      "file_trivia_hit_top1": false,
+      "file_trivia_loo_pass": false,
+      "file_raw_top1": "pr_a08_pr_s09_auth_sib_appr",
+      "file_raw_hit_top1": false,
+      "file_raw_loo_pass": false,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=2, errors=1)"
+      ]
+    },
+    {
+      "case_id": 57,
+      "kind": "cofile_sibling",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_c12_checkout_meta",
+        "pr_c04_inv_check_zero",
+        "pr_d09_auth_norm",
+        "pr_c07_ship_floor",
+        "pr_z08_pr_s09_auth_sib_appr",
+        "pr_c02_pricing_clamp"
+      ],
+      "culprits": [
+        "pr_d09_auth_norm"
+      ],
+      "failing_tests": [
+        "test_auth_approval",
+        "test_auth_role_norm",
+        "test_checkout_end_to_end"
+      ],
+      "ast_top1": "pr_d09_auth_norm",
+      "ast_top2": [
+        "pr_d09_auth_norm",
+        "pr_z08_pr_s09_auth_sib_appr"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.441,
+      "file_trivia_top1": "pr_d09_auth_norm",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_d09_auth_norm",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=2, errors=1)"
+      ]
+    },
+    {
+      "case_id": 58,
+      "kind": "cofile_sibling",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_c06_ship_zone",
+        "pr_d10_auth_limit",
+        "pr_a09_pr_s10_auth_sib_norm",
+        "pr_c02_pricing_clamp",
+        "pr_c12_checkout_meta",
+        "pr_c03_pricing_zero_disc"
+      ],
+      "culprits": [
+        "pr_d10_auth_limit"
+      ],
+      "failing_tests": [
+        "test_auth_approval",
+        "test_checkout_end_to_end"
+      ],
+      "ast_top1": "pr_d10_auth_limit",
+      "ast_top2": [
+        "pr_d10_auth_limit",
+        "pr_c12_checkout_meta"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.28,
+      "file_trivia_top1": "pr_a09_pr_s10_auth_sib_norm",
+      "file_trivia_hit_top1": false,
+      "file_trivia_loo_pass": false,
+      "file_raw_top1": "pr_a09_pr_s10_auth_sib_norm",
+      "file_raw_hit_top1": false,
+      "file_raw_loo_pass": false,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=1, errors=1)"
+      ]
+    },
+    {
+      "case_id": 59,
+      "kind": "cofile_sibling",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_d10_auth_limit",
+        "pr_c06_ship_zone",
+        "pr_c05_inv_helper",
+        "pr_z09_pr_s10_auth_sib_norm",
+        "pr_c03_pricing_zero_disc",
+        "pr_c04_inv_check_zero"
+      ],
+      "culprits": [
+        "pr_d10_auth_limit"
+      ],
+      "failing_tests": [
+        "test_auth_approval",
+        "test_checkout_end_to_end"
+      ],
+      "ast_top1": "pr_d10_auth_limit",
+      "ast_top2": [
+        "pr_d10_auth_limit",
+        "pr_z09_pr_s10_auth_sib_norm"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.188,
+      "file_trivia_top1": "pr_d10_auth_limit",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_d10_auth_limit",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=1, errors=1)"
+      ]
+    },
+    {
+      "case_id": 60,
+      "kind": "cofile_sibling",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_a10_pr_s11_ledger_sib_fmt",
+        "pr_c07_ship_floor",
+        "pr_c12_checkout_meta",
+        "pr_c05_inv_helper",
+        "pr_c01_pricing_guard",
+        "pr_d11_ledger_sum"
+      ],
+      "culprits": [
+        "pr_d11_ledger_sum"
+      ],
+      "failing_tests": [
+        "test_ledger_summary"
+      ],
+      "ast_top1": "pr_a10_pr_s11_ledger_sib_fmt",
+      "ast_top2": [
+        "pr_a10_pr_s11_ledger_sib_fmt",
+        "pr_d11_ledger_sum"
+      ],
+      "ast_hit_top1": false,
+      "ast_hit_top2": true,
+      "ast_loo_pass": false,
+      "ast_latency_ms": 2.302,
+      "file_trivia_top1": "pr_a10_pr_s11_ledger_sib_fmt",
+      "file_trivia_hit_top1": false,
+      "file_trivia_loo_pass": false,
+      "file_raw_top1": "pr_a10_pr_s11_ledger_sib_fmt",
+      "file_raw_hit_top1": false,
+      "file_raw_loo_pass": false,
+      "churn_loo_pass": false,
+      "rand_loo_pass": true,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=1)"
+      ]
+    },
+    {
+      "case_id": 61,
+      "kind": "cofile_sibling",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_z10_pr_s11_ledger_sib_fmt",
+        "pr_c12_checkout_meta",
+        "pr_c09_auth_empty",
+        "pr_c08_auth_lead",
+        "pr_d11_ledger_sum",
+        "pr_c04_inv_check_zero"
+      ],
+      "culprits": [
+        "pr_d11_ledger_sum"
+      ],
+      "failing_tests": [
+        "test_ledger_summary"
+      ],
+      "ast_top1": "pr_d11_ledger_sum",
+      "ast_top2": [
+        "pr_d11_ledger_sum",
+        "pr_z10_pr_s11_ledger_sib_fmt"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.265,
+      "file_trivia_top1": "pr_d11_ledger_sum",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_d11_ledger_sum",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": true,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=1)"
+      ]
+    },
+    {
+      "case_id": 62,
+      "kind": "semantic_conflict",
+      "batch_size": 4,
+      "patch_ids": [
+        "pr_s01b_checkout_penny",
+        "pr_c06_ship_zone",
+        "pr_c04_inv_check_zero",
+        "pr_s01a_pricing_round0"
+      ],
+      "culprits": [
+        "pr_s01a_pricing_round0",
+        "pr_s01b_checkout_penny"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end"
+      ],
+      "ast_top1": "pr_s01b_checkout_penny",
+      "ast_top2": [
+        "pr_s01b_checkout_penny",
+        "pr_c04_inv_check_zero"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.048,
+      "file_trivia_top1": "pr_c04_inv_check_zero",
+      "file_trivia_hit_top1": false,
+      "file_trivia_loo_pass": false,
+      "file_raw_top1": "pr_c04_inv_check_zero",
+      "file_raw_hit_top1": false,
+      "file_raw_loo_pass": false,
+      "churn_loo_pass": false,
+      "rand_loo_pass": true,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=1)"
+      ]
+    },
+    {
+      "case_id": 63,
+      "kind": "semantic_conflict",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_c11_ledger_empty",
+        "pr_s01b_checkout_penny",
+        "pr_c09_auth_empty",
+        "pr_s01a_pricing_round0",
+        "pr_c10_ledger_meta",
+        "pr_c07_ship_floor"
+      ],
+      "culprits": [
+        "pr_s01a_pricing_round0",
+        "pr_s01b_checkout_penny"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end"
+      ],
+      "ast_top1": "pr_s01b_checkout_penny",
+      "ast_top2": [
+        "pr_s01b_checkout_penny",
+        "pr_c07_ship_floor"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.281,
+      "file_trivia_top1": "pr_c07_ship_floor",
+      "file_trivia_hit_top1": false,
+      "file_trivia_loo_pass": false,
+      "file_raw_top1": "pr_c07_ship_floor",
+      "file_raw_hit_top1": false,
+      "file_raw_loo_pass": false,
+      "churn_loo_pass": false,
+      "rand_loo_pass": true,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=1)"
+      ]
+    },
+    {
+      "case_id": 64,
+      "kind": "semantic_conflict",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_c08_auth_lead",
+        "pr_c06_ship_zone",
+        "pr_s01b_checkout_penny",
+        "pr_c04_inv_check_zero",
+        "pr_s01a_pricing_round0",
+        "pr_c05_inv_helper"
+      ],
+      "culprits": [
+        "pr_s01a_pricing_round0",
+        "pr_s01b_checkout_penny"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end"
+      ],
+      "ast_top1": "pr_s01b_checkout_penny",
+      "ast_top2": [
+        "pr_s01b_checkout_penny",
+        "pr_c04_inv_check_zero"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.462,
+      "file_trivia_top1": "pr_c04_inv_check_zero",
+      "file_trivia_hit_top1": false,
+      "file_trivia_loo_pass": false,
+      "file_raw_top1": "pr_c04_inv_check_zero",
+      "file_raw_hit_top1": false,
+      "file_raw_loo_pass": false,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=1)"
+      ]
+    },
+    {
+      "case_id": 65,
+      "kind": "semantic_conflict",
+      "batch_size": 8,
+      "patch_ids": [
+        "pr_c04_inv_check_zero",
+        "pr_c05_inv_helper",
+        "pr_s01a_pricing_round0",
+        "pr_c07_ship_floor",
+        "pr_c11_ledger_empty",
+        "pr_c08_auth_lead",
+        "pr_s01b_checkout_penny",
+        "pr_c09_auth_empty"
+      ],
+      "culprits": [
+        "pr_s01a_pricing_round0",
+        "pr_s01b_checkout_penny"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end"
+      ],
+      "ast_top1": "pr_s01b_checkout_penny",
+      "ast_top2": [
+        "pr_s01b_checkout_penny",
+        "pr_c04_inv_check_zero"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.714,
+      "file_trivia_top1": "pr_c04_inv_check_zero",
+      "file_trivia_hit_top1": false,
+      "file_trivia_loo_pass": false,
+      "file_raw_top1": "pr_c04_inv_check_zero",
+      "file_raw_hit_top1": false,
+      "file_raw_loo_pass": false,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=1)"
+      ]
+    },
+    {
+      "case_id": 66,
+      "kind": "semantic_conflict",
+      "batch_size": 4,
+      "patch_ids": [
+        "pr_c04_inv_check_zero",
+        "pr_c08_auth_lead",
+        "pr_s02a_pricing_tax_tier",
+        "pr_s02b_checkout_tax_bundle"
+      ],
+      "culprits": [
+        "pr_s02a_pricing_tax_tier",
+        "pr_s02b_checkout_tax_bundle"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end"
+      ],
+      "ast_top1": "pr_s02b_checkout_tax_bundle",
+      "ast_top2": [
+        "pr_s02b_checkout_tax_bundle",
+        "pr_c04_inv_check_zero"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.017,
+      "file_trivia_top1": "pr_c04_inv_check_zero",
+      "file_trivia_hit_top1": false,
+      "file_trivia_loo_pass": false,
+      "file_raw_top1": "pr_c04_inv_check_zero",
+      "file_raw_hit_top1": false,
+      "file_raw_loo_pass": false,
+      "churn_loo_pass": false,
+      "rand_loo_pass": true,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=1)"
+      ]
+    },
+    {
+      "case_id": 67,
+      "kind": "semantic_conflict",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_s02b_checkout_tax_bundle",
+        "pr_c06_ship_zone",
+        "pr_c07_ship_floor",
+        "pr_s02a_pricing_tax_tier",
+        "pr_c04_inv_check_zero",
+        "pr_c05_inv_helper"
+      ],
+      "culprits": [
+        "pr_s02a_pricing_tax_tier",
+        "pr_s02b_checkout_tax_bundle"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end"
+      ],
+      "ast_top1": "pr_s02b_checkout_tax_bundle",
+      "ast_top2": [
+        "pr_s02b_checkout_tax_bundle",
+        "pr_c04_inv_check_zero"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.545,
+      "file_trivia_top1": "pr_c04_inv_check_zero",
+      "file_trivia_hit_top1": false,
+      "file_trivia_loo_pass": false,
+      "file_raw_top1": "pr_c04_inv_check_zero",
+      "file_raw_hit_top1": false,
+      "file_raw_loo_pass": false,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=1)"
+      ]
+    },
+    {
+      "case_id": 68,
+      "kind": "semantic_conflict",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_c09_auth_empty",
+        "pr_s02a_pricing_tax_tier",
+        "pr_c06_ship_zone",
+        "pr_s02b_checkout_tax_bundle",
+        "pr_c10_ledger_meta",
+        "pr_c08_auth_lead"
+      ],
+      "culprits": [
+        "pr_s02a_pricing_tax_tier",
+        "pr_s02b_checkout_tax_bundle"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end"
+      ],
+      "ast_top1": "pr_s02b_checkout_tax_bundle",
+      "ast_top2": [
+        "pr_s02b_checkout_tax_bundle",
+        "pr_c06_ship_zone"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.279,
+      "file_trivia_top1": "pr_c06_ship_zone",
+      "file_trivia_hit_top1": false,
+      "file_trivia_loo_pass": false,
+      "file_raw_top1": "pr_c06_ship_zone",
+      "file_raw_hit_top1": false,
+      "file_raw_loo_pass": false,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=1)"
+      ]
+    },
+    {
+      "case_id": 69,
+      "kind": "semantic_conflict",
+      "batch_size": 8,
+      "patch_ids": [
+        "pr_c04_inv_check_zero",
+        "pr_s02b_checkout_tax_bundle",
+        "pr_c11_ledger_empty",
+        "pr_s02a_pricing_tax_tier",
+        "pr_c09_auth_empty",
+        "pr_c05_inv_helper",
+        "pr_c07_ship_floor",
+        "pr_c08_auth_lead"
+      ],
+      "culprits": [
+        "pr_s02a_pricing_tax_tier",
+        "pr_s02b_checkout_tax_bundle"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end"
+      ],
+      "ast_top1": "pr_s02b_checkout_tax_bundle",
+      "ast_top2": [
+        "pr_s02b_checkout_tax_bundle",
+        "pr_c04_inv_check_zero"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.817,
+      "file_trivia_top1": "pr_c04_inv_check_zero",
+      "file_trivia_hit_top1": false,
+      "file_trivia_loo_pass": false,
+      "file_raw_top1": "pr_c04_inv_check_zero",
+      "file_raw_hit_top1": false,
+      "file_raw_loo_pass": false,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=1)"
+      ]
+    },
+    {
+      "case_id": 70,
+      "kind": "semantic_conflict",
+      "batch_size": 4,
+      "patch_ids": [
+        "pr_s03a_inv_inplace_mut",
+        "pr_s03b_checkout_cat_invar",
+        "pr_c06_ship_zone",
+        "pr_c07_ship_floor"
+      ],
+      "culprits": [
+        "pr_s03a_inv_inplace_mut",
+        "pr_s03b_checkout_cat_invar"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end"
+      ],
+      "ast_top1": "pr_s03b_checkout_cat_invar",
+      "ast_top2": [
+        "pr_s03b_checkout_cat_invar",
+        "pr_c06_ship_zone"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.076,
+      "file_trivia_top1": "pr_s03b_checkout_cat_invar",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_s03b_checkout_cat_invar",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=1)"
+      ]
+    },
+    {
+      "case_id": 71,
+      "kind": "semantic_conflict",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_s03b_checkout_cat_invar",
+        "pr_c10_ledger_meta",
+        "pr_c07_ship_floor",
+        "pr_c06_ship_zone",
+        "pr_s03a_inv_inplace_mut",
+        "pr_c11_ledger_empty"
+      ],
+      "culprits": [
+        "pr_s03a_inv_inplace_mut",
+        "pr_s03b_checkout_cat_invar"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end"
+      ],
+      "ast_top1": "pr_s03b_checkout_cat_invar",
+      "ast_top2": [
+        "pr_s03b_checkout_cat_invar",
+        "pr_c06_ship_zone"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.288,
+      "file_trivia_top1": "pr_s03b_checkout_cat_invar",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_s03b_checkout_cat_invar",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=1)"
+      ]
+    },
+    {
+      "case_id": 72,
+      "kind": "semantic_conflict",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_c08_auth_lead",
+        "pr_s03b_checkout_cat_invar",
+        "pr_c01_pricing_guard",
+        "pr_c02_pricing_clamp",
+        "pr_c11_ledger_empty",
+        "pr_s03a_inv_inplace_mut"
+      ],
+      "culprits": [
+        "pr_s03a_inv_inplace_mut",
+        "pr_s03b_checkout_cat_invar"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end"
+      ],
+      "ast_top1": "pr_s03b_checkout_cat_invar",
+      "ast_top2": [
+        "pr_s03b_checkout_cat_invar",
+        "pr_c01_pricing_guard"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.368,
+      "file_trivia_top1": "pr_s03b_checkout_cat_invar",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_s03b_checkout_cat_invar",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=1)"
+      ]
+    },
+    {
+      "case_id": 73,
+      "kind": "semantic_conflict",
+      "batch_size": 8,
+      "patch_ids": [
+        "pr_c02_pricing_clamp",
+        "pr_c01_pricing_guard",
+        "pr_c10_ledger_meta",
+        "pr_c07_ship_floor",
+        "pr_c06_ship_zone",
+        "pr_s03b_checkout_cat_invar",
+        "pr_c11_ledger_empty",
+        "pr_s03a_inv_inplace_mut"
+      ],
+      "culprits": [
+        "pr_s03a_inv_inplace_mut",
+        "pr_s03b_checkout_cat_invar"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end"
+      ],
+      "ast_top1": "pr_s03b_checkout_cat_invar",
+      "ast_top2": [
+        "pr_s03b_checkout_cat_invar",
+        "pr_c01_pricing_guard"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.809,
+      "file_trivia_top1": "pr_s03b_checkout_cat_invar",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_s03b_checkout_cat_invar",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": true,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (failures=1)"
+      ]
+    },
+    {
+      "case_id": 74,
+      "kind": "semantic_conflict",
+      "batch_size": 4,
+      "patch_ids": [
+        "pr_c03_pricing_zero_disc",
+        "pr_c06_ship_zone",
+        "pr_s04b_checkout_pad_role",
+        "pr_s04a_auth_strict_trim"
+      ],
+      "culprits": [
+        "pr_s04a_auth_strict_trim",
+        "pr_s04b_checkout_pad_role"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end"
+      ],
+      "ast_top1": "pr_s04b_checkout_pad_role",
+      "ast_top2": [
+        "pr_s04b_checkout_pad_role",
+        "pr_c03_pricing_zero_disc"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 1.933,
+      "file_trivia_top1": "pr_s04b_checkout_pad_role",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_s04b_checkout_pad_role",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": true,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (errors=1)"
+      ]
+    },
+    {
+      "case_id": 75,
+      "kind": "semantic_conflict",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_c05_inv_helper",
+        "pr_c02_pricing_clamp",
+        "pr_c11_ledger_empty",
+        "pr_s04b_checkout_pad_role",
+        "pr_c04_inv_check_zero",
+        "pr_s04a_auth_strict_trim"
+      ],
+      "culprits": [
+        "pr_s04a_auth_strict_trim",
+        "pr_s04b_checkout_pad_role"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end"
+      ],
+      "ast_top1": "pr_s04b_checkout_pad_role",
+      "ast_top2": [
+        "pr_s04b_checkout_pad_role",
+        "pr_c02_pricing_clamp"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.404,
+      "file_trivia_top1": "pr_s04b_checkout_pad_role",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_s04b_checkout_pad_role",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (errors=1)"
+      ]
+    },
+    {
+      "case_id": 76,
+      "kind": "semantic_conflict",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_c01_pricing_guard",
+        "pr_s04a_auth_strict_trim",
+        "pr_c03_pricing_zero_disc",
+        "pr_c07_ship_floor",
+        "pr_s04b_checkout_pad_role",
+        "pr_c05_inv_helper"
+      ],
+      "culprits": [
+        "pr_s04a_auth_strict_trim",
+        "pr_s04b_checkout_pad_role"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end"
+      ],
+      "ast_top1": "pr_s04b_checkout_pad_role",
+      "ast_top2": [
+        "pr_s04b_checkout_pad_role",
+        "pr_c01_pricing_guard"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.374,
+      "file_trivia_top1": "pr_s04b_checkout_pad_role",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_s04b_checkout_pad_role",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": true,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (errors=1)"
+      ]
+    },
+    {
+      "case_id": 77,
+      "kind": "semantic_conflict",
+      "batch_size": 8,
+      "patch_ids": [
+        "pr_c10_ledger_meta",
+        "pr_c03_pricing_zero_disc",
+        "pr_s04b_checkout_pad_role",
+        "pr_s04a_auth_strict_trim",
+        "pr_c01_pricing_guard",
+        "pr_c06_ship_zone",
+        "pr_c07_ship_floor",
+        "pr_c02_pricing_clamp"
+      ],
+      "culprits": [
+        "pr_s04a_auth_strict_trim",
+        "pr_s04b_checkout_pad_role"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end"
+      ],
+      "ast_top1": "pr_s04b_checkout_pad_role",
+      "ast_top2": [
+        "pr_s04b_checkout_pad_role",
+        "pr_c01_pricing_guard"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 3.505,
+      "file_trivia_top1": "pr_s04b_checkout_pad_role",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_s04b_checkout_pad_role",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (errors=1)"
+      ]
+    },
+    {
+      "case_id": 78,
+      "kind": "semantic_conflict",
+      "batch_size": 4,
+      "patch_ids": [
+        "pr_c04_inv_check_zero",
+        "pr_c05_inv_helper",
+        "pr_s05b_checkout_upper_id",
+        "pr_s05a_ledger_id_prefix"
+      ],
+      "culprits": [
+        "pr_s05a_ledger_id_prefix",
+        "pr_s05b_checkout_upper_id"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end"
+      ],
+      "ast_top1": "pr_s05a_ledger_id_prefix",
+      "ast_top2": [
+        "pr_s05a_ledger_id_prefix",
+        "pr_s05b_checkout_upper_id"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.07,
+      "file_trivia_top1": "pr_s05a_ledger_id_prefix",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_s05a_ledger_id_prefix",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": true,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (errors=1)"
+      ]
+    },
+    {
+      "case_id": 79,
+      "kind": "semantic_conflict",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_c02_pricing_clamp",
+        "pr_c03_pricing_zero_disc",
+        "pr_s05b_checkout_upper_id",
+        "pr_c08_auth_lead",
+        "pr_s05a_ledger_id_prefix",
+        "pr_c07_ship_floor"
+      ],
+      "culprits": [
+        "pr_s05a_ledger_id_prefix",
+        "pr_s05b_checkout_upper_id"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end"
+      ],
+      "ast_top1": "pr_s05a_ledger_id_prefix",
+      "ast_top2": [
+        "pr_s05a_ledger_id_prefix",
+        "pr_s05b_checkout_upper_id"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.291,
+      "file_trivia_top1": "pr_s05a_ledger_id_prefix",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_s05a_ledger_id_prefix",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": true,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (errors=1)"
+      ]
+    },
+    {
+      "case_id": 80,
+      "kind": "semantic_conflict",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_c02_pricing_clamp",
+        "pr_c05_inv_helper",
+        "pr_c01_pricing_guard",
+        "pr_s05a_ledger_id_prefix",
+        "pr_c03_pricing_zero_disc",
+        "pr_s05b_checkout_upper_id"
+      ],
+      "culprits": [
+        "pr_s05a_ledger_id_prefix",
+        "pr_s05b_checkout_upper_id"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end"
+      ],
+      "ast_top1": "pr_s05a_ledger_id_prefix",
+      "ast_top2": [
+        "pr_s05a_ledger_id_prefix",
+        "pr_s05b_checkout_upper_id"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.405,
+      "file_trivia_top1": "pr_s05a_ledger_id_prefix",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_s05a_ledger_id_prefix",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": true,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (errors=1)"
+      ]
+    },
+    {
+      "case_id": 81,
+      "kind": "semantic_conflict",
+      "batch_size": 8,
+      "patch_ids": [
+        "pr_c09_auth_empty",
+        "pr_s05b_checkout_upper_id",
+        "pr_c07_ship_floor",
+        "pr_c08_auth_lead",
+        "pr_c05_inv_helper",
+        "pr_c04_inv_check_zero",
+        "pr_s05a_ledger_id_prefix",
+        "pr_c01_pricing_guard"
+      ],
+      "culprits": [
+        "pr_s05a_ledger_id_prefix",
+        "pr_s05b_checkout_upper_id"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end"
+      ],
+      "ast_top1": "pr_s05a_ledger_id_prefix",
+      "ast_top2": [
+        "pr_s05a_ledger_id_prefix",
+        "pr_s05b_checkout_upper_id"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.757,
+      "file_trivia_top1": "pr_s05a_ledger_id_prefix",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_s05a_ledger_id_prefix",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (errors=1)"
+      ]
+    },
+    {
+      "case_id": 82,
+      "kind": "semantic_conflict",
+      "batch_size": 4,
+      "patch_ids": [
+        "pr_c04_inv_check_zero",
+        "pr_s06b_checkout_opt_expr",
+        "pr_s06a_ship_strict_bool",
+        "pr_c08_auth_lead"
+      ],
+      "culprits": [
+        "pr_s06a_ship_strict_bool",
+        "pr_s06b_checkout_opt_expr"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end"
+      ],
+      "ast_top1": "pr_s06a_ship_strict_bool",
+      "ast_top2": [
+        "pr_s06a_ship_strict_bool",
+        "pr_s06b_checkout_opt_expr"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.027,
+      "file_trivia_top1": "pr_s06a_ship_strict_bool",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_s06a_ship_strict_bool",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": true,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (errors=1)"
+      ]
+    },
+    {
+      "case_id": 83,
+      "kind": "semantic_conflict",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_c09_auth_empty",
+        "pr_s06a_ship_strict_bool",
+        "pr_c03_pricing_zero_disc",
+        "pr_c11_ledger_empty",
+        "pr_c10_ledger_meta",
+        "pr_s06b_checkout_opt_expr"
+      ],
+      "culprits": [
+        "pr_s06a_ship_strict_bool",
+        "pr_s06b_checkout_opt_expr"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end"
+      ],
+      "ast_top1": "pr_s06a_ship_strict_bool",
+      "ast_top2": [
+        "pr_s06a_ship_strict_bool",
+        "pr_s06b_checkout_opt_expr"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.255,
+      "file_trivia_top1": "pr_s06a_ship_strict_bool",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_s06a_ship_strict_bool",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": false,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (errors=1)"
+      ]
+    },
+    {
+      "case_id": 84,
+      "kind": "semantic_conflict",
+      "batch_size": 6,
+      "patch_ids": [
+        "pr_c01_pricing_guard",
+        "pr_s06a_ship_strict_bool",
+        "pr_c02_pricing_clamp",
+        "pr_c11_ledger_empty",
+        "pr_c10_ledger_meta",
+        "pr_s06b_checkout_opt_expr"
+      ],
+      "culprits": [
+        "pr_s06a_ship_strict_bool",
+        "pr_s06b_checkout_opt_expr"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end"
+      ],
+      "ast_top1": "pr_s06a_ship_strict_bool",
+      "ast_top2": [
+        "pr_s06a_ship_strict_bool",
+        "pr_s06b_checkout_opt_expr"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.266,
+      "file_trivia_top1": "pr_s06a_ship_strict_bool",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_s06a_ship_strict_bool",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": true,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (errors=1)"
+      ]
+    },
+    {
+      "case_id": 85,
+      "kind": "semantic_conflict",
+      "batch_size": 8,
+      "patch_ids": [
+        "pr_s06b_checkout_opt_expr",
+        "pr_c09_auth_empty",
+        "pr_c08_auth_lead",
+        "pr_c10_ledger_meta",
+        "pr_c02_pricing_clamp",
+        "pr_c04_inv_check_zero",
+        "pr_c03_pricing_zero_disc",
+        "pr_s06a_ship_strict_bool"
+      ],
+      "culprits": [
+        "pr_s06a_ship_strict_bool",
+        "pr_s06b_checkout_opt_expr"
+      ],
+      "failing_tests": [
+        "test_checkout_end_to_end"
+      ],
+      "ast_top1": "pr_s06a_ship_strict_bool",
+      "ast_top2": [
+        "pr_s06a_ship_strict_bool",
+        "pr_s06b_checkout_opt_expr"
+      ],
+      "ast_hit_top1": true,
+      "ast_hit_top2": true,
+      "ast_loo_pass": true,
+      "ast_latency_ms": 2.789,
+      "file_trivia_top1": "pr_s06a_ship_strict_bool",
+      "file_trivia_hit_top1": true,
+      "file_trivia_loo_pass": true,
+      "file_raw_top1": "pr_s06a_ship_strict_bool",
+      "file_raw_hit_top1": true,
+      "file_raw_loo_pass": true,
+      "churn_loo_pass": false,
+      "rand_loo_pass": true,
+      "traceback_tail": [
+        "Ran 11 tests in 0.000s",
+        "",
+        "FAILED (errors=1)"
+      ]
+    }
+  ]
+}

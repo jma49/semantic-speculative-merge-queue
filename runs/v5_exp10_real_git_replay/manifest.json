@@ -1,0 +1,36 @@
+{
+  "schema_version": "5.0",
+  "run_id": "v5_exp10_real_git_replay",
+  "experiment": "v5_exp10_real_git_replay",
+  "timestamp_utc": "2026-11-27T05:18:46.034980+00:00",
+  "git_commit": "b575c486b0e4a932ea0470316c07443b12612b0d",
+  "python_version": "3.9.6",
+  "platform": "macOS-27.2.1-arm64-arm-64bit",
+  "harness_sha256": "fd68ba028cab43f513779d0d1a48836354ca91f7569194e1f9394818a8ba54ce",
+  "dataset_sha256": "694044a627b849e35672ac2f2985cad3c02562a5a2ddafccf838d400100085d6",
+  "command": "python3 eval/harness.py --runs-dir runs",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "record_count": 20,
+  "metrics_file": "metrics.json",
+  "metrics_sha256": "199f1a1d2ab1557b8fd6e34f678988fdfd1167d06dac8a007f5a8942beb923ce",
+  "artifact_sha256": "199f1a1d2ab1557b8fd6e34f678988fdfd1167d06dac8a007f5a8942beb923ce",
+  "meta": {
+    "type": "real_git_merge_unittest_live_blame",
+    "strategies": [
+      "StaticBatchBisect",
+      "SSMQ"
+    ],
+    "max_batch": 4
+  }
+}

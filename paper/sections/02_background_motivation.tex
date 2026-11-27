@@ -2,35 +2,27 @@
 \label{sec:background}
 
 \subsection{Merge Queue Architectures and Failure Modes}
-Merge queues decouple code review from mainline integration by re-verifying approved PRs against the target branch across three dominant paradigms:
+Merge queues decouple code review from mainline integration by testing approved PRs atop the target branch across three primary designs:
 \begin{enumerate}
-    \item \textbf{Static FIFO Batching with Bisection} (Bors, GitHub Merge Queue~\cite{fallahzadeh2023accelerating}) tests up to $K$ consecutive FIFO PRs together and isolates failures via $O(\log_2 K)$ binary halving.
-    \item \textbf{Linear Speculative Trains} (GitLab Merge Trains) run concurrent builds on FIFO prefixes $P_1, P_1 \cup P_2, \dots, P_1 \cup \dots \cup P_D$, aborting and restarting downstream prefixes on any upstream failure.
-    \item \textbf{Outcome-Tree Speculation} (Uber's SubmitQueue~\cite{ananthanarayanan2019keeping}) pairs a conflict analyzer with a dependency-aware speculation tree to branch over pass/fail outcomes and commit independent changes.
+    \item \textbf{Batched Queueing and Staged Groups}: Bors batches up to $K$ FIFO PRs and isolates failures via recursive bisection~\cite{fallahzadeh2023accelerating}; GitHub Merge Queue validates staged FIFO groups, ejecting failed PRs and rebuilding trailing entries.
+    \item \textbf{Linear Speculative Trains} (GitLab Merge Trains): Concurrent pipelines test cumulative FIFO prefixes $P_1, P_1{\cup}P_2, \dots, P_1{\cup}\cdots{\cup}P_D$; any upstream failure aborts and restarts downstream runs.
+    \item \textbf{Dependency-Aware Outcome Trees} (Uber SubmitQueue~\cite{ananthanarayanan2019keeping}): A build-target conflict analyzer and speculation tree branch over pass/fail outcomes, committing independent changes concurrently.
 \end{enumerate}
 
-Even when diffs merge cleanly at the Git textual level~\cite{owhadikareshk2019predicting}, concurrent edits to coupled modules can induce \emph{semantic merge conflicts} that fail integration only in combination~\cite{zhang2022trained,svyatkovskiy2022program}. Non-persistent pairwise conflicts pass once serialized atop a rebased mainline, whereas persistent conflicts continue to fail against mainline. Meanwhile, \emph{flaky tests}~\cite{luo2014empirical,lam2020large,parry2025systemic} inject transient false failures: omitting retries causes false rejections of clean singletons, whereas unconditionally retrying failing batches wastes compute on deterministic bugs~\cite{henderson2023flake}.
+Even when diffs merge cleanly at the Git text level~\cite{owhadikareshk2019predicting}, concurrent edits to coupled modules trigger \emph{semantic merge conflicts} that fail only when combined~\cite{zhang2022trained,svyatkovskiy2022program}. Non-persistent conflicts pass once serialized atop a rebased mainline, whereas persistent conflicts still fail. Meanwhile, \emph{flaky tests}~\cite{luo2014empirical,lam2020large,parry2025systemic} inject false failures: omitting retries rejects clean singletons, whereas unconditional batch retries waste compute on deterministic bugs~\cite{henderson2023flake}.
 
-\subsection{Empirical Audit of 600 Merged Open-Source PRs}
-We extracted 600 chronologically merged PRs via GitHub GraphQL---200 consecutive PRs each from \texttt{kubernetes/kubernetes} ($3.1$~yr: Oct.~2023--Nov.~2026; $6$ PRs truncated at the 40-path GraphQL cap), \texttt{microsoft/TypeScript} ($7.6$~yr: Apr.~2019--Nov.~2026; $8$ truncated), and \texttt{vercel/next.js} ($20$~days: Nov.~2026; $16$ truncated). Because public GitHub metadata exposes merge timestamps rather than queue arrival logs, scaled inter-merge gaps serve as departure-derived arrival proxies. Table~\ref{tab:trace_summary} summarizes repository locality, revealing two patterns:
-
-\input{generated/tables/trace_summary.tex}
-
+\subsection{Auditable Study of 600 Consecutive Default-Branch Merges}
+Our fetcher (\texttt{scripts/fetch\_traces.py}) traverses GitHub GraphQL default-branch history to collect \emph{200 strictly consecutive merged PRs} per repository with 100-file pagination and SHA provenance (\texttt{fetch\_manifest.json}): \texttt{kubernetes/kubernetes} (\texttt{master}, $16.2$~days: Nov.~10--26, 2026; 603 commits, 3 non-PR, 5 PRs $>100$ files), \texttt{microsoft/TypeScript} (\texttt{main}, $29.6$~days: Oct.~28--Nov.~26, 2026; 201 commits, 1 non-PR, 5 PRs $>100$ files), and \texttt{vercel/next.js} (\texttt{canary}, $10.9$~days: Nov.~15--26, 2026; 226 commits, 26 non-PR, 5 PRs $>100$ files). Because GitHub exposes merge timestamps rather than enqueue logs, scaled inter-merge gaps serve as departure-derived arrival proxies relative to a $6$~PR/h ($1\times$) reference offered rate. Table~\ref{tab:trace_summary} highlights two patterns:
 \begin{itemize}
-    \item \textbf{Universal FIFO-8 Collisions}: Every consecutive 8-PR FIFO window (\TraceFifoOverlapPct{}\% across all three traces) contains at least two PRs touching the same two-level directory module (file-touch Gini $0.21$--$0.39$).
-    \item \textbf{Non-FIFO Disjointness}: As a heuristic lower bound on direct-module disjointness (greedy packing over rolling 16-PR windows without risk filtering or co-change expansion), disjoint 4-PR subsets exist in \TraceNextDisjPct{}\% of windows on \texttt{next.js} and \TraceKbsDisjPct{}\% on \texttt{kubernetes}, tightening to \TraceTSDisjPct{}\% in \texttt{TypeScript}'s coupled compiler core.
+    \item \textbf{Universal FIFO-8 Collisions}: Every consecutive 8-PR FIFO window ($193/193$, \TraceFifoOverlapPct{}\%) per repository contains at least two PRs touching the same two-level directory module (file-touch Gini $0.19$--$0.36$).
+    \item \textbf{Non-FIFO Disjointness}: Greedy direct-module packing over rolling 16-PR windows (a lower bound without risk filters or co-change expansion) finds disjoint 4-PR subsets in \TraceNextDisjPct{}\% of windows on \texttt{next.js} and \TraceKbsDisjPct{}\% on \texttt{kubernetes}, vs.\ \TraceTSDisjPct{}\% in \texttt{TypeScript}'s coupled compiler core.
 \end{itemize}
 
+\input{generated/tables/trace_summary.tex}
 \input{figures/fig_motivating_example.tex}
 
 \subsection{Algorithm-Verified Trace Vignette}
-Figure~\ref{fig:motivating} traces Algorithm~\ref{alg:packing} on five \emph{strictly consecutive} evaluation PRs from \texttt{kubernetes/kubernetes} (indices $53$--$57$, zero skipped records: PRs~\#143839, \#144202, \#141804, \#144251, and \#144257). All five merged cleanly in history; we use their actual warm-up cones $C(\cdot)$ and risk scores $r(\cdot)$ to contrast scheduling under a \emph{hypothetical} defect or semantic conflict. FIFO batching (Figure~\ref{fig:motivating}(a)) co-schedules high-risk PR~\#144202 ($r=0.66 \ge 0.55$) and the cone-overlapping pair (\#143839, \#144257 on \texttt{staging/src}) with orthogonal edits, stalling all five PRs behind bisection on any single failure. On warm-up graph $\hat{G}$ (Figure~\ref{fig:motivating}(b)), Algorithm~\ref{alg:packing} anchors fast-lane Batch~1 at head PR~\#143839 ($r=0.50$), admits cone-disjoint low-risk PRs~\#141804 ($r=0.40$) and \#144251 ($r=0.29$), and isolates PR~\#144202 ($r=0.66$) and overlap-promoted PR~\#144257 ($r=0.45$) in the protected lane ($K \le 2$).
+Figure~\ref{fig:motivating} applies Algorithm~\ref{alg:packing} to five \emph{strictly consecutive} evaluation merges from \texttt{kubernetes/kubernetes} \texttt{master} (indices $38$--$42$, merged within $3.6$~hr on Nov.~16, 2026: PR~\#144164, PR~\#143537, PR~\#144201, PR~\#143836, and PR~\#143818) under a constructed all-ready queue snapshot using their warm-up cones $C(\cdot)$ and risks $r(\cdot)$. FIFO batching (Figure~\ref{fig:motivating}(a)) bundles high-risk PR~\#143537 ($r=0.61 \ge 0.55$) and cone-overlapping PR~\#144164 and PR~\#144201 (\texttt{staging/src}) with orthogonal edits, stalling all five PRs on failure. On warm-up graph $\hat{G}$ (Figure~\ref{fig:motivating}(b)), Algorithm~\ref{alg:packing} packs low-risk, cone-disjoint PR~\#144164, PR~\#143836, and PR~\#143818 in the fast lane while isolating PR~\#143537 (high risk) and PR~\#144201 (overlap-promoted) in the protected lane ($K \le 2$).
 
 \subsection{Design Requirements}
-Eq.~\eqref{eq:survival} and our trace audit motivate four design requirements:
-\begin{itemize}
-    \item \textbf{R1 (Leak-Free Dependency Estimation):} Impact cones and risk priors must derive strictly from prior warm-up commits without assuming complete conflict recall.
-    \item \textbf{R2 (Cumulative Safety Under Concurrent Merges):} Committed batches must remain compatible with concurrent mainline merges, re-verifying stale passes on persistent conflicts.
-    \item \textbf{R3 (Starvation-Bounded Hotspot Isolation):} Deferring colliding or high-risk PRs must strictly bound fresh-batch dispatch wait in ready-queue order.
-    \item \textbf{R4 (Fast, Flake-Aware Fault Recovery):} Recovery must protect clean singletons from flaky rejection and rank suspects deterministically without multi-second LLM calls.
-\end{itemize}
+Eq.~\eqref{eq:survival} and Table~\ref{tab:trace_summary} motivate four requirements: \textbf{R1~(Leak-Free Estimation)} learns cones and priors strictly from warm-up commits without assuming complete recall; \textbf{R2~(Cumulative Safety)} blocks defective or persistently conflicting merges under concurrency; \textbf{R3~(Bounded Hotspot Wait)} bounds fresh-batch dispatch delay for deferred PRs; and \textbf{R4~(Flake-Aware Fast Recovery)} shields clean singletons while ranking suspects deterministically without LLM inference.

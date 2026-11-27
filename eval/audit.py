@@ -180,6 +180,8 @@ def _group(rows: List[Dict[str, Any]], *keys: str) -> Dict[Tuple[Any, ...], List
 
 
 def _fmt(val: float, digits: int = 2) -> str:
+    if abs(val) < 0.5 * (10.0 ** (-digits)):
+        val = 0.0
     return f"{val:.{digits}f}"
 
 

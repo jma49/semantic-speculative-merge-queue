@@ -1,19 +1,19 @@
-% AUTO-GENERATED FROM v4_exp0_blame_microbench — DO NOT EDIT
+% AUTO-GENERATED FROM v5_exp0_blame_microbench — DO NOT EDIT
 \begin{table*}[t]
 \centering
 \footnotesize
-\setlength{\tabcolsep}{5pt}
-\caption{80-Batch Real Executed Python Blame Micro-Benchmark (24 Disjoint + 16 Comment Co-File + 16 Functional Sibling Co-File + 24 Semantic Conflicts; All Latencies Measured Live on Preloaded Fixtures; LOO = Real Executed Leave-One-Out 1-Step Recovery Pass Rate).}
+\setlength{\tabcolsep}{4.5pt}
+\caption{86-Batch Real Executed Python Blame Micro-Benchmark (24 Disjoint + 16 50/50 Comment Co-File + 22 50/50 Functional Sibling Co-File + 24 Semantic Conflicts; All Metrics \& LOO Recovery Measured Live on Preloaded Fixtures).}
 \label{tab:blame_microbench}
 \begin{tabular}{lccccccc}
 \toprule
-\textbf{Ranker} & \textbf{Overall Top-1} & \textbf{Top-2} & \textbf{MRR} & \textbf{Comment Top-1} & \textbf{Func.\ Sibling Top-1} & \textbf{Exec.\ LOO} & \textbf{Mean Time} \\
+\textbf{Ranker} & \textbf{Overall Top-1} & \textbf{Top-2} & \textbf{MRR} & \textbf{50/50 Comment} & \textbf{50/50 Sibling} & \textbf{Exec.\ LOO} & \textbf{Mean Time} \\
 \midrule
-RandomRanker & 27.5\% & 52.5\% & -- & -- & -- & -- & 0.006~ms \\
-ChurnRiskRanker & 1.2\% & 10.0\% & -- & -- & -- & -- & 0.002~ms \\
-FileRawOverlapRanker & 63.7\% & 87.5\% & 0.783 & 62.5\% & 18.8\% & -- & 0.82~ms \\
-FileTriviaFilteredRanker & 70.0\% & 87.5\% & 0.815 & 93.8\% & 18.8\% & 70.0\% & 2.06~ms \\
-\textbf{ASTStackCausalRanker (Ours)} & \textbf{98.8\%} & \textbf{100.0\%} & \textbf{0.994} & \textbf{100.0\%} & \textbf{93.8\%} & \textbf{98.8\%} & \textbf{2.27~ms} \\
+RandomRanker & 25.6\% & 40.7\% & 0.465 & 18.8\% & 22.7\% & 25.6\% & 0.006~ms \\
+ChurnRiskRanker & 0.0\% & 8.1\% & 0.242 & 0.0\% & 0.0\% & 0.0\% & 0.002~ms \\
+FileRawOverlapRanker & 66.3\% & 88.4\% & 0.798 & 50.0\% & 50.0\% & 66.3\% & 0.86~ms \\
+FileTriviaNestedRanker & 75.6\% & 88.4\% & 0.845 & 100.0\% & 50.0\% & 75.6\% & 2.13~ms \\
+\textbf{ASTStackCausalRanker (Ours)} & \textbf{98.8\%} & \textbf{100.0\%} & \textbf{0.994} & \textbf{100.0\%} & \textbf{95.5\%} & \textbf{98.8\%} & \textbf{2.27~ms} \\
 \bottomrule
 \end{tabular}
 \end{table*}

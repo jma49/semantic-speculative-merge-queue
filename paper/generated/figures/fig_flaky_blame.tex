@@ -1,40 +1,40 @@
-% AUTO-GENERATED FROM v4_exp6_flaky_sweep & v4_exp0_blame_microbench — DO NOT EDIT
+% AUTO-GENERATED FROM v5_exp6_flaky_sweep & v5_exp0_blame_microbench — DO NOT EDIT
 \begin{figure*}[t]
 \centering
 \begin{tikzpicture}
 \begin{groupplot}[
   group style={group size=2 by 1, horizontal sep=1.45cm},
-  width=0.47\textwidth, height=4.45cm,
+  width=0.47\textwidth, height=4.15cm,
   ymajorgrids=true, grid style={dashed,gray!30},
   tick label style={font=\footnotesize},
   label style={font=\footnotesize},
   title style={font=\footnotesize\bfseries},
 ]
 \nextgroupplot[title={(a) Discrete Latency--Rejection Trade-Off ($\phi=10\%$)},
-  xmajorgrids=true, xlabel={P95 Merge Latency (min) $\downarrow$}, ylabel={Clean-PR False Rejection (\%) $\downarrow$},
-  xmin=50, xmax=310, ymin=-0.25, ymax=6.6]
-\addplot[color=ssmqBlue!45, dashed, thin, forget plot] coordinates { (66.9,5.46) (97.6,1.36) (118.2,0.46) (219.2,0.42) };
-\addplot[only marks, color=ssmqRed, mark=triangle*, mark size=3.0pt] coordinates { (66.9,5.46) };
-\node[font=\scriptsize\bfseries, anchor=south west, inner sep=3pt, text=ssmqRed!85!black] at (axis cs:66.9,5.46) {NoFlaky};
-\addplot[only marks, color=ssmqBlue, mark=square*, mark size=3.0pt] coordinates { (97.6,1.36) };
-\node[font=\scriptsize\bfseries, anchor=south west, inner sep=3pt, text=ssmqBlue!85!black] at (axis cs:97.6,1.36) {SSMQ};
-\addplot[only marks, color=ssmqTeal, mark=pentagon*, mark size=3.0pt] coordinates { (118.2,0.46) };
-\node[font=\scriptsize\bfseries, anchor=south west, inner sep=3pt, text=ssmqTeal!85!black] at (axis cs:118.2,0.46) {SSMQ-Fix};
-\addplot[only marks, color=ssmqGray, mark=o, mark size=3.0pt] coordinates { (114.2,4.42) };
-\node[font=\scriptsize\bfseries, anchor=south, inner sep=3pt, text=ssmqGray!85!black] at (axis cs:114.2,4.42) {Static};
-\addplot[only marks, color=ssmqPurple, mark=diamond*, mark size=3.0pt] coordinates { (219.2,0.42) };
-\node[font=\scriptsize\bfseries, anchor=south, inner sep=3pt, text=ssmqPurple!85!black] at (axis cs:219.2,0.42) {FlakeBatch};
+  xmajorgrids=true, xlabel={Mean Survivor P95 Latency (min) $\downarrow$}, ylabel={Clean-PR False Rejection (\%) $\downarrow$},
+  xmin=45, xmax=310, ymin=-0.25, ymax=6.6]
+\addplot[color=ssmqBlue!45, dashed, thin, forget plot] coordinates { (52.5,6.38) (78.2,1.44) (94.5,0.53) (222.8,0.55) };
+\addplot[only marks, color=ssmqRed, mark=triangle*, mark size=3.0pt] coordinates { (52.5,6.38) };
+\node[font=\scriptsize\bfseries, anchor=south west, inner sep=3pt, text=ssmqRed!85!black] at (axis cs:52.5,6.38) {NoFlaky};
+\addplot[only marks, color=ssmqBlue, mark=square*, mark size=3.0pt] coordinates { (78.2,1.44) };
+\node[font=\scriptsize\bfseries, anchor=south west, inner sep=3pt, text=ssmqBlue!85!black] at (axis cs:78.2,1.44) {SSMQ};
+\addplot[only marks, color=ssmqTeal, mark=pentagon*, mark size=3.0pt] coordinates { (94.5,0.53) };
+\node[font=\scriptsize\bfseries, anchor=south west, inner sep=3pt, text=ssmqTeal!85!black] at (axis cs:94.5,0.53) {SSMQ-Fix};
+\addplot[only marks, color=ssmqGray, mark=o, mark size=3.0pt] coordinates { (95.8,5.09) };
+\node[font=\scriptsize\bfseries, anchor=south, inner sep=3pt, text=ssmqGray!85!black] at (axis cs:95.8,5.09) {Static};
+\addplot[only marks, color=ssmqPurple, mark=diamond*, mark size=3.0pt] coordinates { (222.8,0.55) };
+\node[font=\scriptsize\bfseries, anchor=south, inner sep=3pt, text=ssmqPurple!85!black] at (axis cs:222.8,0.55) {FlakeBatch};
 \node[font=\scriptsize, anchor=north east, fill=ssmqBlue!8, draw=ssmqBlue!50, inner sep=2.5pt] at (axis cs:303,6.25) {Lower-Left Better $\swarrow$};
-\nextgroupplot[title={(b) 80-Batch Executed Python Blame Benchmark},
-  ybar=2pt, /pgf/bar width=7.5pt, ymin=0, ymax=115,
+\nextgroupplot[title={(b) 86-Batch Executed Python Blame Benchmark},
+  ybar=2pt, /pgf/bar width=7.5pt, ymin=0, ymax=118,
   symbolic x coords={Random,Churn,FileRaw,FileTrivia,ASTStack},
   xtick=data, ylabel={Accuracy / Recovery (\%) $\uparrow$}, enlarge x limits=0.16,
   legend style={at={(0.03,0.97)}, anchor=north west, font=\scriptsize, draw=gray!40}]
-\addplot[fill=ssmqBlue!80, draw=ssmqBlue!90!black] coordinates { (Random,27.5) (Churn,1.2) (FileRaw,63.7) (FileTrivia,70.0) (ASTStack,98.8) }; \addlegendentry{Overall Top-1}
-\addplot[fill=ssmqOrange!80, draw=ssmqOrange!90!black] coordinates { (Random,0.0) (Churn,0.0) (FileRaw,18.8) (FileTrivia,18.8) (ASTStack,93.8) }; \addlegendentry{Func.\ Sibling Top-1}
-\addplot[fill=ssmqTeal!75, draw=ssmqTeal!90!black] coordinates { (Random,0.0) (Churn,0.0) (FileRaw,0.0) (FileTrivia,70.0) (ASTStack,98.8) }; \addlegendentry{Executed LOO Pass}
+\addplot[fill=ssmqBlue!80, draw=ssmqBlue!90!black] coordinates { (Random,25.6) (Churn,0.0) (FileRaw,66.3) (FileTrivia,75.6) (ASTStack,98.8) }; \addlegendentry{Overall Top-1}
+\addplot[fill=ssmqOrange!80, draw=ssmqOrange!90!black] coordinates { (Random,22.7) (Churn,0.0) (FileRaw,50.0) (FileTrivia,50.0) (ASTStack,95.5) }; \addlegendentry{50/50 Sibling Top-1}
+\addplot[fill=ssmqTeal!75, draw=ssmqTeal!90!black] coordinates { (Random,25.6) (Churn,0.0) (FileRaw,66.3) (FileTrivia,75.6) (ASTStack,98.8) }; \addlegendentry{Executed LOO Pass}
 \end{groupplot}
 \end{tikzpicture}
-\caption{(a)~Mean latency versus clean-PR false rejection at $\phi=10\%$ across evaluated policies (dashed curve connects the nondominated mean points among tested strategies, including matched \texttt{SSMQ-FixedRetry}). (b)~80-batch real executed Python attribution benchmark: \texttt{ASTStackCausalRanker} outperforms the trivia-filtered, specificity-weighted file baseline (\texttt{FileTrivia}) on overall Top-1, functional sibling-function co-file distractors, and real executed leave-one-out recovery.}
+\caption{(a)~Mean survivor P95 latency versus clean-PR false rejection at $\phi=10\%$ across evaluated policies (dashed line links the four nondominated mean points among tested strategies). (b)~86-batch symmetrically counterbalanced Python attribution benchmark (all five rankers measured on every bar, zero missing values): \texttt{ASTStackCausalRanker} outperforms the strict nested file ablation (\texttt{FileTrivia}) on overall Top-1, 50/50 sibling-function distractors, and real executed leave-one-out recovery.}
 \label{fig:flaky_blame}
 \end{figure*}

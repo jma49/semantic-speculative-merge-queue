@@ -1,0 +1,46 @@
+{
+  "schema_version": "5.0",
+  "run_id": "v5_exp7_blame_sweep",
+  "experiment": "v5_exp7_blame_sweep",
+  "timestamp_utc": "2026-11-27T05:16:45.797699+00:00",
+  "git_commit": "b575c486b0e4a932ea0470316c07443b12612b0d",
+  "python_version": "3.9.6",
+  "platform": "macOS-27.2.1-arm64-arm-64bit",
+  "harness_sha256": "fd68ba028cab43f513779d0d1a48836354ca91f7569194e1f9394818a8ba54ce",
+  "dataset_sha256": "694044a627b849e35672ac2f2985cad3c02562a5a2ddafccf838d400100085d6",
+  "command": "python3 eval/harness.py --runs-dir runs",
+  "seeds": [
+    1001,
+    1002,
+    1003,
+    1004,
+    1005,
+    1006,
+    1007,
+    1008,
+    1009,
+    1010,
+    1011,
+    1012,
+    1013,
+    1014,
+    1015,
+    1016,
+    1017,
+    1018,
+    1019,
+    1020
+  ],
+  "record_count": 480,
+  "metrics_file": "metrics.json",
+  "metrics_sha256": "76f39493bc5d235d362dbf1ea7b8ea7f879bd5ff02c044bf5d53353b3bf371c7",
+  "artifact_sha256": "76f39493bc5d235d362dbf1ea7b8ea7f879bd5ff02c044bf5d53353b3bf371c7",
+  "meta": {
+    "blame_top1_accs": [
+      0.5,
+      0.7,
+      0.85,
+      0.9884
+    ]
+  }
+}

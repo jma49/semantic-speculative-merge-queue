@@ -1,39 +1,39 @@
-% AUTO-GENERATED FROM v4_exp5_graph_recall & v4_exp3_velocity — DO NOT EDIT
+% AUTO-GENERATED FROM v5_exp5_graph_recall & v5_exp3_velocity — DO NOT EDIT
 \begin{figure*}[t]
 \centering
 \begin{tikzpicture}
 \begin{groupplot}[
   group style={group size=2 by 1, horizontal sep=1.45cm},
-  width=0.47\textwidth, height=4.45cm,
+  width=0.47\textwidth, height=4.15cm,
   ymajorgrids=true, xmajorgrids=true, grid style={dashed,gray!30},
   tick label style={font=\footnotesize},
   label style={font=\footnotesize},
   title style={font=\footnotesize\bfseries},
   every axis plot/.append style={thick, mark size=2.1pt},
 ]
-\nextgroupplot[title={(a) Fixed-Density Off-Graph Latent Conflicts},
+\nextgroupplot[title={(a) Exact Paired Fixed-Density Recall Sweep},
   xlabel={Target Graph Recall $\rho$ (\%)}, ylabel={P95 Latency (min) $\downarrow$},
-  xtick={40,60,80,100}, xmin=35, xmax=105, ymin=0, ymax=420,
+  xtick={0,40,60,80,100}, xmin=-5, xmax=105, ymin=0, ymax=420,
   legend to name=legRecVel, legend columns=6, legend style={font=\scriptsize, draw=none, /tikz/every even column/.style={column sep=5pt}}]
-\addplot[color=ssmqBlue, mark=square*] coordinates { (40,90.10) (60,87.67) (80,80.95) (100,74.69) }; \addlegendentry{SSMQ}
-\addplot[color=ssmqGray, mark=triangle*, dashed] coordinates { (40,110.56) (60,114.39) (80,113.76) (100,112.14) }; \addlegendentry{StaticBatch}
-\addplot[color=ssmqTeal, mark=pentagon*] coordinates { (40,286.16) (60,289.17) (80,283.54) (100,277.69) }; \addlegendentry{DepAwareTree}
-\addplot[color=ssmqOrange, mark=diamond*, dotted] coordinates { (40,337.15) (60,336.46) (80,319.39) (100,309.44) }; \addlegendentry{FIFOTree}
-\addplot[color=ssmqPurple, mark=none, dashdotted] coordinates { (40,50.90) (100,50.90) }; \addlegendentry{SSMQ ($P_c{=}0$)}
-\addplot[color=black!65, mark=none, densely dotted] coordinates { (40,43.73) (100,43.73) }; \addlegendentry{Static ($P_c{=}0$)}
+\addplot[color=ssmqBlue, mark=square*] coordinates { (0,78.08) (40,73.07) (60,70.38) (80,66.01) (100,60.83) }; \addlegendentry{SSMQ}
+\addplot[color=ssmqGray, mark=triangle*, dashed] coordinates { (0,77.00) (40,91.43) (60,92.91) (80,95.03) (100,94.68) }; \addlegendentry{StaticBatch}
+\addplot[color=ssmqTeal, mark=pentagon*] coordinates { (0,308.74) (40,321.29) (60,322.14) (80,313.91) (100,292.82) }; \addlegendentry{DepAwareTree}
+\addplot[color=ssmqOrange, mark=diamond*, dotted] coordinates { (0,334.84) (40,342.46) (60,342.08) (80,329.82) (100,303.10) }; \addlegendentry{FIFOTree}
+\addplot[color=ssmqPurple, mark=none, dashdotted] coordinates { (0,43.91) (100,43.91) }; \addlegendentry{SSMQ ($P_c{=}0$)}
+\addplot[color=black!65, mark=none, densely dotted] coordinates { (0,36.71) (100,36.71) }; \addlegendentry{Static ($P_c{=}0$)}
 \nextgroupplot[title={(b) Arrival Velocity Scaling ($1\times$--$10\times$)},
   xlabel={Offered Velocity Multiplier ($\times$)}, ylabel={Merge Throughput (PRs/hr) $\uparrow$},
-  xtick={1,3,5,10}, xmin=0.5, xmax=10.5, ymin=0, ymax=28]
-\addplot[color=ssmqBlue, mark=square*] coordinates { (1,4.62) (3,12.96) (5,18.18) (10,24.60) };
-\addplot[color=ssmqGray, mark=triangle*, dashed] coordinates { (1,4.53) (3,12.34) (5,16.92) (10,22.79) };
-\addplot[color=ssmqTeal, mark=pentagon*] coordinates { (1,4.53) (3,9.70) (5,11.75) (10,12.80) };
-\addplot[color=ssmqOrange, mark=diamond*, dotted] coordinates { (1,4.54) (3,9.13) (5,11.05) (10,11.90) };
-\addplot[color=ssmqPurple, mark=o, dashdotted] coordinates { (1,4.67) (3,10.72) (5,13.44) (10,16.13) };
-\addplot[color=ssmqRed, mark=x, densely dotted] coordinates { (1,3.70) (3,5.67) (5,5.82) (10,5.84) };
-\node[font=\scriptsize, anchor=north west, fill=white, fill opacity=0.88, text opacity=1, draw=gray!40, inner sep=2pt] at (axis cs:0.8,26.8) {Purple: FlakeBatch \quad Red: SpecLinear};
+  xtick={1,3,5,10}, xmin=0.5, xmax=10.5, ymin=0, ymax=30]
+\addplot[color=ssmqBlue, mark=square*] coordinates { (1,4.33) (3,12.62) (5,19.81) (10,24.95) };
+\addplot[color=ssmqGray, mark=triangle*, dashed] coordinates { (1,4.25) (3,12.55) (5,18.68) (10,21.25) };
+\addplot[color=ssmqTeal, mark=pentagon*] coordinates { (1,4.28) (3,10.45) (5,10.82) (10,10.82) };
+\addplot[color=ssmqOrange, mark=diamond*, dotted] coordinates { (1,4.28) (3,10.21) (5,10.51) (10,10.51) };
+\addplot[color=ssmqPurple, mark=o, dashdotted] coordinates { (1,4.39) (3,11.58) (5,13.38) (10,13.27) };
+\addplot[color=ssmqRed, mark=x, densely dotted] coordinates { (1,4.09) (3,4.98) (5,4.98) (10,4.99) };
+\node[font=\scriptsize, anchor=north west, fill=white, fill opacity=0.88, text opacity=1, draw=gray!40, inner sep=2pt] at (axis cs:0.8,28.5) {Purple: FlakeBatch \quad Red: SpecLinear};
 \end{groupplot}
-\node at ($(group c1r1.north)!0.5!(group c2r1.north)+(0,0.82cm)$) {\pgfplotslegendfromname{legRecVel}};
+\node at ($(group c1r1.north)!0.5!(group c2r1.north)+(0,0.80cm)$) {\pgfplotslegendfromname{legRecVel}};
 \end{tikzpicture}
-\caption{(a)~Fixed-density non-circularity sweep ($40\%$--$100\%$ target graph recall holding total conflict count constant, plus $P_c=0$ reference lines). SSMQ preserves lower P95 latency even when $60\%$ of conflicts lie outside $\hat{G}$, while StaticBatch leads slightly at $P_c=0$. (b)~Throughput scaling across $1\times$--$10\times$ arrival bursts.}
+\caption{(a)~Exact-count paired fixed-density non-circularity sweep ($\rho \in [0\%, 100\%]$ with identical per-seed total conflict count; horizontal reference lines show the conflict-free $P_c=0$ control where $\rho$ is undefined). (b)~Mean finite-burst merge throughput across $1\times$--$10\times$ offered velocity.}
 \label{fig:recall_velocity}
 \end{figure*}

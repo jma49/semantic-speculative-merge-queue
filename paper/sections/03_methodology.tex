@@ -1,12 +1,12 @@
 \section{SSMQ Architecture, Algorithms, and Formal Analysis}
 \label{sec:methodology}
 
-Figure~\ref{fig:architecture} overviews \textbf{SSMQ}. Warm-up commits populate a leak-free dependency graph $\hat{G}$ and P90 risk scales. Pending retries, causal splits, and bisection sub-batches preempt fresh batches across $W$ shared CI workers. Passing jobs clear a cumulative conflict check before commit; failing jobs traverse a two-regime flaky gate and, on deterministic multi-PR failures, invoke 1-step AST/traceback suspect ranking with binary-bisection fallback.
+Figure~\ref{fig:architecture} overviews \textbf{SSMQ}. Warm-up commits populate a leak-free dependency graph $\hat{G}$ and P90 risk scales. Pending retries, stale-pass rechecks, blame splits, and bisection sub-batches preempt fresh batches across $W$ shared workers. Passing runs clear a cumulative delta check before commit; failing runs traverse a two-regime flaky gate and, once retries are denied or exhausted on multi-PR batches, invoke 1-step AST/traceback ranking or bisection fallback.
 
 \input{figures/fig_architecture.tex}
 
 \subsection{Leak-Free Warm-Up Dependency Graph and Risk Scoring}
-To prevent temporal leakage, SSMQ builds $\hat{G} = (V, \hat{E})$ strictly from the chronological warm-up prefix (the earliest $25\%$ of merged PRs per repository, ordered by merge timestamp and PR ID). For PR $p$ touching files $F(p)$, let $\mu(f)$ denote the two-level directory prefix of file $f$ (e.g., \texttt{pkg/scheduler}), or the shared empty tuple $()$ for repository-root files. From warm-up commits, SSMQ indexes every co-change set $\mathcal{N}_{\text{cochange}}(f)$ (all files co-modified with $f$ in warm-up PRs, with no file-count filter) and module neighborhood $\mathcal{N}_{\text{mod}}(\mu(f))$ (all warm-up files sharing $\mu(f)$), yielding the 1-hop observed \emph{impact cone}:
+SSMQ constructs $\hat{G}=(V,\hat{E})$ strictly from the chronological warm-up prefix (earliest $25\%$ of merged PRs per repository, ordered by merge time and PR ID). For PR $p$ touching files $F(p)$, let $\mu(f)$ denote the two-level directory prefix of $f$, or the shared empty tuple $()$ for root files. From warm-up commits, SSMQ indexes all co-change sets $\mathcal{N}_{\text{cochange}}(f)$ (with no file-count filter) and directory neighborhoods $\mathcal{N}_{\text{mod}}(\mu(f))$, defining the 1-hop observed \emph{impact cone}:
 \begin{equation}
 C(p) = F(p) \cup \bigcup_{f \in F(p)} \Big(\mathcal{N}_{\text{cochange}}(f) \cup \mathcal{N}_{\text{mod}}(\mu(f))\Big).
 \label{eq:cone}
@@ -17,18 +17,18 @@ SSMQ computes a bounded risk score $r(p) \in [0, 1]$ from three log-transformed 
 r(p) = 0.45\,\tilde{\ell}(p) + 0.30\,\tilde{f}(p) + 0.25\,\tilde{c}(p),
 \label{eq:risk}
 \end{equation}
-where $\tilde{\ell}(p) = \min(1, \log(1+\text{add}+\text{del})/s_\ell)$, $\tilde{f}(p) = \min(1, \log(1+\max(\text{changed\_files}, |F(p)|))/s_f)$, and $\tilde{c}(p) = \min(1, \log(1+\max_{f\in F(p)}(|C(\{f\})|-1))/s_c)$ captures maximum singleton cone centrality. Scheduler defect priors calibrate strictly against the warm-up mean risk $\bar{r}_{\text{warm}}$ (\texttt{warmup\_mean\_risk}): $\hat{q}_i = \min(1, \max(10^{-6}, r(p_i)) \cdot q_{\text{cfg}} / \bar{r}_{\text{warm}})$.
+where $\tilde{\ell}(p)=\min(1,\log(1+\text{add}+\text{del})/s_\ell)$, $\tilde{f}(p)=\min(1,\log(1+\max(\text{changed\_files},|F(p)|))/s_f)$, and $\tilde{c}(p)=\min(1,\log(1+\max_{f\in F(p)} c_{\text{warm}}(f))/s_c)$, with $c_{\text{warm}}(f)=|C(\{f\})|-1$ for warm-up-indexed paths and $0$ for unseen paths ($s_c$ is the P90 over warm-up-indexed paths). Defect priors calibrate strictly against warm-up mean risk $\bar{r}_{\text{warm}}$ (default $0.5$ on empty history, floored at $10^{-6}$, with direct pass-through for configured rates $0$ or $1$): $\hat{q}_i = \min(1, \max(10^{-6}, r(p_i)) \cdot q_{\text{cfg}} / \max(10^{-6}, \bar{r}_{\text{warm}}))$.
 
 \subsection{Graph-Disjoint Risk-Stratified Multi-Lane Packing}
-When a worker is idle and no pending retry or split awaits dispatch, Algorithm~\ref{alg:packing} packs a fresh batch from ready queue $Q$, anchoring at head $p_h = Q[0]$ to prevent starvation. If $p_h \in \mathcal{P}$ (previously deferred via cone overlap) or $r(p_h) \ge \theta_{\text{risk}} = 0.55$, SSMQ opens a \textbf{Protected Lane} batch capped at $L = \min(2, K_{\max})$; else it opens a \textbf{Fast Lane} batch capped at $L = K_{\max}$ (nominally $8$). Scanning $Q[1..]$ in FIFO order, Algorithm~\ref{alg:packing} promotes any PR with $U \cap C(p) \neq \emptyset$ into $\mathcal{P}$ (even when $|B|=L$ or lanes differ) and admits $p$ iff $|B| < L$, $U \cap C(p) = \emptyset$, and $p$'s lane matches $p_h$'s. Both lanes thus enforce cone disjointness, with worst-case scan time linear in ready PRs and their cone sizes.
+When a worker is idle and no pending job awaits dispatch, Algorithm~\ref{alg:packing} forms a fresh batch anchored at ready-queue head $p_h = Q[0]$, updating $Q$ and promoted set $\mathcal{P}$. If $p_h \in \mathcal{P}$ or $r(p_h) \ge \theta_{\text{risk}} = 0.55$, SSMQ opens a \textbf{Protected Lane} batch capped at $L=\min(2, K_{\max})$; otherwise it opens a \textbf{Fast Lane} batch capped at $L=K_{\max}$ (nominally $8$). Scanning $Q[1..]$ in FIFO order, Algorithm~\ref{alg:packing} promotes any PR overlapping accumulated cone $U$ into $\mathcal{P}$ (even when full or opposite-lane) and admits $p$ iff $|B|<L$, $U\cap C(p)=\emptyset$, and $p$'s lane matches $p_h$'s. Both lanes enforce cone disjointness across $W$ workers; scan cost scales with ready-queue length and cone operations (unmeasured).
 
 \begin{algorithm}[t]
 \caption{Graph-Disjoint Risk-Stratified Batch Packing}
 \label{alg:packing}
 \begin{algorithmic}[1]
-\REQUIRE Ready queue $Q$, cones $C(\cdot)$, risk $r(\cdot)$, promoted set $\mathcal{P}$, cap $K_{\max}$, cutoff $\theta_{\text{risk}}=0.55$
-\ENSURE Disjoint batch $B$ and updated queue $Q$
-\STATE $p_h \leftarrow Q[0]$ \COMMENT{Anchor at head for bounded dispatch}
+\REQUIRE Queue $Q$, cones $C(\cdot)$, risk $r(\cdot)$, promoted $\mathcal{P}$, cap $K_{\max}$, $\theta_{\text{risk}}=0.55$
+\ENSURE Disjoint batch $B$, updated queue $Q$, updated $\mathcal{P}$
+\STATE $p_h \leftarrow Q[0]$ \COMMENT{Head anchor bounds fresh dispatches}
 \STATE $\text{prot} \leftarrow (p_h \in \mathcal{P}) \lor (r(p_h) \ge \theta_{\text{risk}})$
 \STATE $L \leftarrow \min(2, K_{\max})$ \textbf{if} $\text{prot}$ \textbf{else} $K_{\max}$
 \STATE $B \leftarrow [p_h]$; \quad $U \leftarrow C(p_h)$; \quad $Q' \leftarrow []$
@@ -50,17 +50,17 @@ When a worker is idle and no pending retry or split awaits dispatch, Algorithm~\
 \end{algorithm}
 
 \subsection{Two-Regime Beta-Binomial Flaky Gating and Safety Check}
-SSMQ maintains a plug-in conjugate $\mathrm{Beta}(\alpha, \beta)$ heuristic initialized at $(\alpha_0 = 1, \beta_0 = 19)$ ($20$ pseudocounts, prior mean $5\%$). Each confirmed non-stale pass increments $\beta$ by $1$ and adds that job's prior failed attempts to $\alpha$; failed jobs that split or reject are censored rather than modeled via a full observation likelihood. On consecutive failure $m \in \{1, 2\}$ (at most two retries, i.e., three total attempts), the Beta-Binomial predictive probability of $m$ consecutive flakes is:
+SSMQ maintains a plug-in conjugate $\mathrm{Beta}(\alpha,\beta)$ heuristic initialized at $(\alpha_0=1, \beta_0=19)$ (20 pseudocounts, prior mean $5\%$). Confirmed non-stale passes increment $\beta$ by $1$ and add that job's prior failures to $\alpha$; split or rejected runs are censored. On failure $m \in \{1, 2\}$ (at most two retries, i.e., three attempts), the Beta-Binomial predictive probability of $m$ consecutive flakes is:
 \begin{equation}
 P_{\text{flake}}(m \mid \alpha, \beta) = \prod_{k=0}^{m-1} \frac{\alpha + k}{\alpha + \beta + k}.
 \label{eq:betabinom}
 \end{equation}
-Combining $P_{\text{flake}}$ with on-graph batch risk $\hat{q}(B) = 1 - \prod_{i \in B}(1 - \hat{q}_i) \prod_{(i,j)\in \hat{E}(B)}(1 - \hat{p}_c)$ (omitting latent off-graph and mainline-persistent edges) yields the transient-failure heuristic score:
+Combining $P_{\text{flake}}$ with on-graph batch risk $\hat{q}(B)=1-\prod_{i\in B}(1-\hat{q}_i)\prod_{(i,j)\in\hat{E}(B)}(1-\hat{p}_c)$ (omitting latent and base-persistent edges) yields the positive-guarded transient score:
 \begin{equation}
 P(\text{transient} \mid \text{fail}_m) = \frac{(1 - \hat{q}(B))\, P_{\text{flake}}(m \mid \alpha, \beta)}{\hat{q}(B) + (1 - \hat{q}(B))\, P_{\text{flake}}(m \mid \alpha, \beta)}.
 \label{eq:posterior}
 \end{equation}
-Algorithm~\ref{alg:flaky} applies asymmetric retry cutoffs: \textbf{Singleton Guard} ($\tau_1 = 0.25$ for $|B|=1$) retries clean-looking singletons before permanent rejection, whereas \textbf{Batch Guard} ($\tau_B = 0.50$ for $|B|>1$) suppresses full-batch reruns because splitting preserves clean PRs. Before committing any passing job $J$ started on snapshot $M_0$, Algorithm~\ref{alg:flaky} checks for persistent conflicts against concurrent merges $M \setminus M_0$; if present, $J$ prepends to pending (preserving failure count and round, resetting attribution overhead, and taking a fresh snapshot on dispatch).
+Algorithm~\ref{alg:flaky} applies asymmetric cutoffs: \textbf{Singleton Guard} ($\tau_1=0.25$, $|B|=1$) retries low-risk singletons before rejection, whereas \textbf{Batch Guard} ($\tau_B=0.50$, $|B|>1$) suppresses full-batch reruns because splitting preserves clean PRs. Retries increment failure count and recovery round while resetting blame overhead. Before committing any passing job $J$ tested on snapshot $M_0$, Algorithm~\ref{alg:flaky} checks persistent conflicts against concurrent merges $M\setminus M_0$; stale passes prepend to pending keeping retry count and round and re-snapshotting mainline on start.
 
 \begin{algorithm}[t]
 \caption{Cumulative Check \& Two-Regime Flaky Gate}
@@ -69,40 +69,40 @@ Algorithm~\ref{alg:flaky} applies asymmetric retry cutoffs: \textbf{Singleton Gu
 \REQUIRE Completed run $R = (J, \text{pass}, M_0, T)$, mainline $M$, state $(\alpha, \beta)$
 \IF{$R.\text{pass}$}
     \IF{$\text{HasPersistentConflict}(J.B, M \setminus M_0)$}
-        \STATE Prepend stale rerun of $J$ to pending queue
+        \STATE Prepend stale rerun of $J$ to pending (keeping failures/round)
         \RETURN
     \ENDIF
     \STATE $\alpha \leftarrow \alpha + J.\text{failures}$; \quad $\beta \leftarrow \beta + 1$; \quad $M \leftarrow M \cup J.B$
 \ELSE
     \STATE $\tau \leftarrow 0.25$ \textbf{if} $|J.B| = 1$ \textbf{else} $0.50$
     \IF{$J.\text{failures} < 2 \land P(\text{transient} \mid \text{fail}_{J.\text{failures}+1}) \ge \tau$}
-        \STATE Prepend retry of $J$ ($J.\text{failures} \leftarrow J.\text{failures} + 1$)
+        \STATE Prepend retry ($J.\text{failures}{+}{+}$, $J.\text{round}{+}{+}$, reset overhead)
     \ELSIF{$|J.B| = 1$}
         \STATE Reject singleton $J.B[0]$
     \ELSIF{$J.\text{allow\_blame}$}
         \STATE Invoke \textsc{CausalBlameAndSplit}($J, T$) \COMMENT{Alg.~\ref{alg:blame}}
     \ELSE
-        \STATE Bisect $J.B$, placing half with $J.\text{next\_suspect}$ first in pending
+        \STATE Bisect $J.B$ into pending, prioritizing half with $J.\text{next\_suspect}$
     \ENDIF
 \ENDIF
 \end{algorithmic}
 \end{algorithm}
 
 \subsection{Fail-Safe 1-Step AST/Traceback Suspect Ranking}
-On deterministic multi-PR failures, \texttt{ASTStackCausalRanker} (Algorithm~\ref{alg:blame}) ranks suspects statically without coverage instrumentation or LLM inference. From traceback $T$, it parses frame file/function counts $(d_f, d_s)$ and failing test IDs $\mathcal{T}_F$. For each $t \in \mathcal{T}_F$, 1-hop static AST expansion of bare-name calls (direct calls in $t$ plus their direct bare-name callees) yields reachable symbols $S(t)$ and defining files $F(t)$. To down-weight broad integration tests, each file and symbol receives \emph{inverse-fanout specificity}: $\sigma_F(f) = \sum_{t \in \mathcal{T}_F:\, f \in F(t)} 1/|F(t)|$ and $\sigma_S(s) = \sum_{t \in \mathcal{T}_F:\, s \in S(t)} 1/|S(t)|$.
+When retries are denied or exhausted on a multi-PR batch $B$ with \texttt{allow\_blame=True}, \texttt{ASTStackCausalRanker} (Algorithm~\ref{alg:blame}) ranks suspects statically. From traceback $T$, it parses maximum 1-based frame indices $(d_f, d_s)$ and failing test IDs $\mathcal{T}_F$. For each $t \in \mathcal{T}_F$, 1-hop expansion of bare-name AST calls yields direct calls $D(t)$, reachable symbols $S(t)$, and defining files $F(t)$. Inverse-fanout specificity down-weights broad tests while weighting direct callees by $1.5\times$: $\sigma_F(f)=\sum_{t:\, f\in F(t)} 1/|F(t)|$ and $\sigma_S(s)=\sum_{t:\, s\in S(t)} (1.5 \text{ if } s\in D(t) \text{ else } 1.0)/|S(t)|$.
 
-For each modified file $f \in F(p)$, comparing normalized AST dumps of synchronous \texttt{FunctionDef} nodes keyed by bare function name extracts changed symbols $\Delta_{\text{AST}}(p, f)$ (ordinary comments and formatting leave AST dumps invariant, whereas docstring edits alter dumps; module-level statements, \texttt{async} functions, attribute calls, and dynamic dispatch fall outside this static subset). AST-invariant files add $0.01$; functionally modified files add base $1.0$, frame bonus $1.0 + 0.2\,d_f$ if implicated, file specificity $2.0\,\sigma_F(f)$, and for each $s \in \Delta_{\text{AST}}(p, f)$: $4.0 + 0.5\,d_s$ if in traceback frames plus $10.0\,\sigma_S(s)$, breaking ties by PR ID.
+For each modified file $f \in F(p)$, diffing normalized AST dumps of synchronous \texttt{FunctionDef} nodes keyed by bare name yields changed symbols $\Delta_{\text{AST}}(p, f)$ (comments and formatting leave dumps invariant; docstrings alter dumps; syntax errors emit a sentinel; module-level code, \texttt{async} functions, attribute calls, and dynamic dispatch lie outside this subset). AST-invariant files add $0.01$; functionally modified files add base $1.0$, frame bonus $1.0+0.2\,d_f$ if implicated, file specificity $2.0\,\sigma_F(f)$, and per changed symbol $s$: $4.0+0.5\,d_s$ if implicated plus $10.0\,\sigma_S(s)$ (tie-break: PR ID).
 
-SSMQ enqueues remainder $(B \setminus \{s_1\}, \text{allow\_blame}=\text{False}, \text{hint}=s_2)$ and singleton $\{s_1\}$ to pending (clearing the hint on subsequent bisections). If $B \setminus \{s_1\}$ passes, clean PRs merge in one recovery round; if $\{s_1\}$ passes alone atop updated mainline (a rebase-resolvable intra-batch conflict), $\{s_1\}$ merges as well. If $B \setminus \{s_1\}$ fails, SSMQ falls back to $s_2$-prioritized binary bisection. In evaluation (Figure~\ref{fig:architecture}), Algorithm~\ref{alg:blame} executes directly on 80 Python \texttt{unittest} batches, and its measured Top-1/Top-2 accuracy and latency parameterize discrete-event replay (which lacks live tracebacks).
+SSMQ enqueues remainder $(B\setminus\{s_1\}, \text{allow\_blame}=\text{False}, \text{hint}=s_2)$ and singleton $\{s_1\}$ to pending (dropping the hint on further bisection). Across $W$ parallel workers, $\{s_1\}$ and $B\setminus\{s_1\}$ may complete in either order; if $B\setminus\{s_1\}$ fails, Algorithm~\ref{alg:flaky} routes it directly to $s_2$-prioritized bisection. Algorithm~\ref{alg:blame} runs live in our 86-batch benchmark and 10-seed real-Git replay, whereas its measured accuracy parameterizes the macro trace simulator (which lacks live tracebacks).
 
 \begin{algorithm}[t]
 \caption{1-Step AST/Traceback Blame (\textsc{CausalBlameAndSplit})}
 \label{alg:blame}
 \begin{algorithmic}[1]
 \REQUIRE Failing batch $B$ ($|B| \ge 2$), traceback $T$, base repository ASTs
-\STATE Parse frame counts/indices $(d_f, d_s)$ and failing tests $\mathcal{T}_F$ from $T$
-\STATE Expand 1-hop bare-name AST calls from each $t \in \mathcal{T}_F$ to get $F(t), S(t)$
-\STATE Compute specificities $\sigma_F(f) = \sum_{t:\, f \in F(t)} \frac{1}{|F(t)|}$, $\sigma_S(s) = \sum_{t:\, s \in S(t)} \frac{1}{|S(t)|}$
+\STATE Parse max 1-based frame indices $(d_f, d_s)$ and failing tests $\mathcal{T}_F$
+\STATE Expand 1-hop bare-name calls from $t \in \mathcal{T}_F$ to get $D(t), S(t), F(t)$
+\STATE $\sigma_F(f)=\sum_{t:\, f\in F(t)}\frac{1}{|F(t)|}$, $\sigma_S(s)=\sum_{t:\, s\in S(t)}\frac{1.5^{\mathbb{I}[s\in D(t)]}}{|S(t)|}$
 \FORALL{$p \in B$}
     \STATE $\text{score}(p) \leftarrow 0$
     \FORALL{$f \in F(p)$}
@@ -121,33 +121,33 @@ SSMQ enqueues remainder $(B \setminus \{s_1\}, \text{allow\_blame}=\text{False},
 \end{algorithm}
 
 \subsection{Scoped Formal Properties}
-Three propositions bound SSMQ within our pairwise model.
+Three propositions bound SSMQ within our pairwise verification model.
 
 \begin{proposition}[Within-Model Cumulative Safety]
 \label{prop:safety}
-Under an initially clean mainline $M$, fixed unary defects, a deterministic symmetric pairwise persistent-conflict oracle $G^*$, false-failure-only flakes, monotonic mainline growth, and atomic check-and-commit transitions in Algorithm~\ref{alg:flaky}, no individually defective PR and no PR with a persistent conflict against prior merges commits to $M$.
+Under an initially clean mainline $M$, fixed unary defects, a deterministic symmetric pairwise persistent-conflict oracle $G^*$, false-failure-only flakes, monotonic mainline growth, and atomic check-and-commit transitions in Algorithm~\ref{alg:flaky}, no defective PR and no PR persistently conflicting with prior merges commits to $M$.
 \end{proposition}
 \begin{proof}[Proof Sketch]
-Every commit $M \leftarrow M \cup J.B$ requires (i)~$R.\text{pass}=\text{True}$ on snapshot $M_0 \subseteq M$, excluding unary defects and intra-batch or $M_0$-persistent conflicts, and (ii)~$\neg\text{HasPersistentConflict}(J.B, M \setminus M_0)$, excluding persistent conflicts with concurrent merges. Induction over commits preserves the invariant. (Production deployment requires exact-tree rebase and verification.)
+Every commit $M\leftarrow M\cup J.B$ requires (i)~$R.\text{pass}=\text{True}$ on snapshot $M_0\subseteq M$, ruling out unary defects and intra-batch or $M_0$-persistent conflicts, and (ii)~$\neg\text{HasPersistentConflict}(J.B, M\setminus M_0)$, ruling out persistent conflicts with concurrent merges. Induction over commits preserves the invariant (production deployment uses exact-tree rebase and testing, validated in RQ1).
 \end{proof}
 
 \begin{proposition}[Fresh-Batch Dispatch Bound]
 \label{prop:liveness}
-If $N$ PRs precede PR $p$ in append-only ready queue $Q$ on arrival and pending retries/splits terminate in finite work so fresh batches continue to form, Algorithm~\ref{alg:packing} dispatches $p$ within at most $N + 1$ fresh batch formations.
+If $N$ PRs precede PR $p$ in append-only ready queue $Q$ on arrival and pending retries/splits finish in finite work so fresh batches continue forming, Algorithm~\ref{alg:packing} dispatches $p$ within at most $N+1$ fresh batch formations.
 \end{proposition}
 \begin{proof}[Proof Sketch]
-Each call to Algorithm~\ref{alg:packing} removes $Q[0]$ (line~1) and preserves relative order in $Q'$, reducing the number of PRs ahead of $p$ by at least $1$ per fresh batch until $p = Q[0]$ within $N$ formations and dispatching $p$ next. (This bounds fresh-batch formations, not wall-clock delay under worker contention.)
+Each Algorithm~\ref{alg:packing} call pops $Q[0]$ (line~1) and preserves relative order in $Q'$, reducing the PRs ahead of $p$ by at least $1$ per fresh batch until $p=Q[0]$ within $N$ formations and $p$ dispatches next (bounding fresh-batch formations, not wall-clock latency under worker contention).
 \end{proof}
 
 \begin{proposition}[Fixed-Base Recovery Depth Bound]
 \label{prop:complexity}
-For a failing batch $B$ ($K \ge 4$) on a fixed base with deterministic observations, no retries or stale rechecks, balanced splitting, and $c \ge 1$ \emph{independent unary culprits} (distinct from pairwise interaction edges), let $a = \lceil \log_2(K-1) \rceil$, $b = \lceil \log_2 K \rceil$, and $\alpha_1$ be Algorithm~\ref{alg:blame}'s Top-1 hit rate. For $c=1$, expected dependency depth to clear $B \setminus \{c\}$ satisfies:
+For a failing batch $B$ ($K\ge 4$) on a fixed base with deterministic observations, no retries or stale rechecks, balanced splitting, and $c\ge 1$ independent unary culprits (distinct from pairwise interaction edges), let $a=\lceil\log_2(K-1)\rceil$, $b=\lceil\log_2 K\rceil$, and $\alpha_1$ be Algorithm~\ref{alg:blame}'s Top-1 hit rate. When $c=1$ (sole unary culprit $u$), expected dependency depth to clear $B\setminus\{u\}$ satisfies:
 \begin{equation}
-\mathbb{E}[D_{\text{SSMQ}} \mid c=1] \le \alpha_1 \cdot 1 + (1 - \alpha_1)(1 + a),
+\mathbb{E}[D_{\text{SSMQ}} \mid c=1] \le U(\alpha_1) \triangleq \alpha_1 \cdot 1 + (1 - \alpha_1)(1 + a).
 \label{eq:blame_rounds}
 \end{equation}
-strictly beating balanced bisection's $b$ iff $\alpha_1 > (1 + a - b)/a$ (sufficiently $\alpha_1 > 1/b$, e.g., $1/3$ at $K=8$). For $c \ge 2$ independent unary culprits, evicting any single $s_1$ leaves $\ge c-1 \ge 1$ unary culprits in $B \setminus \{s_1\}$, forcing bisection fallback with worst-case depth at most $1 + a$.
+The upper bound $U(\alpha_1)$ beats balanced bisection's worst-case depth $b$ iff $\alpha_1 > (1+a-b)/a$ (sufficiently $\alpha_1 > 1/b$, e.g., $1/3$ at $K=8$). For $c\ge 2$ independent unary culprits, evicting any single $s_1$ leaves $\ge c-1\ge 1$ unary culprits in $B\setminus\{s_1\}$, forcing bisection fallback with worst-case depth at most $1+a$.
 \end{proposition}
 \begin{proof}[Proof Sketch]
-For $c=1$, Top-1 eviction clears $B \setminus \{s_1\}$ in depth $1$ with probability $\alpha_1$, else bisecting $K-1$ PRs adds depth at most $a$; solving $\alpha_1 + (1-\alpha_1)(1+a) < b$ gives $\alpha_1 > (1+a-b)/a$. For $c \ge 2$ independent unary culprits, $B \setminus \{s_1\}$ necessarily fails (whereas for interaction edges $(s, x)$ and $(s, y)$ without unary faults, evicting shared endpoint $s$ clears both in one step). Simulator metric \texttt{mean\_blame\_rounds} also includes depth-$0$ singletons and retry rounds, and worker contention can serialize sibling jobs.
+For $c=1$, Top-1 eviction clears $B\setminus\{u\}$ in depth $1$ with probability $\alpha_1$; on a miss, bisecting $K-1$ PRs adds depth at most $a$ (less when $u$ enters a smaller odd half), giving Eq.~\eqref{eq:blame_rounds}, where $U(\alpha_1)<b \iff \alpha_1>(1+a-b)/a$. For $c\ge 2$ independent unary culprits, $B\setminus\{s_1\}$ always fails (whereas for interaction edges $(s,x),(s,y)$ without unary faults, evicting shared endpoint $s$ clears both). Simulator metric \texttt{mean\_blame\_rounds} also counts depth-0 singletons and retry rounds, and worker contention can serialize siblings.
 \end{proof}
